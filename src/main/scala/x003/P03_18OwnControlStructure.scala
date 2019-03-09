@@ -4,9 +4,9 @@ import scala.annotation.tailrec
 
 object P03_18OwnControlStructure extends App {
 
-  def whilst(condition: => Boolean)(codeblock: => Unit): Unit = {
+  def whilst(condition: => Boolean)(codeBlock: => Unit): Unit = {
     while (condition) {
-      codeblock
+      codeBlock
     }
   }
 
@@ -19,8 +19,7 @@ object P03_18OwnControlStructure extends App {
   }
 
   var i = 0
-
-  whilst2 (i < 5) {
+  whilst (i < 5) {
     println(i)
     i += 1
   }
