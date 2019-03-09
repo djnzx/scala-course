@@ -2,7 +2,7 @@ package x003
 
 import scala.util.Random
 
-object P34Yield extends App {
+object P03_04Yield extends App {
   val r = Random
   var ra = for (i <- 1 to 50) yield r.nextInt(20)
   val ra2 = for {
