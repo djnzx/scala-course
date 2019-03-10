@@ -14,7 +14,7 @@ object FactoryAppEnum extends App {
     override def sound = "roar"
   }
 
-  object Animal extends Enumeration {
+  object Animal extends Enumeration(1) {
     val Dog, Cat, Leo = Value
 //    type AnimalType = Value
 //    def apply(aType: AnimalType): Animal = aType match {
