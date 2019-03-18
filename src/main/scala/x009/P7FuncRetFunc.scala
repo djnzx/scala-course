@@ -26,8 +26,11 @@ object P7FuncRetFunc extends App {
     val eng = () => s"Hello, $name"
     val spa = () => s"Hola, $name"
     lang match {
-      case "eng" => eng
-      case "spa" => spa
+      case "eng" => eng()
+      case "spa" => spa()
+      // be careful, without parentheses we will get only links on functions
+//      case "eng" => eng
+//      case "spa" => spa
     }
   }
 
@@ -37,9 +40,11 @@ object P7FuncRetFunc extends App {
   val e1 = e("Alex")
   val s1 = s("Olena")
 
+  // func
   println(e)
   println(s)
 
+  // values
   println(e1)
   println(s1)
 
