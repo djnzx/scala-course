@@ -12,13 +12,13 @@ object ImplicitAppContext extends App {
 
   val foo: Either[Throwable, String] = conf.as[String]("simple-string")
   val bar: Either[Throwable, Int] =    conf.as[Int]("simple-int")
-//  val s: String = foo.fold( _ => "-13", s => s)
-//  val i: Int    = bar.fold( _ => -42, i => i)
+  val s: String = foo.fold( _ => "-13", s => s)
+  val i: Int    = bar.fold( _ => -42, i => i)
 
   println(foo)
   println(bar)
 
-//  println(s)
-//  println(i)
+  println(s)
+  println(i)
 
 }
