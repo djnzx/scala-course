@@ -1,4 +1,4 @@
-package x098
+package _implicits.x0
 
 import com.typesafe.config.{Config, ConfigFactory}
 
@@ -15,10 +15,9 @@ object ImplicitAppContext extends App {
   val s: String = foo.fold( _ => "-13", s => s)
   val i: Int    = bar.fold( _ => -42, i => i)
 
-  println(foo)
-  println(bar)
-
   println(s)
   println(i)
 
+//  println(foo)
+//  println(bar)
 }
