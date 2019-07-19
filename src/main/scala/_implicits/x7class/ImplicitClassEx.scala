@@ -15,10 +15,12 @@ object ImplicitClassEx extends App {
   println(s2)
   println(s3)
 
+  // (type enrichment, class name doesn't matter)
   implicit class IntExtra(origin: Int) {
     def sayHello = println(s"Hello $origin")
   }
 
+  // here 1 becomes the instance of IntExtra
   1.sayHello
 
 
