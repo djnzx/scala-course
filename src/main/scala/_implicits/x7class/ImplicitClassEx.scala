@@ -17,7 +17,7 @@ object ImplicitClassEx extends App {
 
   // (type enrichment, class name doesn't matter), direct marking class
   implicit class IntExtra(origin: Int) {
-    def sayHello = println(s"Hello $origin")
+    def sayHello = println(s"Hello: $origin")
   }
 
   class IntExtra2(origin: Int) {
@@ -29,7 +29,7 @@ object ImplicitClassEx extends App {
   // here 1 becomes the instance of IntExtra
   1.sayHello
   // here 1 becomes the instance of IntExtra2
-  1.sayHello2
+  10.sayHello2
 
 
 }
