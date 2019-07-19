@@ -27,4 +27,7 @@ object WithTypeClassesImplParamsConvers extends App {
   val s2 = dog.chat
   val s3 = "STRING".chat
   println(s"$s1\n$s2\n$s3\n")
+
+
+  val sx = Person \ "world"
 }
