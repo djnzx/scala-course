@@ -1,7 +1,8 @@
-package _implicits.x1
+package _implicits.x7class
 
-object ImplicitApp1 extends App {
+object ImplicitClassEx extends App {
 
+  // class name doesn't matter
   implicit class StringExtra(origin: String) {
     def inc() = origin.map(c => (c + 1).toChar)
     def dec() = origin.map(c => (c - 1).toChar)
@@ -13,5 +14,12 @@ object ImplicitApp1 extends App {
   println(s1)
   println(s2)
   println(s3)
+
+  implicit class IntExtra(origin: Int) {
+    def sayHello = println(s"Hello $origin")
+  }
+
+  1.sayHello
+
 
 }
