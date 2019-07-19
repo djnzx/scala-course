@@ -15,13 +15,21 @@ object ImplicitClassEx extends App {
   println(s2)
   println(s3)
 
-  // (type enrichment, class name doesn't matter)
+  // (type enrichment, class name doesn't matter), direct marking class
   implicit class IntExtra(origin: Int) {
     def sayHello = println(s"Hello $origin")
   }
 
+  class IntExtra2(origin: Int) {
+    def sayHello2 = println(s"Hello2: $origin")
+  }
+  // wiring via conversion function
+  implicit val intToExtra2 = (i: Int) => new IntExtra2(i)
+
   // here 1 becomes the instance of IntExtra
   1.sayHello
+  // here 1 becomes the instance of IntExtra2
+  1.sayHello2
 
 
 }
