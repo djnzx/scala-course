@@ -29,5 +29,4 @@ object WithTypeClassesImplParamsConvers extends App {
   println(s"$s1\n$s2\n$s3\n")
 
 
-  val sx = Person \ "world"
 }
