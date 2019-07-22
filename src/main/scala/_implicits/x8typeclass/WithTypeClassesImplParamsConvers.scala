@@ -19,14 +19,18 @@ object WithTypeClassesImplParamsConvers extends App {
     def chat_(x: Dog) = s"Woof, my name is ${x.name}"
   }
   implicit object StringCanChat extends CanChat[String] {
-    def chat_(a: String): String = s"I'm a string with val:$a`"
+    def chat_(a: String): String = s"I'm a string with a val:$a"
+  }
+  implicit object IntCanChat extends CanChat[Int] {
+    def chat_(a: Int): String = s"I'm an int with a val:$a"
   }
 
   // here we call ChatUtil.chat
   val s1 = person.chat
   val s2 = dog.chat
   val s3 = "STRING".chat
-  println(s"$s1\n$s2\n$s3\n")
+  val s4 = 1.chat
+  println(s"$s1\n$s2\n$s3\n$s4\n")
 
 
 }
