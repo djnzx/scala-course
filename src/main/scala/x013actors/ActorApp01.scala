@@ -1,6 +1,6 @@
 package x013actors
 
-import akka.actor.{Actor, ActorSystem, Props}
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 
 class HelloActor extends Actor {
   override def receive: Receive = {
@@ -11,10 +11,10 @@ class HelloActor extends Actor {
 
 object ActorApp extends App {
   // parent system
-  val system = ActorSystem("hello_system")
+  val system: ActorSystem = ActorSystem("hello_system")
 
   // our actor
-  val hello_actor = system.actorOf(Props[HelloActor], name = "hello_actor")
+  val hello_actor: ActorRef = system.actorOf(Props[HelloActor], name = "hello_actor")
 
   hello_actor ! "hello"
   hello_actor ! "Hi, there!"
