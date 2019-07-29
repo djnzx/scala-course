@@ -34,10 +34,8 @@ object SlickApp01 extends App {
   // Base query for querying the messages table:
   lazy val messages = TableQuery[MessageTable]
 
-  // An example query that selects a subset of messages:
   val halSays = messages.filter(_.sender === "HAL")
 
-  // Create an in-memory H2 database;
   val db: Database = Database.forConfig("chapter00")
 
   // Helper method for running a query in this example file:
