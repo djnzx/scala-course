@@ -23,6 +23,11 @@ object SlickApp02 extends App {
     def * = (sender, content, id).mapTo[Message2]
   }
 
+  /**
+    * Like Query, DBIOAction is also a monad.
+    * It implements the same methods described above,
+    * and shares the same compatibility with for comprehensions.
+    */
   // Helper method for running a query in this example file:
   def exec[T](program: DBIO[T]): T = Await.result(db.run(program), 2 seconds)
 
@@ -69,9 +74,19 @@ object SlickApp02 extends App {
 
   println("\nSelecting only messages from HAL:")
 //  val messagesFiltered = messages.filter(_.sender.===("HAL"))
+  /**
+    * Query is a monad.
+    * It implements the methods:
+    * map, flatMap, filter, and withFilter,
+    * making it compatible with Scala for comprehensions
+    * see: slick book 1.4.9
+    */
   val messagesFiltered = messages
+    // ColumnExtensionMethods
+    .filter(_.id > 0L)
     .filter(_.sender === "HAL")
-    .filter(_.id > 2L)
+    // StringColumnExtensionMethods
+    .filter(_.content like "%sorry%")
 
   println(messagesFiltered.result.statements.mkString)
   val messagesAction: DBIO[Seq[Message2]] = messagesFiltered.result
@@ -83,5 +98,8 @@ object SlickApp02 extends App {
 
 //  exec( filtered.result ) foreach { println }
 
-
+  val sameActions: DBIO[Seq[Message2]] =
+      messages.schema.create       >>
+      (messages ++= freshTestData) >>
+      messagesFiltered.result
 }
