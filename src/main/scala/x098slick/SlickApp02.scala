@@ -1,6 +1,7 @@
 package x098slick
 
 import slick.lifted.{TableQuery, Tag}
+// Library Code
 import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.duration._
 import scala.concurrent.Await
@@ -8,10 +9,27 @@ import scala.concurrent.Await
 object SlickApp02 extends App {
 
   // table row
-  final case class Message2(
-   sender:  String,
-   content: String,    // PG.VARCHAR
-   id:      Long = 0L) // PG.BININT
+  //                        PG.VARCHAR                          PG.BININT
+  final case class Message2(sender: String, content: String, id: Long = 0L)
+
+  // table schema
+  final class MessageTable(tag: Tag) extends Table[Message2](tag, _tableName = "message") {
+
+    def id      = column[Long]("id", O.PrimaryKey, O.AutoInc) // Unique, default value
+    def sender  = column[String]("sender")
+    def content = column[String]("content")
+
+    // mapping function: tuple => ...
+    def * = (sender, content, id).mapTo[Message2]
+  }
+
+  val db: Database = Database.forConfig("chapter00")
+
+  // Helper method for running a query in this example file:
+  def exec[T](program: DBIO[T]): T = Await.result(db.run(program), 2 seconds)
+
+  // Base query for querying the messages table:
+  lazy val messages = TableQuery[MessageTable]
 
   // test data
   def freshTestData = Seq(
@@ -21,25 +39,7 @@ object SlickApp02 extends App {
     Message2("HAL",  "I'm sorry, Dave. I'm afraid I can't do that.")
   )
 
-  // schema
-  final class MessageTable(tag: Tag) extends Table[Message2](tag, "message") {
-
-    def id      = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def sender  = column[String]("sender")
-    def content = column[String]("content")
-
-    def * = (sender, content, id).mapTo[Message2]
-  }
-
-  // Base query for querying the messages table:
-  lazy val messages = TableQuery[MessageTable]
-
   val halSays = messages.filter(_.sender === "HAL")
-
-  val db: Database = Database.forConfig("chapter00")
-
-  // Helper method for running a query in this example file:
-  def exec[T](program: DBIO[T]): T = Await.result(db.run(program), 2 seconds)
 
   // Create the "messages" table:
 //  println("Creating database table")
