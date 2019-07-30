@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 import scala.concurrent.Future
 import scala.concurrent.Await
 
-object SlickApp02 extends App {
+object SlickApp01b extends App {
   // table row
   //                       PG.VARCHAR                       PG.BININT
   // https://alvinalexander.com/source-code/scala-how-create-case-class-multiple-alternate-constructors

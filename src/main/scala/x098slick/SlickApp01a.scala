@@ -5,7 +5,7 @@ import slick.jdbc.H2Profile.api._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-object SlickApp01 extends App {
+object SlickApp01a extends App {
 
   // Case class representing a row in our table:
   final case class Message(
