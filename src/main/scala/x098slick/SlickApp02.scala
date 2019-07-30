@@ -11,8 +11,13 @@ import scala.concurrent.Await
 
 object SlickApp02 extends App {
   // table row
-  //                        PG.VARCHAR                          PG.BININT
-  final case class Message2(sender: String, content: String, id: Long = 0L)
+  //                       PG.VARCHAR                       PG.BININT
+  // https://alvinalexander.com/source-code/scala-how-create-case-class-multiple-alternate-constructors
+  final case class Message2(sender: String, content: String, id: Long = 0)
+//  object Message2 {
+//    def apply(sender: String, content: String): Message2 = Message2(sender, content, 0)
+//    def unapply(arg: Message2): Option[(String, String, Long)] = Option(arg.sender, arg.content, arg.id)
+//  }
 
   // table schema
   final class MessageTable(tag: Tag) extends Table[Message2](tag, _tableName = "message") {
@@ -64,6 +69,9 @@ object SlickApp02 extends App {
 
   // Create and insert the test data:
 //  println("\nInserting test data")
+  /**
+    * ++= BulkInsert
+    */
   val insert: DBIO[Option[Int]] = messages ++= freshTestData
 //  val result_i: Future[Option[Int]] = db.run(insert)
 //  val rowCount: Option[Int] = Await.result(result_i, 2.seconds)
@@ -71,6 +79,11 @@ object SlickApp02 extends App {
   // Run the test query and print the results:
 //  println("\nSelecting all messages:")
 //  exec( messages.result ) foreach { println }
+
+  /**
+    * ++= One Line Insert
+    */
+  //Await.result( db.run(messages += Message2("Alex", "Alex, Smart")), 3 second)
 
   println("\nSelecting only messages from HAL:")
 //  val messagesFiltered = messages.filter(_.sender.===("HAL"))
@@ -84,7 +97,7 @@ object SlickApp02 extends App {
   val messagesFiltered = messages
     // ColumnExtensionMethods
     .filter(_.id > 0L)
-    .filter(_.sender === "HAL")
+    .filter(_.sender inSet Seq("HAL", "Alex"))
     // StringColumnExtensionMethods
     .filter(_.content like "%sorry%")
 
