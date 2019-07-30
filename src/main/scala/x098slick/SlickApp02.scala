@@ -23,13 +23,20 @@ object SlickApp02 extends App {
     def * = (sender, content, id).mapTo[Message2]
   }
 
-  val db: Database = Database.forConfig("chapter00")
-
   // Helper method for running a query in this example file:
   def exec[T](program: DBIO[T]): T = Await.result(db.run(program), 2 seconds)
 
-  // Base query for querying the messages table:
-  lazy val messages = TableQuery[MessageTable]
+  // Base query for querying the messages table: definition only
+  lazy val messages: TableQuery[MessageTable] = TableQuery[MessageTable]
+
+  // definition only
+  lazy val filtered: Query[MessageTable, MessageTable#TableElementType, Seq] = messages.filter(_.sender === "HAL")
+
+  // connection
+  val db: Database = Database.forConfig("chapter01my")
+
+
+
 
   // test data
   def freshTestData = Seq(
@@ -39,7 +46,6 @@ object SlickApp02 extends App {
     Message2("HAL",  "I'm sorry, Dave. I'm afraid I can't do that.")
   )
 
-  val halSays = messages.filter(_.sender === "HAL")
 
   // Create the "messages" table:
 //  println("Creating database table")
@@ -50,11 +56,11 @@ object SlickApp02 extends App {
 //  exec(messages ++= freshTestData)
 
   // Run the test query and print the results:
-  println("\nSelecting all messages:")
-  exec( messages.result ) foreach { println }
+//  println("\nSelecting all messages:")
+//  exec( messages.result ) foreach { println }
 
   println("\nSelecting only messages from HAL:")
-  exec( halSays.result ) foreach { println }
+  exec( filtered.result ) foreach { println }
 
 
 }
