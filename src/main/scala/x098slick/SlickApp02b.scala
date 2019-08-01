@@ -12,7 +12,9 @@ object SlickApp02b extends App {
   println( action.result.statements.mkString)
 
   val action2: Query[Rep[String], String, Seq] = action.map(_.content)
+  val action3: Query[(Rep[String], Rep[String]), (String, String), Seq] = action.map(x => (x.content, x.sender))
   println( action2.result.statements.mkString)
+  println( action3.result.statements.mkString)
 
   val dbio: DBIO[Seq[String]] = action2.result
   val future: Future[Seq[String]] = db.run(dbio)
