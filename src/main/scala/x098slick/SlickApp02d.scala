@@ -29,6 +29,17 @@ object SlickApp02d extends App {
   val action1f = action.filterIf(flag2)(_.sender === "HAL")
   println(action1e.result.statements.mkString)
   println(action1f.result.statements.mkString)
+  val action1g = action.distinct // select distinct "sender", "content", "id" from "message" where "id" > 2
+  println(action1g.result.statements.mkString) //
+  val action1h = action.length // select count(1) from "message" where "id" > 2
+  println(action1h.result.statements.mkString)
 
+  /**
+   * map acts like a SELECT
+   * filter is like a WHERE
+   *
+   * unpacked type, which is the regular Scala types we work with, such as String
+   * mixed type, which is Slick’s column representation, such as Rep[String]
+   */
 
 }
