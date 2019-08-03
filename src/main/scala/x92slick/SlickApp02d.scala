@@ -1,6 +1,9 @@
-package x098slick
+package x92slick
 
+import slick.lifted.{TableQuery, Tag}
 import slick.jdbc.PostgresProfile.api._
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration._
 
 object SlickApp02d extends App {
   println( messages.result.statements.mkString)

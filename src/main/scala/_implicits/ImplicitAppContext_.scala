@@ -1,4 +1,4 @@
-package x098
+package _implicits
 
 import _implicits.x0.XReader
 import com.typesafe.config.{Config, ConfigFactory}

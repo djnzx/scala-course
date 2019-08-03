@@ -1,7 +1,7 @@
-package x098slick
+package x91slick
 
 import slick.lifted.{TableQuery, Tag}
-import slick.jdbc.H2Profile.api._
+import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
@@ -36,7 +36,7 @@ object SlickApp01a extends App {
 
   val halSays = messages.filter(_.sender === "HAL")
 
-  val db: Database = Database.forConfig("chapter00")
+  val db: Database = Database.forConfig("chapter01my")
 
   // Helper method for running a query in this example file:
   def exec[T](program: DBIO[T]): T = Await.result(db.run(program), 2 seconds)

@@ -1,13 +1,9 @@
-package x098slick
+package x91slick
 
 import slick.lifted.{TableQuery, Tag}
-
-// Library Code
 import slick.jdbc.PostgresProfile.api._
-// async
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
-import scala.concurrent.Future
-import scala.concurrent.Await
 
 object SlickApp01b extends App {
   // table row
