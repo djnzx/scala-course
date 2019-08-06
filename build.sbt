@@ -1,16 +1,19 @@
 name := "learn-scala-cook-book-aa"
 
-version := "0.2"
-scalaVersion := "2.12.8"
+scalacOptions ++= Seq(
+  "-language:postfixOps"
+)
+version := "0.2.4"
+scalaVersion := "2.13.0"
 
 resolvers ++= Seq(
-  "Typesafe" at "http://repo.typesafe.com/typesafe/releases/",
+//  "Typesafe" at "http://repo.typesafe.com/typesafe/releases/",
 //  "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
 )
 
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
+  "org.scala-lang.modules" %% "scala-xml" % "1.2.0",
   "com.typesafe.akka" %% "akka-actor" % "2.5.23",
 
   "com.typesafe.slick" %% "slick" % "3.3.2",          // core

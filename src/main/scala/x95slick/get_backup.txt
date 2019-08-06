@@ -1,0 +1,5 @@
+SERVER=alexr@193.151.90.188
+PATH=/home/alexr
+FILE=avtomir.backup.2019-08-06_06-01.bk.gz
+DBNAME=danit
+scp $SERVER:$PATH/$FILE .

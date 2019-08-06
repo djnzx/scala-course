@@ -1,0 +1,15 @@
+docker pull postgres:9.6
+
+mkdir ~/.data_pg96
+mkdir ~/rw
+
+docker run -p 5432:5432 -v /Users/alexr/.data_pg96:/var/lib/postgresql/data -v /Users/alexr/Downloads:/dl:ro -v /Users/alexr/rw:/rw --env POSTGRES_PASSWORD=secret --name postgres96 postgres:9.6
+
+docker exec -it ... bash
+su postgres
+
+createdb avtomir
+createdb wt
+createdb danit
+
+pg_restore --dbname=avtomir /dl/avtomir.backup.2019-08-06_06-01.bk

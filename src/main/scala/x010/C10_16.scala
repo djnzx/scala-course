@@ -21,5 +21,5 @@ object C10_16 extends App {
   println(r)
   println(r2)
   println(r0.partition(_ > 20))
-  println(r0.par) // parallel
+//  println(r0.par) // parallel - deprecated in 2.13
 }
