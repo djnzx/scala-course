@@ -1,4 +1,4 @@
-package x95slick
+package x95slick.models
 
 import slick.lifted.{TableQuery, Tag}
 import slick.jdbc.PostgresProfile.api._

@@ -2,7 +2,7 @@ package x95slick
 
 import slick.lifted.{TableQuery, Tag}
 import slick.jdbc.PostgresProfile.api._
-import x95slick.Models.{Country, Vendor}
+import x95slick.models.Models.{Country, Vendor}
 
 object ModelsOLD {
   final class CountryTable_(tag: Tag) extends Table[Country](tag, "country") {

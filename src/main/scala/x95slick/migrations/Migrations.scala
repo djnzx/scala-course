@@ -1,7 +1,7 @@
 package x95slick.migrations
 
 import slick.jdbc.PostgresProfile.api._
-import x95slick.Models.{Country, Vendor, countries, vendors}
+import x95slick.models.Models.{Country, Vendor, countries, vendors}
 import x95slick.ModelsOLD.{countries0, vendors0}
 import x95slick.{exec, execa}
 
