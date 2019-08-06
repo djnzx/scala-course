@@ -4,14 +4,20 @@
       <pattern>%-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
-
+  <!-- EVERYTHING -->
   <logger name="slick"                              level="INFO"/>
+  <!-- session -->
+  <logger name="slick.session"                      level="INFO"/>
   <logger name="slick.ast"                          level="INFO"/>
   <logger name="slick.compiler"                     level="INFO"/>
-  <logger name="slick.jdbc.JdbcBackend.statement"   level="INFO"/>
+
+  <logger name="slick.jdbc.JdbcBackend.statement"   level="DEBUG"/>
+  <logger name="slick.jdbc.JdbcBackend.parameter"   level="DEBUG"/>
+
+  <!-- The first few results of each query -->
   <logger name="slick.jdbc.StatementInvoker.result" level="INFO"/>
 
-  <root level="info">
+  <root level="INFO">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>

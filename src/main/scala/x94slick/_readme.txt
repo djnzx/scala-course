@@ -1,1 +1,2 @@
-Slick book chapter 4
+Slick book chapter 4.
+Combining Actions

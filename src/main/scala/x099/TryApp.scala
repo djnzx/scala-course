@@ -7,15 +7,15 @@ object TryApp extends App {
   val try1 = Try(1+2) // Success
   val try2 = Try(2/0) // Failure
 
-//  try1 match {
-//    case Success(value) => println(value)
-//    case Failure(error) => println(error)
-//  }
-//
-//  try2 match {
-//    case Success(value) => println(value)
-//    case Failure(error) => println(error)
-//  }
+  try1 match {
+    case Success(value) => println(value)
+    case Failure(error) => println(error)
+  }
+
+  try2 match {
+    case Success(value) => println(value)
+    case Failure(error) => println(error)
+  }
 
   val seq = Seq(try1, try2)
   // way1
