@@ -4,6 +4,7 @@ import slick.lifted.{TableQuery, Tag}
 import slick.jdbc.PostgresProfile.api._
 
 object Models {
+
   final case class Country(name: String, names: String, id: Long = 0L)
   final case class Vendor(name: String, id: Long = 0L)
 
@@ -22,4 +23,5 @@ object Models {
 
   lazy val countries: TableQuery[CountryTable] = TableQuery[CountryTable]
   lazy val vendors: TableQuery[VendorTable] = TableQuery[VendorTable]
+
 }

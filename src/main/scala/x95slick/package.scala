@@ -1,14 +1,7 @@
-import slick.jdbc.PostgresProfile.api._
-
-import scala.concurrent.Await
-import scala.concurrent.duration._
+import slick.jdbc.JdbcProfile
 
 package object x95slick {
-  // new db connection
-  val db: Database = Database.forConfig("logistics")
-  def exec[T](program: DBIO[T]): T = Await.result(db.run(program), 2 seconds)
+  // default profile
+//  implicit val defaultProfile: JdbcProfile = slick.jdbc.PostgresProfile
 
-  // old db connection
-  val dba: Database = Database.forConfig("avtomir")
-  def execa[T](program: DBIO[T]): T = Await.result(dba.run(program), 2 seconds)
 }
