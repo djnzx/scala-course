@@ -4,8 +4,8 @@ object ImplicitClassEx extends App {
 
   // class name doesn't matter
   implicit class StringExtra(origin: String) {
-    def inc() = origin.map(c => (c + 1).toChar)
-    def dec() = origin.map(c => (c - 1).toChar)
+    def inc() = origin.map((c: Char) => (c + 1).toChar)
+    def dec() = origin.map((c: Char) => (c - 1).toChar)
   }
 
   val s1 = "Hello"
