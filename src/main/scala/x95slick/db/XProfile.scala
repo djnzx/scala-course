@@ -1,4 +1,4 @@
-package x95slick
+package x95slick.db
 
 import slick.jdbc.JdbcProfile
 
@@ -9,5 +9,4 @@ trait XProfile {
     * on implementation phase
     */
   val profile: JdbcProfile
-
 }
