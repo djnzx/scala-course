@@ -50,4 +50,44 @@ trait Tables { this: XProfile => // this means this trait should be mixed with X
   object countries0 extends TableQuery(new CountryTable_(_))
   object vendors0 extends TableQuery(new VendorTable_(_))
   lazy val partnumbers: TableQuery[PartNumbers] = TableQuery[PartNumbers]
+
+  final case class Message(src: Long, dst: Long, text: String, flag: Option[MsgFlag] = None, id: Long = 0L)
+
+  sealed trait MsgFlag
+  case object Important extends MsgFlag
+  case object Offensive extends MsgFlag
+  case object Spam extends MsgFlag
+  case object Normal extends MsgFlag
+  object Flags {
+    val important : MsgFlag = Important
+    val offensive : MsgFlag = Offensive
+    val spam : MsgFlag = Spam
+    val normal : MsgFlag = Normal
+  }
+
+  implicit val flagType = MappedColumnType.base[MsgFlag, Char](
+    fllag => fllag match {
+      case Important => '!'
+      case Offensive => 'X'
+      case Spam => '$'
+      case Normal => ' '
+    },
+    code => code match {
+      case '!' => Important
+      case 'X' | 'x' => Offensive
+      case '$' => Spam
+      case _ => Normal
+    }
+  )
+
+  final class MessageTable(tag: Tag) extends Table[Message](tag, "messages") {
+    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+    def src = column[Long]("src")
+    def dst = column[Long]("dst")
+    def text = column[String]("text")
+    def flag = column[Option[MsgFlag]]("flag", O.Default(Some(Normal)))
+    def * = (src, dst, text, flag, id).mapTo[Message]
+  }
+  lazy val messages: TableQuery[MessageTable] = TableQuery[MessageTable]
+
 }

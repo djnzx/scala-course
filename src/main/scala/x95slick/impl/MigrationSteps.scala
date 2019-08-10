@@ -1,6 +1,5 @@
 package x95slick.impl
 
-import scala.concurrent.duration._
 import x95slick.db.DatabaseLayer
 
 final class MigrationSteps {

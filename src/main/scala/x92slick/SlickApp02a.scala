@@ -1,6 +1,5 @@
 package x92slick
 
-import slick.lifted.{TableQuery, Tag}
 import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
