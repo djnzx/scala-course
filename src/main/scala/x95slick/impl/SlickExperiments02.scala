@@ -38,7 +38,7 @@ final class SlickExperiments02 {
 //      .filter((pn: PartNumbers, ve: VendorTable) => pn.id > 5L)
 //      .map((pn: PartNumbers, ve: VendorTable) => (pn.id, ve.name, pn.number))
 
-    exec(join2.result) foreach println
+    exec(join1.result) foreach println
   }
 
 }

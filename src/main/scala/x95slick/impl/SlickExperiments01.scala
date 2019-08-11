@@ -30,10 +30,10 @@ final class SlickExperiments01 {
   }
 
   def messages_read_some1: Unit = {
-    val action1 = messages.filter(m => m.flag === (Flags.important))
-    val action2 = messages.filter(_.flag === (Flags.important))
+    val action1 = messages.filter(m => m.flag === (Important:MsgFlag))
+    val action2 = messages.filter(m => m.flag === Flags.important)
     val action3 = messages.filter(_.flag === (Important:MsgFlag))
-    val action4 = messages.filter(m => (m.flag === (Important:MsgFlag)))
+    val action4 = messages.filter(_.flag === Flags.important)
     val action5 = messages.filter(
       _.flag === (Flags.important)
     )

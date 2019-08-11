@@ -2,6 +2,7 @@ name := "learn-scala-cook-book-aa"
 
 scalacOptions ++= Seq(
   "-language:postfixOps"
+//  , "-language:unchecked"
 )
 version := "0.2.4"
 scalaVersion := "2.13.0"
