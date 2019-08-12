@@ -22,6 +22,7 @@ object ImplicitClassEx extends App {
 
   class IntExtra2(origin: Int) {
     def sayHello2 = println(s"Hello2: $origin")
+    def ->[B] (b: B): (Int, B) = (origin, b)
   }
   // wiring via conversion function
   implicit val intToExtra2 = (i: Int) => new IntExtra2(i)
@@ -31,5 +32,7 @@ object ImplicitClassEx extends App {
   // here 1 becomes the instance of IntExtra2
   10.sayHello2
 
+  val t: (Int, Int) = 1 -> 2
+  println(t)
 
 }

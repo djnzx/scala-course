@@ -41,12 +41,12 @@ trait Tables { this: XProfile => // this means this trait should be mixed with X
 //  final class PartNumbers(tag: Tag) extends Table[(Long, Int, String)](tag, "part_number") {
   final class PartNumbers(tag: Tag) extends Table[PartNumber](tag, "part_number") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def vendor = column[Long]("vendor")
+    def vendor_id = column[Long]("vendor")
     def number = column[String]("number")
-    def * = (vendor, number, id).mapTo[PartNumber]
+    def * = (vendor_id, number, id).mapTo[PartNumber]
 //    def * = (id, vendor, number)
-    def fk_vendor =
-      foreignKey("fk_vendor", vendor, vendors)(_.id)
+    def vendor =
+      foreignKey("fk_vendor", vendor_id, vendors)(_.id)
   }
 
   // variables/objects to make requests

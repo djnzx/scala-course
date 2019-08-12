@@ -8,5 +8,9 @@ object SlickExperiments02App extends App {
 
 //  numbers_insert
 //  numbers_select
-  numbers_select_joined
+  numbers_select_joined1
+  numbers_select_joined2
+  numbers_select_joined3
+  numbers_select_joined41
+  numbers_select_joined42
 }

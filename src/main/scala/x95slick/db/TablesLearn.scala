@@ -124,4 +124,14 @@ trait TablesLearn { this: XProfile =>
   }
 
   val weirdtable = TableQuery[WeirdTable]
+
+  final case class BookShelfRow(topic: String, number: Int, id: Long = 0L)
+  class BookShelf(tag: Tag) extends Table[BookShelfRow](tag, "books") {
+    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+    def topic = column[String]("topic")
+    def number = column[Int]("number")
+    def * = (topic, number, id).mapTo[BookShelfRow]
+  }
+  lazy val books = TableQuery[BookShelf]
+
 }
