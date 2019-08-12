@@ -70,9 +70,10 @@ final class SlickExperiments03 {
       .map { case (b, g) => (b, g.length) }
     val result44 = exec(action44.result)
     println(s"grouped44: $result44")
-    // all
-//    val query = books
-//    println(s"Just All the books")
-//    exec(books.result) foreach println
+
+    /**
+      * further reading:
+      * http://slick.lightbend.com/doc/3.1.1/sql-to-slick.html#implicit-inner-joins
+      */
   }
 }
