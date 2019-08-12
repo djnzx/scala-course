@@ -60,9 +60,6 @@ final class SlickExperiments02 {
     val join41: Query[(PartNumbers, VendorTable), (PartNumber, Vendor), Seq] = partnumbers
 //      .join(vendors) on (_.vendor_id === _.id)
       .join(vendors) on ((pn: PartNumbers, ve: VendorTable) => pn.vendor_id === ve.id)
-//    val join42
-//    : Query[(PartNumbers, VendorTable), (Long, String, String), Seq]
-//    = join41.map((pn: PartNumbers, ve: VendorTable) => (pn.id, ve.name, pn.number))
     exec(join41.result) foreach println
   }
 
@@ -82,9 +79,4 @@ final class SlickExperiments02 {
     *
     * https://stackoverflow.com/questions/26815913/how-to-do-or-filter-in-slick
     */
-
 }
-//    val join42 = join41.map((pn: PartNumbers, ve: VendorTable) => (pn.id, ve.name, pn.number))
-//      .filter((pn: PartNumbers, ve: VendorTable) => ve.name like "%OP%")
-//      .filter((pn: PartNumbers, ve: VendorTable) => pn.id > 5L)
-//      .map((pn: PartNumbers, ve: VendorTable) => (pn.id, ve.name, pn.number))

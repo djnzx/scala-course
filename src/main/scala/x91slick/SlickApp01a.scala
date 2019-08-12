@@ -32,18 +32,17 @@ object SlickApp01a extends App {
   }
 
   // Base query for querying the messages table:
-  lazy val messages = TableQuery[MessageTable]
-
-  val halSays = messages.filter(_.sender === "HAL")
+  lazy val messages: TableQuery[MessageTable] = TableQuery[MessageTable]
+  val halSays: Query[MessageTable, Message, Seq] = messages.filter(_.sender === "HAL")
 
   val db: Database = Database.forConfig("chapter01my")
 
   // Helper method for running a query in this example file:
   def exec[T](program: DBIO[T]): T = Await.result(db.run(program), 2 seconds)
 
-  // Create the "messages" table:
-//  println("Creating database table")
-//  exec(messages.schema.create)
+//   Create the "messages" table:
+  println("Creating database table")
+  exec(messages.schema.createIfNotExists)
 
   // Create and insert the test data:
 //  println("\nInserting test data")

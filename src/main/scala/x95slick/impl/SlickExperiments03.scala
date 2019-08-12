@@ -60,16 +60,22 @@ final class SlickExperiments03 {
 
     val action42 = action41
       .groupBy { case (ve_name: Rep[String], part_num: Rep[String]) => ve_name }
-      .map { case (ve_name, list) => ve_name -> list.length }
+      .map { case (ve_name, group_q) => ve_name -> group_q.length }
 
     val result42 = exec(action42.result)
     println(s"grouped: $result42")
 
     val action44 = books
       .groupBy { _.topic }
-      .map { case (b, g) => (b, g.length) }
+      .map { case (b: Rep[String], group_q) => (b, group_q.length) }
     val result44 = exec(action44.result)
-    println(s"grouped44: $result44")
+    println(s"grouped44: $result44") // Vector((Slick,1), (JavaScript,1), (Scala,1), (Java,2))
+
+    // HAVING
+    val action45 = action44
+      .filter(_._2 > 1) // select "topic", count(1) from "books" group by "topic" having count(1) > 1
+    val result45 = exec(action45.result)
+    println(s"grouped45: $result45") // Vector((Java,2))
 
     /**
       * further reading:
