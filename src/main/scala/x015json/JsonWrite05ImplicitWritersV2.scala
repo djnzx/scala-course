@@ -1,6 +1,7 @@
 package x015json
 
 import play.api.libs.json._
+import play.api.libs.functional.syntax._
 //  JsValue
 //  JsNumber, JsString, JsBoolean
 //  JsObject, JsArray, JsNull
@@ -12,22 +13,22 @@ import play.api.libs.json._
 object JsonWrite05ImplicitWritersV2 extends App {
   // implicit writers
   // implicit writers Combinator Pattern
-//  implicit val locationWrites2: Writes[Location] = (
-//    (JsPath \ "lat").write[Double] and
-//      (JsPath \ "long").write[Double]
-//    )(unlift(Location.unapply))
-//
-//  implicit val residentWrites2: Writes[Resident] = (
-//    (JsPath \ "name").write[String] and
-//      (JsPath \ "age").write[Int] and
-//      (JsPath \ "role").writeNullable[String]
-//    )(unlift(Resident.unapply))
-//
-//  implicit val placeWrites2: Writes[Place] = (
-//    (JsPath \ "name").write[String] and
-//      (JsPath \ "location").write[Location] and
-//      (JsPath \ "residents").write[Seq[Resident]]
-//    )(unlift(Place.unapply))
+  implicit val locationWrites2: Writes[Location] = (
+    (JsPath \ "lat").write[Double] and
+      (JsPath \ "long").write[Double]
+    )(unlift(Location.unapply))
+
+  implicit val residentWrites2: Writes[Resident] = (
+    (JsPath \ "name").write[String] and
+      (JsPath \ "age").write[Int] and
+      (JsPath \ "role").writeNullable[String]
+    )(unlift(Resident.unapply))
+
+  implicit val placeWrites2: Writes[Place] = (
+    (JsPath \ "name").write[String] and
+      (JsPath \ "location").write[Location] and
+      (JsPath \ "residents").write[Seq[Resident]]
+    )(unlift(Place.unapply))
 
   val place = Place(
     "Watership Down",
@@ -37,6 +38,6 @@ object JsonWrite05ImplicitWritersV2 extends App {
       Resident("Bigwig", 6, Some("Owsla"))
     )
   )
-//  val json = Json.toJson(place)
-//  println(json)
+  val json = Json.toJson(place)
+  println(json)
 }

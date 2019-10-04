@@ -1,5 +1,7 @@
 package x005
 
+//import shapeless.syntax.std.tuple._
+
 object Tuples extends App {
   class TupleEx {
     def make1(): Tuple3[Int, String, Boolean] = {
@@ -22,5 +24,13 @@ object Tuples extends App {
   println(t3 == t2)
   println(t4 == t2)
   println(t1._1, t1._2, t1._3)
+  val t5 = t1 -> 73
 
+  implicit class Tuple3Ops[A, B, C](t: (A, B, C)) {
+    def :+[T](v: T) = (t._1, t._2, t._3, v)
+  }
+
+  val t51 = t1 :+ 73
+  println(t5)
+  println(t51)
 }
