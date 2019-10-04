@@ -4,12 +4,12 @@ import play.api.libs.json._
 //  JsValue
 //  JsNumber, JsString, JsBoolean
 //  JsObject, JsArray, JsNull
-case class Location(lat: Double, long: Double)
-case class Resident(name: String, age: Int, role: Option[String])
-case class Place(name: String, location: Location, residents: Seq[Resident])
+//case class Location(lat: Double, long: Double)
+//case class Resident(name: String, age: Int, role: Option[String])
+//case class Place(name: String, location: Location, residents: Seq[Resident])
 
 // taken from https://www.playframework.com/documentation/2.7.x/ScalaJson
-object JsonWrite04ImplicitWriters extends App {
+object JsonWrite05ImplicitWritersV2 extends App {
   // implicit writers
   // implicit writers Combinator Pattern
 //  implicit val locationWrites2: Writes[Location] = (

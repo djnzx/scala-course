@@ -1,6 +1,6 @@
 package x015json
 
-import play.api.libs.json.{JsObject, Json, Writes}
+import play.api.libs.json.{Json, Writes}
 
 case class Person(name: String, age: Int)
 

@@ -40,6 +40,20 @@ object JsonWrite04ImplicitWriters extends App {
       Resident("Bigwig", 6, Some("Owsla"))
     )
   )
-  val json = Json.toJson(place)
+  val json: JsValue = Json.toJson(place)
   println(json)
+
+  // accessing by path without object conversion
+  val lat: JsValue = (json \ "location" \ "lat").get // JsNumber(51.235685)
+  val bigwig: JsValue = (json \ "residents" \ 1).get // {"name":"Bigwig","age":6,"role":"Owsla"}
+  // Applying the \\ operator will do a lookup for the field in the current object and ALL descendants.
+  val names = json \\ "name" // Seq(JsString("Watership Down"), JsString("Fiver"), JsString("Bigwig"))
+  val name = json("name") // JsString("Watership Down")
+  val bigwig2 = json("residents")(1) // {"name":"Bigwig","age":6,"role":"Owsla"}
+
+  val minified: String = Json.stringify(json)
+  val readable: String = Json.prettyPrint(json)
+
+  println(minified)
+  println(readable)
 }

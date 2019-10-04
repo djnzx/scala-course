@@ -2,7 +2,7 @@ package x015json
 
 import play.api.libs.json.{JsValue, Json}
 
-object JsonWrite03PlainParsed extends App {
+object JsonWrite03PlainObjectParsed extends App {
 
   val parsed1: JsValue = Json.parse("""
     {
