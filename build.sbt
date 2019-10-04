@@ -21,6 +21,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick-hikaricp" % "3.3.2", // connection pool
   "org.postgresql" % "postgresql" % "42.2.6",         // database driver
 
+  "com.typesafe.play" %% "play-json" % "2.7.4",       // JSON converter
+
 //  "com.h2database" % "h2" % "1.4.197",
   "ch.qos.logback" % "logback-classic" % "1.2.3"
 )
