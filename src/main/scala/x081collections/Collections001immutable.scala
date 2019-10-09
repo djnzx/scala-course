@@ -28,10 +28,6 @@ object Collections001immutable extends App {
   val i3 = LinearSeq(1,2,3) // List
   val i4 = List(1,2,3)      // List
 
-  // declaration only
-  val fibs: LazyList[BigInt] = BigInt(1) #:: BigInt(1) #:: fibs.zip(fibs.tail).map { n => n._1 + n._2 }
-  // evaluation on access and memoization!
-  fibs.take(6).foreach(println)
 
   val i5 = Queue(1,2,3)
   val i6 = i5.appended(4)
@@ -48,9 +44,5 @@ object Collections001immutable extends App {
   val s4 = SortedSet("hello", "world") // TreeSet
   val s5 = TreeSet(5,1,10,5) // 1,5,10
   val s6 = BitSet(1,2,3,3) // efficient non-negative integers, size determined by max value
-
-
-
-
 
 }
