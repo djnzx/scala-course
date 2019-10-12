@@ -1,4 +1,4 @@
-package x099
+package x99
 
 
 object EitherApp extends App {

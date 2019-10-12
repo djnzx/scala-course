@@ -1,4 +1,4 @@
-package x099;
+package x99;
 
 public class HelloJava {
     public void print() {

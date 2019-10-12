@@ -1,6 +1,6 @@
-package x099
+package x99
 
-import x099.Sex.Sex
+import x99.Sex.Sex
 
 object Sex extends Enumeration {
   type Sex = Value
