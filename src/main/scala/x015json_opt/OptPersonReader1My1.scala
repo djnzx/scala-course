@@ -2,7 +2,7 @@ package x015json_opt
 
 import play.api.libs.json.{JsLookupResult, JsResult, JsSuccess, JsValue, Reads}
 
-object OptPersonReader1My {
+object OptPersonReader1My1 {
 
   // my implementation #1
   implicit val personReader: Reads[OptPerson] = new Reads[OptPerson] {

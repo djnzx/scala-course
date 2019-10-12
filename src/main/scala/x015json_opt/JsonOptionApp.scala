@@ -8,8 +8,10 @@ import play.api.libs.json.{JsValue, Json}
 import OptPersonWriter3Default._
 
 // different deserialization implementations
-//import OptPersonReader1My._
+//import OptPersonReader1My1._
 //import OptPersonReader1My2._
+//import OptPersonReader1My3._
+//import OptPersonReader1My4._
 import OptPersonReader3Default._
 
 // colored console
