@@ -4,9 +4,6 @@ import play.api.libs.json._
 //  JsValue
 //  JsNumber, JsString, JsBoolean
 //  JsObject, JsArray, JsNull
-case class Location(lat: Double, long: Double)
-case class Resident(name: String, age: Int, role: Option[String])
-case class Place(name: String, location: Location, residents: Seq[Resident])
 
 // taken from https://www.playframework.com/documentation/2.7.x/ScalaJson
 object JsonWrite04ImplicitWriters extends App {
@@ -32,14 +29,6 @@ object JsonWrite04ImplicitWriters extends App {
     )
   }
 
-  val place = Place(
-    "Watership Down",
-    Location(51.235685, -1.309197),
-    Seq(
-      Resident("Fiver", 4, None),
-      Resident("Bigwig", 6, Some("Owsla"))
-    )
-  )
   val json: JsValue = Json.toJson(place)
   println(json)
 

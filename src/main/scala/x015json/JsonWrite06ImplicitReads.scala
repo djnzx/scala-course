@@ -3,9 +3,7 @@ package x015json
 import play.api.libs.json.{JsLookupResult, JsPath, JsResult, JsString, JsSuccess, JsValue, Json, Reads, Writes}
 import play.api.libs.functional.syntax._
 
-case class Person1(name: String, age: Int)
-
-object JsonWrite06ImplicitWritersMy extends App {
+object JsonWrite06ImplicitReads extends App {
   implicit val personWriter: Writes[Person1] = (p: Person1) => Json.obj("name" -> p.name, "age" -> p.age)
 
   // default mapping

@@ -4,12 +4,13 @@ import play.api.libs.json.{JsValue, Json}
 
 object JsonWrite03PlainObjectParsed extends App {
 
-  val parsed1: JsValue = Json.parse("""
+  // Object Value creating - by parsing JSON text
+  val j6: JsValue = Json.parse("""
     {
       "name": "Alex",
       "age": 44
     }
     """)
-  println(parsed1)
+  println(j6)
 
 }

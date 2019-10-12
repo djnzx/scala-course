@@ -30,14 +30,6 @@ object JsonWrite05ImplicitWritersV2 extends App {
       (JsPath \ "residents").write[Seq[Resident]]
     )(unlift(Place.unapply))
 
-  val place = Place(
-    "Watership Down",
-    Location(51.235685, -1.309197),
-    Seq(
-      Resident("Fiver", 4, None),
-      Resident("Bigwig", 6, Some("Owsla"))
-    )
-  )
   val json = Json.toJson(place)
   println(json)
 }

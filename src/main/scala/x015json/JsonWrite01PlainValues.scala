@@ -12,5 +12,6 @@ object JsonWrite01PlainValues extends App {
 
   println(j1.getClass)
   println(j1)
+  println(j4)
 
 }
