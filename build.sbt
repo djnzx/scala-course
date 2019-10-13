@@ -14,6 +14,7 @@ resolvers ++= Seq(
 
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
 libraryDependencies ++= Seq(
+  "org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0",
   "org.scala-lang.modules" %% "scala-xml" % "1.2.0",
   "com.typesafe.akka" %% "akka-actor" % "2.5.23",
 

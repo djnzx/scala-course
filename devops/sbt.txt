@@ -5,6 +5,8 @@ brew install scala
 brew upgrade scala
 -> scala 2.12.8
 
+sbt sbtVersion
+
 To use with IntelliJ, set the Scala home to:
   /usr/local/opt/scala/idea
 

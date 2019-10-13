@@ -1,0 +1,2 @@
+https://stackoverflow.com/questions/56542568/missing-import-scala-collection-parallel-in-scala-2-13
+https://www.scala-lang.org/api/2.13.0-M1/scala/concurrent/forkjoin/package$$ForkJoinPool$.html
