@@ -20,7 +20,7 @@ libraryDependencies ++= Seq(
 
   "com.typesafe.slick" %% "slick" % "3.3.2",          // core
   "com.typesafe.slick" %% "slick-hikaricp" % "3.3.2", // connection pool
-  "org.postgresql" % "postgresql" % "42.2.6",         // database driver
+  "org.postgresql" % "postgresql" % "42.2.8",         // database driver
 
   "com.typesafe.play" %% "play-json" % "2.7.4",       // JSON converter
 
