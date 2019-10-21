@@ -25,5 +25,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-json" % "2.7.4",       // JSON converter
 
 //  "com.h2database" % "h2" % "1.4.197",
-  "ch.qos.logback" % "logback-classic" % "1.2.3"
+  "ch.qos.logback" % "logback-classic" % "1.2.3",
+  "com.typesafe" % "config" % "1.4.0"
 )
