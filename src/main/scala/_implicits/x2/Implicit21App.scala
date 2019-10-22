@@ -32,7 +32,6 @@ object Implicit21App extends App {
   implicit val _r_double:  IRead[Double]  = IRead[Double](() => readDouble())
   implicit val _r_int:     IRead[Int]     = IRead[Int](() => readInt())
 
-
   // use Scala power!
   def smart[A: IRead](): A = implicitly[IRead[A]].access()
 

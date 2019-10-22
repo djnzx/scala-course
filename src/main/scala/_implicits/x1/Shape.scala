@@ -49,9 +49,9 @@ object Shape extends App {
   transformer.from(HList("name", 42))
   transformer.to(User("name", 42))
 
-  Compare[Int].compare(1, 1)
-  Compare[String].compare("a", "a")
-  Compare[User].compare(User("name", 42), User("name", 42))
+//  Compare[Int].compare(1, 1)
+//  Compare[String].compare("a", "a")
+//  Compare[User].compare(User("name", 42), User("name", 42))
 
   trait Transform[A, B] {
     def from(v: A): B
