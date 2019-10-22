@@ -8,7 +8,9 @@ version := "0.2.4"
 scalaVersion := "2.13.0"
 
 resolvers ++= Seq(
-//  "Typesafe" at "http://repo.typesafe.com/typesafe/releases/",
+//  Resolver.sonatypeRepo("releases"),
+//  Resolver.sonatypeRepo("snapshots")
+  //  "Typesafe" at "http://repo.typesafe.com/typesafe/releases/",
 //  "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
 )
 
@@ -23,6 +25,7 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "42.2.8",         // database driver
 
   "com.typesafe.play" %% "play-json" % "2.7.4",       // JSON converter
+  "com.chuusai" %% "shapeless" % "2.3.3",
 
 //  "com.h2database" % "h2" % "1.4.197",
   "ch.qos.logback" % "logback-classic" % "1.2.3",
