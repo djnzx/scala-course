@@ -13,5 +13,6 @@ object ImplicitParamsEx extends App {
   // the name of the variable doesn't matter
   implicit val z: Int = 10
 //  implicit val z2: Int = 11 // ambiguous
-  val x3 = multiply1(4) // 40
+  val x3 = multiply1(4)(7) // 28
+  val x4 = multiply1(4) // 40
 }

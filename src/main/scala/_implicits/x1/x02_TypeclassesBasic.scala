@@ -1,11 +1,13 @@
 package _implicits.x1
 
-object TypePattern extends App {
+object x02_TypeclassesBasic extends App {
 
   // just trait
-  trait Squash[T] {
-    def squash_(a: T, b: T): T
+  trait Squash[A] {
+    def squash_(a: A, b: A): A
   }
+  // just for example
+  def selfSquash[A](a: A)(implicit impl: Squash[A]): A = impl.squash_(a, a)
   // concrete implementation for Int
   implicit val squashInt: Squash[Int] = new Squash[Int] {
     override def squash_(a: Int, b: Int): Int = a + b
@@ -15,8 +17,8 @@ object TypePattern extends App {
     override def squash_(a: String, b: String): String = a + b
   }
   // concrete implementation for Option[T]
-  implicit def squashOpt[U](implicit impl: Squash[U]) = new Squash[Option[U]] {
-    override def squash_(a: Option[U], b: Option[U]): Option[U] = for {
+  implicit def squashOpt[A](implicit impl: Squash[A]) = new Squash[Option[A]] {
+    override def squash_(a: Option[A], b: Option[A]): Option[A] = for {
       v1 <- a
       v2 <- b
     } yield impl.squash_(v1, v2)
