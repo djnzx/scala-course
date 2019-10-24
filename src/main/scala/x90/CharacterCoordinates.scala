@@ -2,10 +2,10 @@ package x90
 
 object CharacterCoordinates extends App {
   val origin = "Hello, my dear friend, please keep learning, I'll guarantee you'll reach the moment you understand everything"
-  val outcome = origin.zip(1 to origin.length)
+  val outcome = origin.zip(1 to origin.length) // <H,1>
         .filter(t => Character.isAlphabetic(t._1))
         .map(t => t._1.toLower -> t._2)
-        .groupBy(_._1)
+        .groupBy(_._1) // Map<Char, List<H,1>.....>
         .map((el: (Char, IndexedSeq[(Char, Int)])) => el._1 -> el._2.length -> el._2.map(x => x._2))
         .toList
         .sortBy(el => el._1)
