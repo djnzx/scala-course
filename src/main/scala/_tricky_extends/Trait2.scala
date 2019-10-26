@@ -1,7 +1,4 @@
 package _tricky_extends
 
-trait Trait2 {
-  this: Trait0 =>
-
-
+trait Trait2 { this: Trait0 =>
 }

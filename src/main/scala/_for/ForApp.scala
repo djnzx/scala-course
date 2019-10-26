@@ -1,10 +1,16 @@
 package _for
 
 object ForApp extends App {
-  val x: Seq[String] = for {
-    i <- 1 to 4
-    j <- 1 to 4
-    if j >= i
-  } yield s"<$i:$j>"
-  println(x)
+
+  val range: Seq[Int] = 1 to 4 // Range.Inclusive
+  val range1: Seq[Int] = range.flatMap(x => List(x))
+  val range2: Seq[Int] = for {
+    i <- range
+  } yield i * 2
+
+  println
+  println(range)
+  println(range1)
+  println(range2)
+
 }

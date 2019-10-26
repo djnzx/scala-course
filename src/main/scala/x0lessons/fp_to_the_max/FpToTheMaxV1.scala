@@ -1,6 +1,7 @@
-package x0lessons
+package x0lessons.fp_to_the_max
 
-import scala.util.Try
+import scala.io.StdIn.readLine
+import scala.util.{Random, Try}
 
 /**
   * that code from the video
@@ -18,9 +19,7 @@ import scala.util.Try
   * IDEA: to represent any interaction with world in some manner
   */
 
-import scala.io.StdIn.readLine
-
-object FpToTheMax extends App {
+object FpToTheMaxV1 extends App {
   def parseInt(s: String): Option[Int] = Try(s.toInt).toOption
 
   case class IO[A](core: () => A) { self =>
@@ -34,7 +33,7 @@ object FpToTheMax extends App {
   // interaction representation
   def putStrLn(line: String): IO[Unit] = IO( () => println(line) )
   def getStrLn(): IO[String] = IO( () => readLine() )
-  def nextInt(upper: Int): IO[Int] = IO(() => scala.util.Random.nextInt(upper))
+  def nextInt(upper: Int): IO[Int] = IO(() => Random.nextInt(upper))
   def checkContinue(name: String): IO[Boolean] =
     for {
       _     <- putStrLn(s"Do you want to continue, $name?")
