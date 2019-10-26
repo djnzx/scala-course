@@ -63,4 +63,14 @@ object My4FlatMapAbleApp extends App {
   } yield item1 -> item2 // this is always a List because of a lot of results
   println(outcome3)
 
+  // nested loop
+  val r3: Seq[(Int, Int)] = for {
+    i <- 1 to 2
+    j <- 3 to 4
+  } yield i -> j
+
+  val r4: Seq[(Int, Int)] = 1 to 2 flatMap(i => 3 to 4 map(j => i -> j))
+
+  println(r3)
+  println(r4)
 }
