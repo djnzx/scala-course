@@ -1,6 +1,6 @@
 package x0lessons.for_comprehensions
 
-object FlatMapBackground extends App {
+object FlatMap3Background extends App {
   val fruits: Seq[String] = Seq("apple", "banana", "orange")
 
   println(fruits)
