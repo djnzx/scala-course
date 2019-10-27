@@ -1,5 +1,6 @@
 package x0lessons.splat_destruct
 
+// http://www.lorrin.org/blog/2011/10/04/scalas-missing-splat-operator/
 object DestructApp01 extends App {
   // full syntax
   def g1(xs:Int*) = xs.foldLeft[Int](0)((a: Int, b: Int) => a + b)
@@ -27,8 +28,30 @@ object DestructApp01 extends App {
   val result2: Double = f(arg._1, arg._2)
   println(result2)
 
-  // call way 3. by automatic unpacking
-  val result3: Double = f _ tupled arg
+  // call way 3. by unpacking tuple
+  val (p1, p2) = arg
+  val result3: Double = f(p1, p2)
   println(result3)
+
+  // call way 4. by automatic unpacking
+  val result4: Double = f _ tupled arg
+  println(result4)
+
+  val argsq: Seq[AnyVal] = Seq(2, 3.5)
+
+  import shapeless._
+  import HList._
+  import syntax.std.traversable._
+
+  val x: Seq[AnyVal] = List(1, 2, 3)
+  val y: Option[Int :: Double :: HNil] = x.toHList[Int::Double::HNil]
+  // actually unsafe operation
+  val z: (Int, Double) = y
+    .get    // unpack option to HList
+    .tupled // convert HList to tuple
+
+  // seq to list
+  val result5: Double = f _ tupled z
+  println(result5)
 
 }

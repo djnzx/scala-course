@@ -1,7 +1,6 @@
 package x0lessons.splat_destruct
 
 // https://alvinalexander.com/bookmarks/scala/scalas-missing-splat-operator
-// http://www.lorrin.org/blog/2011/10/04/scalas-missing-splat-operator/
 // splat - mean destructuriation
 object SplatApp01 extends App {
 
