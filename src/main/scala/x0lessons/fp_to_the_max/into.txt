@@ -1,0 +1,13 @@
+that code from the video 
+https://www.youtube.com/watch?v=sxudIMiOo68
+
+problems:
+- partial functions
+- exceptions 
+- variable scope ! 
+
+1. total. for every input we always have an output 
+2. deterministic. for the same input the same output 
+3. pure. there is no effect allowed inside the functions 
+
+IDEA: to represent any interaction with world in some manner
