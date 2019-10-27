@@ -1,16 +1,23 @@
-package x0lessons.fp_to_the_max
+package x0lessons.fp_to_the_max.v2
 
 import scala.language.higherKinds
 
 object FpToTheMaxV2 extends App {
 
-  case class TestData(input: List[String], output: List[String], nums: List[Int])
+  case class TestData(input: List[String], output: List[String], nums: List[Int]) {
+    def putStrLn(line: String): (TestData, Unit) = (copy(output = line :: output), ())
+    def getStrLn: (TestData, String) = (copy(input = input.drop(1)), input.head)
+    def nextInt(upper: Int): (TestData, Int) = (copy(nums = nums.drop(1)), nums.head)
+    def showResults = output.reverse.mkString("\n")
+  }
 
   case class TestIO[A](run: TestData => (TestData, A)) { self =>
     def map[B](fab: A => B): TestIO[B] =
       TestIO(t => self.run(t) match { case (t, a) => (t, fab(a)) })
     def flatMap[B](afb: A => TestIO[B]): TestIO[B] =
       TestIO(t => self.run(t) match { case (t, a) => afb(a).run(t) })
+
+    def eval(t: TestData): TestData = run(t)._1
   }
   object TestIO {
     def point[A](a: => A): TestIO[A] = TestIO(t => (t, a))
@@ -23,13 +30,13 @@ object FpToTheMaxV2 extends App {
 
     // mock
     implicit val ConsoleTestIO: Console[TestIO] = new Console[TestIO] {
-      override def putStrLn(line: String): TestIO[Unit] = ???
-      override def getStrLn(): TestIO[String] = ???
+      override def putStrLn(line: String): TestIO[Unit] = TestIO(t => t.putStrLn(line))
+      override def getStrLn(): TestIO[String] = TestIO(t => t.getStrLn)
     }
 
     // mock
     implicit val RandomTestIO: Random[TestIO] = new Random[TestIO] {
-      override def nextInt(upper:  Int): TestIO[Int] = ???
+      override def nextInt(upper:  Int): TestIO[Int] = TestIO(t => t.nextInt(upper))
     }
   }
 
@@ -44,17 +51,21 @@ object FpToTheMaxV2 extends App {
                }
     } yield cont
 
+  def printResults[F[_]: Console](input: String, num: Int, name: String): F[Unit] =
+    parseInt(input).fold(
+      putStrLn("You didn't enter a number")
+    )(response =>
+      if (response == num) putStrLn(s"You guessed right, $name!")
+      else putStrLn(s"You guessed wrong, $name, the number was:$num")
+    )
+
+
   def gameLoop[F[_]: Program: Random: Console](name: String): F[Unit] =
     for {
       num   <- nextInt(5).map(_ + 1)
-      _     <- putStrLn(s"Dear, $name, gueass a number 1..5:")
+      _     <- putStrLn(s"Dear, $name, guess a number 1..5:")
       input <- getStrLn()
-      _     <- parseInt(input).fold(
-                 putStrLn("You didn't enter a number")
-               )(guess =>
-                 if (guess == num) putStrLn(s"You guessed right, $name!")
-                 else putStrLn(s"You guessed wrong, $name, the number was:$num")
-               )
+      _     <- printResults(input, num, name)
       cont  <- checkContinue(name)
       _     <- if (cont) gameLoop(name) else finish(())
 
@@ -68,7 +79,27 @@ object FpToTheMaxV2 extends App {
       _    <- gameLoop(name)
     } yield ()
 
-  def mainIO = main[IO].core()
+  def mainIO: IO[Unit] = main[IO]
 
-  def mainTestIO = main[TestIO]
+  def mainTestIO: TestIO[Unit] = main[TestIO]
+
+  var testDataset = TestData(
+    input = "Alex" :: "1" :: "n" :: Nil,
+    output = Nil,
+    nums = 0 :: Nil
+  )
+
+  def runTest: String = mainTestIO.eval(testDataset).showResults
+  /*
+      What is your name?
+    Alex
+      Hello, Alex, welcome!
+      Dear, Alex, guess a number 1..5:
+    1
+      You guessed right, Alex!
+      Do you want to continue, Alex?
+    n
+   */
+//  mainIO.core()
+  println(runTest)
 }

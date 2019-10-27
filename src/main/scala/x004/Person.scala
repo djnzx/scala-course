@@ -7,8 +7,8 @@ class Person (var firstName: String, var lastName: String) {
   var age = 0
 
   override def toString: String = s"$firstName $lastName is $age years old"
-  def printHome { println(HOME) }
-  def printFullName { println(this) }
+  def printHome: Unit = println(HOME)
+  def printFullName: Unit = println(this)
 //  override def lastName_$eq(name: String) { this.lastName = name }
 
   printHome

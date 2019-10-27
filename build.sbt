@@ -1,11 +1,13 @@
 name := "learn-scala-cook-book-aa"
 
 scalacOptions ++= Seq(
-  "-language:postfixOps"
-//  , "-language:unchecked"
+  "-language:postfixOps",
+  "-feature",
+  "-deprecation",
+  "-unchecked",
 )
-version := "0.2.4"
-scalaVersion := "2.13.0"
+version := "0.2.5"
+scalaVersion := "2.13.1"
 
 resolvers ++= Seq(
 //  Resolver.sonatypeRepo("releases"),

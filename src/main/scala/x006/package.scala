@@ -2,7 +2,7 @@ package object x006 {
 
   val MAGIC = 42
 
-  def echo(a: Any) { println(a) }
+  def echo(a: Any): Unit = println(a)
 
   // https://www.scala-lang.org/api/current/scala/Enumeration.html
   object Margin extends Enumeration {

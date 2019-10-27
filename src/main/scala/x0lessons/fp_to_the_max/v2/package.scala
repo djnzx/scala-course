@@ -1,10 +1,8 @@
-package x0lessons
+package x0lessons.fp_to_the_max
 
-import scala.language.higherKinds
 import scala.util.Try
 
-package object fp_to_the_max {
-
+package object v2 {
   def parseInt(s: String): Option[Int] = Try(s.toInt).toOption
 
   trait Program[F[_]] {
@@ -43,10 +41,11 @@ package object fp_to_the_max {
   object Random {
     def apply[F[_]](implicit F: Random[F]): Random[F] = F
   }
+
   def nextInt[F[_]](upper: Int)(implicit F: Random[F]): F[Int] = Random[F].nextInt(upper)
 
-
   def putStrLn[F[_]: Console](line: String): F[Unit] = Console[F].putStrLn(line)
+
   def getStrLn[F[_]: Console](): F[String] = Console[F].getStrLn()
 
   object IO {
@@ -69,5 +68,4 @@ package object fp_to_the_max {
       override def nextInt(upper:  Int): IO[Int] = IO(() => scala.util.Random.nextInt(upper))
     }
   }
-
 }

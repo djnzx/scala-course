@@ -3,7 +3,7 @@ package x006
 object Visibility extends App {
 
   class Printer {
-    def print = println(Printer.value)
+    def print: Unit = println(Printer.value)
   }
 
   object Printer {
@@ -12,8 +12,10 @@ object Visibility extends App {
 
   val p = new Printer
   p.print
-  echo(MAGIC)
-  Margin.Bottom
+
+  echo(MAGIC) // package object
+
+  val mar: Margin.Value = Margin.Bottom
 
   println(Planet.values.filter(_.radius > 7.0e6))
 

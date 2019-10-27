@@ -1,9 +1,10 @@
-package x0lessons.fp_to_the_max
+package x0lessons.fp_to_the_max.v1
 
 import scala.io.StdIn.readLine
-import scala.util.Random
+import scala.util.{Random, Try}
 
 object FpToTheMaxV1 extends App {
+  def parseInt(s: String): Option[Int] = Try(s.toInt).toOption
   // interaction representation
   def putStrLn(line: String): IO[Unit] = IO( () => println(line) )
   def getStrLn(): IO[String] = IO( () => readLine() )
@@ -23,9 +24,9 @@ object FpToTheMaxV1 extends App {
   def gameLoop(name: String): IO[Unit] =
     for {
       num   <- nextInt(5).map(_ + 1)
-      _     <- putStrLn(s"Dear, $name, gueass a number 1..5:")
+      _     <- putStrLn(s"Dear, $name, guess a number 1..5:")
       input <- getStrLn()
-      _     <- parseInt(input).fold(
+      _     <- parseInt(input).fold[IO[Unit]](
                  // empty case
                  putStrLn("You didn't enter a number")
                )(guess =>
@@ -38,7 +39,7 @@ object FpToTheMaxV1 extends App {
 
     } yield ()
 
-  def main =
+  def main: IO[Unit] =
     for {
       _    <- putStrLn("What is your name?")
       name <- getStrLn()

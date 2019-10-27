@@ -6,7 +6,7 @@ object Exceptions extends App {
 
   class Ex {
     @throws(classOf[IOException]) // only for Java interop
-    def play {}
+    def play: Unit = {}
   }
 
 }
