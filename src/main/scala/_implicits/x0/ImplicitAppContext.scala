@@ -3,6 +3,7 @@ package _implicits.x0
 import com.typesafe.config.{Config, ConfigFactory}
 
 object ImplicitAppContext extends App {
+
   implicit class SmartConfig(config: Config) {
     def as1[A : XReader](path: String): Either[Throwable, A] = implicitly[XReader[A]].read(config, path)
     def as2[A](path: String)(implicit reader: XReader[A]): XReader.Result[A] = reader.read(config, path)

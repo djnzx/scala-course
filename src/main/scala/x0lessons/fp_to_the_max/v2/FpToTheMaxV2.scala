@@ -2,13 +2,66 @@ package x0lessons.fp_to_the_max.v2
 
 import scala.language.higherKinds
 
-object FpToTheMaxV2 extends App {
+class FpToTheMaxV2 {
 
-  case class TestData(input: List[String], output: List[String], nums: List[Int]) {
-    def putStrLn(line: String): (TestData, Unit) = (copy(output = line :: output), ())
-    def getStrLn: (TestData, String) = (copy(input = input.drop(1)), input.head)
-    def nextInt(upper: Int): (TestData, Int) = (copy(nums = nums.drop(1)), nums.head)
-    def showResults = output.reverse.mkString("\n")
+  def parseInt_(s: String): Option[Int] = scala.util.Try(s.toInt).toOption
+
+  trait Program[F[_]] {
+    def finish[A](a: => A): F[A]
+    def chain[A, B](fa: F[A], afb: A => F[B]): F[B]
+    def map[A, B](fa: F[A], ab: A => B): F[B]
+  }
+
+  //  object Program {
+  //    def apply[F[_]](implicit fp: Program[F]): Program[F] = fp
+  //  }
+
+  trait Console[F[_]] {
+    // maybe it would be better if we allow the only certain message to be printed
+    def putStrLn(line: String): F[Unit]
+    def getStrLn(): F[String]
+  }
+
+  object Console {
+    def apply[F[_]](implicit instance: Console[F]): Console[F] = instance
+  }
+
+  trait Random[F[_]] {
+    def nextInt(upper: Int): F[Int]
+  }
+
+  object Random {
+    def apply[F[_]](implicit instance: Random[F]): Random[F] = instance
+  }
+
+  // ability to use map / flatMap
+  implicit class ProgramSyntax[F[_], A](fa: F[A]) {
+    def map[B](f: A => B)(implicit fp: Program[F]): F[B] = fp.map(fa, f)
+    def flatMap[B](afb: A => F[B])(implicit fp: Program[F]): F[B] = fp.chain(fa, afb)
+  }
+
+  case class IO[A](core: () => A) { self =>
+    def map[B](f: A => B): IO[B] = IO(() => f(self.core()))
+    def flatMap[B](f: A => IO[B]): IO[B] = IO(() => f(self.core()).core())
+  }
+
+  object IO {
+    def point[A](a: => A): IO[A] = IO( () => a)
+
+    implicit val ProgramIO: Program[IO] = new Program[IO] {
+      override def finish[A](a: => A): IO[A] = IO.point(a)
+      override def chain[A, B](fa: IO[A], afb: A => IO[B]): IO[B] = fa.flatMap(afb)
+      override def map[A, B](fa: IO[A], ab: A => B): IO[B] = fa.map(ab)
+    }
+
+    implicit val ConsoleIO: Console[IO] = new Console[IO] {
+      override def putStrLn(line: String): IO[Unit] = IO( () => println(line) )
+      override def getStrLn(): IO[String] = IO( () => scala.io.StdIn.readLine() )
+    }
+
+    implicit val RandomIO: Random[IO] = new Random[IO] {
+      override def nextInt(upper:  Int): IO[Int] = IO(() => scala.util.Random.nextInt(upper))
+    }
   }
 
   case class TestIO[A](run: TestData => (TestData, A)) { self =>
@@ -19,6 +72,7 @@ object FpToTheMaxV2 extends App {
 
     def eval(t: TestData): TestData = run(t)._1
   }
+
   object TestIO {
     def point[A](a: => A): TestIO[A] = TestIO(t => (t, a))
 
@@ -40,6 +94,14 @@ object FpToTheMaxV2 extends App {
     }
   }
 
+  def finish[F[_], A](a: => A)(implicit fp: Program[F]): F[A] = fp.finish(a)
+
+  def nextInt[F[_]](upper: Int)(implicit F: Random[F]): F[Int] = Random[F].nextInt(upper)
+
+  def putStrLn[F[_]: Console](line: String): F[Unit] = Console[F].putStrLn(line)
+
+  def getStrLn[F[_]: Console](): F[String] = Console[F].getStrLn()
+
   def checkContinue[F[_]: Program: Console](name: String): F[Boolean] =
     for {
       _     <- putStrLn(s"Do you want to continue, $name?")
@@ -52,13 +114,12 @@ object FpToTheMaxV2 extends App {
     } yield cont
 
   def printResults[F[_]: Console](input: String, num: Int, name: String): F[Unit] =
-    parseInt(input).fold(
+    parseInt_(input).fold(
       putStrLn("You didn't enter a number")
     )(response =>
       if (response == num) putStrLn(s"You guessed right, $name!")
       else putStrLn(s"You guessed wrong, $name, the number was:$num")
     )
-
 
   def gameLoop[F[_]: Program: Random: Console](name: String): F[Unit] =
     for {
@@ -83,6 +144,13 @@ object FpToTheMaxV2 extends App {
 
   def mainTestIO: TestIO[Unit] = main[TestIO]
 
+  case class TestData(input: List[String], output: List[String], nums: List[Int]) {
+    def putStrLn(line: String): (TestData, Unit) = (copy(output = line :: output), ())
+    def getStrLn: (TestData, String) = (copy(input = input.drop(1)), input.head)
+    def nextInt(upper: Int): (TestData, Int) = (copy(nums = nums.drop(1)), nums.head)
+    def showResults = output.reverse.mkString("\n")
+  }
+
   var testDataset = TestData(
     input = "Alex" :: "1" :: "n" :: Nil,
     output = Nil,
@@ -90,16 +158,5 @@ object FpToTheMaxV2 extends App {
   )
 
   def runTest: String = mainTestIO.eval(testDataset).showResults
-  /*
-      What is your name?
-    Alex
-      Hello, Alex, welcome!
-      Dear, Alex, guess a number 1..5:
-    1
-      You guessed right, Alex!
-      Do you want to continue, Alex?
-    n
-   */
-//  mainIO.core()
-  println(runTest)
+
 }

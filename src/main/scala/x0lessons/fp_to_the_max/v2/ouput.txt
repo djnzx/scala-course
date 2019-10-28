@@ -1,0 +1,8 @@
+  What is your name?
+Alex
+  Hello, Alex, welcome!
+  Dear, Alex, guess a number 1..5:
+1
+  You guessed right, Alex!
+  Do you want to continue, Alex?
+n
