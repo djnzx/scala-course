@@ -1,0 +1,22 @@
+https://www.youtube.com/watch?v=-KA3BSdqYug
+https://www.youtube.com/watch?v=m5nas4Hndqo
+https://www.youtube.com/watch?v=TqJg4AuxEIQ
+https://www.youtube.com/watch?v=08eSR0vn4Vw
+https://www.youtube.com/watch?v=auaT2Ft65Qo
+
+== 2012.03 Tutorial: Typeclasses in Scala with Dan Rosen ==
+https://www.youtube.com/watch?v=sVMES4RZF-8
+== 2018.01 Scala Back to Basics: Type Classes byTomer Gabel ==
+https://www.youtube.com/watch?v=SsOhrYuCuns
+
+
+
+
+== 2018.07 John De Goes - FP to the Max ==
+https://www.youtube.com/watch?v=sxudIMiOo68
+
+https://kubuszok.com/compiled/kinds-of-types-in-scala/
+https://twitter.github.io/scala_school/
+https://twitter.github.io/scala_school/ru/advanced-types.html
+https://typelevel.org/blog/2016/08/21/hkts-moving-forward.html
+https://www.manning.com/books/functional-programming-in-scala
