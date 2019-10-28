@@ -12,9 +12,9 @@ object Hkt1 extends App {
     def map[A,B](fa: F[A])(f: A => B): F[B]
   }
 
-  new WithMap[List[Int]] {
-    override def map[A, B](fa: List[A])(f: A => B): List[B] = ???
-  }
+//  new WithMap[List[Int]] {
+//    override def map[A, B](fa: List[A])(f: A => B): List[B] = ???
+//  }
 
 
 

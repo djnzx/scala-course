@@ -96,10 +96,15 @@ class FpToTheMaxV2 {
 
   def finish[F[_], A](a: => A)(implicit fp: Program[F]): F[A] = fp.finish(a)
 
+  // the responsibility is to pick appropriate implementation from implicits
   def nextInt[F[_]](upper: Int)(implicit F: Random[F]): F[Int] = Random[F].nextInt(upper)
+  // or
+  def nextInt2[F[_]: Random](upper: Int): F[Int] = Random[F].nextInt(upper)
 
+  // the responsibility is to pick appropriate implementation from implicits
   def putStrLn[F[_]: Console](line: String): F[Unit] = Console[F].putStrLn(line)
 
+  // the responsibility is to pick appropriate implementation from implicits
   def getStrLn[F[_]: Console](): F[String] = Console[F].getStrLn()
 
   def checkContinue[F[_]: Program: Console](name: String): F[Boolean] =
