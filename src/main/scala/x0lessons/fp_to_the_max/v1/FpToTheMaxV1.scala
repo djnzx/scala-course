@@ -4,6 +4,18 @@ import scala.io.StdIn.readLine
 import scala.util.{Random, Try}
 
 object FpToTheMaxV1 extends App {
+
+  // (a: => A) - lazyness
+  // https://stackoverflow.com/questions/4543228/whats-the-difference-between-and-unit
+  case class IO[A](core: () => A) { self =>
+    def map[B](f: A => B): IO[B] = IO(() => f(self.core()))
+    def flatMap[B](f: A => IO[B]): IO[B] = IO(() => f(self.core()).core())
+  }
+
+  object IO {
+    def of[A](a: => A): IO[A] = IO(() => a)
+  }
+
   def parseInt(s: String): Option[Int] = Try(s.toInt).toOption
   // interaction representation
   def putStrLn(line: String): IO[Unit] = IO( () => println(line) )
@@ -15,8 +27,8 @@ object FpToTheMaxV1 extends App {
       _     <- putStrLn(s"Do you want to continue, $name?")
       input <- getStrLn().map(_.toLowerCase())
       cont  <- input match {
-                  case "y" => IO.point(true)
-                  case "n" => IO.point(false)
+                  case "y" => IO.of(true)
+                  case "n" => IO.of(false)
                   case _   => checkContinue(name)
                }
     } yield cont
@@ -35,7 +47,7 @@ object FpToTheMaxV1 extends App {
                  else putStrLn(s"You guessed wrong, $name, the number was:$num")
                )
       cont  <- checkContinue(name)
-      _     <- if (cont) gameLoop(name) else IO.point(())
+      _     <- if (cont) gameLoop(name) else IO.of(())
 
     } yield ()
 
