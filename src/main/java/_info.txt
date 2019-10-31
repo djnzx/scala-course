@@ -1,3 +1,2 @@
 Here you can put your Java code !
 and Java files can be located beside Scala files !
-

@@ -20,3 +20,4 @@ https://twitter.github.io/scala_school/
 https://twitter.github.io/scala_school/ru/advanced-types.html
 https://typelevel.org/blog/2016/08/21/hkts-moving-forward.html
 https://www.manning.com/books/functional-programming-in-scala
+https://stackoverflow.com/questions/12334936/why-does-scala-need-parameterless-in-addition-to-zero-parameter-methods
