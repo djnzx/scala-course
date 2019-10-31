@@ -1,3 +1,5 @@
+import scala.language.implicitConversions
+
 package object x006 {
 
   val MAGIC = 42
