@@ -5,6 +5,8 @@ scalacOptions ++= Seq(
   "-feature",
   "-deprecation",
   "-unchecked",
+//  "-Xfatal-warnings",
+//  "-Ypartial-unification",
 )
 version := "0.2.5"
 scalaVersion := "2.13.1"
@@ -31,5 +33,8 @@ libraryDependencies ++= Seq(
 
 //  "com.h2database" % "h2" % "1.4.197",
   "ch.qos.logback" % "logback-classic" % "1.2.3",
-  "com.typesafe" % "config" % "1.4.0"
+  "com.typesafe" % "config" % "1.4.0",
+
+  "org.typelevel" %% "cats-core" % "2.0.0",
+  "org.scalatest" %% "scalatest" % "3.0.8",
 )

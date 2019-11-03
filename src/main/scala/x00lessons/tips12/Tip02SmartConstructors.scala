@@ -19,5 +19,8 @@ object Tip02SmartConstructors extends App {
   val e2: Option[Email] = Email.fromString("ab@i.ua")
   println(e2) // Some
 
+//  Email("") no way to do that
+//  new Email("") no way to do that
+
 
 }

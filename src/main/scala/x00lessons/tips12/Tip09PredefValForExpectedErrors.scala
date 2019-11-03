@@ -2,9 +2,9 @@ package x00lessons.tips12
 
 class Tip09PredefValForExpectedErrors {
   // don't write partial function!
-  def parseInt(s: String): Int = ???
+  def parseInt_bad(s: String): Int = ???
   // use poser of compiler
-  def parseInt(s: String): Option[Int] = ???
+  def parseInt_good(s: String): Option[Int] = ???
 
   /**
     * Option: Some / None    - no explanation
