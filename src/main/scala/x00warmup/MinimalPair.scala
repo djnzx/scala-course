@@ -3,14 +3,14 @@ package x00warmup
 import scala.util.Random
 
 object MinimalPair extends App {
-  val range = 1 to 30
-  val rnd30 = range map(_ => Random.nextInt(20))
+  val range = 1 to 30                                                          // range declaration
+  val random30 = range map(_ => Random.nextInt(20))                            // random sequence declaration
+  val mapper = (idx: Int) => idx-> (random30(idx) + random30(idx+1))           // function declaration
+  val ord: Ordering[(Int, Int)] = (x: (Int, Int),y: (Int, Int)) => x._2 - y._2 // ordering declaration
 
-  val (idx, sum) =
-    (0 until range.length-1 map (x=>(x, rnd30(x) + rnd30(x+1))))
-    .min((x: (Int, Int), y: (Int, Int)) => x._2 - y._2)
+  val (idx, sum) = (0 until range.length-1 map mapper).min(ord)
 
-  println(rnd30)
+  println(random30)
   println(s"left  index $idx")
   println(s"right index ${idx+1}")
   println(s"the sum: $sum")

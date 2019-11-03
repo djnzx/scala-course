@@ -24,10 +24,9 @@ https://www.youtube.com/watch?v=g_jP47HFpWA
 https://www.youtube.com/watch?v=d6WWmia0BPM
 == 2019.07 Functional Concurrency in Scala with ZIO - Itamar Ravid
 https://www.youtube.com/watch?v=m5nas4Hndqo
-== John De Goes - 12 Steps To Better Scala (Part I)
-https://www.youtube.com/watch?v=71yhnTGw0hY
 
 https://www.youtube.com/watch?v=TqJg4AuxEIQ
+
 https://www.youtube.com/watch?v=auaT2Ft65Qo
 
 == 2012.03 Tutorial: Typeclasses in Scala with Dan Rosen ==
@@ -35,11 +34,15 @@ https://www.youtube.com/watch?v=sVMES4RZF-8
 == 2018.01 Scala Back to Basics: Type Classes byTomer Gabel ==
 https://www.youtube.com/watch?v=SsOhrYuCuns
 
-
-
-
+------------------------------------------------------------
 == 2018.07 John De Goes - FP to the Max ==
 https://www.youtube.com/watch?v=sxudIMiOo68
+== John De Goes - 12 Steps To Better Scala (Part I)
+https://www.youtube.com/watch?v=71yhnTGw0hY
+
+
+
+
 
 https://kubuszok.com/compiled/kinds-of-types-in-scala/
 https://twitter.github.io/scala_school/
