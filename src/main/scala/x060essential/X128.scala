@@ -1,38 +1,51 @@
 package x060essential
 
+import scala.annotation.tailrec
+
 /**
   * structural recursion
   */
 object X128 extends App {
   sealed trait IntList {
-    def abstraction(end: Int, func: (Int, Int) => Int): Int = this match {
+    def abst_non_tr(end: Int, func: (Int, Int) => Int): Int = this match {
       case End => end
-      case Pair(hd, tl) => func(hd, tl.abstraction(end, func))
+      case Pair(hd, tl) => func(hd, tl.abst_non_tr(end, func))
+    }
+
+    @tailrec
+    final def abst_tl(acc: Int, func: (Int, Int) => Int): Int = this match {
+      case End => acc
+      case Pair(hd, tl) => tl.abst_tl(func(acc, hd), func)
     }
 
     // was
-    def length: Int = this match {
+    def length1: Int = this match {
       case End => 0
-      case Pair(_, tail) => 1 + tail.length
+      case Pair(_, tail) => 1 + tail.length1
     }
-    // now
-    def length2: Int = abstraction(0, (_, b) => b + 1)
+    // now non-TR
+    def length2: Int = abst_non_tr(0, (_, b) => b + 1)
+    // now TR
+    def length3: Int = abst_tl(0, (a, _) => a + 1)
 
     // was
-    def sum: Int = this match {
+    def sum1: Int = this match {
       case End => 0
-      case Pair(hd, tl) => hd + tl.sum
+      case Pair(hd, tl) => hd + tl.sum1
     }
-    // now
-    def sum2: Int = abstraction(0, _ + _ )
-
+    // now non-TR
+    def sum2: Int = abst_non_tr(0, _ + _ )
+    // now TR
+    def sum3: Int = abst_tl(0, _ + _)
     // was
-    def product: Int = this match {
+    def product1: Int = this match {
       case End => 1
-      case Pair(head, tail) => head * tail.product
+      case Pair(head, tail) => head * tail.product1
     }
-    // now
-    def product2: Int = abstraction(1, _ * _ )
+    // now non-TR
+    def product2: Int = abst_non_tr(1, _ * _ )
+    // now TR
+    def product3: Int = abst_tl(1, _ * _ )
 
     def double: IntList = this match {
       case End => End
@@ -46,12 +59,15 @@ object X128 extends App {
     def apply(n: Int): Int = n + 1
   }
 
-  println(add1(10))
-  val example = Pair(1, Pair(2, Pair(3, Pair(4, End))))
-  assert(example.sum == 10)
-  assert(example.sum2 == 10)
-  assert(example.product == 24)
-  assert(example.product2 == 24)
-  assert(example.length == 4)
+//  println(add1(10))
+  val example = Pair(2, Pair(2, Pair(3, Pair(5, End))))
+  assert(example.sum1 == 12)
+  assert(example.sum2 == 12)
+  assert(example.sum3 == 12)
+  assert(example.product1 == 60)
+  assert(example.product2 == 60)
+  assert(example.product3 == 60)
+  assert(example.length1 == 4)
   assert(example.length2 == 4)
+  assert(example.length3 == 4)
 }
