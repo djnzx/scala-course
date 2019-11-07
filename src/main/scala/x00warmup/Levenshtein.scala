@@ -1,6 +1,9 @@
 package x00warmup
 
-// https://en.wikipedia.org/wiki/Levenshtein_distance
+/**
+  * https://oldfashionedsoftware.com/category/scala/
+  * https://en.wikipedia.org/wiki/Levenshtein_distance
+  */
 object Levenshtein extends App {
   def distance(src:String, dst:String, debug: Boolean = false): Int = {
     def min3(i1: Int, i2: Int, i3: Int): Int = scala.math.min(i1, scala.math.min(i2, i3))
