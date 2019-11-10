@@ -10,6 +10,14 @@ object X139 extends App {
       case XLeft(l) => fa(l)
       case XRight(r) => fb(r)
     }
+    def map[C](fn: B => C): XEither[A, C] = this match {
+      case XLeft(l) => XLeft(l)
+      case XRight(r) => XRight(fn(r))
+    }
+    def flatMap[C](fn: B => XEither[A, C]): XEither[A, C] = this match {
+      case XLeft(l) => XLeft(l)
+      case XRight(r) => fn(r)
+    }
   }
   case class XLeft[A, B](value: A) extends XEither[A, B]
   case class XRight[A, B](value: B) extends XEither[A, B]
