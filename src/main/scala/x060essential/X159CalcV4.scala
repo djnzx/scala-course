@@ -38,6 +38,7 @@ object X159CalcV4 extends App {
     }
   }
   final case class Number(value: Double) extends Expression
+  final case class NumberOpt(value: Option[Double]) extends Expression
   final case class Addition(left: Expression, right: Expression) extends Expression
   final case class Subtraction(left: Expression, right: Expression) extends Expression
   final case class Multiplication(left: Expression, right: Expression) extends Expression
