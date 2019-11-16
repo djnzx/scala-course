@@ -8,7 +8,8 @@ object MinimalPair extends App {
   val mapper = (idx: Int) => idx-> (random30(idx) + random30(idx+1))           // function declaration
   val ord: Ordering[(Int, Int)] = (x: (Int, Int),y: (Int, Int)) => x._2 - y._2 // ordering declaration
 
-  val (idx, sum) = (0 until range.length-1 map mapper).min(ord)
+  val result: (Int, Int) = (0 until range.length-1 map mapper).min(ord)
+  val (idx, sum) = result
 
   println(random30)
   println(s"left  index $idx")

@@ -20,7 +20,8 @@ object X191Calc extends App {
 
   // MONAD! responsible for whole process
   def calc(n1: String, n2: String, op: String) = for {
-    o1 <- Seq(11,12,13,14,15)//parse(n1)
+//    o1 <- Seq(11,12,13,14,15)//parse(n1)
+    o1 <- parse(n1)
     o2 <- parse(n2)
     res <- do_op(o1, o2, op)
   } yield res
@@ -48,5 +49,5 @@ object X191Calc extends App {
     ("1","0","/"), // 6th list
   )
   dataset.foreach(t => println(calc_v2(t._1, t._2, t._3) formatted))
-  dataset.foreach(t => println(calc(t._1, t._2, t._3)))
+//  dataset.foreach(t => println(calc(t._1, t._2, t._3)))
 }
