@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class X210 {
   static class MapEntry<K,V> {
@@ -48,6 +49,26 @@ public class X210 {
     return total;
   }
 
+  private <T> List<String> process2(Map<String, List<String>> assoc_subj_verb, Map<String, List<String>> assoc_verb_obj) {
+    return assoc_subj_verb.entrySet().stream()        // Stream<String, List<String>> === Stream<Subj, List<Verb>>
+        .flatMap(s_v ->                                // s_v.getKey() -> '1 Subj', sv.getValue() -> List<Verb>
+            s_v.getValue().stream()                   // Stream<String> === Stream<Verb>
+                .flatMap(verb ->                       // '1 Verb'
+                    assoc_verb_obj.get(verb).stream() // Stream<String> === Stream<Obj>
+                        .map(obj ->                   // '1 Obj'
+                            combine(s_v.getKey(), verb, obj))
+                )
+        ).collect(Collectors.toList());
+  }
+
+  private <T> List<String> process3(Map<String, List<String>> assoc_subj_verb, Map<String, List<String>> assoc_verb_obj) {
+    return assoc_subj_verb.entrySet().stream().flatMap(s_v ->
+        s_v.getValue().stream().flatMap(verb ->
+                assoc_verb_obj.get(verb).stream().map(obj ->
+                    combine(s_v.getKey(), verb, obj)))
+        ).collect(Collectors.toList());
+  }
+
   public static void main(String[] args) {
     Map<String, List<String>> assoc_subj_verb = map(
         of("Noel", list("wrote", "chased", "slept on")),
@@ -64,7 +85,7 @@ public class X210 {
     );
 
     X210 app = new X210();
-    List<String> sentences = app.process(assoc_subj_verb, assoc_verb_obj);
+    List<String> sentences = app.process2(assoc_subj_verb, assoc_verb_obj);
     sentences.forEach(System.out::println);
   }
 
