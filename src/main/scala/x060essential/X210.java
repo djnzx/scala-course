@@ -1,5 +1,6 @@
 package x060essential;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -32,22 +33,68 @@ public class X210 {
     return map;
   }
 
-  private static Map<String, List<String>> assoc_subj_verb = map(
-    of("Noel", list("wrote", "chased", "slept on")),
-    of("The cat", list("meowed at", "chased", "slept on")),
-    of("The dog", list("barked at", "chased", "slept on"))
-  );
+  private static <T> String combine(T subj, T verb, T obj) {
+    return String.format("%s %s %s", subj, verb, obj);
+  }
 
-  private static Map<String, List<String>> assoc_verb_obj = map(
-    of("wrote", list("the book", "the letter", "the code")),
-    of("chased", list("the ball", "the dog", "the cat")),
-    of("slept on", list("the bed", "the mat", "the train")),
-    of("meowed at", list("Noel", "the door", "the food cupboard")),
-    of("barked at", list("the postman", "the car", "the cat"))
-  );
+  private <T> List<String> process(Map<T, List<T>> assoc_subj_verb, Map<T, List<T>> assoc_verb_obj) {
+    ArrayList<String> total = new ArrayList<>();
+    assoc_subj_verb.forEach((subj, verbs) ->
+        verbs.forEach(verb ->
+            assoc_verb_obj.get(verb).forEach(obj ->
+                total.add(combine(subj, verb, obj)))
+        )
+    );
+    return total;
+  }
 
   public static void main(String[] args) {
+    Map<String, List<String>> assoc_subj_verb = map(
+        of("Noel", list("wrote", "chased", "slept on")),
+        of("The cat", list("meowed at", "chased", "slept on")),
+        of("The dog", list("barked at", "chased", "slept on"))
+    );
 
+    Map<String, List<String>> assoc_verb_obj = map(
+        of("wrote", list("the book", "the letter", "the code")),
+        of("chased", list("the ball", "the dog", "the cat")),
+        of("slept on", list("the bed", "the mat", "the train")),
+        of("meowed at", list("Noel", "the door", "the food cupboard")),
+        of("barked at", list("the postman", "the car", "the cat"))
+    );
+
+    X210 app = new X210();
+    List<String> sentences = app.process(assoc_subj_verb, assoc_verb_obj);
+    sentences.forEach(System.out::println);
   }
 
 }
+/**
+ Noel wrote the book
+ Noel wrote the letter
+ Noel wrote the code
+ Noel chased the ball
+ Noel chased the dog
+ Noel chased the cat
+ Noel slept on the bed
+ Noel slept on the mat
+ Noel slept on the train
+ The cat meowed at Noel
+ The cat meowed at the door
+ The cat meowed at the food cupboard
+ The cat chased the ball
+ The cat chased the dog
+ The cat chased the cat
+ The cat slept on the bed
+ The cat slept on the mat
+ The cat slept on the train
+ The dog barked at the postman
+ The dog barked at the car
+ The dog barked at the cat
+ The dog chased the ball
+ The dog chased the dog
+ The dog chased the cat
+ The dog slept on the bed
+ The dog slept on the mat
+ The dog slept on the train
+*/
