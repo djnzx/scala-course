@@ -1,6 +1,7 @@
 package x060essential;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class X209 {
   static class MapEntry<K,V> {
@@ -45,13 +46,21 @@ public class X209 {
     return total;
   }
 
+  private <T> List<String> process2(List<T> subjects, List<T> verbs, List<T> objects) {
+    return subjects.stream().flatMap(subj ->
+        verbs.stream().flatMap(verb ->
+            objects.stream().map(obj ->
+                combine(subj, verb, obj))))
+        .collect(Collectors.toList());
+  }
+
   public static void main(String[] args) {
     List<String> subjects = list("Noel", "The cat", "The dog");
     List<String> verbs = list("wrote", "chased", "slept on");
     List<String> objects = list("the book", "the ball", "the bed");
 
     X209 app = new X209();
-    List<String> sentences = app.process(subjects, verbs, objects);
+    List<String> sentences = app.process2(subjects, verbs, objects);
     sentences.forEach(System.out::println);
   }
 
