@@ -49,7 +49,7 @@ public class X210 {
     return total;
   }
 
-  private <T> List<String> process2(Map<String, List<String>> assoc_subj_verb, Map<String, List<String>> assoc_verb_obj) {
+  private List<String> process2(Map<String, List<String>> assoc_subj_verb, Map<String, List<String>> assoc_verb_obj) {
     return assoc_subj_verb.entrySet().stream()        // Stream<String, List<String>> === Stream<Subj, List<Verb>>
         .flatMap(s_v ->                                // s_v.getKey() -> '1 Subj', sv.getValue() -> List<Verb>
             s_v.getValue().stream()                   // Stream<String> === Stream<Verb>
@@ -61,7 +61,7 @@ public class X210 {
         ).collect(Collectors.toList());
   }
 
-  private <T> List<String> process3(Map<String, List<String>> assoc_subj_verb, Map<String, List<String>> assoc_verb_obj) {
+  private List<String> process3(Map<String, List<String>> assoc_subj_verb, Map<String, List<String>> assoc_verb_obj) {
     return assoc_subj_verb.entrySet().stream().flatMap(s_v ->
         s_v.getValue().stream().flatMap(verb ->
                 assoc_verb_obj.get(verb).stream().map(obj ->
@@ -85,7 +85,7 @@ public class X210 {
     );
 
     X210 app = new X210();
-    List<String> sentences = app.process2(assoc_subj_verb, assoc_verb_obj);
+    List<String> sentences = app.process3(assoc_subj_verb, assoc_verb_obj);
     sentences.forEach(System.out::println);
   }
 
