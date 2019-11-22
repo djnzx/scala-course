@@ -23,7 +23,7 @@ object X210Task extends App {
     if v1 == v2                  // make a filtering
   } yield s"$s1 $v1 $o2"
 
-  val total2: immutable.Iterable[String] = for {
+  val total2 = for {
     (s, v_list) <- assoc_subj_verb   // decompose to key, value
     v           <- v_list            // decompose List to Items
     o           <- assoc_verb_obj(v) // get corresponding objects to verbs
