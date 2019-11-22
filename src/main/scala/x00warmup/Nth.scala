@@ -29,8 +29,9 @@ object Nth extends App {
   val from1 = LazyList from 1
   val mth_number_2 = from1
     .filter(n => (n % 3 == 0 ) || (n % 4 == 0)) // filter by rule
-    .zip(from1)
-    .filter(t => t._2 == m) // take n-th element
+    .filter(n => (n % 2 != 0 ))                 // odd only
+    .zip(from1)                                // count
+    .filter(t => t._2 == m)                     // take n-th element
     .head
     ._1
 
