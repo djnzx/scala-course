@@ -1,7 +1,5 @@
 package x060essential
 
-import java.time.LocalDate
-
 object Infix {
   /**
     * Note that a b c d e is equivalent
@@ -21,6 +19,4 @@ object Infix {
 
   new PersonZ("a","b")
   val p = new PersonZ("c")
-
-
 }
