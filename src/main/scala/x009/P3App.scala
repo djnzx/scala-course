@@ -3,7 +3,7 @@ package x009
 object P3App extends App {
   def execute(callback: () => Unit) = {
     println("before")
-    callback // !!! just an expression
+    val cb = callback // !!! just an expression
     println(callback)
     callback()
     println("after")
@@ -28,7 +28,7 @@ object P3App extends App {
   def execute4(f: (String, Int, Double) => Seq[String]) = {
     f("66", 66, 66.6)
   }
-  def execute5(f: Int => Unit) { println(77) }
+  def execute5(f: Int => Unit): Unit = { println(77) }
   def execute6(f: Int => Unit): Int = { 1 }
   def execute7(f: Int => Unit) = {}
 

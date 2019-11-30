@@ -6,6 +6,6 @@ object P03_16MatchExceptions extends App {
   } catch {
     case e: ArithmeticException => println(s"exception: ${e.getClass.getSimpleName}, message: ${e.getMessage}")
     case e: Throwable => println(s"exception: ${e.getClass.getSimpleName}, message: ${e.getMessage}")
-    case _ => println("smth other went wrong ;(")
+    case _: Throwable => println("smth other went wrong ;(")
   }
 }

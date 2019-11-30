@@ -2,9 +2,9 @@ package x060essential
 
 object X195 extends App {
 
-  val z: Seq[Unit] =for (
+  val z: Seq[Int] = for (
     x <- Seq(-3,-2,-1,0,1,2,3)
-    if x>0    // converted to a withFilter, and we don't need a parentheses
+    if x > 0    // converted to a withFilter, and we don't need a parentheses
   ) yield x
   // z = 1,2,3
 

@@ -9,7 +9,7 @@ case object StopMessage
 
 class Ping(pong: ActorRef) extends Actor {
   var count = 0
-  def incAndPrint { count+=1; println(s"ping $count") }
+  def incAndPrint: Unit = { count+=1; println(s"ping $count") }
 
   override def receive: Receive = {
     case StartMessage =>

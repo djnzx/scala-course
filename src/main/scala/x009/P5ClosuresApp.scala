@@ -2,7 +2,7 @@ package x009
 
 object P5ClosuresApp extends App {
   var hello = "Hello"
-  def sayHello(name: String) { println(s"$hello, $name") }
+  def sayHello(name: String): Unit = { println(s"$hello, $name") }
 
   val foo = new x008.Foo
   foo.exec(sayHello, "A1")

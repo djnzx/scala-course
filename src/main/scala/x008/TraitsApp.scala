@@ -5,7 +5,7 @@ object TraitsApp extends App {
     override def play: Unit = ???
     override def stop = "stopping"
     override def pause = println("pausing")
-    override def resume { "resumed" }
+    override def resume: String = { "resumed" }
 
     // for previously undefined fields
     override var amount: Int = 7

@@ -5,10 +5,10 @@ scalacOptions ++= Seq(
   "-feature",
   "-deprecation",
   "-unchecked",
-//  "-Xfatal-warnings",
-//  "-Ypartial-unification",
+//  "-Xfatal-warnings",     // treat warning as fatal. 53 warnings @ Nov 30
+//  "-Ypartial-unification", // removed since 2.13
 )
-version := "0.2.5"
+version := "0.2.6"
 scalaVersion := "2.13.1"
 
 resolvers ++= Seq(

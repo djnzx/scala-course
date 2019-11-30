@@ -5,7 +5,7 @@ object Application extends App {
   p.printFullName
   p.firstName = "AlexR"
   println(p.firstName)
-  p.age
+  val a = p.age
 //  p.lastName_$eq("RYKH")
   p.lastName = "rykh"
   p.printFullName

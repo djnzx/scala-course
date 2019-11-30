@@ -3,7 +3,7 @@ package x00lessons.tips12
 abstract class Tip10DescribeDontDo {
 
   // brake down complexity
-  trait TP { def charge(o: Int) }
+  trait TP { def charge(o: Int): Unit }
   val processor: TP
   def sendEmail(value: Any) = ???
   def genConfirm(i: Int) = ???
