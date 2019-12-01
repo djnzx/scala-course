@@ -17,7 +17,7 @@ import cats.syntax.functor._     // map
 object C0592Functor extends App {
   val func1 = (a: Int) => a + 1
   val func2 = (a: Int) => a * 2
-  val func3 = (a: Int) => a + "!"
+  val func3 = (a: Int) => s"$a!"
   val func4a = func1 map func2 map func3
 
   final case class Box[A](value: A)
