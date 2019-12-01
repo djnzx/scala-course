@@ -1,6 +1,6 @@
 package x71cats
 
-class C035MonoidsSemigroups {
+object C035MonoidsSemigroups {
   /**
     * Integer addi􏰀on: a + b
     * - binary operation: (a, b)
@@ -31,9 +31,10 @@ class C035MonoidsSemigroups {
 
   /** let think about boolean:
     * binary operations are:
-    * - OR  - monoid
-    * - AND - monoid
-    * - XOR - semigroup, because no `zero` element
+    * - OR   - monoid
+    * - AND  - monoid
+    * - XOR  - monoid
+    * - NXOR - monoid
     */
   class BoolOR extends Monoid[Boolean] {
     override def empty: Boolean = false
@@ -55,7 +56,4 @@ class C035MonoidsSemigroups {
     override def empty: Set[A] = Set.empty[A]
     override def combine(x: Set[A], y: Set[A]): Set[A] = x union y
   }
-
-
-
 }

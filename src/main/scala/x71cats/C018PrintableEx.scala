@@ -61,9 +61,4 @@ object C018PrintableEx extends App {
 
   val s6 = barcelona.formatx
   barcelona.printx
-
-
-
-
-
 }
