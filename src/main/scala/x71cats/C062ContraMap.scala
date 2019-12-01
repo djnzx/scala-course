@@ -1,6 +1,6 @@
 package x71cats
 
-object C062Contramap extends App {
+object C062ContraMap extends App {
 
   final case class Box[A](value: A)
 

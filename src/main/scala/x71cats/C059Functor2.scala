@@ -14,7 +14,7 @@ import cats.syntax.functor._     // map
   * after that, compiler can insert .map wherever it can find the implicit
   * declaration for the functor
   */
-object C0592Functor extends App {
+object C059Functor2 extends App {
   val func1 = (a: Int) => a + 1
   val func2 = (a: Int) => a * 2
   val func3 = (a: Int) => s"$a!"
