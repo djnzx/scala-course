@@ -15,13 +15,13 @@ object RecursionWithStateApp extends App {
   def action(line: String, state: CrawlState): CrawlState = {
     if (line == "q") return state
 
-    val line2 = readLine
-    val new_state = Try(line2.toInt) match {
-      case Success(_) => state.addVisited(line2)
-      case Failure(_) => state.logError(line2)
+    val line_new = readLine
+    val state_new = Try(line_new.toInt) match {
+      case Success(_) => state.addVisited(line_new)
+      case Failure(_) => state.logError(line_new)
     }
 
-    action(line2, new_state)
+    action(line_new, state_new)
   }
 
   val state_initial = CrawlState(List.empty[String], List.empty[String])
