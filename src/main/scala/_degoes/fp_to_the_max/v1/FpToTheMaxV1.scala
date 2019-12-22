@@ -1,4 +1,4 @@
-package x00lessons.fp_to_the_max.v1
+package _degoes.fp_to_the_max.v1
 
 import scala.io.StdIn.readLine
 import scala.util.{Random, Try}

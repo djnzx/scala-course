@@ -1,4 +1,4 @@
-package x00lessons.tips12
+package _degoes.tips12
 
 case class Sender[A](origin: A) extends AnyVal
 case class Receiver[A](origin: A) extends AnyVal

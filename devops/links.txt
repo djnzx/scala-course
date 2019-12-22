@@ -1,26 +1,26 @@
-== 2019.03 John A. De Goes at #ScalaUA - Thinking Functionally ==
-https://www.youtube.com/watch?v=-KA3BSdqYug
-== John De Goes - Upgrade Your Future (Scala Russia 28.09.2019)
-https://www.youtube.com/watch?v=USgfku1h7Hw
 == 2016.01 Move Over Free Monads: Make Way for Free Applicatives! — John de Goes
 https://www.youtube.com/watch?v=H28QqxO7Ihc
+== 2017.03 scale.bythebay.io: John A. De Goes, The Design of the Scalaz 8 Effect System
+https://www.youtube.com/watch?v=wi_vLNULh9Y
+== 2018.01 John A. De Goes - QUARK: A PURELY-FUNCTIONAL SCALA DSL FOR DATA PROCESSING & ANALYTICS
+https://www.youtube.com/watch?v=_-GD8VJW8jU
+== 2019.01 John A De Goes - ZIO: Next-Generation Effects in Scala
+https://www.youtube.com/watch?v=mkSHhsJXjdc
 == 2019.03 Live Coding a Concurrent Web Crawler - John Ⓐ De Goes
 https://www.youtube.com/watch?v=08eSR0vn4Vw
 == 2019.03 John De Goes & 7mind.io - Error Management: Future vs ZIO
 https://www.youtube.com/watch?v=mGxcaQs3JWI
-== 2017.03 scale.bythebay.io: John A. De Goes, The Design of the Scalaz 8 Effect System
-https://www.youtube.com/watch?v=wi_vLNULh9Y
-== John A. De Goes - QUARK: A PURELY-FUNCTIONAL SCALA DSL FOR DATA PROCESSING & ANALYTICS
-https://www.youtube.com/watch?v=_-GD8VJW8jU
-== 2019.07 John A De Goes - ZIO: Next-Generation Effects in Scala
-https://www.youtube.com/watch?v=mkSHhsJXjdc
+== 2019.03 John A. De Goes at #ScalaUA - Thinking Functionally ==
+https://www.youtube.com/watch?v=-KA3BSdqYug
+== 2019.09 John De Goes - Upgrade Your Future (Scala Russia 28.09.2019)
+https://www.youtube.com/watch?v=USgfku1h7Hw
 == scalaz 8: A whole new game (John A. De Goes)
 https://www.youtube.com/watch?v=sFGnFKMSmL0
 == John De Goes ZIO talk at Scala Russia 28.09.2019
 https://www.youtube.com/watch?v=4tWztRextMk
 == The Making of an IO - Daniel Spiewak
 https://www.youtube.com/watch?v=g_jP47HFpWA
-== ATOMICALLY { DELETE YOUR ACTORS } - John A De Goes & Wiem Zine Elabadine | Scalar 2019
+== 2019.04 ATOMICALLY { DELETE YOUR ACTORS } - John A De Goes & Wiem Zine Elabadine | Scalar 2019
 https://www.youtube.com/watch?v=d6WWmia0BPM
 == 2019.07 Functional Concurrency in Scala with ZIO - Itamar Ravid
 https://www.youtube.com/watch?v=m5nas4Hndqo

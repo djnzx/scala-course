@@ -1,4 +1,4 @@
-package x00lessons.tips12
+package _degoes.tips12
 
 class Tip09PredefValForExpectedErrors {
   // don't write partial function!

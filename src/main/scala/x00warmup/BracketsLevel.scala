@@ -8,7 +8,7 @@ object BracketsLevel extends App {
     * t._2 - max nesting level
     */
   def level(origin: String): Int =
-    origin.toSeq.foldLeft(0 -> 0)((t, el) => {
+    origin.toSeq.foldLeft((0, 0))((t, el) => {
     val depth = t._1 + (el match {
       case '(' => +1
       case ')' => -1

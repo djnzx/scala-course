@@ -1,4 +1,4 @@
-package x00lessons.hkt
+package _degoes.hkt
 
 object Hkt1 extends App {
 

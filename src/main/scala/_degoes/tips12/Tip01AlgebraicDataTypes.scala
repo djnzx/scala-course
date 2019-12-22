@@ -1,4 +1,4 @@
-package x00lessons.tips12
+package _degoes.tips12
 
 object Tip01AlgebraicDataTypes extends App {
   // Model with Algebraic data types

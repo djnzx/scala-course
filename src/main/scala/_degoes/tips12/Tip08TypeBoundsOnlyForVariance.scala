@@ -1,6 +1,6 @@
-package x00lessons.tips12
+package _degoes.tips12
 
-import x00lessons.tips12.Tip05TypeClasses.NumberLike
+import _degoes.tips12.Tip05TypeClasses.NumberLike
 
 class Tip08TypeBoundsOnlyForVariance {
   // dont use type bounding

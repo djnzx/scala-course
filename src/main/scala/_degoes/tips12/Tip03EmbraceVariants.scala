@@ -1,4 +1,4 @@
-package x00lessons.tips12
+package _degoes.tips12
 
 import x00lessons.variance.VarianceApp2.{Animal, Dog}
 
