@@ -4,28 +4,28 @@ import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 import scala.util.{Failure, Success, Try}
 
-object RecursionWithStateApp extends App {
+object RecursionWithState_v2 extends App {
 
   case class CrawlState(visited: List[String], errors: List[String]) {
     def addVisited(value: String): CrawlState = copy(visited = visited :+ value)
     def logError(err: String): CrawlState = copy(errors = errors :+ err)
   }
 
+  def iteration(line: String, state: CrawlState): CrawlState = Try(line.toInt) match {
+    case Success(_) => state.addVisited(line)
+    case Failure(_) => state.logError(line)
+  }
+
   @tailrec
-  def action(line: String, state: CrawlState): CrawlState = {
+  def loop(state: CrawlState): CrawlState = {
+    val line = readLine
     if (line == "q") return state
-
-    val line_new = readLine
-    val state_new = Try(line_new.toInt) match {
-      case Success(_) => state.addVisited(line_new)
-      case Failure(_) => state.logError(line_new)
-    }
-
-    action(line_new, state_new)
+    val state_new = iteration(line, state)
+    loop(state_new)
   }
 
   val state_initial = CrawlState(List.empty[String], List.empty[String])
-  val state: CrawlState = action("start", state_initial)
+  val state: CrawlState = loop(state_initial)
   println(state.visited)
   println(state.errors)
 }
