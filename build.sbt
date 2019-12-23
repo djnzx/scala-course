@@ -2,14 +2,34 @@ name := "learn-scala-cook-book-aa"
 
 scalacOptions ++= Seq(
   "-language:postfixOps",
-  "-feature",
+  "-language:higherKinds",
+  "-language:existentials",
+
+  "-Ywarn-numeric-widen",
+  "-Ywarn-value-discard",
+  "-Yrepl-class-based",
+  "-Ywarn-extra-implicit",
+  "-Ywarn-unused:_,imports",
+  "-Ywarn-unused:imports",
+  "-Yrangepos",
+
   "-deprecation",
+  "-encoding", "UTF-8",
+  "-explaintypes",
+  "-feature",
   "-unchecked",
-//  "-Xfatal-warnings",     // treat warning as fatal. 53 warnings @ Nov 30
-//  "-Ypartial-unification", // removed since 2.13
+  "-Xlint:_,-type-parameter-shadow",
+  "-opt-warnings",
+  "-opt:l:inline",
+  "-opt-inline-from:<source>",
+  //  "-Xfatal-warnings",     // treat warning as fatal. 53 warnings @ Nov 30
 )
 version := "0.2.6"
 scalaVersion := "2.13.1"
+
+//addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6")
+//addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
+//addCommandAlias("check", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")
 
 resolvers ++= Seq(
 //  Resolver.sonatypeRepo("releases"),
@@ -17,6 +37,10 @@ resolvers ++= Seq(
   //  "Typesafe" at "http://repo.typesafe.com/typesafe/releases/",
 //  "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
 )
+
+val ZIOVersion        = "1.0.0-RC17"
+val CatsVersion       = "2.0.0"
+val MonixVersion      = "3.0.0"
 
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
 libraryDependencies ++= Seq(
@@ -35,7 +59,13 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "com.typesafe" % "config" % "1.4.0",
 
-  "org.typelevel" %% "cats-core" % "2.0.0",
-  "org.scalatest" %% "scalatest" % "3.0.8",
-  "dev.zio" %% "zio" % "1.0.0-RC17",
+  "org.typelevel" %% "cats-core"    % CatsVersion,
+  "org.typelevel" %% "cats-effect"  % CatsVersion,
+  "org.scalatest" %% "scalatest"    % "3.0.8",
+  "dev.zio"       %% "zio"          % ZIOVersion,
+  "dev.zio"       %% "zio-streams"  % ZIOVersion,
+  "io.lemonlabs"  %% "scala-uri"    % "1.5.1",
+
+  "dev.zio"       %% "zio"          % ZIOVersion,
+  "io.monix"      %% "monix"        % MonixVersion,
 )

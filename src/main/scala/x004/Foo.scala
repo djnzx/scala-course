@@ -14,7 +14,7 @@ class Foo {
     println("actually reading the file")
     var lines = ""
     try {
-      lines = io.Source.fromFile("/etc/passwd").getLines().mkString("\n")
+      lines = scala.io.Source.fromFile("/etc/passwd").getLines().mkString("\n")
     } catch {
       case e: Exception => lines = "smth went wrong"
     }
