@@ -23,11 +23,11 @@ object ParallelWebCrawlerApp extends App {
   }
 
   def crawl[E](
-    seeds: Set[URL],                        // initial list
-    router: URL => Set[URL],                // hook to terminate a process (return empty Set)
-    processor: (URL, String) => IO[E, Unit] // actual processing
-  ): ZIO[Blocking, Nothing, List[E]] = {    // represintation Blocking -> shifts computation to the blocking TP
-                                            // List[E] - list of Errors
+    seeds: Set[URL],                              // initial list of url to visit
+    router: URL => Set[URL],                      // function (hook) to terminate a process (return empty Set if you need to stop)
+    processor: (URL, String) => ZIO[Any, E, Unit] // actual processing
+  ): ZIO[Blocking, Nothing, List[E]] = {          // representation Blocking -> shifts computation to the blocking TP
+                                                  // List[E] - list of Errors which we return if we need
 
     def loop(seeds: Set[URL], ref: Ref[CrawlState[E]]): ZIO[Blocking, Nothing, Unit] = {
       val zf1: ZIO[Blocking, Nothing, List[Set[URL]]] = ZIO.foreachParN(100)(seeds) { seed => {
@@ -42,16 +42,19 @@ object ParallelWebCrawlerApp extends App {
           f orElse ZIO.succeed(Set.empty[URL])
         }
       }
-      zf1.map(_.toSet.flatten)
-        .flatMap(newUrls => loop(newUrls, ref))
+      val zf2: ZIO[Blocking, Nothing, Set[URL]] = zf1.map(_.toSet.flatten)
+      val zf3: ZIO[Blocking, Nothing, Unit] = zf2.flatMap(newUrls => loop(newUrls, ref))
+
+      zf3
     }
 
-    for {
-      ref <- Ref.make(CrawlState(seeds, List.empty[E]))
-      _ <- loop(seeds, ref)
-      state <- ref.get
+    val errors: ZIO[Blocking, Nothing, List[E]] = for {
+      ref   <- Ref.make(CrawlState(seeds, List.empty[E])) // ZIO[Any, Nothing, Ref[CrawlState[E]]] / UIO[Ref[CrawlState[E]]]
+      _     <- loop(seeds, ref)                           // ZIO[Blocking, Nothing, Unit]
+      state <- ref.get                                    // ZIO[Any, Nothing, CrawlState[E]]      / UIO[CrawlState[E]]
     } yield state.errors
 
+    errors
   }
 
   /**
@@ -128,10 +131,12 @@ object ParallelWebCrawlerApp extends App {
   }
 
     def run(args: List[String]): ZIO[Console, Nothing, Int] = {
+
       val app: ZIO[Console, Nothing, Unit] = for {
         _ <- putStrLn("Hello World!")
       } yield ()
-      app.fold(_ => 1, _ => 0)(zio.CanFail.canFailAmbiguous1)
+
+      app.fold(_ => 1, _ => 0)(CanFail)
     }
 
 }
