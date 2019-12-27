@@ -32,14 +32,14 @@ object ParallelWebCrawlerApp extends App {
     def loop(seeds: Set[URL], ref: Ref[CrawlState[E]]): ZIO[Blocking, Nothing, Unit] = {
       val zf1: ZIO[Blocking, Nothing, List[Set[URL]]] = ZIO.foreachParN(100)(seeds) { seed => {
           val f = for {
-            html    <- getURL(seed)
-            scraped = extractURLs(seed, html).toSet.flatMap(router)
-            either  <- processor(seed, html).either
+            html    <- getURL(seed)                                 // ZIO[Blocking, Exception, String]
+            scraped = extractURLs(seed, html).toSet.flatMap(router)  // Set[URL]
+            either  <- processor(seed, html).either                 // ZIO[Any, E, Unit].either
             newUrls <- ref.modify(state => 
                          (scraped -- state.visited, { val s2 = state.visitAll(scraped); either.fold(s2.logError, _ => s2) } )
-                       )
+                       )                                            // UIO[B]
           } yield newUrls
-          f orElse ZIO.succeed(Set.empty[URL])
+          f orElse ZIO.succeed(Set.empty[URL])                      // UIO[A]
         }
       }
       val zf2: ZIO[Blocking, Nothing, Set[URL]] = zf1.map(_.toSet.flatten)
