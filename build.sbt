@@ -66,6 +66,5 @@ libraryDependencies ++= Seq(
   "dev.zio"       %% "zio-streams"  % ZIOVersion,
   "io.lemonlabs"  %% "scala-uri"    % "1.5.1",
 
-  "dev.zio"       %% "zio"          % ZIOVersion,
   "io.monix"      %% "monix"        % MonixVersion,
 )
