@@ -54,7 +54,7 @@ object ParallelWebCrawlerApp extends App {
       state <- ref.get                                    // ZIO[Any, Nothing, CrawlState[E]]      / UIO[CrawlState[E]]
     } yield state.errors
 
-    errors
+    errors // ZIO[Blocking, Nothing, List[E]]
   }
 
   /**
