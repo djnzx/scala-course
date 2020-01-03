@@ -4,6 +4,6 @@ object MainApp extends App {
 
   val max = new FpToTheMaxV2
 
-  max.mainIO.core()
+  max.mainIO.body()
 
 }

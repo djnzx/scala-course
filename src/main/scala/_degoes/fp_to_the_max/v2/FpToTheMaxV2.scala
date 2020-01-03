@@ -1,20 +1,14 @@
 package _degoes.fp_to_the_max.v2
 
-import scala.language.higherKinds
-
 class FpToTheMaxV2 {
 
-  def parseInt_(s: String): Option[Int] = scala.util.Try(s.toInt).toOption
-
-  trait Program[F[_]] {
-    def finish[A](a: => A): F[A]
-    def chain[A, B](fa: F[A], afb: A => F[B]): F[B]
-    def map[A, B](fa: F[A], ab: A => B): F[B]
+  trait Random[F[_]] {
+    def nextInt(upper: Int): F[Int]
   }
 
-  //  object Program {
-  //    def apply[F[_]](implicit fp: Program[F]): Program[F] = fp
-  //  }
+  object Random {
+    def apply[F[_]](implicit instance: Random[F]): Random[F] = instance
+  }
 
   trait Console[F[_]] {
     // maybe it would be better if we allow the only certain message to be printed
@@ -26,23 +20,21 @@ class FpToTheMaxV2 {
     def apply[F[_]](implicit instance: Console[F]): Console[F] = instance
   }
 
-  trait Random[F[_]] {
-    def nextInt(upper: Int): F[Int]
-  }
-
-  object Random {
-    def apply[F[_]](implicit instance: Random[F]): Random[F] = instance
+  trait Program[F[_]] {
+    def finish[A](a: => A): F[A]
+    def chain[A, B](fa: F[A], afb: A => F[B]): F[B]
+    def map  [A, B](fa: F[A],  ab: A => B   ): F[B]
   }
 
   // ability to use map / flatMap
   implicit class ProgramSyntax[F[_], A](fa: F[A]) {
-    def map[B](f: A => B)(implicit fp: Program[F]): F[B] = fp.map(fa, f)
-    def flatMap[B](afb: A => F[B])(implicit fp: Program[F]): F[B] = fp.chain(fa, afb)
+    def map[B](fab: A => B)(implicit fp: Program[F]): F[B] = fp.map(fa, fab)
+    def flatMap[B](fafb: A => F[B])(implicit fp: Program[F]): F[B] = fp.chain(fa, fafb)
   }
 
-  case class IO[A](core: () => A) { self =>
-    def map[B](f: A => B): IO[B] = IO(() => f(self.core()))
-    def flatMap[B](f: A => IO[B]): IO[B] = IO(() => f(self.core()).core())
+  case class IO[A](body: () => A) { self =>
+    def map[B]   (f: A => B    ): IO[B] = IO(() => f(self.body()))
+    def flatMap[B](f: A => IO[B]): IO[B] = IO(() => f(self.body()).body())
   }
 
   object IO {
@@ -65,11 +57,8 @@ class FpToTheMaxV2 {
   }
 
   case class TestIO[A](run: TestData => (TestData, A)) { self =>
-    def map[B](fab: A => B): TestIO[B] =
-      TestIO(t => self.run(t) match { case (t, a) => (t, fab(a)) })
-    def flatMap[B](afb: A => TestIO[B]): TestIO[B] =
-      TestIO(t => self.run(t) match { case (t, a) => afb(a).run(t) })
-
+    def map[B](fab: A => B): TestIO[B] = TestIO(t => self.run(t) match { case (t, a) => (t, fab(a)) })
+    def flatMap[B](afb: A => TestIO[B]): TestIO[B] = TestIO(t => self.run(t) match { case (t, a) => afb(a).run(t) })
     def eval(t: TestData): TestData = run(t)._1
   }
 
@@ -117,6 +106,8 @@ class FpToTheMaxV2 {
                   case _   => checkContinue(name)
                }
     } yield cont
+
+  def parseInt_(s: String): Option[Int] = scala.util.Try(s.toInt).toOption
 
   def printResults[F[_]: Console](input: String, num: Int, name: String): F[Unit] =
     parseInt_(input).fold(

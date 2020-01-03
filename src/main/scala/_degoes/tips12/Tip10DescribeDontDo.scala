@@ -20,7 +20,7 @@ abstract class Tip10DescribeDontDo {
     sendEmail(email)
   }
   // testable !!!
-  def completePurchaseGOOD(order: Int): Unit = {
+  def completePurchaseGOOD(order: Int): List[Any] = {
     // better approach
     val email = genConfirm(order)
     Charge(order) :: SendEmail(email) :: Nil

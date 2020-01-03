@@ -1,4 +1,4 @@
-package _degoes.htk2
+package _degoes.hkt2
 
 object HtkExpr extends App {
 

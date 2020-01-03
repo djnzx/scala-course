@@ -1,0 +1,2 @@
+https://askubuntu.com/questions/731721/is-there-a-way-to-create-multiple-directories-at-once-with-mkdir
+mkdir -p step{01..05}/{img,data}
