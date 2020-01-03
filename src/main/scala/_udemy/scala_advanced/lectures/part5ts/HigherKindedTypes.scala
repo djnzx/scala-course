@@ -8,18 +8,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
   */
 object HigherKindedTypes extends App {
 
-  trait MyList[A] {
-    def flatMap[B](f: A => B): MyList[B]
-  }
-
-  trait MyOption[A] {
-    def flatMap[B](f: A => B): MyOption[B]
-  }
-
-  trait MyFuture[A] {
-    def flatMap[B](f: A => B): MyFuture[B]
-  }
-
   // combine/multiply List(1,2) x List("a", "b") => List(1a, 1b, 2a, 2b)
   // plain approach
 
@@ -29,16 +17,16 @@ object HigherKindedTypes extends App {
       b <- listB
     } yield (a, b)
 
-  def multiply[A, B](listA: Option[A], listB: Option[B]): Option[(A, B)] =
+  def multiply[A, B](optA: Option[A], opyB: Option[B]): Option[(A, B)] =
     for {
-      a <- listA
-      b <- listB
+      a <- optA
+      b <- opyB
     } yield (a, b)
 
-  def multiply[A, B](listA: Future[A], listB: Future[B]): Future[(A, B)] =
+  def multiply[A, B](futA: Future[A], futB: Future[B]): Future[(A, B)] =
     for {
-      a <- listA
-      b <- listB
+      a <- futA
+      b <- futB
     } yield (a, b)
 
   // use HKT
@@ -60,12 +48,9 @@ object HigherKindedTypes extends App {
 
   def combine[F[_], A, B](ma: Monad[F, A], mb: Monad[F, B]): F[(A, B)] =
     for {
-      a <- ma
-      b <- mb
+      a <- ma  // flatMap
+      b <- mb  // map
     } yield (a, b)
-  /*
-    ma.flatMap(a => mb.map(b => (a,b)))
-   */
 
 //  val monadList = new MonadList(List(1,2,3))
 //  monadList.flatMap(x => List(x, x + 1)) // List[Int]
