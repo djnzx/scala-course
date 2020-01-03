@@ -8,39 +8,38 @@ import scala.concurrent.ExecutionContext.Implicits.global
   */
 object HigherKindedTypes extends App {
 
-  trait AHigherKindedType[F[_]]
-
-  trait MyList[T] {
-    def flatMap[B](f: T => B): MyList[B]
+  trait MyList[A] {
+    def flatMap[B](f: A => B): MyList[B]
   }
 
-  trait MyOption[T] {
-    def flatMap[B](f: T => B): MyOption[B]
+  trait MyOption[A] {
+    def flatMap[B](f: A => B): MyOption[B]
   }
 
-  trait MyFuture[T] {
-    def flatMap[B](f: T => B): MyFuture[B]
+  trait MyFuture[A] {
+    def flatMap[B](f: A => B): MyFuture[B]
   }
 
   // combine/multiply List(1,2) x List("a", "b") => List(1a, 1b, 2a, 2b)
+  // plain approach
 
-//  def multiply[A, B](listA: List[A], listB: List[B]): List[(A, B)] =
-//    for {
-//      a <- listA
-//      b <- listB
-//    } yield (a, b)
-//
-//  def multiply[A, B](listA: Option[A], listB: Option[B]): Option[(A, B)] =
-//    for {
-//      a <- listA
-//      b <- listB
-//    } yield (a, b)
-//
-//  def multiply[A, B](listA: Future[A], listB: Future[B]): Future[(A, B)] =
-//    for {
-//      a <- listA
-//      b <- listB
-//    } yield (a, b)
+  def multiply[A, B](listA: List[A], listB: List[B]): List[(A, B)] =
+    for {
+      a <- listA
+      b <- listB
+    } yield (a, b)
+
+  def multiply[A, B](listA: Option[A], listB: Option[B]): Option[(A, B)] =
+    for {
+      a <- listA
+      b <- listB
+    } yield (a, b)
+
+  def multiply[A, B](listA: Future[A], listB: Future[B]): Future[(A, B)] =
+    for {
+      a <- listA
+      b <- listB
+    } yield (a, b)
 
   // use HKT
 
@@ -59,7 +58,7 @@ object HigherKindedTypes extends App {
     override def map[B](f: A => B): Option[B] = option.map(f)
   }
 
-  def multiply[F[_], A, B](implicit ma: Monad[F, A], mb: Monad[F, B]): F[(A, B)] =
+  def combine[F[_], A, B](ma: Monad[F, A], mb: Monad[F, B]): F[(A, B)] =
     for {
       a <- ma
       b <- mb
@@ -68,14 +67,12 @@ object HigherKindedTypes extends App {
     ma.flatMap(a => mb.map(b => (a,b)))
    */
 
+//  val monadList = new MonadList(List(1,2,3))
+//  monadList.flatMap(x => List(x, x + 1)) // List[Int]
+//  // Monad[List, Int] => List[Int]
+//  monadList.map(_ * 2) // List[Int
+//  // Monad[List, Int] => List[Int]
 
-
-  val monadList = new MonadList(List(1,2,3))
-  monadList.flatMap(x => List(x, x + 1)) // List[Int]
-  // Monad[List, Int] => List[Int]
-  monadList.map(_ * 2) // List[Int
-  // Monad[List, Int] => List[Int]
-
-  println(multiply(List(1,2), List("a", "b")))
-  println(multiply(Some(2), Some("scala")))
+  println(combine(List(1,2), List("a", "b")))
+  println(combine(Some(2), Some("scala")))
 }

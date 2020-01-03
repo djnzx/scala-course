@@ -1,4 +1,4 @@
-package _inject_test_ideas.step01
+package _testable.step01
 
 /**
   * The task:
