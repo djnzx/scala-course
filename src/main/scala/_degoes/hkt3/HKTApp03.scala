@@ -29,7 +29,7 @@ object HKTApp03 extends App {
   }
 
   object RealApp {
-    def run() {
+    def run(): Unit = {
       import real._
 
       val randoms: Seq[Int] = for {
@@ -41,7 +41,7 @@ object HKTApp03 extends App {
   }
 
   object MockApp {
-    def run() {
+    def run(): Unit = {
       import mock._
 
       val randoms: Seq[Int] = for {
@@ -54,7 +54,4 @@ object HKTApp03 extends App {
 
   RealApp.run()
   MockApp.run()
-
-
-
 }

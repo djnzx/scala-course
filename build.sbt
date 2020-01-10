@@ -67,4 +67,6 @@ libraryDependencies ++= Seq(
   "io.lemonlabs"  %% "scala-uri"    % "1.5.1",
 
   "io.monix"      %% "monix"        % MonixVersion,
+  "org.tpolecat"  %% "doobie-core"  % "0.8.8",
+//  "org.tpolecat" %% "doobie-postgres" % "0.8.8",
 )
