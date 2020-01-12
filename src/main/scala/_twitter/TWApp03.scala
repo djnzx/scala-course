@@ -1,5 +1,6 @@
 package _twitter
 
+import scala.concurrent.Future
 import scala.language.implicitConversions
 
 /**
@@ -22,6 +23,43 @@ object TWApp03 extends App {
 
   /**
     * Other type bounds
+    *
+    * def sum[B >: A](implicit num: Numeric[B]): B
+    * that means B must implement Numeric[B]
     */
+  val s: Int = List(1,2,3).sum
 
+  /**
+    * A =:= B --- A must be equal to B
+    * A <:< B --- A must be a subtype of B
+    * A <%< B --- A must be viewable as B
+    */
+  class ContainerA[A](value: A) {
+    def addIt(implicit ev: A =:= Int) = 123 + value
+  }
+
+  // since scala 2.8 we can write
+  def foo1[A](implicit ev: Ordered[A]) {}
+  def foo2[A: Ordered] {} // means `A` implements `Ordered`
+  val o: Ordering[Int] = implicitly[Ordering[Int]]
+
+  trait ContainerHK[M[_]] {
+    def put[A](x: A): M[A]
+    def get[A](m: M[A]): A
+  }
+
+  new ContainerHK[List] {
+    override def put[A](x: A): List[A] = ???
+    override def get[A](m: List[A]): A = ???
+  }
+
+  new ContainerHK[Option] {
+    override def put[A](x: A): Option[A] = ???
+    override def get[A](m: Option[A]): A = ???
+  }
+
+  new ContainerHK[Future] {
+    override def put[A](x: A): Future[A] = ???
+    override def get[A](m: Future[A]): A = ???
+  }
 }
