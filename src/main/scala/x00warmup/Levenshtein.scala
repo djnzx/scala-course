@@ -30,7 +30,7 @@ object Levenshtein extends App {
         if (col == dst.length) println
       }
     }
-    def print_line: Unit = println("-".repeat((dst.length+2)*3))
+    def print_line: Unit = println("-" * ((dst.length+2)*3))
     // initial data
     for (row <- 0 to src.length) cost(row)(0) = row // fill vertical line
     for (col <- 0 to dst.length) cost(0)(col) = col // fill horizontal line

@@ -6,11 +6,29 @@ class FpToTheMaxV2 {
     def nextInt(upper: Int): F[Int]
   }
 
-  // having that we can write:
-  // Random[IO].nextInt
+  /**
+    * the only responsibility of these companion objects
+    * is to select appropriate instances (by type) without
+    * explicit variable declaration
+    * or `implicitly` keyword
+    */
   object Random {
     def apply[F[_]](implicit instance: Random[F]): Random[F] = instance
   }
+
+  // syntax #1. we implicitly find the corresponding Random[IO] implementation
+  // by using `implicitly` keyword without variable declaration
+  def r1                               : IO[Int] = implicitly[Random[IO]].nextInt(10)
+  // syntax #2. we implicitly find the corresponding Random[IO] implementation
+  // by using `implicit` keyword with variable declaration
+  def r2(implicit instance: Random[IO]): IO[Int] = instance              .nextInt(10)
+  // syntax #3. we find the corresponding Random[IO] implementation
+  // because of `Random` object and defined `apply` function
+  def r3                               : IO[Int] = Random[IO]            .nextInt(10)
+  // the usage is the absolutely same:
+  val rnd1: Int = r1.body()
+  val rnd2: Int = r2.body()
+  val rnd3: Int = r3.body()
 
   trait Console[F[_]] {
     // maybe it would be better if we allow the only certain message to be printed
@@ -18,14 +36,6 @@ class FpToTheMaxV2 {
     def getStrLn(): F[String]
   }
 
-  /**
-    * the only responsibility of these objects
-    * is to select appropriate instances (by type) without
-    * explicit variable declaration
-    * or `implicitly` keyword
-    */
-  // The main
-  //
   object Console {
     def apply[F[_]](implicit instance: Console[F]): Console[F] = instance
   }
@@ -40,19 +50,17 @@ class FpToTheMaxV2 {
     // syntax #1
     def apply[F[_]: Program]: Program[F] = implicitly[Program[F]]
     // syntax #2
-//    def apply[F[_]](implicit instance: Program[F]): Program[F] = instance
+    def apply2[F[_]](implicit instance: Program[F]): Program[F] = instance
   }
 
-  // ability to use map / flatMap
-  // we can apply map and flatMap to any F[_] A=>B
   implicit class ProgramSyntax[F[_], A](fa: F[A]) {
     def map[B](fab: A => B)(implicit fp: Program[F]): F[B] = fp.map(fa, fab)
     def flatMap[B](fafb: A => F[B])(implicit fp: Program[F]): F[B] = fp.chain(fa, fafb)
   }
 
-  case class IO[A](body: () => A) { self =>
-    def map[B]   (f: A => B    ): IO[B] = IO(() => f(self.body()))
-    def flatMap[B](f: A => IO[B]): IO[B] = IO(() => f(self.body()).body())
+  case class IO[A](body: () => A) { me =>
+    def map[B]   (f: A => B    ): IO[B] = IO(() => f(me.body()))
+    def flatMap[B](f: A => IO[B]): IO[B] = IO(() => f(me.body()).body())
   }
 
   object IO {
@@ -66,17 +74,24 @@ class FpToTheMaxV2 {
     }
 
     implicit val ConsoleIO: Console[IO] = new Console[IO] {
-      override def putStrLn(line: String): IO[Unit] = IO( () => scala.Console.println(line) )
-      override def getStrLn(): IO[String] = IO( () => scala.io.StdIn.readLine() )
+      override def putStrLn(line: String): IO[Unit]   = IO( () => scala.Console.println(line) )
+      override def getStrLn():             IO[String] = IO( () => scala.io.StdIn.readLine() )
     }
 
     implicit val RandomIO: Random[IO] = new Random[IO] {
-      override def nextInt(upper:  Int): IO[Int] = IO(() => scala.util.Random.nextInt(upper))
+      override def nextInt(upper:  Int):   IO[Int]    = IO(() => scala.util.Random.nextInt(upper))
     }
   }
 
   case class TestIO[A](run: TestData => (TestData, A)) { self =>
-    def map[B](fab: A => B): TestIO[B] = TestIO(t => self.run(t) match { case (t, a) => (t, fab(a)) })
+    def map[B](fab: A => B): TestIO[B] = TestIO(t => {
+      // De Goez syntax
+//      self.run(t) match { case (t, a) => (t, fab(a)) }
+      // decomposed syntax
+      val rez: (TestData, A) = self.run(t)
+      val b: B = fab(rez._2)
+      (rez._1, b)
+    })
     def flatMap[B](afb: A => TestIO[B]): TestIO[B] = TestIO(t => self.run(t) match { case (t, a) => afb(a).run(t) })
     // run and return the first part
     def eval(t: TestData): TestData = run(t)._1
@@ -149,13 +164,13 @@ class FpToTheMaxV2 {
 
   def gameLoop[F[_]: Program: Random: Console](name: String): F[Unit] =
     for {
+//      num   <- Random[F].nextInt(5).map(_ + 1)
       num   <- nextInt(5).map(_ + 1)
       _     <- putStrLn(s"Dear, $name, guess a number 1..5:")
       input <- getStrLn()
       _     <- printResults(input, num, name)
       cont  <- checkContinue(name)
       _     <- if (cont) gameLoop(name) else finish(())
-
     } yield ()
 
   def main[F[_]: Program: Random: Console]: F[Unit] =
@@ -174,15 +189,15 @@ class FpToTheMaxV2 {
     def putStrLn(line: String): (TestData, Unit) = (copy(output = line :: output), ())
     def getStrLn: (TestData, String) = (copy(input = input.drop(1)), input.head)
     def nextInt(upper: Int): (TestData, Int) = (copy(nums = nums.drop(1)), nums.head)
-    def showResults = output.reverse.mkString("\n")
+    def results: String = output.reverse.mkString("\n")
   }
 
-  var testDataset = TestData(
+  var testDataset: TestData = TestData(
     input = "Alex" :: "1" :: "n" :: Nil,
     output = Nil,
     nums = 0 :: Nil
   )
 
-  def runTest: String = mainTestIO.eval(testDataset).showResults
+  def runTest: String = mainTestIO.eval(testDataset).results
 
 }
