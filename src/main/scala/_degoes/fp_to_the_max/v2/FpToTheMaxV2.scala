@@ -6,6 +6,8 @@ class FpToTheMaxV2 {
     def nextInt(upper: Int): F[Int]
   }
 
+  // having that we can write:
+  // Random[IO].nextInt
   object Random {
     def apply[F[_]](implicit instance: Random[F]): Random[F] = instance
   }
@@ -16,6 +18,14 @@ class FpToTheMaxV2 {
     def getStrLn(): F[String]
   }
 
+  /**
+    * the only responsibility of these objects
+    * is to select appropriate instances (by type) without
+    * explicit variable declaration
+    * or `implicitly` keyword
+    */
+  // The main
+  //
   object Console {
     def apply[F[_]](implicit instance: Console[F]): Console[F] = instance
   }
@@ -26,7 +36,15 @@ class FpToTheMaxV2 {
     def map  [A, B](fa: F[A],  ab: A => B   ): F[B]
   }
 
+  object Program {
+    // syntax #1
+    def apply[F[_]: Program]: Program[F] = implicitly[Program[F]]
+    // syntax #2
+//    def apply[F[_]](implicit instance: Program[F]): Program[F] = instance
+  }
+
   // ability to use map / flatMap
+  // we can apply map and flatMap to any F[_] A=>B
   implicit class ProgramSyntax[F[_], A](fa: F[A]) {
     def map[B](fab: A => B)(implicit fp: Program[F]): F[B] = fp.map(fa, fab)
     def flatMap[B](fafb: A => F[B])(implicit fp: Program[F]): F[B] = fp.chain(fa, fafb)
@@ -38,16 +56,17 @@ class FpToTheMaxV2 {
   }
 
   object IO {
-    def point[A](a: => A): IO[A] = IO( () => a)
+//    def point[A](a: => A): IO[A] = IO( () => a)
 
-    implicit val ProgramIO: Program[IO] = new Program[IO] {
-      override def finish[A](a: => A): IO[A] = IO.point(a)
+    implicit val programIO: Program[IO] = new Program[IO] {
+//      override def finish[A](a: => A): IO[A] = IO.point(a)
+      override def finish[A](a: => A): IO[A] = IO( () => a)
       override def chain[A, B](fa: IO[A], afb: A => IO[B]): IO[B] = fa.flatMap(afb)
       override def map[A, B](fa: IO[A], ab: A => B): IO[B] = fa.map(ab)
     }
 
     implicit val ConsoleIO: Console[IO] = new Console[IO] {
-      override def putStrLn(line: String): IO[Unit] = IO( () => println(line) )
+      override def putStrLn(line: String): IO[Unit] = IO( () => scala.Console.println(line) )
       override def getStrLn(): IO[String] = IO( () => scala.io.StdIn.readLine() )
     }
 
@@ -59,14 +78,18 @@ class FpToTheMaxV2 {
   case class TestIO[A](run: TestData => (TestData, A)) { self =>
     def map[B](fab: A => B): TestIO[B] = TestIO(t => self.run(t) match { case (t, a) => (t, fab(a)) })
     def flatMap[B](afb: A => TestIO[B]): TestIO[B] = TestIO(t => self.run(t) match { case (t, a) => afb(a).run(t) })
+    // run and return the first part
     def eval(t: TestData): TestData = run(t)._1
   }
 
   object TestIO {
-    def point[A](a: => A): TestIO[A] = TestIO(t => (t, a))
+    // we also use object to pack corresponding implicits
+
+//    def point[A](a: => A): TestIO[A] = TestIO(t => (t, a))
 
     implicit val ProgramTestIO: Program[TestIO] = new Program[TestIO] {
-      override def finish[A](a: => A): TestIO[A] = TestIO.point(a)
+//      override def finish[A](a: => A): TestIO[A] = TestIO.point(a)
+      override def finish[A](a: => A): TestIO[A] = TestIO( t => (t, a))
       override def chain[A, B](fa: TestIO[A], afb: A => TestIO[B]): TestIO[B] = fa.flatMap(afb)
       override def map[A, B](fa: TestIO[A], ab: A => B): TestIO[B] = fa.map(ab)
     }
@@ -83,12 +106,19 @@ class FpToTheMaxV2 {
     }
   }
 
-  def finish[F[_], A](a: => A)(implicit fp: Program[F]): F[A] = fp.finish(a)
+  // syntax #1
+  def finish1[F[_], A]         (a: => A)(implicit fp: Program[F]): F[A] = fp.finish(a)
+  // syntax #2
+  def finish2[F[_]: Program, A](a: => A):                          F[A] = implicitly[Program[F]].finish(a)
+  // syntax #3, because of Program Object, syntax #1
+  def finish [F[_]: Program, A](a: => A):                          F[A] = Program[F].finish(a)
 
-  // the responsibility is to pick appropriate implementation from implicits
-  def nextInt[F[_]](upper: Int)(implicit F: Random[F]): F[Int] = Random[F].nextInt(upper)
-  // or
-  def nextInt2[F[_]: Random](upper: Int): F[Int] = Random[F].nextInt(upper)
+  // syntax #1
+  def nextInt1[F[_]]        (upper: Int)(implicit p: Random[F]): F[Int] = p.nextInt(upper)
+  // syntax #2
+  def nextInt2[F[_]: Random](upper: Int):                        F[Int] = implicitly[Random[F]].nextInt(upper)
+  // syntax #3
+  def nextInt [F[_]: Random](upper: Int):                        F[Int] = Random[F].nextInt(upper)
 
   // the responsibility is to pick appropriate implementation from implicits
   def putStrLn[F[_]: Console](line: String): F[Unit] = Console[F].putStrLn(line)
