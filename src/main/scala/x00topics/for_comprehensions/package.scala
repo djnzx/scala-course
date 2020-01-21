@@ -14,7 +14,7 @@ package object for_comprehensions {
     def foreach(f: A => Unit): Unit = storage.foreach(f)
     def map[B](f: A => B): Sequence[B] = Sequence(storage.map(f).toSeq: _*)
     def flatMap[B](f: A => Sequence[B]): Sequence[B] = flattenLike(map(f))
-    private def flattenLike[B](nested: Sequence[Sequence[B]]): Sequence[B] ={
+    private def flattenLike[B](nested: Sequence[Sequence[B]]): Sequence[B] = {
       var xs = ArrayBuffer[B]()
       for (list: Sequence[B] <- nested) {
         for (item <- list) {
