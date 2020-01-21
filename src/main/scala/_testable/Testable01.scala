@@ -1,4 +1,4 @@
-package _testable.step01
+package _testable
 
 /**
   * The task:
@@ -10,7 +10,7 @@ package _testable.step01
   */
 object Testable01 extends App {
 
-  val randoms: Seq[Int] = 1 to 5 map(n => scala.util.Random.nextInt(20)+1)
+  val randoms: Seq[Int] = 1 to 5 map(_ => scala.util.Random.nextInt(20)+1)
   println(randoms)
 
 }
