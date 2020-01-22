@@ -1,5 +1,9 @@
 package _degoes.lambdaconf
 
+/**
+  * https://gist.github.com/jdegoes/c0d923893ddb7039dcf44e8fe6012e0f
+  */
+
 import scala.util.Try
 
 object Functions extends App {
@@ -462,23 +466,23 @@ object Functions extends App {
           Parser[E, A](i => Right((i, a)))
       }
 
-      implicit def ParserApply[E]: Apply[Parser] = new Apply[Parser[E, ?]] {
-        def ap[A, B](ff: Parser[E, A => B], fa: Parser[E, A]): Parser[E, B] =
-          Parser[E, B](i => ff.run(i) match {
-            case Left(e) => Left(e)
-            case Right((i, f)) =>
-              fa.run(i) match {
-                case Left(e) => Left(e)
-                case Right((i, a)) =>
-                  Right((i, f(a)))
-              }
-          })
-        def fmap[A, B](fa: Parser[E, A], f: A => B): Parser[E, B] =
-          Parser[E, B](i => fa.run(i) match {
-            case Left(e) => Left(e)
-            case Right((i, a)) => Right((i, f(a)))
-          })
-      }
+//      implicit def ParserApply[E]: Apply[Parser] = new Apply[Parser[E, ?]] {
+//        def ap[A, B](ff: Parser[E, A => B], fa: Parser[E, A]): Parser[E, B] =
+//          Parser[E, B](i => ff.run(i) match {
+//            case Left(e) => Left(e)
+//            case Right((i, f)) =>
+//              fa.run(i) match {
+//                case Left(e) => Left(e)
+//                case Right((i, a)) =>
+//                  Right((i, f(a)))
+//              }
+//          })
+//        def fmap[A, B](fa: Parser[E, A], f: A => B): Parser[E, B] =
+//          Parser[E, B](i => fa.run(i) match {
+//            case Left(e) => Left(e)
+//            case Right((i, a)) => Right((i, f(a)))
+//          })
+//      }
 
       trait Applicative[F[_]] extends Apply[F] {
         def point[A](a: A): F[A]
