@@ -20,14 +20,16 @@ object ValueTypes extends App {
     "Different value types....................... %s" -> (person1a == book1),   // false
     "Value type vs Int........................... %s" -> (person1a == just1),   // false
     "Value type vs Literal....................... %s" -> (person1a == 1),       // false
-    "Value type unboxed vs Literal............... %s" -> (book1.src == 1),
-    "Value type extracted by getter vs Literal... %s" -> (person1a.id == 1),
-    "Value type extracted by getter vs Int....... %s" -> (person1a.id == just1),
+    "Value type unboxed vs Literal............... %s" -> (book1.src == 1),      // T - manual unpacking
+    "Value type extracted by getter vs Literal... %s" -> (person1a.id == 1),    // T - accessing via getter
+    "Value type extracted by getter vs Int....... %s" -> (person1a.id == just1),// T
   )
-  testData. foreach(el => printf(el._1+"\n", doCheck(el._2)))
+  testData foreach { el =>
+    printf(el._1+"\n", doCheck(el._2))
+  }
 
   val cars: Seq[CarId] = Seq(CarId(1), CarId(2))
-  cars.foreach {
+  cars foreach {
     case CarId(id) => println(id)
     case _ => println("non CarID instance in the sequence!")
   }
