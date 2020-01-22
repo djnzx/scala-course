@@ -1,5 +1,7 @@
 package _degoes.beescala2019
 
+import zio.ZIO
+
 /**
   * https://www.youtube.com/watch?v=xpz4rf1RS8c
   */
@@ -21,5 +23,7 @@ object A001 extends App {
     case Print(line, k) => println(line); run(k)
     case Read(k) => run(k(scala.io.StdIn.readLine()))
   }
+
+  ZIO
 
 }

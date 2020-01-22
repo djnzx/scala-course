@@ -1,6 +1,8 @@
 that code from the video 
 https://www.youtube.com/watch?v=sxudIMiOo68
 
+https://gist.github.com/jdegoes/1b43f43e2d1e845201de853815ab3cb9
+
 problems:
 - partial functions
 - exceptions 
