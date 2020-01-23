@@ -32,11 +32,15 @@ class FpToTheMaxV2 {
   }
 
   case class IO[A](run: () => A) { me =>
-    def map[B]   (f: A => B    ): IO[B] = IO(() => f(me.run()))
-    def flatMap[B](f: A => IO[B]): IO[B] = IO(() => f(me.run()).run())
+    def map[B]   (f: A => B    ): IO[B] = IO.of(f(me.run()))
+    def flatMap[B](f: A => IO[B]): IO[B] = IO.of(f(me.run()).run())
+//    def map[B]   (f: A => B    ): IO[B] = IO(() => f(me.run()))
+//    def flatMap[B](f: A => IO[B]): IO[B] = IO(() => f(me.run()).run())
   }
 
   object IO {
+    def of[A](a: => A): IO[A] = new IO( () => a)
+
     implicit val randomIO: Random[IO] = new Random[IO] {
       override def nextInt(upper:  Int):   IO[Int]    = IO(() => scala.util.Random.nextInt(upper))
     }
