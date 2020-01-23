@@ -36,19 +36,39 @@ object StepG2 extends App {
     }
   }
 
-  // TODO create an TestData Representation (1 class)
-  // TODO wire TestData <-> IOTest (2 methods)
-  // TODO wire Console[IOTest] <-> IOTest (2 methods)
-  // TODO collect the data after running test
-  final case class IOTest[A](run: () => A) {
-    def iomap   [B](f: A => B)     : IOTest[B] = ???
-    def ioflatMap[B](f: A => IOTest[B]): IOTest[B] = ???
+  final case class TestData(input: List[String], output: List[String]) {
+    // read line from the mocked console + return new TestData w/o this line
+    def rline()            : (TestData, String) = (copy(input = input.drop(1)), input.head)
+    // write line to mocked console + return new TestData w/printed line
+    def pline(line: String): (TestData, Unit) = (copy(output = output :+ line), ())
+    // obtain final result
+    def results: String = output.mkString("\n")
+  }
+
+  final case class IOTest[A](run: TestData => (TestData, A)) { me =>
+
+    def iomap   [B](f: A => B)        : IOTest[B] = new IOTest(td => {
+      val tda: (TestData, A) = me.run(td)
+      tda match {
+        case (td, a) => (td, f(a))
+      }
+    })
+
+    def ioflatMap[B](f: A => IOTest[B]): IOTest[B] = new IOTest(td => {
+      val tda: (TestData, A) = me.run(td)    // running logic
+      val td1: TestData = tda._1             // after logic: TestData modified
+      val a: A = tda._2                      // after logic: value returned
+      val tdb: (TestData, B) = f(a).run(td1) // applying `f` to value returned
+      tdb
+    })
+
+    def eval(initial: TestData): TestData = run(initial)._1
   }
 
   final object IOTest {
     implicit val consoleIO2: Console[IOTest] = new Console[IOTest] {
-      override def pline(line: String): IOTest[Unit] = ???
-      override def rline(): IOTest[String] = ???
+      override def pline(line: String): IOTest[Unit]   = new IOTest( t => t.pline(line) )
+      override def rline()            : IOTest[String] = new IOTest( t => t.rline() )
     }
 
     implicit val programIO2: Program[IOTest] = new Program[IOTest] {
@@ -63,12 +83,15 @@ object StepG2 extends App {
   def app[F[_]: Program: Console]: F[Unit] = for {
     _    <- pline("Enter number A")
     n1   <- rline()
+    _    <- pline(s"A=$n1")
     _    <- pline("Enter number B")
     n2   <- rline()
+    _    <- pline(s"B=$n2")
     sum: Int = n1.toInt + n2.toInt
     _    <- pline(s"Sum = $sum")
   } yield ()
 
-  app[IO].run()
-  app[IOTest].run()
+//  app[IO].run()
+  val testData = TestData(List("5","1"), Nil)
+  app[IOTest].eval(testData).output foreach println
 }

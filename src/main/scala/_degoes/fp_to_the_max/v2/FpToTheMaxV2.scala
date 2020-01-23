@@ -66,7 +66,8 @@ class FpToTheMaxV2 {
       val b: B = fab(rez._2)
       (rez._1, b)
     })
-    def flatMap[B](afb: A => TestIO[B]): TestIO[B] = TestIO(t => me.run(t) match { case (t, a) => afb(a).run(t) })
+    def flatMap[B](afb: A => TestIO[B]): TestIO[B] = TestIO(t =>
+      me.run(t) match { case (t, a) => afb(a).run(t) })
     // run and return the first part
     def eval(t: TestData): TestData = run(t)._1
   }
