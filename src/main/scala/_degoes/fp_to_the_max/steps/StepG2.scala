@@ -9,7 +9,7 @@ object StepG2 extends App {
 
   final case class IO[A](run: () => A) {
     def iomap   [B](f: A => B)    : IO[B] = IO.of(f(run()))
-    def ioflatMap[B](f: A => IO[B]): IO[B] = IO.of(f(run()).run())
+    def ioflatMap[B](f: A => IO[B]): IO[B] = f(run())
   }
 
   trait Program[F[_]] { me =>
@@ -37,29 +37,27 @@ object StepG2 extends App {
   }
 
   final case class TestData(input: List[String], output: List[String]) {
-    // read line from the mocked console + return new TestData w/o this line
-    def rline()            : (TestData, String) = (copy(input = input.drop(1)), input.head)
-    // write line to mocked console + return new TestData w/printed line
-    def pline(line: String): (TestData, Unit) = (copy(output = output :+ line), ())
-    // obtain final result
+    def pline(line: String): (TestData, Unit  ) = (copy(output = output :+ line), ())
+    def rline():             (TestData, String) = (copy(input = input.tail), input.head)
+    def check(expected: List[String]): Option[Boolean] = Some(output == expected)
     def results: String = output.mkString("\n")
   }
 
   final case class IOTest[A](run: TestData => (TestData, A)) { me =>
 
-    def iomap   [B](f: A => B)        : IOTest[B] = new IOTest(td => {
-      val tda: (TestData, A) = me.run(td)
+    def iomap   [B](f: A => B)        : IOTest[B] = IOTest(t => {
+      val tda: (TestData, A) = me.run(t)
       tda match {
         case (td, a) => (td, f(a))
       }
     })
 
-    def ioflatMap[B](f: A => IOTest[B]): IOTest[B] = new IOTest(td => {
-      val tda: (TestData, A) = me.run(td)    // running logic
-      val td1: TestData = tda._1             // after logic: TestData modified
-      val a: A = tda._2                      // after logic: value returned
-      val tdb: (TestData, B) = f(a).run(td1) // applying `f` to value returned
+    def ioflatMap[B](f: A => IOTest[B]): IOTest[B] = IOTest(t => {
+      val (td: TestData, a: A) = me.run(t)  // running logic. td - modified data, a - result
+      val iob: IOTest[B] = f(a)             // applying `f` to value returned
+      val tdb: (TestData, B) = iob.run(td)
       tdb
+//      me.run(t) match { case (td, a) => f(a).run(td) }
     })
 
     def eval(initial: TestData): TestData = run(initial)._1
@@ -72,26 +70,41 @@ object StepG2 extends App {
     }
 
     implicit val programIO2: Program[IOTest] = new Program[IOTest] {
-      override def pmap[A, B](fa: IOTest[A], f: A => B): IOTest[B] = fa.iomap(f)
+      override def pmap   [A, B](fa: IOTest[A], f: A => B)        : IOTest[B] = fa.iomap(f)
       override def pflatMap[A, B](fa: IOTest[A], f: A => IOTest[B]): IOTest[B] = fa.ioflatMap(f)
     }
   }
 
+  // wiring `pline` & `rline` to appropriate wrapper IO | IOTest by `implicitly[Console[F]]`
   def pline[F[_]](line: String)(implicit f: Console[F]): F[Unit]   = f.pline(line)
   def rline[F[_]]()            (implicit f: Console[F]): F[String] = f.rline()
 
+  val message1 = "Enter number A"
+  val message2 = "Enter number B"
+  val rs1 = "A="
+  val rs2 = "B="
+  val rs3 = "Sum="
+
+  val add = (a: Int, b: Int) => a + b
+  implicit val stoi = (s: String) => s.toInt
+
   def app[F[_]: Program: Console]: F[Unit] = for {
-    _    <- pline("Enter number A")
+    _    <- pline(message1)
     n1   <- rline()
-    _    <- pline(s"A=$n1")
-    _    <- pline("Enter number B")
+    _    <- pline(s"$rs1$n1")
+    _    <- pline(message2)
     n2   <- rline()
-    _    <- pline(s"B=$n2")
-    sum: Int = n1.toInt + n2.toInt
-    _    <- pline(s"Sum = $sum")
+    _    <- pline(s"$rs2$n2")
+    sum = add(n1, n2)
+    _    <- pline(s"$rs3$sum")
   } yield ()
 
+  println("-")
 //  app[IO].run()
-  val testData = TestData(List("5","1"), Nil)
+  val u1 = "5"
+  val u2 = "1"
+  val testData = TestData(List(u1, u2), Nil)
+  val expected = List(message1, s"$rs1$u1", message2, s"$rs2$u2", s"$rs3${add(u1, u2)}")
+//  app[IOTest] eval testData check expected foreach println
   app[IOTest].eval(testData).output foreach println
 }
