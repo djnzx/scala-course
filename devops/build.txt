@@ -1,0 +1,15 @@
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+brew install sbt
+brew upgrade sbt
+// package installed to:
+/usr/local/Cellar/sbt/1.3.7
+/usr/local/Cellar/sbt/1.3.7/bin/sbt
+/usr/local/Cellar/sbt/1.3.7/libexec/bin/sbt-launch.jar
+
+git clone https://github.com/alexr007/learn-scala-cook-book-aa.git
+cd learn-scala-cook-book-aa
+sbt compile
+sbt run
+
+
