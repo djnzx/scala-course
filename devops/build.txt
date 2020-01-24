@@ -15,5 +15,6 @@ java -version
 
 sbt compile
 sbt run
+sbt package // wrong manifest
 
 
