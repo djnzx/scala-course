@@ -113,7 +113,7 @@ object StepG3 extends App {
 
 //  app2[IO].run()
 
-  def factorial[F[_]: Program : Console](number: Double, acc: Double = 1): F[Double] = for {
+  def factorial[F[_]: Program : Console](number: Long, acc: Long = 1): F[Long] = for {
     _ <- pline(s"${number.toString}: ${acc.toString}")
     n <- if (number <= 1) finishWith(acc) else factorial(number - 1, acc * number)
   } yield n
