@@ -1,5 +1,4 @@
 java -version
 /usr/libexec/java_home -V
-
-export JAVA_HOME=`/usr/libexec/java_home -v 12.0.1`
 export JAVA_HOME=`/usr/libexec/java_home -v 11.0.1`
+java -version
