@@ -1,4 +1,11 @@
 name := "learn-scala-cook-book-aa"
+version := "0.2.6"
+scalaVersion := "2.13.1"
+
+// https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
+// sbt compile
+// sbt run
+mainClass in (Compile, run) := Some("_degoes.fp_to_the_max.steps.StepG3")
 
 scalacOptions ++= Seq(
   "-language:postfixOps",
@@ -24,8 +31,6 @@ scalacOptions ++= Seq(
   "-opt-inline-from:<source>",
   //  "-Xfatal-warnings",     // treat warning as fatal. 53 warnings @ Nov 30
 )
-version := "0.2.6"
-scalaVersion := "2.13.1"
 
 //addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6")
 //addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
