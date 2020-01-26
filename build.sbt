@@ -7,6 +7,10 @@ scalaVersion := "2.13.1"
 // sbt run
 mainClass in (Compile, run) := Some("degoes.fp_to_the_max.steps.StepG3")
 
+javacOptions ++= Seq(
+//  "-source", "1.8",
+//  "-target", "1.8"
+)
 scalacOptions ++= Seq(
   "-language:postfixOps",
   "-language:higherKinds",
