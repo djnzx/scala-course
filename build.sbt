@@ -5,7 +5,7 @@ scalaVersion := "2.13.1"
 // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
 // sbt compile
 // sbt run
-mainClass in (Compile, run) := Some("_degoes.fp_to_the_max.steps.StepG3")
+mainClass in (Compile, run) := Some("degoes.fp_to_the_max.steps.StepG3")
 
 scalacOptions ++= Seq(
   "-language:postfixOps",
