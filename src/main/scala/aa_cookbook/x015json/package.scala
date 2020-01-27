@@ -1,3 +1,5 @@
+package aa_cookbook
+
 package object x015json {
 
   val place = Place(

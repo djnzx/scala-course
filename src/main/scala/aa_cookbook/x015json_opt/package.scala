@@ -1,3 +1,5 @@
+package aa_cookbook
+
 package object x015json_opt {
 
   // data to process
