@@ -22,4 +22,14 @@ object Fps6ImplicitScope extends App {
 
   nested()
 
+  val l0: Seq[Int] = List(1,2,3)
+  val l1: Seq[Int] = l0.flatMap(x => List(x, x+1))
+  println(l1)
+
+  val l2: Seq[List[Int]] = l0.map(x => List(x, x+1))
+  val l3: Seq[Int] = l2.flatten
+  println(l3)
+
+  val f0 = Some(1)
+  val f1: Option[List[Int]] = f0.map(x => List(x-1, x+1))
 }
