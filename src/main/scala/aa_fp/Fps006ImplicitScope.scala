@@ -1,6 +1,6 @@
 package aa_fp
 
-object Fps6ImplicitScope extends App {
+object Fps006ImplicitScope extends App {
 
   def inc(origin: Int)(implicit delta: Int): Int = origin + delta
 

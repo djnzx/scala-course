@@ -34,8 +34,8 @@ object Fps004Lazy2 extends App {
 
   ex1a(block_of_code()) // block_of_code MAY BE evaluated (called) INSIDE function, because of: `code: => Long`
   ex1b(block_of_code()) // block_of_code MAY BE evaluated (called) INSIDE function, because of: `code: => Long`
-  ex2a(block_of_code()) // block_of_code WILL BE called (evaluated) HERE, because of: `code: Long`
-  ex2b(block_of_code()) // block_of_code WILL BE called (evaluated) HERE, because of: `code: Long`
+  ex2a(block_of_code()) // block_of_code WILL BE evaluated (called) HERE, because of: `code: Long`
+  ex2b(block_of_code()) // block_of_code WILL BE evaluated (called) HERE, because of: `code: Long`
 
   println(counter) // 3 will be printed
 
