@@ -11,8 +11,8 @@ object MergeApp extends App {
   def mergeR[A: Numeric](left: Seq[A], right: Seq[A], acc: Seq[A]): Seq[A] =
     (left, right) match {
       case (Nil, Nil) => acc
-      case (Nil, _)   => acc :+ right
-      case (_, Nil)   => acc :+ left
+      case (Nil, _)   => acc ++ right
+      case (_, Nil)   => acc ++ left
       case (lh::lt, rh::rt) => if (lh < rh) mergeR(lt, right, acc :+ lh)
                                else mergeR(left, rt, acc :+ rh)
     }
