@@ -1,6 +1,6 @@
 package aa_fp
 
-import java.io.{BufferedReader, File, FileReader}
+import java.io.{BufferedReader, BufferedWriter, File, FileReader, FileWriter}
 
 import scala.io.Source
 import scala.util.Using
@@ -68,5 +68,18 @@ object Fps007IO extends App {
       Iterator.unfold(())(_ => Option(br.readLine()).map(_ -> ())).toList
     }
 
+  def writeFile(filename: String, lines: Seq[String]): Unit = {
+    val file = new File(filename)
+    val bw = new BufferedWriter(new FileWriter(file))
+    for (line <- lines) {
+      bw.write(line)
+    }
+    bw.close()
+  }
+
+  def writeFile2(filename: String, lines: Seq[String]): Try[Seq[Unit]] =
+    Using(new BufferedWriter(new FileWriter(new File(filename)))) { bw =>
+      lines.map(l => bw.write(l))
+    }
 
 }
