@@ -3,6 +3,7 @@ package topics
 import scala.collection.mutable.ArrayBuffer
 
 package object for_comprehensions {
+
   case class Person(name: String)
 
   case class Sequence[A](initial: A*) { // varargs
