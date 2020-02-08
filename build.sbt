@@ -78,5 +78,5 @@ libraryDependencies ++= Seq(
   "io.monix"      %% "monix"        % MonixVersion,
   "org.tpolecat"  %% "doobie-core"  % "0.8.8",
 //  "org.tpolecat" %% "doobie-postgres" % "0.8.8",
-  "org.scalactic" % "scalactic_2.13" % "3.1.0",
+//  "org.scalactic" % "scalactic_2.13" % "3.1.0",
 )
