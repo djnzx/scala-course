@@ -49,6 +49,7 @@ resolvers ++= Seq(
 
 val ZIOVersion        = "1.0.0-RC17"
 val CatsVersion       = "2.0.0"
+val CatsEffectVersion = "2.1.1"
 val MonixVersion      = "3.0.0"
 
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
@@ -69,7 +70,7 @@ libraryDependencies ++= Seq(
   "com.typesafe" % "config" % "1.4.0",
 
   "org.typelevel" %% "cats-core"    % CatsVersion,
-  "org.typelevel" %% "cats-effect"  % CatsVersion,
+  "org.typelevel" %% "cats-effect"  % CatsEffectVersion,
   "org.scalatest" %% "scalatest"    % "3.0.8",
   "dev.zio"       %% "zio"          % ZIOVersion,
   "dev.zio"       %% "zio-streams"  % ZIOVersion,

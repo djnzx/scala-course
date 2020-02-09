@@ -2,7 +2,7 @@ package aa_fp
 
 import scala.annotation.tailrec
 
-object Fps011SimpleFpApp extends App {
+object Fps011SimpleFpAppFlipCoin extends App {
 
   case class GameState(total: Int, right: Int) {
     def guessed: GameState = GameState(total + 1, right + 1)
