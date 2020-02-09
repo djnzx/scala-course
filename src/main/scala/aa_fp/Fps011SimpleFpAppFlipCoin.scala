@@ -15,11 +15,6 @@ object Fps011SimpleFpAppFlipCoin extends App {
     case 0 => "H"
     case _ => "T"
   }
-  def checkQuit: Boolean = getStrLn match {
-    case "q" => true
-    case _ => false
-  }
-
   val finish = loop(GameState(0,0))
 
   @tailrec
@@ -29,9 +24,9 @@ object Fps011SimpleFpAppFlipCoin extends App {
                         else (state.wrong, "You guessed wrong:(")
     putStrLn(s"$msg\n")
     putStrLn("Do you want to continue (any key) or quit(q)?")
-    checkQuit match {
-      case true  => state2
-      case false => loop(state2)
+    getStrLn match {
+      case "q" => state2
+      case _ => loop(state2)
     }
   }
 
