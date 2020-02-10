@@ -1,10 +1,16 @@
 package aa_fp
 
 /**
-  * state transformation ONLY
-  * @param run
-  * @tparam S
-  * @tparam A
+  *                   `==============`
+  * the semantics of  | S => (S, A) |  is:
+  *                  `==============`
+  *
+  * to calculate the new state
+  * based on current state
+  * by applying business logic
+  * by accessing to needed variables
+  * via closure of parent function
+  *
   */
 case class StateX[S, A](run: S => (S, A)) {
 
@@ -18,11 +24,16 @@ case class StateX[S, A](run: S => (S, A)) {
     r
   }
 
+//  def map0[B](f: A => B): StateX[S, B] = flatMap(a => StateX.point(f(a)))
   def map[B](f: A => B): StateX[S, B] = {
     println("StateX:map(...)")
-    flatMap(a => StateX.point(f(a)))
+    StateX { s0 =>
+      val (s1, a): (S, A) = run(s0)
+      val ff: A => StateX[S, B] = (a: A) => StateX { s: S => (s, f(a)) }
+      val r: (S, B) = ff(a).run(s1)
+      r
+    }
   }
-//  def map2[B](f: A => B): StateX[S, B] = flatMap(a => StateX(s => (s, f(a))) )
 }
 
 object StateX {

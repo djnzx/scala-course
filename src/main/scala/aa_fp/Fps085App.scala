@@ -4,22 +4,46 @@ object Fps085App extends App {
 
   case class GolfState(value: Int)
 
+  /**
+    * 1. it takes current state and delta
+    * 2. it calculates new state (business logic)
+    * 3. it returns tuple with new state and new value
+    */
+  val up_impl = (state: GolfState, delta: Int) => {
+    val val2 = state.value + delta
+    (GolfState(val2), val2)
+  }
+
+  /**
+    * 1. it takes current state and delta
+    * 2. it calculates new state (business logic)
+    * 3. it returns tuple with new state and new value
+    */
+  val down_impl = (state: GolfState, delta: Int) => {
+    val val2 = state.value - delta
+    (GolfState(val2), val2)
+  }
+
+  /**
+    *                   `==============`
+    * the semantics of  | S => (S, A) |  is:
+    *                  `==============`
+    *
+    * to calculate the new state
+    * based on current state
+    * by applying business logic
+    * by accessing to needed variables
+    * via closure of parent function
+    *
+    */
   def up(delta: Int): StateX[GolfState, Int] = {
     println(s"up function...delta=$delta")
-
-    StateX { gs =>
-      val dist2 = gs.value + delta
-      (GolfState(dist2), dist2)
-    }
+    StateX { st => up_impl(st, delta) }
   }
 
   def down(delta: Int): StateX[GolfState, Int] = {
     println("down function...")
-
-    StateX { gs =>
-      val d2 = gs.value - delta
-      (GolfState(d2), d2)
-    }
+    StateX { st => down_impl(st, delta) }
   }
 
   val state0: GolfState = GolfState(0)
@@ -99,15 +123,19 @@ object Fps085App extends App {
     * one call
     * swing...
     */
-//  println("-> running T1 transformation:")
-//  val state1: (GolfState, Int) = t1.run(state0)
-//  println("-> running T2 transformation:")
-//  val state2: (GolfState, Int) = t2.run(state0)
+  println("-> running T1 transformation:")
+  val state1: (GolfState, Int) = t1.run(state0)
+  println("-> running T2 transformation:")
+  val state2: (GolfState, Int) = t2.run(state0)
 //  println("-> running T2 transformation:")
 //  val state3: (GolfState, Int) = t3.run(state0)
 
-//  println("-> results:")
-//  println(s"Tuple:    $state1")       // (GolfState(36),36)
-//  println(s"GolfState:${state1._1}")  // GolfState(36)
-//  println(s"Value:    ${state1._2}")  // 36
+  println("-> results:")
+  println(s"Tuple:    $state1")       // (GolfState(20),20)
+  println(s"GolfState:${state1._1}")  // GolfState(20)
+  println(s"Value:    ${state1._2}")  // 20
+
+  println(s"Tuple:    $state2")       // (GolfState(17),17)
+  println(s"GolfState:${state2._1}")  // GolfState(17)
+  println(s"Value:    ${state2._2}")  // 17
 }
