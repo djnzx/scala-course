@@ -1,5 +1,7 @@
 package aa_fp
 
+import aa_fp.Fps085StateMonadCleaned2.StateXC
+
 /**
   *                   `==============`
   * the semantics of  | S => (S, A) |  is:
@@ -18,6 +20,8 @@ case class StateX[S, A] private (run: S => (S, A)) {
 
   import Console._
 
+  println(s"${BLUE}SX:constructor$RESET")
+
   def flatMap[B](f: A => StateX[S, B]): StateX[S, B] = StateX { s0 =>
     println(s"SX:$s0:flatMap:1/5:applying having:run(s0)...")
     val (s1, a): (S, A) = run(s0)
@@ -30,10 +34,15 @@ case class StateX[S, A] private (run: S => (S, A)) {
     r
   }
 
-  def map[B](f: A => B): StateX[S, B] = StateX { s0 =>
-    println(s"SX:$s0:map:1/2:applying having:run(s0)...")
-    val (s1, a) = run(s0)
-    println(s"SX:$s0:map:2/2:applied $GREEN[$s1:$a]$RESET leaving...")
-    (s1, f(a))
-  }
+  def map[B](f: A => B): StateX[S, B] = flatMap(a => StateX.lift(f(a)))
+//  def map[B](f: A => B): StateX[S, B] = StateX { s0 =>
+//    println(s"SX:$s0:map:1/2:applying having:run(s0)...")
+//    val (s1, a) = run(s0)
+//    println(s"SX:$s0:map:2/2:applied $GREEN[$s1:$a]$RESET leaving...")
+//    (s1, f(a))
+//  }
+}
+
+object StateX {
+  def lift[S, A](a: A): StateX[S, A] = StateX { s => (s, a) }
 }

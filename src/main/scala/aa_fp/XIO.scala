@@ -1,8 +1,8 @@
 package aa_fp
 
-class XIO[A] private(body: => A) {
+class XIO[A] private (body: => A) {
   def run: A = body
-  def map[B](f: A => B): XIO[B] = XIO(f(this.run))
+  def map[B](f: A => B):         XIO[B] = XIO(f(this.run))
   def flatMap[B](f: A => XIO[B]): XIO[B] = XIO(f(this.run).run)
 }
 

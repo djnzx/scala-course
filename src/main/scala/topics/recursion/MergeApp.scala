@@ -2,13 +2,14 @@ package topics.recursion
 
 import scala.annotation.tailrec
 import Ordering.Implicits._
+import scala.math.Ordering
 
 object MergeApp extends App {
 
-  def merge[A: Numeric](left: Seq[A], right: Seq[A]): Seq[A] = mergeR(left, right, Nil)
+  def merge[A: Ordering](left: Seq[A], right: Seq[A]): Seq[A] = mergeR(left, right, Nil)
 
   @tailrec
-  def mergeR[A: Numeric](left: Seq[A], right: Seq[A], acc: Seq[A]): Seq[A] =
+  def mergeR[A: Ordering](left: Seq[A], right: Seq[A], acc: Seq[A]): Seq[A] =
     (left, right) match {
       case (Nil, Nil) => acc
       case (Nil, _)   => acc ++ right
