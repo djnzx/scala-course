@@ -19,9 +19,11 @@ object MergeApp extends App {
     }
 
   assert(merge[Int](Nil, Nil) == Nil)
+  assert(merge(Seq(1), Nil) == Seq(1))
   assert(merge(Seq(1,2,3), Nil) == Seq(1,2,3))
+  assert(merge(Nil, Seq(4)) == Seq(4))
   assert(merge(Nil, Seq(4,5,6)) == Seq(4,5,6))
   assert(merge(Seq(1,2,3), Seq(4,5,6)) == List(1, 2, 3, 4, 5, 6))
-  assert(merge(Seq(1,3,5), Seq(2,4,6)) == List(1, 2, 3, 4, 5, 6))
+  assert(merge(Seq(1,3,5,7), Seq(2,4,6)) == List(1, 2, 3, 4, 5, 6, 7))
   assert(merge(Seq(10,11,20), Seq(12,13,21)) == List(10, 11, 12, 13, 20, 21))
 }
