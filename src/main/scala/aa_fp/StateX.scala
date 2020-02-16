@@ -1,7 +1,5 @@
 package aa_fp
 
-import aa_fp.Fps085StateMonadCleaned2.StateXC
-
 /**
   *                   `==============`
   * the semantics of  | S => (S, A) |  is:
