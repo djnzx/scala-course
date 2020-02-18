@@ -1,53 +1,68 @@
 package topics.state_monad_evo
 
-import cats.data.State
+//import cats.data.State
 
 object StateMonadEvoAppV6 extends App {
 
-  println(s"Prices: $prices")
-  println(s"Portfolio: $portfolio")
-
-  val get_price0: String => Double = (stock_name: String) => prices(stock_name)
-
-  val sell0: (String, Double, Stocks) => (Stocks, Double) =
-    (stock_name: String, stock_amount: Double, pf: Stocks) => {
-      val earned: Double = stock_amount * get_price0(stock_name)
-      val now: Double = pf(stock_name) - stock_amount
-      (pf + (stock_name -> now), earned)
+  case class State[S, A](run: S => (S, A)) {
+    def flatMap[B](f: A => State[S, B]): State[S, B] = State { st =>
+      val (s1, a) = run(st)
+      f(a).run(s1)
     }
-
-  val buy0 = (stock_name: String, stock_amount: Double, pf: Stocks) => {
-    val spent: Double = stock_amount * get_price0(stock_name)
-    val now = pf(stock_name) + stock_amount
-    (pf + (stock_name -> now), spent)
+    def map[B](f: A => B): State[S, B] = State { st =>
+      val (s1, a) = run(st)
+      (s1, f(a))
+    }
   }
 
-  // plain usage
-  val (portfolio2, earned) = sell0("APPLE", 5, portfolio)
-  println(earned)
-  println(portfolio2)
-  val (portfolio3, spent) = buy0("GOOGLE", 10, portfolio2)
-  println(spent)
-  println(portfolio3)
+  type Stocks = Map[String, Double]
 
-  // State Monad wrappers
-  val buy: (String, Double) => State[Stocks, Double] =
-    (stock_name: String, stock_amount: Double) => State { state => {
-      buy0(stock_name, stock_amount, state)
-    }}
+  val prices: Stocks = Map(
+    "AAPL"->1000,
+    "GOGL"->1100,
+    "FCBK"->1200,
+    "AMZN"->1300
+  )
 
-  val sell: (String, Double) => State[Stocks, Double] =
-    (stock_name: String, stock_amount: Double) => State { state => {
-    sell0(stock_name, stock_amount, state)
-  }}
+  val portfolio: Stocks = Map(
+    "AAPL"->10,
+    "GOGL"->11,
+    "FCBK"->12,
+    "AMZN"->13
+  )
 
-  val combination: State[Stocks, (Double, Double)] = for {
-    earned <- sell("APPLE", 5)
-    spent  <- buy("GOOGLE", 6)
-  } yield (earned, spent)
-  val (portfolio4, (earned2, spent2)) = combination.run(portfolio).value
-  println(s"portfolio4 = ${portfolio4}")
-  println(s"earned2 = ${earned2}")
-  println(s"spent2 = ${spent2}")
+  val sell = (stock_name: String, stock_amount: Double) => State { state: Stocks =>
+    val own_amount = portfolio(stock_name)
+    val price1 = prices(stock_name)
+    val earned = stock_amount * price1
+    (state + ( stock_name -> (own_amount - stock_amount)), earned)
+  }
+
+  val buy = (stock_name: String, stock_amount: Double) => State { state: Stocks =>
+    val own_amount = portfolio(stock_name)
+    val price1 = prices(stock_name)
+    val spent = stock_amount * price1
+    (state + ( stock_name -> (own_amount + stock_amount)), spent)
+  }
+
+  val combine21 = for {
+    earned <- sell("AMZN", 3)
+    spend  <- buy("AAPL", 10)
+  } yield (earned, spend)
+
+  val combine22 =
+    sell("AMZN", 3).flatMap(earned =>
+      buy("AAPL", 10).map(spent =>
+        (earned, spent)))
+
+
+//  val (portfolio2, (earned, spent)) = combine.run(portfolio).value
+  val (portfolio21, (earned, spent)) = combine21.run(portfolio)
+  println(s"portfolio = ${portfolio}")
+  println(s"portfolio2 = ${portfolio21}")
+  println(s"selling: AMZN, 3")
+  println(s"earned = ${earned}")
+  println(s"buying: AAPL, 10")
+  println(s"spent = ${spent}")
 
 }

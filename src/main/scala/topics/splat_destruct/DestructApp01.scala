@@ -12,9 +12,11 @@ object DestructApp01 extends App {
   def g4(xs:Int*) = xs.foldLeft(0)(_ + _)
 
   println(g1())                    // 0
-  println(g2(1))              // 1
-  println(g3(1, 2, 3))        // 6
-  println(g4(Seq(1, 2, 3, 4): _*)) // 10
+  println(g1())                    // 0
+  println(g1(1))              // 1
+  println(g1(1, 2, 3))        // 6
+  println(g1(Seq(1, 2, 3, 4): _*)) // 10
+  println(g1(List(1, 2, 3, 4): _*)) // 10
 
   // fixed arity syntax
   def f(x:Int, y:Double): Double = x * y
