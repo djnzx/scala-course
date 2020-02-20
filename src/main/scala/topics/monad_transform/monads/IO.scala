@@ -1,15 +1,13 @@
 package topics.monad_transform.monads
 
-class IO[A] private (constructorCodeBlock: => A) {
+class IO[A] private (body: => A) {
 
-  def run = constructorCodeBlock
+  def run: A = body
 
-  def flatMapOrig[B](f: A => IO[B]): IO[B] = IO(f(run).run)
-
-  def flatMap[B](customFmapAlgorithm: A => IO[B]): IO[B] = {
-    val res1: IO[B] = customFmapAlgorithm(run)
-    val res2: B = res1.run
-    IO(res2)
+  def flatMap[B](f: A => IO[B]): IO[B] = {
+    val iob: IO[B] = f(run)
+    val b: B = iob.run
+    IO(b)
   }
 
   def map[B](f: A => B): IO[B] = flatMap(a => IO(f(a)))

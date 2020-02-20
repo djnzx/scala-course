@@ -2,9 +2,7 @@ package topics.monad_transform.monads
 
 case class StateT[M[_], S, A](run: S => M[(S, A)]) {
   def flatMap[B](g: A => StateT[M, S, B])(implicit M: Monad[M]): StateT[M, S, B] = StateT { s0 =>
-    M.flatMap(run(s0)) {
-      case (s1, a) => g(a).run(s1)
-    }
+    M.flatMap(run(s0)) { case (s1, a) => g(a).run(s1) }
   }
 
   def map[B](f: A => B)(implicit M: Monad[M]): StateT[M, S, B] = flatMap(a => StateT.point(f(a)))

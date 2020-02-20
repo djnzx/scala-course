@@ -4,17 +4,6 @@ package topics.state_monad_evo
 
 object StateMonadEvoAppV6 extends App {
 
-  case class State[S, A](run: S => (S, A)) {
-    def flatMap[B](f: A => State[S, B]): State[S, B] = State { st =>
-      val (s1, a) = run(st)
-      f(a).run(s1)
-    }
-    def map[B](f: A => B): State[S, B] = State { st =>
-      val (s1, a) = run(st)
-      (s1, f(a))
-    }
-  }
-
   type Stocks = Map[String, Double]
 
   val prices: Stocks = Map(
@@ -45,9 +34,17 @@ object StateMonadEvoAppV6 extends App {
     (state + ( stock_name -> (own_amount + stock_amount)), spent)
   }
 
-  val combine21 = for {
+  def peek[A](f: Stocks => A) = State { state: Stocks =>
+    val r: A = f(state)
+    (state, r)
+  }
+
+  val combine21: State[Stocks, (Double, Double)] = for {
+    five    <- peek { st => println(s"BEF:$st"); 5 }
+    _      <- peek { _ => println(s"FIVE:$five") }
     earned <- sell("AMZN", 3)
     spend  <- buy("AAPL", 10)
+    _      <- peek { st => println(s"AFT:$st") }
   } yield (earned, spend)
 
   val combine22 =
@@ -56,7 +53,7 @@ object StateMonadEvoAppV6 extends App {
         (earned, spent)))
 
 
-//  val (portfolio2, (earned, spent)) = combine.run(portfolio).value
+//  val (portfolio21, (earned, spent)) = combine21.run(portfolio).value
   val (portfolio21, (earned, spent)) = combine21.run(portfolio)
   println(s"portfolio = ${portfolio}")
   println(s"portfolio2 = ${portfolio21}")
