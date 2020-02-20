@@ -4,7 +4,7 @@ import monads.{IO, State}
 
 import scala.io.StdIn
 
-object TryStateAndIoTogether extends App {
+object MonadDontCompose extends App {
 
     /**
       * State code

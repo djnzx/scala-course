@@ -26,10 +26,10 @@ object LoopWithoutQuitLotsOfDebug extends App {
     }
 
     // a class to track the sum of the ints that are given
-    case class SumState(sum: Int)
+    case class Sum(value: Int)
 
     // an implementation of the `Monad` trait for the `IO` type
-    implicit val IOMonad = new Monad[IO] {
+    implicit val IOMonad: Monad[IO] = new Monad[IO] {
         def lift[A](a: => A): IO[A] = {
             // only see this output when the loop exits properly
             //println(s"IOMonad::point received 'a': $a")
@@ -39,24 +39,24 @@ object LoopWithoutQuitLotsOfDebug extends App {
     }
 
     /**
-      * given the int `i`, add it to the previous `sum` from the given SumState `s`;
+      * given the int `delta`, add it to the previous `sum` from the given SumState `s`;
       * then return a new state `newState`, created with the new sum;
       * at the end of the function, wrap `newState` in an `IO`;
       * the anonymous function creates a `StateT` wrapped around that `IO`.
       */
-    def doSumWithStateT(newValue: Int): StateT[IO, SumState, Int] = StateT { (oldState: SumState) =>
+    def doSumWithStateT(delta: Int): StateT[IO, Sum, Int] = StateT { st: Sum =>
 
         // create a new sum from `i` and the previous sum from `s`
-        val newSum = newValue + oldState.sum
-        println(s"updateIntState, old sum:   " + oldState.sum)
-        println(s"updateIntState, new input: " + newValue)
-        println(s"updateIntState, new sum:   " + newSum)
+        val value2 = st.value + delta
+        println(s"updateIntState, old sum:   " + st.value)
+        println(s"updateIntState, new input: " + delta)
+        println(s"updateIntState, new sum:   " + value2)
 
         // create a new SumState
-        val newState: SumState = oldState.copy(sum = newSum)
+        val state2: Sum = st.copy(value = value2)
 
         // return the new state and the new sum, wrapped in an IO
-        IO(newState, newSum)
+        IO(state2, value2)
     }
 
     /**
@@ -65,10 +65,10 @@ object LoopWithoutQuitLotsOfDebug extends App {
       * the `IO[A]` into an `IO[(SumState, A)]`;
       * that result is then wrapped in a `StateT`.
       */
-    def liftIoIntoStateT[A](io: IO[A]): StateT[IO, SumState, A] = StateT { s: SumState =>
+    def liftIoIntoStateT[A](io: IO[A]): StateT[IO, Sum, A] = StateT { st: Sum =>
 
         // transform `IO[A]` into `IO(SumState, A)`
-        val result: IO[(SumState, A)] = io.map(a => (s, a))
+        val result: IO[(Sum, A)] = io.map { a => (st, a) }
 
         // debug: use this as a way to see what's going on here. if you enter 1 and then 2
         // you'll see the output, `(SumState(1), 2)`.
@@ -79,13 +79,13 @@ object LoopWithoutQuitLotsOfDebug extends App {
     }
 
     // new versions of the i/o functions that uses StateT
-    def getLineAsStateT():         StateT[IO, SumState, String] = liftIoIntoStateT(getLine)
-    def putStrAsStateT(s: String): StateT[IO, SumState, Unit]   = liftIoIntoStateT(putStr(s))
+    def getLineAsStateT():         StateT[IO, Sum, String] = liftIoIntoStateT(getLine)
+    def putStrAsStateT(s: String): StateT[IO, Sum, Unit]   = liftIoIntoStateT(putStr(s))
 
     /**
       * you have to kill this loop manually (i.e., CTRL-C)
       */
-    def sumLoop: StateT[IO, SumState, Unit] = for {
+    def sumLoop: StateT[IO, Sum, Unit] = for {
         _     <- putStrAsStateT("\ngive me an int: ")
         input <- getLineAsStateT
         i     <- liftIoIntoStateT(IO(toInt(input)))
@@ -93,7 +93,7 @@ object LoopWithoutQuitLotsOfDebug extends App {
         _     <- sumLoop
     } yield ()
 
-    val result: (SumState, Unit) = sumLoop.run(SumState(0)).run
+    val result: (Sum, Unit) = sumLoop.run(Sum(0)).run
 
     // this line won't be reached because you have to kill the loop manually
     println(s"Final SumState: ${result._1}")
