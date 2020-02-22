@@ -1,5 +1,5 @@
-name := "learn-scala-cook-book-aa"
-version := "0.2.6"
+name         := "learn-scala-cook-book-aa"
+version      := "0.2.22"
 scalaVersion := "2.13.1"
 
 // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
@@ -41,46 +41,50 @@ scalacOptions ++= Seq(
 //addCommandAlias("check", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")
 
 resolvers ++= Seq(
-//  Resolver.sonatypeRepo("releases"),
-//  Resolver.sonatypeRepo("snapshots")
-  //  "Typesafe" at "http://repo.typesafe.com/typesafe/releases/",
-//  "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
+  Resolver.mavenLocal,
+  Resolver.mavenCentral,
+  Resolver.typesafeRepo("releases"),
+  Resolver.sonatypeRepo("releases"),
+  Resolver.sonatypeRepo("snapshots"),
 )
 
-val ZIOVersion        = "1.0.0-RC17"
-val CatsVersion       = "2.0.0"
-val CatsEffectVersion = "2.1.1"
-val MonixVersion      = "3.0.0"
-val ScalaZVersion     = "7.2.30"
+lazy val akkaVersion       = "2.6.3"
+lazy val ZIOVersion        = "1.0.0-RC17"
+lazy val CatsVersion       = "2.0.0"
+lazy val CatsEffectVersion = "2.1.1"
+lazy val MonixVersion      = "3.0.0"
+lazy val ScalaZVersion     = "7.2.30"
+lazy val playVersion       = "2.8.1"
+lazy val slickVersion      = "3.3.2"
+lazy val pgDriverVersion   = "42.2.10"
 
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
 libraryDependencies ++= Seq(
+  "ch.qos.logback"         % "logback-classic"             % "1.2.3",
   "org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0",
-  "org.scala-lang.modules" %% "scala-xml" % "1.2.0",
-  "com.typesafe.akka" %% "akka-actor" % "2.5.23",
-
-  "com.typesafe.slick" %% "slick" % "3.3.2",          // core
-  "com.typesafe.slick" %% "slick-hikaricp" % "3.3.2", // connection pool
-  "org.postgresql" % "postgresql" % "42.2.8",         // database driver
-
-  "com.typesafe.play" %% "play-json" % "2.7.4",       // JSON converter
-  "com.chuusai" %% "shapeless" % "2.3.3",
-
-//  "com.h2database" % "h2" % "1.4.197",
-  "ch.qos.logback" % "logback-classic" % "1.2.3",
-  "com.typesafe" % "config" % "1.4.0",
-
-  "org.typelevel" %% "cats-core"     % CatsVersion,
-  "org.typelevel" %% "cats-effect"   % CatsEffectVersion,
-  "org.scalatest" %% "scalatest"     % "3.0.8",
-  "dev.zio"       %% "zio"           % ZIOVersion,
-  "dev.zio"       %% "zio-streams"   % ZIOVersion,
-  "io.lemonlabs"  %% "scala-uri"     % "1.5.1",
-
-  "io.monix"      %% "monix"         % MonixVersion,
-  "org.tpolecat"  %% "doobie-core"   % "0.8.8",
-  "org.scalaz"    %% "scalaz-core"   % ScalaZVersion,
-  "org.scalaz"    %% "scalaz-effect" % ScalaZVersion,
-//  "org.tpolecat" %% "doobie-postgres" % "0.8.8",
-//  "org.scalactic" % "scalactic_2.13" % "3.1.0",
+  "org.scala-lang.modules" %% "scala-xml"                  % "1.2.0",
+  "org.postgresql"         % "postgresql"                  % pgDriverVersion,
+  //  "com.h2database" % "h2" % "1.4.200",
+  "org.tpolecat"           %% "doobie-core"                % "0.8.8",
+  "org.tpolecat"           %% "doobie-postgres"            % "0.8.8",
+  "com.typesafe.slick"     %% "slick"                      % slickVersion,
+  "com.typesafe.slick"     %% "slick-hikaricp"             % slickVersion,
+  "com.typesafe.play"      %% "play-json"                  % playVersion,
+  "com.typesafe"           % "config"                       % "1.4.0",
+  "com.chuusai"            %% "shapeless"                  % "2.3.3",
+  "io.lemonlabs"           %% "scala-uri"                  % "1.5.1",
+  "io.monix"               %% "monix"                      % MonixVersion,
+  "org.typelevel"          %% "cats-core"                  % CatsVersion,
+  "org.typelevel"          %% "cats-effect"                % CatsEffectVersion,
+  "dev.zio"                %% "zio"                        % ZIOVersion,
+  "dev.zio"                %% "zio-streams"                % ZIOVersion,
+  "org.scalaz"             %% "scalaz-core"                % ScalaZVersion,
+  "org.scalaz"             %% "scalaz-effect"              % ScalaZVersion,
+  "com.typesafe.akka"      %% "akka-actor-typed"           % akkaVersion,
+  "com.typesafe.akka"      %% "akka-actor-testkit-typed"   % akkaVersion     % Test,
+  "org.scalatest"          %% "scalatest"                  % "3.1.0"         % Test,
+  "org.scalactic"          % "scalactic_2.13"              % "3.1.1",
+  "com.softwaremill.quicklens" %% "quicklens"              % "1.4.12",
 )
+
+initialCommands in console := "import scalaz._, Scalaz._"

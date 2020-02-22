@@ -1,6 +1,6 @@
 package twitter
 
-import scala.concurrent.Future
+//import scala.concurrent.Future
 import scala.language.implicitConversions
 
 /**
@@ -39,8 +39,8 @@ object TWApp03 extends App {
   }
 
   // since scala 2.8 we can write
-  def foo1[A](implicit ev: Ordered[A]) {}
-  def foo2[A: Ordered] {} // means `A` implements `Ordered`
+  def foo1[A](implicit ev: Ordered[A]): Unit = { println(ev) }
+  def foo2[A: Ordered]: Unit = {} // means `A` implements `Ordered`
   val o: Ordering[Int] = implicitly[Ordering[Int]]
 
   trait ContainerHK[M[_]] {
