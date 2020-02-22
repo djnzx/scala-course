@@ -51,6 +51,7 @@ val ZIOVersion        = "1.0.0-RC17"
 val CatsVersion       = "2.0.0"
 val CatsEffectVersion = "2.1.1"
 val MonixVersion      = "3.0.0"
+val ScalaZVersion     = "7.2.30"
 
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
 libraryDependencies ++= Seq(
@@ -69,15 +70,17 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "com.typesafe" % "config" % "1.4.0",
 
-  "org.typelevel" %% "cats-core"    % CatsVersion,
-  "org.typelevel" %% "cats-effect"  % CatsEffectVersion,
-  "org.scalatest" %% "scalatest"    % "3.0.8",
-  "dev.zio"       %% "zio"          % ZIOVersion,
-  "dev.zio"       %% "zio-streams"  % ZIOVersion,
-  "io.lemonlabs"  %% "scala-uri"    % "1.5.1",
+  "org.typelevel" %% "cats-core"     % CatsVersion,
+  "org.typelevel" %% "cats-effect"   % CatsEffectVersion,
+  "org.scalatest" %% "scalatest"     % "3.0.8",
+  "dev.zio"       %% "zio"           % ZIOVersion,
+  "dev.zio"       %% "zio-streams"   % ZIOVersion,
+  "io.lemonlabs"  %% "scala-uri"     % "1.5.1",
 
-  "io.monix"      %% "monix"        % MonixVersion,
-  "org.tpolecat"  %% "doobie-core"  % "0.8.8",
+  "io.monix"      %% "monix"         % MonixVersion,
+  "org.tpolecat"  %% "doobie-core"   % "0.8.8",
+  "org.scalaz"    %% "scalaz-core"   % ScalaZVersion,
+  "org.scalaz"    %% "scalaz-effect" % ScalaZVersion,
 //  "org.tpolecat" %% "doobie-postgres" % "0.8.8",
 //  "org.scalactic" % "scalactic_2.13" % "3.1.0",
 )
