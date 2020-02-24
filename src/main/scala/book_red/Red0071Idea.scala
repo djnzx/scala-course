@@ -33,6 +33,8 @@ object Red0071Idea extends App {
       }
     }
   }
+  def sortPar(ints: Parallel[List[Int]]): Parallel[List[Int]] =
+    map2(ints, unit(()))((a, _) => a.sorted)
 
   def run[A](rep: Parallel[A])(es: ExecutorService): A = rep(es).get
 

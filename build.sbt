@@ -70,7 +70,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick"     %% "slick"                      % slickVersion,
   "com.typesafe.slick"     %% "slick-hikaricp"             % slickVersion,
   "com.typesafe.play"      %% "play-json"                  % playVersion,
-  "com.typesafe"           % "config"                       % "1.4.0",
+  "com.typesafe"           %  "config"                      % "1.4.0",
   "com.chuusai"            %% "shapeless"                  % "2.3.3",
   "io.lemonlabs"           %% "scala-uri"                  % "1.5.1",
   "io.monix"               %% "monix"                      % MonixVersion,
@@ -81,9 +81,10 @@ libraryDependencies ++= Seq(
   "org.scalaz"             %% "scalaz-core"                % ScalaZVersion,
   "org.scalaz"             %% "scalaz-effect"              % ScalaZVersion,
   "com.typesafe.akka"      %% "akka-actor-typed"           % akkaVersion,
-  "com.typesafe.akka"      %% "akka-actor-testkit-typed"   % akkaVersion     % Test,
+//  "com.typesafe.akka"      %% "akka-actor-testkit-typed"   % akkaVersion     % Test,
   "org.scalatest"          %% "scalatest"                  % "3.1.0"         % Test,
-  "org.scalactic"          % "scalactic_2.13"              % "3.1.1",
+  "org.scalacheck"         %% "scalacheck"                 % "1.14.1"        % Test,
+  "org.scalactic"          %  "scalactic_2.13"             % "3.1.1",
   "com.softwaremill.quicklens" %% "quicklens"              % "1.4.12",
 )
 
