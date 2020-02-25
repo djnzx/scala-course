@@ -57,6 +57,6 @@ object Red007step7 extends App {
   println(s"sum = $result")
 
   def sort1Par[A](ints: Par[List[Int]]): Par[List[Int]] = Par.map2(ints, Par.unit(()))((a, _) => a.sorted)
-  def sort1Par[A](ints: Par[List[Int]]): Par[List[Int]] = Par.map(ints)(_.sorted)
+  def sort2Par[A](ints: Par[List[Int]]): Par[List[Int]] = Par.map(ints)(_.sorted)
 
 }
