@@ -42,7 +42,7 @@ sealed trait Option[+A] {
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
 
-object Option {
+object Option extends App {
   def failingFn(i: Int): Int = {
     val y: Int = throw new Exception("fail!") // `val y: Int = ...` declares `y` as having type `Int`, and sets it equal to the right hand side of the `=`.
     try {
@@ -64,10 +64,17 @@ object Option {
     if (xs.isEmpty) None
     else Some(xs.sum / xs.length)
 
+  // EXERCISE 2: Implement the variance function
+  // (if the mean is m , variance is the mean of
+  // math.pow(x - m, 2) , see definition ) in terms of mean and flatMap .
 
-
-
-  def variance(xs: Seq[Double]): Option[Double] = ???
+  val dist = (x: Double, mean: Double) => Math.pow(x - mean, 2)
+  def variance2(xs: Seq[Double]): Option[Double] = for {
+    avg <- mean(xs) // 1.5
+    z = xs.map(x => dist(x, avg))
+    res <- mean(z)
+  } yield res
+  println(variance2(List(1,2)))
 
   def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = ???
 
