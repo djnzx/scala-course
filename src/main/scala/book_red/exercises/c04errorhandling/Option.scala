@@ -1,5 +1,6 @@
 package book_red.exercises.c04errorhandling
 
+import scala.annotation.tailrec
 import scala.{Either => _, Option => _, Some => _, _} // hide std library `Option`, `Some` and `Either`, since we are writing our own in this chapter
 
 sealed trait Option[+A] {
@@ -69,16 +70,73 @@ object Option extends App {
   // math.pow(x - m, 2) , see definition ) in terms of mean and flatMap .
 
   val dist = (x: Double, mean: Double) => Math.pow(x - mean, 2)
-  def variance2(xs: Seq[Double]): Option[Double] = for {
-    avg <- mean(xs) // 1.5
-    z = xs.map(x => dist(x, avg))
-    res <- mean(z)
+
+  def variance(xs: Seq[Double]): Option[Double] = for {
+    avg <- mean(xs)
+    ds = xs.map(x => dist(x, avg))
+    res <- mean(ds)
   } yield res
-  println(variance2(List(1,2)))
+//  println(variance(List(1,2)))
 
-  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = ???
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = for {
+    av <- a
+    bv <- b
+    c = f(av, bv)
+  } yield c
 
-  def sequence[A](a: List[Option[A]]): Option[List[A]] = ???
+  def map2b[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
+    a.flatMap(av => b.map(bv => f(av, bv)))
 
-  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = ???
+  def sequenceTR[A](oas: List[Option[A]]): Option[List[A]] = {
+    @tailrec
+    def go(oast: List[Option[A]], acc: List[A]): Option[List[A]] = oast match {
+      case Nil => Some(acc)
+      case h::t => h match {
+        case None => None
+        case Some(a) => go(t, a::acc)
+      }
+    }
+    go(oas, Nil) map { _ reverse }
+  }
+
+  def sequence[A](oas: List[Option[A]]): Option[List[A]] = oas match {
+    case Nil => Some(Nil)
+    case h::t => map2(h, sequence(t))( (x: A, xs: List[A]) => x :: xs )
+  }
+
+  val lo = (1 to 5).map(Some(_)).toList
+  println(sequence(Nil))
+  println(sequence(lo))
+  println(sequence(lo:+None))
+  println(sequence(None::lo))
+
+
+  def traverseTR[A, B](as: List[A])(f: A => Option[B]): Option[List[B]] = {
+    @tailrec
+    def go(ast: List[A], acc: List[B]): Option[List[B]] = ast match {
+      case Nil  => Some(acc)
+      case h::t => f(h) match {
+        case Some(b) => go(t, b :: acc)
+        case _       => None
+      }
+    }
+    go(as, Nil) map { _ reverse }
+  }
+
+  def traverse[A, B](as: List[A])(f: A => Option[B]): Option[List[B]] = as match {
+    case Nil  => Some(Nil)
+    case h::t => map2(f(h), traverse(t)(f))((x: B, xs: List[B])=> x :: xs)
+  }
+
+  val sl = List(1,2,3,4,5)
+  val f1 = (x: Int) => Some(x * 10)
+  val f2 = (x: Int) => x match {
+    case 3 => None
+    case _ => Some(x * 10)
+  }
+
+  println(traverseTR(sl)(f1)) // Some(List(10, 20, 30, 40, 50))
+  println(traverseTR(sl)(f2)) // None
+  println(traverse(sl)(f1)) // Some(List(10, 20, 30, 40, 50))
+  println(traverse(sl)(f2)) // None
 }
