@@ -99,17 +99,19 @@ object Option extends App {
     go(oas, Nil) map { _ reverse }
   }
 
-  def sequence[A](oas: List[Option[A]]): Option[List[A]] = oas match {
-    case Nil => Some(Nil)
-    case h::t => map2(h, sequence(t))( (x: A, xs: List[A]) => x :: xs )
+  def sequenceR[A](oas: List[Option[A]]): Option[List[A]] = oas match {
+    case Nil =>  Some(Nil)
+    case h::t => map2(h, sequenceR(t))((x: A, xs: List[A])=> x :: xs)
   }
 
-  val lo = (1 to 5).map(Some(_)).toList
-  println(sequence(Nil))
-  println(sequence(lo))
-  println(sequence(lo:+None))
-  println(sequence(None::lo))
+  val sequence = sequenceR[Int] _
+//  val sequence = sequenceTR[Int] _
 
+  val lo = (1 to 5).map(Some(_)).toList
+  println(sequence(Nil))       // Some(List())
+  println(sequence(lo))        // Some(List(1, 2, 3, 4, 5))
+  println(sequence(lo:+None))  // None
+  println(sequence(None::lo))  // None
 
   def traverseTR[A, B](as: List[A])(f: A => Option[B]): Option[List[B]] = {
     @tailrec
@@ -123,9 +125,9 @@ object Option extends App {
     go(as, Nil) map { _ reverse }
   }
 
-  def traverse[A, B](as: List[A])(f: A => Option[B]): Option[List[B]] = as match {
+  def traverseR[A, B](as: List[A])(f: A => Option[B]): Option[List[B]] = as match {
     case Nil  => Some(Nil)
-    case h::t => map2(f(h), traverse(t)(f))((x: B, xs: List[B])=> x :: xs)
+    case h::t => map2(f(h), traverseR(t)(f))((x: B, xs: List[B])=> x :: xs)
   }
 
   val sl = List(1,2,3,4,5)
@@ -137,6 +139,6 @@ object Option extends App {
 
   println(traverseTR(sl)(f1)) // Some(List(10, 20, 30, 40, 50))
   println(traverseTR(sl)(f2)) // None
-  println(traverse(sl)(f1)) // Some(List(10, 20, 30, 40, 50))
-  println(traverse(sl)(f2)) // None
+  println(traverseR(sl)(f1)) // Some(List(10, 20, 30, 40, 50))
+  println(traverseR(sl)(f2)) // None
 }
