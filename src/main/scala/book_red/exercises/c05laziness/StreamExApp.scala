@@ -1,5 +1,6 @@
 package book_red.exercises.c05laziness
 
+import scala.annotation.tailrec
 import scala.{Stream => _}
 
 sealed trait AStream[+A] {
@@ -30,15 +31,49 @@ sealed trait AStream[+A] {
   final def find2(p: A => Boolean): Option[A] = filter(p).headOption
 
   def filter(p: A => Boolean): AStream[A] =
-    foldRight(AStream.empty[A]) ((a, sb) => if (p(a)) AStream.cons(a, sb) else sb)
+    foldRight(AStream.empty[A])((a, sa) => if (p(a)) AStream.cons(a, sa) else sa)
 
-  def map[B](f: A => B): AStream[B] = ???
-  def flatMap[B](f: A => AStream[B]): AStream[B] = ???
-  def append: AStream[A] = ???
-  def take(n: Int): AStream[A] = ???
-  def drop(n: Int): AStream[A] = ???
+  def map[B](f: A => B): AStream[B] =
+    foldRight(AStream.empty[B])((a, sb) => AStream.cons(f(a), sb))
+
+  def append[A1 >: A](another: AStream[A1]): AStream[A1] =
+    foldRight(another)((a, sa1) => AStream.cons(a, sa1))
+
+  def forAll(p: A => Boolean): Boolean =
+    foldRight(true)((a, acc) => p(a) && acc)
+
+  def flatMap[B](f: A => AStream[B]): AStream[B] =
+    foldRight(AStream.empty[B])((a, sa) => f(a).append(sa))
+
+  def take(n: Int): AStream[A] = {
+    @tailrec
+    def go(c: Int, acc: AStream[A], tail: AStream[A]): AStream[A] = c match {
+      case 0 => acc
+      case _ => tail match {
+        case AEmpty => acc
+        case ACons(h, t) => go(c-1, acc.append(AStream.cons(h(), AStream.empty)), t())
+      }
+    }
+    go(n, AStream.empty, this)
+  }
+
+  def drop(n: Int): AStream[A] = {
+    @tailrec
+    def go(c: Int, acc: AStream[A], tail: AStream[A]): AStream[A] = c match {
+      case 0 => tail match {
+        case AEmpty => acc
+        case ACons(h, t) => go(0, acc.append(AStream.cons(h(), AStream.empty)), t())
+      }
+      case _ => tail match {
+        case AEmpty => AEmpty
+        case ACons(_, t) => go(c-1, acc, t())
+      }
+    }
+    go(n, AStream.empty, this)
+  }
+
   def takeWhile(p: A => Boolean): AStream[A] = ???
-  def forAll(p: A => Boolean): Boolean = ???
+  def dropWhile(p: A => Boolean): AStream[A] = ???
 
 }
 
@@ -85,7 +120,18 @@ object StreamExApp extends App {
   println(s3.existsR(_ == 3))
   println(s3.existsR(_ == 5))
 
-  val s4 = s3.filter(_ > 1)
+  val s4 = s3.filter(_ > 1).map(_ + 10).append(AStream(100,101,102))
   println(":::filtered:::")
   s4.foldRight(())((a,b) => { println(s"print:$a"); b })
+  println(s4.forAll(_ > 0))
+  println(s4.forAll(_ > 100))
+  val s5 = s3.flatMap(x => AStream(-x, x))
+  s5.foldRight(())((a,b) => { println(s"print:$a"); b })
+  println(":::take(2):::")
+  s5.take(2)
+    .foldRight(())((a,b) => { println(s"print:$a"); b })
+  println(":::drop(2):::")
+  s5.drop(2)
+    .foldRight(())((a,b) => { println(s"print:$a"); b })
+  println(":::done:::")
 }
