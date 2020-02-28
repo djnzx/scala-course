@@ -37,25 +37,43 @@ object RNGApp extends App {
     (b, r)
   }
 
-  def nonNegativeInt(rng: RNG): (Int, RNG) = {
-    val (a, r) =  rng.nextInt
-    val b = math.abs(a)
-    (b, r)
-  }
-
   def nonNegativeInt2(rng: RNG): Rand[Int] =
     map(s => s.nextInt)(i => math.abs(i))
 
   def nonNegativeEven: Rand[Int] =
     map(nonNegativeInt)(i => i - i % 2)
 
-  def double(rng: RNG): (Double, RNG) = ???
+  def nonNegativeInt(rng: RNG): (Int, RNG) = {
+    val (a, r) =  rng.nextInt
+    val b = math.abs(a)
+    (b, r)
+  }
 
-  def intDouble(rng: RNG): ((Int,Double), RNG) = ???
+  def double(rng: RNG): (Double, RNG) = {
+    val (a, r) =  rng.nextInt
+    val d = a.toDouble
+    (d, r)
+  }
 
-  def doubleInt(rng: RNG): ((Double,Int), RNG) = ???
+  def intDouble(rng: RNG): ((Int,Double), RNG) = {
+    val (a, r) = rng.nextInt
+    val d = a.toDouble
+    ((a, d), r)
+  }
 
-  def double3(rng: RNG): ((Double,Double,Double), RNG) = ???
+  def doubleInt(rng: RNG): ((Double,Int), RNG) = {
+    val (a, r) = rng.nextInt
+    val (a2, r2) = r.nextInt
+    val d2 = a2.toDouble
+    ((d2, a), r2)
+  }
+
+  def double3(rng: RNG): ((Double,Double,Double), RNG) = {
+    val (a1, r1) = rng.nextInt
+    val (a2, r2) = r1.nextInt
+    val (a3, r3) = r2.nextInt
+    ((a1.toDouble, a2.toDouble, a3.toDouble), r3)
+  }
 
   def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
 
