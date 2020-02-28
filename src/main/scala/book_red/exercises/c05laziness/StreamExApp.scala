@@ -132,7 +132,13 @@ object AStream {
 
   def from(n: Int): AStream[Int] = ???
 
-  def unfold[A, S](z: S)(f: S => Option[(A, S)]): AStream[A] = ???
+  // value producer
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): AStream[A] = {
+    f(z) match {
+      case None        => AStream.empty
+      case Some((a,s)) => AStream.cons(a, unfold(s)(f))
+    }
+  }
 
 }
 
@@ -186,5 +192,12 @@ object StreamExApp extends App {
     .foldRight(())((a,b) => { println(s"print:$a"); b })
   AStream.ones.take(5)
     .map(_ + 10)
+    .foldRight(())((a,b) => { println(s"print:$a"); b })
+  // value producer example
+  AStream.unfold(0){ (s: Int) => {
+    val ns = s + 1
+    val v = ns*10
+    if (s<10) Some((v, ns)) else None
+  }}
     .foldRight(())((a,b) => { println(s"print:$a"); b })
 }
