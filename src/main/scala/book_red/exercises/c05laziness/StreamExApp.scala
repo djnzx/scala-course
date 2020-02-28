@@ -72,8 +72,41 @@ sealed trait AStream[+A] {
     go(n, AStream.empty, this)
   }
 
-  def takeWhile(p: A => Boolean): AStream[A] = ???
-  def dropWhile(p: A => Boolean): AStream[A] = ???
+  def takeWhile(p: A => Boolean): AStream[A] = {
+    @tailrec
+    def go(acc: AStream[A], tail: AStream[A]): AStream[A] = tail match {
+      case AEmpty      => acc
+      case ACons(h, t) => if (p(h())) go(acc.append(AStream.cons(h(), AStream.empty)), t()) else acc
+    }
+    go(AStream.empty, this)
+  }
+
+  def dropWhile0(p: A => Boolean): AStream[A] = {
+    @tailrec
+    def go(skip: Boolean, acc: AStream[A], tail: AStream[A]): AStream[A] = if (skip) {
+      tail match {
+        case AEmpty => acc
+        case ACons(h, t) => if (p(h())) go(skip, acc, t()) else go(skip = false, acc, tail)
+      }
+    } else {
+      tail match {
+        case AEmpty => acc
+        case _ => append(tail)
+      }
+    }
+    go(skip = true, AStream.empty, this)
+  }
+
+  def dropWhile(p: A => Boolean): AStream[A] = {
+    @tailrec
+    def go(skip: Boolean, acc: AStream[A], tail: AStream[A]): AStream[A] = tail match {
+      case AEmpty      => acc
+      case ACons(h, t) => if (skip) {
+        if (p(h())) go(skip, acc, t()) else go(skip = false, acc, tail)
+      } else append(tail)
+    }
+    go(skip = true, AStream.empty, this)
+  }
 
 }
 
@@ -133,5 +166,10 @@ object StreamExApp extends App {
   println(":::drop(2):::")
   s5.drop(2)
     .foldRight(())((a,b) => { println(s"print:$a"); b })
-  println(":::done:::")
+  println(":::takeWhile:::")
+  s5.takeWhile(Math.abs(_) < 3)
+    .foldRight(())((a,b) => { println(s"print:$a"); b })
+  println(":::dropWhile:::")
+  s5.dropWhile(Math.abs(_) < 3)
+    .foldRight(())((a,b) => { println(s"print:$a"); b })
 }
