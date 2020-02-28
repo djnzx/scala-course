@@ -1,35 +1,53 @@
 package book_red.exercises.c06state
 
 trait RNG {
-  def nextInt: (Int, RNG) // Should generate a random `Int`. We'll later define other functions in terms of `nextInt`.
+  def nextInt: (Int, RNG) // minimal behavior: nextInt + return new seed
 }
 
-object RNG {
-  // NB - this was called SimpleRNG in the book text
+object RNGApp extends App {
 
-  case class Simple(seed: Long) extends RNG {
+  case class SimpleRand(seed: Long) extends RNG {
     def nextInt: (Int, RNG) = {
       val newSeed = (seed * 0x5DEECE66DL + 0xBL) & 0xFFFFFFFFFFFFL // `&` is bitwise AND. We use the current seed to generate a new seed.
-      val nextRNG = Simple(newSeed) // The next state, which is an `RNG` instance created from the new seed.
+      val nextRNG = SimpleRand(newSeed) // The next state, which is an `RNG` instance created from the new seed.
       val n = (newSeed >>> 16).toInt // `>>>` is right binary shift with zero fill. The value `n` is our new pseudo-random integer.
       (n, nextRNG) // The return value is a tuple containing both a pseudo-random integer and the next `RNG` state.
     }
   }
 
-  type Rand[+A] = RNG => (A, RNG)
+  val sr0: SimpleRand = SimpleRand(0) // initialize random
+  val (r1, sr1):(Int, RNG) = sr0.nextInt // chain them
+  val (r2, sr2)            = sr1.nextInt // and we will get always same values
+  val (r3, sr3)            = sr2.nextInt // predictability !
+  println(r1)
+  println(r2)
+  println(r3)
+  println("------")
 
-  val int: Rand[Int] = _.nextInt
+  type Rand[+A] = RNG => (A, RNG) // this is definition of function which transform s1 to s2
 
-  def unit[A](a: A): Rand[A] =
-    rng => (a, rng)
+  val int: Rand[Int] = s => s.nextInt
 
-  def map[A,B](s: Rand[A])(f: A => B): Rand[B] =
-    rng => {
-      val (a, rng2) = s(rng)
-      (f(a), rng2)
-    }
+  // doesn't change the state, just provides value. (lift ?)
+  def unit[A](a: A): Rand[A] = s => (a, s)
 
-  def nonNegativeInt(rng: RNG): (Int, RNG) = ???
+  def map[A,B](sf: Rand[A])(f: A => B): Rand[B] = s => {
+    val (a: A, r: RNG) = sf(s)
+    val b: B = f(a)
+    (b, r)
+  }
+
+  def nonNegativeInt(rng: RNG): (Int, RNG) = {
+    val (a, r) =  rng.nextInt
+    val b = math.abs(a)
+    (b, r)
+  }
+
+  def nonNegativeInt2(rng: RNG): Rand[Int] =
+    map(s => s.nextInt)(i => math.abs(i))
+
+  def nonNegativeEven: Rand[Int] =
+    map(nonNegativeInt)(i => i - i % 2)
 
   def double(rng: RNG): (Double, RNG) = ???
 
@@ -40,6 +58,9 @@ object RNG {
   def double3(rng: RNG): ((Double,Double,Double), RNG) = ???
 
   def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
+
+
+
 
   def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
 
