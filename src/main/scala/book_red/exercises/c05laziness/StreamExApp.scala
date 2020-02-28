@@ -39,6 +39,9 @@ sealed trait AStream[+A] {
   def append[A1 >: A](another: AStream[A1]): AStream[A1] =
     foldRight(another)((a, sa1) => AStream.cons(a, sa1))
 
+  def appendOne[A1 >: A](a: A1): AStream[A1] =
+    append(AStream(a))
+
   def forAll(p: A => Boolean): Boolean =
     foldRight(true)((a, acc) => p(a) && acc)
 
@@ -51,7 +54,7 @@ sealed trait AStream[+A] {
       case 0 => acc
       case _ => tail match {
         case AEmpty => acc
-        case ACons(h, t) => go(c-1, acc.append(AStream.cons(h(), AStream.empty)), t())
+        case ACons(h, t) => go(c-1, acc.appendOne(h()), t())
       }
     }
     go(n, AStream.empty, this)
@@ -62,7 +65,7 @@ sealed trait AStream[+A] {
     def go(c: Int, acc: AStream[A], tail: AStream[A]): AStream[A] = c match {
       case 0 => tail match {
         case AEmpty => acc
-        case ACons(h, t) => go(0, acc.append(AStream.cons(h(), AStream.empty)), t())
+        case ACons(h, t) => go(0, acc.appendOne(h()), t())
       }
       case _ => tail match {
         case AEmpty => AEmpty
@@ -76,7 +79,7 @@ sealed trait AStream[+A] {
     @tailrec
     def go(acc: AStream[A], tail: AStream[A]): AStream[A] = tail match {
       case AEmpty      => acc
-      case ACons(h, t) => if (p(h())) go(acc.append(AStream.cons(h(), AStream.empty)), t()) else acc
+      case ACons(h, t) => if (p(h())) go(acc.appendOne(h()), t()) else acc
     }
     go(AStream.empty, this)
   }
@@ -124,6 +127,13 @@ object AStream {
 
   def apply[A](as: A*): AStream[A] =
     if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
+
+  val ones: AStream[Int] = AStream.cons(1, ones)
+
+  def from(n: Int): AStream[Int] = ???
+
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): AStream[A] = ???
+
 }
 
 object StreamExApp extends App {
@@ -171,5 +181,10 @@ object StreamExApp extends App {
     .foldRight(())((a,b) => { println(s"print:$a"); b })
   println(":::dropWhile:::")
   s5.dropWhile(Math.abs(_) < 3)
+    .foldRight(())((a,b) => { println(s"print:$a"); b })
+  AStream.ones.take(5)
+    .foldRight(())((a,b) => { println(s"print:$a"); b })
+  AStream.ones.take(5)
+    .map(_ + 10)
     .foldRight(())((a,b) => { println(s"print:$a"); b })
 }
