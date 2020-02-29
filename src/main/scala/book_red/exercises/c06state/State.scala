@@ -26,25 +26,6 @@ object RNGApp extends App {
   println(r3)
   println("------")
 
-  type Rand[+A] = RNG => (A, RNG) // this is definition of function which transform s1 to s2
-
-  val int: Rand[Int] = s => s.nextInt
-
-  // doesn't change the state, just provides value. (lift ?)
-  def unit[A](a: A): Rand[A] = s => (a, s)
-
-  def map[A,B](sf: Rand[A])(f: A => B): Rand[B] = s => {
-    val (a: A, r: RNG) = sf(s)
-    val b: B = f(a)
-    (b, r)
-  }
-
-  def nonNegativeInt2(rng: RNG): Rand[Int] =
-    map(s => s.nextInt)(i => math.abs(i))
-
-  def nonNegativeEven: Rand[Int] =
-    map(nonNegativeInt)(i => i - i % 2)
-
   def nonNegativeInt(rng: RNG): (Int, RNG) = {
     val (a, r) =  rng.nextInt
     val b = math.abs(a)
@@ -58,9 +39,9 @@ object RNGApp extends App {
   }
 
   def intDouble(rng: RNG): ((Int,Double), RNG) = {
-    val (a, r) = rng.nextInt
-    val d = a.toDouble
-    ((a, d), r)
+    val (a1, r1) = rng.nextInt
+    val (a2, r2) = r1.nextInt
+    ((a1, a2.toDouble), r2)
   }
 
   def doubleInt(rng: RNG): ((Double,Int), RNG) = {
@@ -93,8 +74,34 @@ object RNGApp extends App {
     val (list, rx) = go(count, Nil, rng)
     (list reverse, rx)
   }
-  val r10 = ints(5)(SimpleRand(7))
+
+  private val seed = SimpleRand(7)
+  val r10 = ints(5)(seed)
   println(r10)
+
+  // this is definition of function which transform s1 to s2
+  type Rand[+A] = RNG => (A, RNG)
+
+  val int: Rand[Int] = s => s.nextInt
+
+  // doesn't change the state, just provides value. (lift ?)
+  def unit[A](a: A): Rand[A] = s => (a, s)
+
+  def map[A,B](sf: Rand[A])(f: A => B): Rand[B] = s => {
+    val (a: A, r: RNG) = sf(s)
+    val b: B = f(a)
+    (b, r)
+  }
+
+  // nonNegativeInt: RNG => (Int, RNG)
+  //                    Rand[Int]
+  val nonNegativeInt3: Rand[Int] = nonNegativeInt
+
+  def nonNegativeInt2(rng: RNG): Rand[Int] =
+    map(_ => rng.nextInt)(i => math.abs(i))
+
+  def nonNegativeEven: Rand[Int] =
+    map(nonNegativeInt3)(i => i - i % 2)
 
 
 
