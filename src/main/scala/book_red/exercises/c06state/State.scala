@@ -1,5 +1,7 @@
 package book_red.exercises.c06state
 
+import scala.annotation.tailrec
+
 trait RNG {
   def nextInt: (Int, RNG) // minimal behavior: nextInt + return new seed
 }
@@ -75,7 +77,24 @@ object RNGApp extends App {
     ((a1.toDouble, a2.toDouble, a3.toDouble), r3)
   }
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
+  def mk1(r: RNG): (Int, RNG) = {
+    val (rv, rg) = nonNegativeInt(r)
+    (rv % 10, rg)
+  }
+
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    @tailrec
+    def go(cnt: Int, acc: List[Int], r: RNG): (List[Int], RNG) = cnt match {
+      case 0 => (acc, r)
+      case _ => mk1(r) match {
+        case (rv, rg) => go(cnt - 1, rv :: acc, rg)
+      }
+    }
+    val (list, rx) = go(count, Nil, rng)
+    (list reverse, rx)
+  }
+  val r10 = ints(5)(SimpleRand(7))
+  println(r10)
 
 
 
