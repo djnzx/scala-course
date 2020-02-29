@@ -1,5 +1,7 @@
 package book_red.exercises.c06state
 
+import book_red.exercises.c06state.RNGApp.SimpleRand
+
 import scala.annotation.tailrec
 
 trait RNG {
@@ -16,26 +18,23 @@ object RNGApp extends App {
       (n, nextRNG) // The return value is a tuple containing both a pseudo-random integer and the next `RNG` state.
     }
   }
+  val seed = SimpleRand(7)                // initialize random with predictable seed
 
-  val sr0: SimpleRand = SimpleRand(0) // initialize random
-  val (r1, sr1):(Int, RNG) = sr0.nextInt // chain them
-  val (r2, sr2)            = sr1.nextInt // and we will get always same values
-  val (r3, sr3)            = sr2.nextInt // predictability !
+  val (r1, sr1):(Int, RNG) = seed.nextInt // chain them
+  val (r2, sr2)            = sr1.nextInt  // and we will get always same values
+  val (r3, sr3)            = sr2.nextInt  // predictability !
   println(r1)
   println(r2)
   println(r3)
   println("------")
 
+  /**
+    * all functions will be in term: RNG -> (A, RNG)
+    */
   def nonNegativeInt(rng: RNG): (Int, RNG) = {
     val (a, r) =  rng.nextInt
     val b = math.abs(a)
     (b, r)
-  }
-
-  def double(rng: RNG): (Double, RNG) = {
-    val (a, r) =  rng.nextInt
-    val d = a.toDouble
-    (d, r)
   }
 
   def intDouble(rng: RNG): ((Int,Double), RNG) = {
@@ -58,16 +57,11 @@ object RNGApp extends App {
     ((a1.toDouble, a2.toDouble, a3.toDouble), r3)
   }
 
-  def mk1(r: RNG): (Int, RNG) = {
-    val (rv, rg) = nonNegativeInt(r)
-    (rv % 10, rg)
-  }
-
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+  def ints(count: Int, rule: Rand[Int])(rng: RNG): (List[Int], RNG) = {
     @tailrec
     def go(cnt: Int, acc: List[Int], r: RNG): (List[Int], RNG) = cnt match {
       case 0 => (acc, r)
-      case _ => mk1(r) match {
+      case _ => rule(r) match {
         case (rv, rg) => go(cnt - 1, rv :: acc, rg)
       }
     }
@@ -75,51 +69,188 @@ object RNGApp extends App {
     (list reverse, rx)
   }
 
-  private val seed = SimpleRand(7)
-  val r10 = ints(5)(seed)
-  println(r10)
-
-  // this is definition of function which transform s1 to s2
+  /**
+    * let's introduce more general representation:
+    * Rand[+A] = RNG => (A, RNG)
+    */
   type Rand[+A] = RNG => (A, RNG)
 
-  val int: Rand[Int] = s => s.nextInt
+  val nextInt: Rand[Int] = s => s.nextInt
+
+  val nextDouble: Rand[Double] = (s: RNG) => {
+    val (a, s2): (Int, RNG) = s.nextInt
+    val d: Double = a.toDouble
+    (d, s2)
+  }
+
+  val fiveInts: (List[Int], RNG) = ints(5, nextInt)(seed)
+  println(fiveInts._1)
 
   // doesn't change the state, just provides value. (lift ?)
   def unit[A](a: A): Rand[A] = s => (a, s)
 
-  def map[A,B](sf: Rand[A])(f: A => B): Rand[B] = s => {
-    val (a: A, r: RNG) = sf(s)
+  def map[A,B](fa: Rand[A])(f: A => B): Rand[B] = s => {
+    // apply state transition
+    val (a, s2): (A, RNG) = fa(s)
+    // apply function given
     val b: B = f(a)
-    (b, r)
+    (b, s2)
   }
 
+  def map2[A,B,C](fa: Rand[A], fb: Rand[B])(f: (A, B) => C): Rand[C] = s => {
+    // apply state transition # 1
+    val (a, s2): (A, RNG) = fa(s)
+    // apply state transition # 2
+    val (b, s3): (B, RNG) = fb(s2)
+    // apply function given
+    val c: C = f(a, b)
+    (c, s3)
+  }
+
+  def both[A,B](fa: Rand[A], fb: Rand[B]): Rand[(A, B)] =
+    map2(fa, fb)((a, b) => (a, b)) // tuple them
+
+  def randIntDouble: Rand[(Int, Double)] = both(nextInt, nextDouble)
+  def randDoubleInt: Rand[(Double, Int)] = both(nextDouble, nextInt)
+
   // nonNegativeInt: RNG => (Int, RNG)
-  //                    Rand[Int]
+  //                     Rand[Int]
   val nonNegativeInt3: Rand[Int] = nonNegativeInt
+  def nonNegativeInt2(rng: RNG): Rand[Int] = map(_ => rng.nextInt)(i => math.abs(i))
+  def nonNegativeEven: Rand[Int] = map(nonNegativeInt3)(i => i - i % 2)
 
-  def nonNegativeInt2(rng: RNG): Rand[Int] =
-    map(_ => rng.nextInt)(i => math.abs(i))
+  val lessThan = (n: Int, than: Int) => n % than
+  val plus1 = (n: Int) => n + 1
+  val plus = (a: Int, b: Int) => a + b
+  def nonNegativeLessThan (than: Int): Rand[Int] = map(nonNegativeInt3)(n => n % than)
+  def nonNegativeLessThan2(than: Int): Rand[Int] = map(nonNegativeInt3)(lessThan(_, than))
 
-  def nonNegativeEven: Rand[Int] =
-    map(nonNegativeInt3)(i => i - i % 2)
+  def rollDie2: Rand[Int] = map(nonNegativeLessThan(6))(plus1)
+  def rollDie: Rand[Int] = map2(nonNegativeLessThan(6), unit(1))(plus)
 
+  def roll(count: Int): Rand[List[Int]] = ints(count, rollDie)
 
+  val result = roll(20)(seed)._1
+  println(result)
 
+  // plain naive implementation
+  def sequenceR[A](fs: List[Rand[A]]): Rand[List[A]] = s => fs match {
+    case Nil => (Nil, s)
+    case h::t => {
+      val (a, s2) = h(s)
+      val (la, s3) = sequenceR(t)(s2)
+      (a::la, s3)
+    }
+  }
 
-  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
+  // implementation expressed via map2
+  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = fs match {
+    case Nil => sx => (Nil, sx)
+    case h::t => map2(h, sequence(t))((a: A, as: List[A]) => a :: as)
+  }
 
-  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = ???
+  // tail recursive implementation, without structural recursion
+  def sequenceTR[A](fs: List[Rand[A]]): Rand[List[A]] = s0 => {
 
-  def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = ???
+    @tailrec
+    def go(tail: List[Rand[A]], acc: List[A], s: RNG): (List[A], RNG) = tail match {
+      case Nil  => (acc, s)
+      case h::t => {
+        val (a, s2): (A, RNG) = h(s)
+        go(t, a::acc, s2)
+      }
+    }
+
+    val (list, st_last) = go(fs, Nil, s0)
+    (list reverse, st_last)
+  }
+
+  println("==========")
+  val tr1: Rand[Int] = s => s.nextInt
+  val tr2: Rand[Int] = s => (2, s)
+  val tr3: Rand[Int] = s => (3, s)
+  val ll1 = sequenceTR(List(tr1, tr2, tr3))(seed)._1
+  val ll2 = sequenceR(List(tr1, tr2, tr3))(seed)._1
+  val ll3 = sequence(List(tr1, tr2, tr3))(seed)._1
+  println(ll1)
+  println(ll2)
+  println(ll3)
+  println("==========")
+
+  def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = (s: RNG) => {
+    // apply f
+    val (a, s2): (A, RNG) = f(s)
+    val frb: Rand[B] = g(a)
+    val (b, s3) = frb(s2)
+    (b, s3)
+  }
+
 }
 
-case class State[S,+A](run: S => (A, S)) {
-  def map[B](f: A => B): State[S, B] =
-    ???
-  def map2[B,C](sb: State[S, B])(f: (A, B) => C): State[S, C] =
-    ???
-  def flatMap[B](f: A => State[S, B]): State[S, B] =
-    ???
+case class State[S,+A](run: S => (A, S)) { me =>
+  def map[B](f: A => B): State[S, B] = State( s => {
+    val (a, s2): (A, S) = me.run(s)
+    val b: B = f(a)
+    (b, s2)
+  })
+  def map2[B,C](sb: State[S, B])(f: (A, B) => C): State[S, C] = State( s => {
+    val (a, s2): (A, S) = me.run(s)
+    val (b, s3): (B, S) = sb.run(s2)
+    val c: C = f(a, b)
+    (c, s3)
+  })
+  def flatMap[B](f: A => State[S, B]): State[S, B] = State( s => {
+    val (a, s2): (A, S) = me.run(s)
+    val ssb: State[S, B] = f(a)
+    val bs: (B, S) = ssb.run(s2)
+    bs
+  })
+}
+
+object RollDieStateApp extends App {
+  val nonNeg: State[RNG, Int] = State((s: RNG) => {
+    val (a, s2) = s.nextInt
+    println(s"NN:before:$a")
+    val a2 = math.abs(a)
+    println(s"NN:after: $a2")
+    (a2, s2)
+  })
+
+  val notGreater: (Int, Int) => State[RNG, Int] = (what: Int, than: Int) => State((s: RNG) => {
+    println(s"NG:before:$what")
+    val a2 = what % than
+    println(s"NG:after: $a2")
+    (a2, s)
+  })
+
+  val plus1: Int => State[RNG, Int] = (to: Int) => State((s: RNG) => {
+    println(s"P1:before:$to")
+    val a2 = to +1
+    println(s"P1:after: $a2")
+    (a2, s)
+  })
+
+  // creating representation, syntax #1
+  val dice1: State[RNG, Int] =
+    nonNeg.flatMap(nn =>
+      notGreater(nn, 6).flatMap(ng =>
+        plus1(ng).map(z => z)
+      )
+    )
+
+  // creating representation, syntax #2
+  val dice2: State[RNG, Int] = for {
+    a <- nonNeg
+    b <- notGreater(a, 6)
+    c <- plus1(b)
+  } yield c
+
+  // creating initial random state
+  val seed = SimpleRand(100)
+
+  // running representation and extracting value
+  val (v, r) =  dice2.run(seed)
+  println(v)
 }
 
 sealed trait Input
