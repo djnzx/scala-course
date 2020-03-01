@@ -200,6 +200,13 @@ object RNGApp extends App {
 }
 
 case class State[S,+A](run: S => (A, S)) { me =>
+  // straightforward definition
+  def flatMap[B](f: A => State[S, B]): State[S, B] = State( s => {
+    val (a, s2): (A, S) = me.run(s)
+    val ssb: State[S, B] = f(a)
+    val bs: (B, S) = ssb.run(s2)
+    bs
+  })
   def map[B](f: A => B): State[S, B] = State( s => {
     val (a, s2): (A, S) = me.run(s)
     val b: B = f(a)
@@ -211,12 +218,17 @@ case class State[S,+A](run: S => (A, S)) { me =>
     val c: C = f(a, b)
     (c, s3)
   })
-  def flatMap[B](f: A => State[S, B]): State[S, B] = State( s => {
-    val (a, s2): (A, S) = me.run(s)
-    val ssb: State[S, B] = f(a)
-    val bs: (B, S) = ssb.run(s2)
-    bs
-  })
+  // alternative definition
+  def map_[B](f: A => B): State[S, B] =
+    flatMap(a => State.point(f(a)))
+  def map2a[B,C](sb: State[S, B])(f: (A, B) => C): State[S, C] =
+    flatMap(a => sb.flatMap(b => State.point(f(a,b))))
+  def map2b[B,C](sb: State[S, B])(f: (A, B) => C): State[S, C] =
+    flatMap(a => sb.map(b => f(a,b)))
+}
+
+object State {
+  def point[S, A](a: A): State[S, A] = State(s => (a, s))
 }
 
 object RollDieStateApp extends App {
@@ -327,7 +339,7 @@ case object Turn extends Input
 
 case class Machine(locked: Boolean, candies: Int, coins: Int)
 
-object State {
+object StateEx {
   type Rand[A] = State[RNG, A]
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = ???
 }

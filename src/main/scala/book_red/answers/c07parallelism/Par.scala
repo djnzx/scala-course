@@ -18,7 +18,13 @@ object Par {
     def cancel(evenIfRunning: Boolean): Boolean = false
   }
 
-  def map2[A,B,C](a: Par[A], b: Par[B])(f: (A,B) => C): Par[C] = // `map2` doesn't evaluate the call to `f` in a separate logical thread, in accord with our design choice of having `fork` be the sole function in the API for controlling parallelism. We can always do `fork(map2(a,b)(f))` if we want the evaluation of `f` to occur in a separate thread.
+  /**
+    * `map2` doesn't evaluate the call to `f` in a separate logical thread,
+    * it represents.
+    * in accord with our design choice of having `fork` be the sole function in the API for controlling parallelism.
+    * We can always do `fork(map2(a,b)(f))` if we want the evaluation of `f` to occur in a separate thread.
+    */
+  def map2[A,B,C](a: Par[A], b: Par[B])(f: (A,B) => C): Par[C] =
     (es: ExecutorService) => {
       val af = a(es)
       val bf = b(es)
