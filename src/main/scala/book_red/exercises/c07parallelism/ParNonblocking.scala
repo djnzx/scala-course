@@ -4,7 +4,7 @@ import java.util.concurrent.{Callable, CountDownLatch, ExecutorService}
 import java.util.concurrent.atomic.AtomicReference
 import language.implicitConversions
 
-object Nonblocking {
+object ParNonblocking extends {
 
   trait Future[+A] {
     private[c07parallelism] def apply(k: A => Unit): Unit
