@@ -1,4 +1,4 @@
-package book_red.red07.nonblock
+package book_red.red07.a2_nonblock
 
 import java.util.concurrent.atomic.{AtomicInteger, AtomicReference}
 import java.util.concurrent.{Callable,ExecutorService}

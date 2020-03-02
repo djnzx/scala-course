@@ -1,6 +1,6 @@
-package book_red.red07
+package book_red.red07.a1_block
 
-import java.util.concurrent.{Callable, ExecutorService, Executors, Future, TimeUnit}
+import java.util.concurrent._
 
 /**
   * implement map2, fork

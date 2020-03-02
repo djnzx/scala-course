@@ -1,8 +1,6 @@
-package book_red.red07
+package book_red.red07.a1_block
 
 import java.util.concurrent._
-
-import scala.language.implicitConversions
 
 /**
   * implement map2, fork

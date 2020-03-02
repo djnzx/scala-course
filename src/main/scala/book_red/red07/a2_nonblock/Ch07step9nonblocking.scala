@@ -1,4 +1,4 @@
-package book_red.red07.nonblock
+package book_red.red07.a2_nonblock
 
 import java.util.concurrent.atomic.AtomicReference
 import java.util.concurrent.{Callable, CountDownLatch, ExecutorService, Executors}
@@ -14,7 +14,7 @@ object Ch07step9nonblocking extends App {
 
   // that's no more than pass(register) callback
   trait NBFuture[+A] {
-    private [nonblock] def apply(k: A => Unit): Unit
+    private [a2_nonblock] def apply(k: A => Unit): Unit
   }
 
   object Par {

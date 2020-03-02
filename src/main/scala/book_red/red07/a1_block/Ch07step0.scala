@@ -1,4 +1,4 @@
-package book_red.red07
+package book_red.red07.a1_block
 
 object Ch07step0 extends App {
 
