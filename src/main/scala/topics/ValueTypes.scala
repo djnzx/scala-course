@@ -10,10 +10,14 @@ object ValueTypes extends App {
   case class BookId(src: Int) extends AnyVal
   case class CarId(private val src: Int) extends AnyVal
 
+  def f1(id: PersonId) = ???
+
   val just1   : Int       = 1
   val person1a: PersonId = PersonId(1)
   val person1b: PersonId = PersonId(1)
   val book1   : BookId   = BookId(1)
+//  f1(person1a)
+//  f1(book1)
 
   val testData = List(
     "Similar Value types......................... %s" -> (person1a == person1b),
