@@ -3,6 +3,8 @@ package book_red.red07.a2_nonblock
 import java.util.concurrent.atomic.AtomicReference
 import java.util.concurrent.{Callable, CountDownLatch, ExecutorService, Executors}
 
+import book_red.red07.a2_nonblock.Ch07step9nonblocking.Par
+
 /**
   * non blocking version
   * but can be run in parallel

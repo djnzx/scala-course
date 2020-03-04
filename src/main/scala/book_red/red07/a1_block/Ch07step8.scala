@@ -2,6 +2,8 @@ package book_red.red07.a1_block
 
 import java.util.concurrent._
 
+import scala.language.implicitConversions
+
 /**
   * implement map2, fork
   */
@@ -104,4 +106,18 @@ object Ch07step8 extends App {
   val result: Future[Int] = Par.run(es)(representation)
   es.shutdown()
   printf(s"sum of `$data` is: ${result.get}")
+}
+
+object LawsApp extends App {
+  import book_red.red07.a1_block.Ch07step8.Par
+
+  def equals[A](e: ExecutorService)(p1: Par[A], p2: Par[A]): Boolean =
+    p1(e).get == p2(e).get
+
+  val es = Executors.newFixedThreadPool(10)
+
+  println(equals(es)(Par.unit(7), Par.fork(Par.unit(7))))
+
+  es.shutdown()
+
 }
