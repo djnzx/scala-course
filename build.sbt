@@ -46,6 +46,7 @@ resolvers ++= Seq(
   Resolver.typesafeRepo("releases"),
   Resolver.sonatypeRepo("releases"),
   Resolver.sonatypeRepo("snapshots"),
+  Repos.artima,
 )
 
 lazy val akkaVersion       = "2.6.3"
@@ -82,9 +83,12 @@ libraryDependencies ++= Seq(
   "org.scalaz"             %% "scalaz-effect"              % ScalaZVersion,
   "com.typesafe.akka"      %% "akka-actor-typed"           % akkaVersion,
 //  "com.typesafe.akka"      %% "akka-actor-testkit-typed"   % akkaVersion     % Test,
-  "org.scalatest"          %% "scalatest"                  % "3.1.0"         % Test,
+
+  // scalatest section
+  "org.scalatest"          %% "scalatest"                  % "3.1.1",
+  "org.scalactic"          %% "scalactic"                  % "3.1.1",
+
   "org.scalacheck"         %% "scalacheck"                 % "1.14.1"        % Test,
-  "org.scalactic"          %  "scalactic_2.13"             % "3.1.1",
   "com.softwaremill.quicklens" %% "quicklens"              % "1.4.12",
 )
 
