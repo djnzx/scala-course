@@ -5,28 +5,34 @@ import java.util.concurrent.{Callable, CountDownLatch, ExecutorService, Executor
 
 object AsyncApp001 extends App {
 
-  trait Detached[+A] {
-    def apply(callback: A => Unit): Unit
-  }
-
-  type Par[A] = ExecutorService => Detached[A]
-
-  def unit[A](a: A): Par[A] = _ => new Detached[A] {
-    override def apply(callback: A => Unit): Unit = callback(a)
-  }
-
-  def sleep[A](pa: Par[A], time: Long): Par[A] = es => {
-    Thread.sleep(time)
-    pa(es)
-  }
-
-  // run any callback in the another thread given by ExecutorService
+  // submit callback to the another thread given by ExecutorService
   def eval(es: ExecutorService)(callback: => Unit): Unit = {
     val c: Callable[Unit] = () => callback
     val _ = es.submit(c)
   }
 
-  def detach[A](pa: => Par[A]): Par[A] = es => new Detached[A] {
+  // our result representation
+  // we need to feed our representation with callback
+  // which will describe what to do with that result
+  trait Something[+A] {
+    def apply(callback: A => Unit): Unit
+  }
+
+  // our computation description
+  type Par[A] = ExecutorService => Something[A]
+
+  // implementation for already existed value
+  def unit[A](a: A): Par[A] = _ =>
+    (callback: A => Unit) => callback(a)
+
+  // implementation for delay already represented
+  def sleep[A](pa: Par[A], time: Long): Par[A] = es => {
+    Thread.sleep(time)
+    pa(es)
+  }
+
+  // implementation for detaching from current thread already represented
+  def detach[A](pa: => Par[A]): Par[A] = es => new Something[A] {
     def apply(cb: A => Unit): Unit = eval(es) {
       pa(es) { cb } // dive into callback
     }
@@ -49,7 +55,7 @@ object AsyncApp001 extends App {
   val latch = new CountDownLatch(1)
   // right here we only passed Executor service to our task
   // and got instance of Detached which is aware of ES
-  val detached: Detached[Int] = taskSleepingForked(es)
+  val detached: Something[Int] = taskSleepingForked(es)
   // and only here we run our task
   detached { a =>
     ref.set(a)
