@@ -2,6 +2,11 @@ package scalatest
 
 import org.scalatest.FreeSpec
 
+/**
+  * Because it gives absolute freedom (and no guidance)
+  * on how specification text should be written, FreeSpec is a good choice
+  * for teams experienced with BDD and able to agree on how to structure the specification text.
+  */
 class Design5FreeSpec extends FreeSpec {
 
   "A Set" - {

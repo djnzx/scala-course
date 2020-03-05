@@ -10,6 +10,11 @@ class TVSet {
   }
 }
 
+/**
+  * Trait FeatureSpec is primarily intended for acceptance testing,
+  * including facilitating the process of programmers working alongside
+  * non-programmers to define the acceptance requirements.
+  */
 class Design7FeatureSpec extends FeatureSpec with GivenWhenThen {
 
   info("As a TV set owner")

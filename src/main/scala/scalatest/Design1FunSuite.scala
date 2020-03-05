@@ -2,6 +2,12 @@ package scalatest
 
 import org.scalatest.funsuite
 
+/**
+  * For teams coming from xUnit,
+  * FunSuite feels comfortable and familiar while still giving some of the benefits of BDD:
+  * FunSuite makes it easy to write descriptive test names, natural to write focused tests,
+  * and generates specification-like output that can facilitate communication among stakeholders.
+  */
 class Design1FunSuite extends funsuite.AnyFunSuite {
 
   test("An empty Set should have size 0") {

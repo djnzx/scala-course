@@ -2,6 +2,12 @@ package scalatest
 
 import org.scalatest.funspec._
 
+/**
+  * For teams coming from Ruby's RSpec tool, FunSpec will feel very familiar;
+  * More generally, for any team that prefers BDD, FunSpec's nesting and
+  * gentle guide to structuring text (with describe and it) provides an excellent
+  * general-purpose choice for writing specification-style tests.
+  */
 class Design3FunSpec extends AnyFunSpec {
 
   describe("A Set") {
