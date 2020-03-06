@@ -88,7 +88,7 @@ libraryDependencies ++= Seq(
   "org.scalatest"          %% "scalatest"                  % "3.1.1",
   "org.scalactic"          %% "scalactic"                  % "3.1.1",
 
-  "org.scalacheck"         %% "scalacheck"                 % "1.14.1"        % Test,
+  "org.scalacheck"         %% "scalacheck"                 % "1.14.1",
   "com.softwaremill.quicklens" %% "quicklens"              % "1.4.12",
 )
 

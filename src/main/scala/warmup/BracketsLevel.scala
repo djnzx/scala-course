@@ -8,13 +8,16 @@ object BracketsLevel extends App {
     * t._2 - max nesting level
     */
   def level(origin: String): Int =
+  //          (current level, max level)
     origin.toSeq.foldLeft((0, 0))((t, el) => {
-    val depth = t._1 + (el match {
-      case '(' => +1
-      case ')' => -1
-    })
-    depth -> scala.math.max(t._2, depth)
-  })._2
+      val cur = t._1 + (el match {
+        case '(' => +1
+        case ')' => -1
+      })
+      val max = scala.math.max(t._2, cur)
+      (cur, max)
+    }
+    )._2
 
   Map(
     "()()()" -> 1,
