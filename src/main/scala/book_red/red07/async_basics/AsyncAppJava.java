@@ -11,7 +11,7 @@ public class AsyncAppJava {
   // 1.
   // actually, consumer is no more than f: A => Unit
   interface NBFuture<A> {
-    void apply(Consumer<A> consumer);
+    void exec(Consumer<A> consumer);
   }
 
   // 2
@@ -30,7 +30,7 @@ public class AsyncAppJava {
       public NBFuture<A> apply(ExecutorService es) {
         return new NBFuture<A>() {
           @Override
-          public void apply(Consumer<A> consumer) {
+          public void exec(Consumer<A> consumer) {
             consumer.accept(a);
           }
         };
@@ -62,11 +62,11 @@ public class AsyncAppJava {
       public NBFuture<A> apply(ExecutorService es) {
         return new NBFuture<A>() {
           @Override
-          public void apply(Consumer<A> consumer) {
+          public void exec(Consumer<A> consumer) {
             Runnable body = new Runnable() {
               @Override
               public void run() {
-                orig.apply(es).apply(consumer);
+                orig.apply(es).exec(consumer);
               }
             };
             eval(es, body);
@@ -88,7 +88,7 @@ public class AsyncAppJava {
     NBFuture<Integer> future = forked.apply(es);
 
     // running our async task and wiring our data
-    future.apply(ra -> {
+    future.exec(ra -> {
       ref.set(ra);
       latch.countDown();
     });
