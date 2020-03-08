@@ -1,10 +1,13 @@
 package warmup
 
+import scala.annotation.tailrec
+
 object GreatCommonDivisor extends App {
 
   /**
     * prerequisite: a must be bigger than b
     */
+  @tailrec
   def gcd(a: Int, b:Int): Int = {
     val r: Int = a % b
     if (r == 0) b else gcd(b, r)

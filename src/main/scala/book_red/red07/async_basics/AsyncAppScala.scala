@@ -1,37 +1,38 @@
-package book_red.red07.async_basic_example
+package book_red.red07.async_basics
 
 import java.util.concurrent.atomic.AtomicReference
 import java.util.concurrent.{Callable, CountDownLatch, ExecutorService, Executors}
 
-object AsyncApp001 extends App {
-
-  // submit callback to the another thread given by ExecutorService
-  def eval(es: ExecutorService)(callback: => Unit): Unit = {
-    val c: Callable[Unit] = () => callback
-    val _ = es.submit(c)
-  }
-
-  // our result representation
+object AsyncAppScala extends App {
+  // 1. our result representation
   // we need to feed our representation with callback
   // which will describe what to do with that result
   trait Something[+A] {
     def apply(callback: A => Unit): Unit
   }
 
-  // our computation description
+  // 2. our computation description
   type Par[A] = ExecutorService => Something[A]
 
-  // implementation for already existed value
+  // 3. submit callback to the another thread given by ExecutorService
+  def eval(es: ExecutorService)(callback: => Unit): Unit = {
+    val c: Callable[Unit] = () => callback
+    val _ = es.submit(c)
+  }
+
+  // 4. implementation for already existed value
   def unit[A](a: A): Par[A] = _ =>
     (callback: A => Unit) => callback(a)
 
-  // implementation for delay already represented
+  // 5. implementation for delay already represented Par[A]
   def sleep[A](pa: Par[A], time: Long): Par[A] = es => {
+    println("sleeping")
     Thread.sleep(time)
+    println("\nawaking")
     pa(es)
   }
 
-  // implementation for detaching from current thread already represented
+  // 6. detach implementation for current thread already represented
   def detach[A](pa: => Par[A]): Par[A] = es => new Something[A] {
     def apply(cb: A => Unit): Unit = eval(es) {
       pa(es) { cb } // dive into callback
@@ -43,7 +44,7 @@ object AsyncApp001 extends App {
 
   // description only
   val task: Par[Int] = unit(7)
-  val taskSleeping: Par[Int] = sleep(task, 2000)
+  val taskSleeping: Par[Int] = sleep(task, 3000)
   val taskSleepingForked: Par[Int] = detach(taskSleeping)
 
   // preparation
