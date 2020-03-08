@@ -1,4 +1,4 @@
-package cats.kleisli
+package cats.kleisli_basics
 
 import cats.data.Kleisli
 import cats.effect.IO
@@ -8,7 +8,7 @@ import cats.implicits._
   * https://blog.softwaremill.com/kleisli-category-from-theory-to-cats-fbd140bf396e
   */
 
-object KleisliApp12 extends App {
+object Step2 extends App {
   val r = scala.util.Random
 
   val generate: Unit => IO[Int] = _ => IO.pure(r.nextInt(100))

@@ -1,13 +1,13 @@
-package cats.kleisli
+package cats.kleisli_basics
 
-object KleisliApp08 extends App {
+object Step1Plain extends App {
   val r = scala.util.Random
 
   // given
 
   val generate: Unit => Int = _ => r.nextInt(100)
-  val process: Int => Int = v => (v * math.Pi).toInt
-  val save: Int => Boolean = _ => true
+  val process:  Int  => Int = v => (v * math.Pi).toInt
+  val save:     Int  => Boolean = _ => true
 
   // way 1
   val generated: Int = generate()
