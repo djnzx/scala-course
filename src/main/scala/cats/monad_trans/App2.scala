@@ -1,4 +1,4 @@
-package cats.optiont
+package cats.monad_trans
 
 import cats.data.OptionT
 import cats.Monad

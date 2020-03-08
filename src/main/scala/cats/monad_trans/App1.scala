@@ -1,4 +1,4 @@
-package cats.optiont
+package cats.monad_trans
 import cats.Monad
 import cats.syntax.applicative._ // for pure
 import cats.syntax.flatMap._ // for flatMap
