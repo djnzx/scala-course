@@ -1,15 +1,9 @@
 package cats.reader
 
-object ReaderApp1 extends App {
+import cats.Id
+import cats.data.Kleisli
 
-  object RMonad {
-    case class Reader[A, B](f: A => B) {
-      def apply(input: A): B = f(input)
-      def map[C]   (g: B => C)           : Reader[A, C] = Reader { a => g(f(a)) }
-      def flatMap[C](g: B => Reader[A, C]): Reader[A, C] = Reader { a => g(f(a))(a) }
-    }
-    def pure[A, B](b: B)                 : Reader[A, B] = Reader { _ => b }
-  }
+object ReaderApp1 extends App {
 
   trait StockRepo {
     def findAll(): Map[String, Double]
@@ -46,18 +40,43 @@ object ReaderApp1 extends App {
         .andThen { case (stock, _) => stock }
         .andThen (s => Stocks3.buy(s, amount)(repo))
 
-  // you can use any of following deps
+  /**
+    * Reader monad
+    */
+  object RMonad {
+    case class Reader[A, B](f: A => B) {
+      def apply(input: A): B = f(input)
+      def map[C]   (g: B => C)           : Reader[A, C] = Reader { a => g(f(a)) }
+      def flatMap[C](g: B => Reader[A, C]): Reader[A, C] = Reader { a => g(f(a))(a) }
+    }
+    def pure[A, B](b: B)                 : Reader[A, B] = Reader { _ => b }
+  }
+
   import RMonad.{Reader => XReader}
   import cats.data.Reader
   import cats.implicits._
 
-
-  // my syntax
+  // our syntax
   object XStocks {
     def findAll()                             : XReader[StockRepo, Map[String, Double]] = XReader { rp => rp.findAll() }
     def sell(stock: String, quantity: Double): XReader[StockRepo, Double] = XReader { rp => rp.sell(stock, quantity) }
     def buy(stock: String, amount: Double)   : XReader[StockRepo, Double] = XReader { rp => rp.buy(stock, amount) }
   }
+
+  // flatMap syntax
+  def investInCheapestStock(amount: Double): XReader[StockRepo, Double] =
+    XStocks.findAll()
+      .map(stocks => stocks.minBy(_._2))
+      .map { case (stock, _) => stock }
+      .flatMap(stock => XStocks.buy(stock, amount))
+
+  // for comprehension syntax
+  def investInCheapestStockFor(amount: Double): XReader[StockRepo, Double] =
+    for {
+      stocks   <- XStocks.findAll()                    // Map[String, Double]
+      minStock <- RMonad.pure(stocks.minBy(_._2)._1)  // String
+      spent    <- XStocks.buy(minStock, amount)       // Double
+    } yield spent
 
   // cats syntax
   object Stocks {
@@ -66,24 +85,15 @@ object ReaderApp1 extends App {
     def buy(stock: String, amount: Double)   : Reader[StockRepo, Double] = Reader { rp => rp.buy(stock, amount) }
   }
 
-  // We have our function, let’s say f: From => To
-  // it can be represented: case class Reader[From, To](f: From => To) {...}
-  // def apply(input: From): To = f(input)
-
-  def investInCheapestStock(amount: Double): XReader[StockRepo, Double] =
-    XStocks.findAll()
-      .map(stocks => stocks.minBy(_._2))
-      .map { case (stock, _) => stock }
-      .flatMap(stock => XStocks.buy(stock, amount))
-
-  def investInCheapestStockForCats(amount: Double): Reader[StockRepo, Unit] =
+  // for comprehension syntax cats
+  def investInCheapestStockForCats(amount: Double): Reader[StockRepo, Double] =
     for {
-      stocks   <- Stocks.findAll()
-      minStock <- Reader[StockRepo, String](_ => stocks.minBy(_._2)._1)
-      _        <- Stocks.buy(minStock, amount)
-    } yield ()
+      stocks   <- Stocks.findAll()                                        // Map[String, Double]
+      minStock <- Reader[StockRepo, String](_ => stocks.minBy(_._2)._1)  // String
+      spent    <- Stocks.buy(minStock, amount)                           // Double
+    } yield spent
 
-
-
+  val repo: StockRepo = ???
+  val spent: Id[Double] = investInCheapestStockForCats(10).apply(repo)
 }
 
