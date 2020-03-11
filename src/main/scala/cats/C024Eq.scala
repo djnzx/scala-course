@@ -4,25 +4,39 @@ import cats.Eq
 import cats.instances.int._
 import cats.instances.option._
 import cats.syntax.eq._
-import cats.C020.Cat
+import cats.C020Show.Cat
 
 object C024Eq extends App {
-  // ugly mistake
-  List(1, 2, 3).map(x => Option(x)).filter(item => item == 1)
+  /**
+    * the problem, ugly mistake
+    * the result always will be empty list
+    * because we can'c compare `x` and `Option(x)`
+    */
+  val r: List[Option[Int]] = List(1, 2, 3).map(x => Option(x)).filter(x => x == 1)
 
   val eqInt = Eq[Int]
-//  eqInt.eqv(123, "234")
-  println(1 === 1)
-//  println(1 === Cat("Alice", 3))
-
-  // the error will be detected immediately
+  println(1 === 1) // true
+  println("----")
+  /**
+    * these examples even will not compile
+    */
+//  val req1: Boolean = eqInt.eqv(123, "234")
+//  val req2: Boolean = 1 === "1"
+//  val req3: Boolean = 1 === Cat("Alice", 3)
 //  List(1, 2, 3).map(x => Option(x)).filter(item => item === 1)
 
-  val cat1 = Cat("Alice", 3)
-  val cat2 = Cat("Alice", 3)
-  println(cat1 == cat2)    // true
-//  println(cat1 === cat2) // won't compile
-  implicit val cat_eq: Eq[Cat] = (x, y) => x.age == y.age && x.name == x.name
-  println(cat1 === cat2)  // true
+  val cat1: Cat = Cat("Alice", 3)
+  val cat2: Cat = Cat("Alice", 4)
+  println(cat1 == cat2)                  // false
 
+  // we can define custom equalizer
+  val eqCatNameOnly: Eq[Cat] = (c1, c2) => c1.name == c2.name
+  println(eqCatNameOnly.eqv(cat1, cat2)) // true
+
+  // this will explode in runtime !!!
+//  println(cat1 === cat2)
+
+  // or we can put implicit equalizer into scope
+  implicit val eqCat: Eq[Cat] = (c1, c2) => c1.age == c2.age && c1.name == c2.name
+  println(cat1 === cat2)                 // false
 }

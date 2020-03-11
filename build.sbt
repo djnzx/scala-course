@@ -29,6 +29,8 @@ scalacOptions ++= Seq(
   "-explaintypes",
   "-feature",
   "-unchecked",
+  // https://docs.scala-lang.org/overviews/compiler-options/index.html#Warning_Settings
+  // http://eed3si9n.com/stricter-scala-with-xlint-xfatal-warnings-and-scalafix
   "-Xlint:_,-type-parameter-shadow",
   "-opt-warnings",
   "-opt:l:inline",

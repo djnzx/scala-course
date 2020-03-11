@@ -6,13 +6,13 @@ import cats.implicits._
 //import cats.instances.string._
 //import cats.syntax._
 
-object C020 extends App {
+object C020Show extends App {
   case class Cat(name: String, age: Int)
   val bars: Cat = Cat("Barcelona", 8)
 
   object MyImplicitInstances {
     // approach 1
-    implicit val cat_show: Show[Cat] = c => s"cat: ${c.name}, ${c.age} y.o."
+    implicit val show_cat: Show[Cat] = c => s"cat: ${c.name}, ${c.age} y.o."
     // approach 2
 //    implicit val cat_show: Show[Cat] = Show.show(c => s"cat: ${c.name}, ${c.age} y.o.")
   }
