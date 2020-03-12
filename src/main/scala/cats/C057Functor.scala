@@ -12,27 +12,30 @@ import cats.instances.option._ // for Functor
   *
   */
 object C057Functor extends App {
-  val list1: List[Int] = List(1, 2, 3)
-
+  val source: List[Int] = List(1, 2, 3)
   val function = (x: Int) => x * 2
 
-  val functor: Functor[List] = Functor[List] // peek the functor from the implicits
+  // peek the functor from the implicits
+  val functor3: Functor[List] = implicitly[Functor[List]]// syntax #1
+  val functor2: Functor[List] = Functor.apply[List]      // syntax #2
+  val functor:  Functor[List] = Functor[List]            // syntax #3
 
-  val list2 = functor
-              .map(list1)(function)  // provide the kind of type of data to operate with
-                                    // and provide the functor
+  // Scala embedded List[A].map[A=>B]
+  val list2a: List[Int] = source.map(function)   // this will be called under the hood
+  // cats functor
+  val list2b: List[Int] = functor.map(source)(function)
+  // create lifter
+  val lifter: List[Int] => List[Int] = functor.lift(function)
+  // use lifter
+  val list2c: List[Int] = lifter(source)
 
-  val lifted: List[Int] => List[Int] = functor.lift(function)
+  println(s"Source: $source")
+  println(s"list2a: $list2a")
+  println(s"list2b: $list2b")
+  println(s"list2c: $list2c")
 
-  val list2a = list1.map(function)   // this will be called under the hood
-  val list2b = lifted(list1)
-
-  println(list1)
-  println(list2)
-  println(list2a)
-  println(list2b)
-
-  val option1 = Option(123)
-  val option2 = Functor[Option].map(option1)(_.toString)
+  val option1: Option[Int] = Option(123)
+  val ofunctor: Functor[Option] = Functor[Option]
+  val option2: Option[String] = ofunctor.map(option1)(_.toString)
 
 }

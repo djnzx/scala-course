@@ -22,6 +22,7 @@ object C059Functor2 extends App {
 
   final case class Box[A](value: A)
   val b1: Box[Int] = Box[Int](123)
+  val b3: Box[Option[Int]] = Box(Option(13))
 
   implicit val box_functor: Functor[Box] = new Functor[Box] {
     override def map[A, B](fa: Box[A])(f: A => B): Box[B] = Box(f(fa.value))
@@ -31,7 +32,9 @@ object C059Functor2 extends App {
     override def map[A, B](fa: Option[A])(f: A => B): Option[B] = fa.map(f)
   }
 
-  val b2: Box[String] = b1.map(func4a)
-  println(b2)
+  val b1m: Box[String] = b1.map(func4a)
+  println(b1m)
+  val b2m = b3.map(_.map(_ + 1))
+  println(b2m)
 
 }

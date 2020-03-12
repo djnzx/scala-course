@@ -19,4 +19,11 @@ object C054Functor extends App {
   // Reference f without parameters:
   val f2 = f andThen f
 
+  /**
+    * functor LAWS:
+    *
+    * 1. fa.map(a => a) == fa
+    * 2. fa.map(g(f(_))) == fa.map(f).map(g)
+    */
+
 }
