@@ -1,0 +1,30 @@
+- learn-scala-cook-book-aa
+- CoinFlipGameWithCatsIO
+- config
+- helloworldapp - lagom minimal example
+- play - bunch of play examples from official site
+
+- [bootzooka](https://github.com/alexr007/bootzooka.git)
+- [essential-scala](https://github.com/alexr007/essential-scala.git)
+- [essential-slick-code](https://github.com/alexr007/essential-slick-code.git)
+- [fp-stack-2020-pres](https://github.com/adamw/fp-stack-2020-pres.git)
+- [fpinscala](https://github.com/alexr007/fpinscala.git)
+- [http4s-ddd-example](https://github.com/alexr007/http4s-ddd-example.git)
+- [intro-to-functional-scala](https://github.com/alexr007/intro-to-functional-scala.git)
+- [jdg-functional-scala](https://github.com/jdegoes/functional-scala.git)
+- [learn-scala-pfp](https://github.com/alexr007/learn-scala-pfp.git)
+- [learn-scala-pfp-examples](https://github.com/alexr007/pfps-examples.git)
+- [learn-scala-pfp-shopping-cart](https://github.com/alexr007/pfps-shopping-cart.git)
+- [play-zio2](https://github.com/alexr007/play-zio.git)
+- [sbtx](https://github.com/alexr007/sbtx.git)
+- [scala-exercises](https://github.com/alexr007/scala-exercises.git)
+- [scala-play-heroku-my](https://github.com/alexr007/scala-play-heroku.git)
+- [scala-sql-compare](https://github.com/softwaremill/scala-sql-compare.git)
+- [scala-sql-compare2](https://github.com/softwaremill/scala-sql-compare.git)
+- [scala-todo-api](https://github.com/alexr007/scala-todo-api.git)
+- [uzhttp](https://github.com/alexr007/uzhttp.git)
+- [zio](https://github.com/zio/zio.git)
+- [zio-akka-slick-app](https://github.com/alexr007/zio-akka-slick-app.git)
+- [zio-examples](https://github.com/alexr007/zio-examples.git)
+- [zio-structured](https://github.com/alexr007/zio-structured.git)
+- [zio-todo-backend](https://github.com/mschuwalow/zio-todo-backend.git)
