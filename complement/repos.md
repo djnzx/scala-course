@@ -23,7 +23,9 @@
   - [site](https://alvinalexander.com/scala)
   - [github](https://github.com/alvinj)
 - Twitter
-  - [scala school](https://twitter.github.io/scala_school/)  
+  - [scala school](https://twitter.github.io/scala_school/)
+- Dalton Sweeney
+  - [site](https://daltyboy11.github.io)
 
 ### BASIC / LEARNING
 - [fpinscala](https://github.com/alexr007/fpinscala.git)
@@ -34,6 +36,10 @@
 - [sbtx](https://github.com/alexr007/sbtx.git)
 - [scala-exercises](https://github.com/alexr007/scala-exercises.git)
 - [intro-to-functional-scala](https://github.com/alexr007/intro-to-functional-scala.git)
+
+### LEARNING RESOURCES
+- [Ninety-Nine Scala Problems](http://aperiodic.net/phil/scala/s-99/)
+- [Scala Exercises](https://www.scala-exercises.org)
 
 ### BOOKS
 - Underscore 
