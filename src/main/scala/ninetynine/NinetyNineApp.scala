@@ -173,72 +173,20 @@ object NinetyNineApp extends App {
 //  P07Untyped.test()
 
   object P07Typed {
+    sealed trait El[+A] // A - invariant, +A - covariant, Nothing supertypw is allowed
+    final case class ELI[A](a: A) extends El[A]
+    final case class ELL[+A](head: A, tail: El[A]) extends El[A]
+    final case object ELX extends El[Nothing]
 
-    sealed trait El[A]
-
-    final case class ElItem[A](a: A) extends El[A]
-
-    final case class ElList[A](as: El[A]*) extends El[A]
-
-    def flatten[A](xs: List[El[A]]): List[ElItem[A]] = xs match {
-      case Nil => Nil
-      case h :: t => h match {
-        case n: ElItem[A] => n :: flatten(t)
-        case l: ElList[A] => flatten(l.as.toList) ++ flatten(t)
-      }
-    }
-
-    def makeTyped(xs: List[Any]): List[El[Int]] = xs match {
-      case Nil => Nil
-      case h :: t => {
-        if (h.isInstanceOf[Int]) {
-          println(s"I:$h");
-          val eli: El[Int] = ElItem[Int](h.asInstanceOf[Int])
-          val elt: List[El[Int]] = makeTyped(t)
-          eli :: elt
-        }
-        else
-//        if (h.isInstanceOf[List[_]])
-                { println(s"HL:$h");
-                  ???
-//                  ElList(h.asInstanceOf[List[_]]) :: makeTyped(t)
-                }
-      }
-    }
-
-    def makePlain[A](xs: List[ElItem[A]]): List[A] = {
-      @tailrec
-      def step(xs: List[ElItem[A]], acc: List[A]): List[A] = xs match {
-        case Nil  => acc
-        case h::t => step(t, h.a :: acc)
-//        case _ @ ElItem(a)::t => step(t, a :: acc)
-//        case _ => throw new IllegalArgumentException("Wrong type given")
-      }
-      step(xs, Nil) reverse
-    }
 
     def test(): Unit = {
-//      val dataUntyped = List(1, 2)
-      val dataUntyped = List(List(1,2), 3)
-//      val dataUntyped = List(List(1, 1), 2, List(3, List(5, List(8))))
-      val dataTyped: List[El[Int]] = makeTyped(dataUntyped)
-      println(dataUntyped)
-      println(dataTyped)
-      println("===========")
-      val flattened: List[ElItem[Int]] = flatten(dataTyped)
-      val plain: List[Int] = makePlain(flattened)
-      println(flattened)
-      println(plain)
-      println("-------------")
-//      val dataTyped2: List[El[Int]] = List(ElList(List(ElItem(1), ElItem(1))), ElItem(2))
-//      val rtyped: List[ElItem[Int]] = flatten(dataTyped2)
-//      val rplain: List[Int] = makePlain(rtyped)
-//      println(dataTyped2)
-//      println(rtyped)
-//      println(rplain)
+      val dataTyped1 = ELX              // EMPTY
+      val dataTyped2 = ELI(1)           // ONE VALUE
+      val dataTyped3 = ELL(ELI(1), ELX) // LIST OF 1 EL
+      val dataTyped4 = ELL(ELI(1), ELL(ELI(2), ELX)) // LIST OF 2 EL's
     }
   }
-  P07Typed.test()
+//  P07Typed.test()
 
   object P08 {
     def compress(xs: List[Symbol]): List[Symbol] = {
@@ -282,6 +230,59 @@ object NinetyNineApp extends App {
     }
   }
 //  P09.test()
+
+  object P10 {
+
+    def pack[A](xs: List[A]): List[(A, Int)] = {
+
+      @tailrec
+      def pack(xs: List[A], tmp: (A, Int), acc: List[(A, Int)]): List[(A, Int)] = (xs, tmp) match {
+        case (Nil, _)  => acc :+ tmp
+        case (xh::xt, (ch, cnt)) =>
+          if (xh == ch) pack(xt, (ch, cnt + 1), acc)        // the same letter, keep counting
+          else          pack(xt, (xh, 1)      , acc :+ tmp) // the letter is different, start counting from 1
+      }
+
+      val h::t = xs
+      pack(t, (h, 1), Nil)
+    }
+
+    def test(): Unit = {
+      val data = List('x, 'a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+      println(data)
+      val r: List[(Symbol, Int)] = pack(data)
+      println(r)
+    }
+  }
+//  P10.test()
+
+  object P11 {
+
+    def pack[A](xs: List[A]) = {
+
+      @tailrec
+      def pack(xs: List[A], tmp: (A, Int), acc: List[Any]): List[Any] = (xs, tmp) match {
+        case (Nil, _)  => acc :+ tmp
+        case (xh::xt, (ch, cnt)) =>
+          if (xh == ch) pack(xt, (ch, cnt + 1), acc)          // the same letter, keep counting
+          else cnt match {
+            case 1 => pack(xt, (xh, 1), acc :+ tmp._1)
+            case _ => pack(xt, (xh, 1), acc :+ tmp)
+          }
+      }
+
+      val h::t = xs
+      pack(t, (h, 1), Nil)
+    }
+
+    def test(): Unit = {
+      val data = List('x, 'a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+      println(data)
+      val r = pack(data)
+      println(r)
+    }
+  }
+//  P11.test()
 
   object PXX {
     val data: List[Int] = List(1, 1, 2, 3, 5, 8)
