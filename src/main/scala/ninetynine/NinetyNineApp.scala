@@ -529,21 +529,25 @@ object NinetyNineApp extends App {
 //  P19.test()
 
   object P20R {
-    def deleteAt(n: Int, cnt: Int, xs: List[Symbol]): List[Symbol] = xs match {
-      case h::t => if (cnt<n) h::deleteAt(n, cnt+1, t)
-                   else if (cnt == n) deleteAt(n, cnt+1, t)
-                   else h::t
-      case _ => Nil
+    def deleteAt(n: Int, xs: List[Symbol]): (List[Symbol], Symbol) = {
+
+      @tailrec
+      def go(cnt: Int, xs: List[Symbol], acc: List[Symbol]): (List[Symbol], Symbol) = xs match {
+        case h::t => if (cnt < n) go(cnt + 1, t, h::acc) else (acc.reverse ++ t, h)
+        case Nil => ???
+      }
+
+      go(0, xs, Nil)
     }
 
     def test(): Unit = {
       val source = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
       println(s"Source: $source")
-      val actual1 = deleteAt(3, 0, source)
-      println(s"Actual1: $actual1")
+      val actual = deleteAt(3, source)
+      println(s"Actual1: $actual")
     }
   }
-  P20R.test()
+//  P20R.test()
 
   object PXX {
     val data: List[Int] = List(1, 1, 2, 3, 5, 8)
