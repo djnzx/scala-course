@@ -284,6 +284,267 @@ object NinetyNineApp extends App {
   }
 //  P11.test()
 
+  object P12TR {
+    def unpackOne(sym: Symbol, cnt: Int): List[Symbol] =
+      1 to cnt map { _ => sym } toList
+
+    @tailrec
+    def unpack(xs: List[Any], acc: List[Symbol]): List[Symbol] = xs match {
+      case Nil => acc
+      case h :: t => h match {
+        case sym: Symbol             => unpack(t, acc :+ sym)
+        case (sym: Symbol, cnt: Int) => unpack(t, acc ++ unpackOne(sym, cnt))
+        case _                       => ???
+      }
+    }
+
+    def test(): Unit = {
+      val source: List[Any] = List('x, ('a,4), 'b, ('c,2), ('a,2), 'd, ('e,4))
+      val expected = List('x, 'a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+      println(s"Source:   $source")
+      val actual = unpack(source, Nil)
+      println(s"Expected: $expected")
+      println(s"Actual:   $actual")
+    }
+  }
+//  P12TR.test()
+
+  object P12R {
+    def unpackOne(sym: Symbol, cnt: Int): List[Symbol] =
+      1 to cnt map { _ => sym } toList
+
+    def unpack(xs: List[Any]): List[Symbol] = xs match {
+      case Nil => Nil
+      case h :: t => h match {
+        case sym: Symbol             => sym :: unpack(t)
+        case (sym: Symbol, cnt: Int) => unpackOne(sym, cnt) ++ unpack(t)
+        case _                       => ???
+      }
+    }
+
+    def test(): Unit = {
+      val source: List[Any] = List('x, ('a,4), 'b, ('c,2), ('a,2), 'd, ('e,4))
+      val expected = List('x, 'a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+      println(s"Source:   $source")
+      val actual = unpack(source)
+      println(s"Expected: $expected")
+      println(s"Actual:   $actual")
+    }
+  }
+//  P12R.test()
+
+  object P13 {
+    // actually I did it in P10
+  }
+//  P13.test()
+
+  object P14R {
+    def duplicate(xs: List[Symbol]): List[Symbol] = xs match {
+      case Nil    => Nil
+      case h :: t => h :: h :: duplicate(t)
+    }
+
+    def test(): Unit = {
+      val source = List('x, 'a, 'b, 'c, 'a, 'd, 'e)
+      println(s"Source: $source")
+      val actual = duplicate(source)
+      println(s"Actual: $actual")
+    }
+  }
+//  P14R.test()
+
+  object P14TR {
+    @tailrec
+    def duplicate(xs: List[Symbol], acc: List[Symbol]): List[Symbol] = xs match {
+      case Nil    => acc
+      case h :: t => duplicate(t, h::h::acc)
+    }
+
+    def test(): Unit = {
+      val source = List('x, 'a, 'b, 'c, 'a, 'd, 'e)
+      println(s"Source: $source")
+      val actual = duplicate(source, Nil).reverse
+      println(s"Actual: $actual")
+    }
+  }
+//  P14TR.test()
+
+  object P15TR {
+    def nTimes(n: Int, sym: Symbol): Seq[Symbol] = 1 to n map { _ => sym } toList
+
+    @tailrec
+    def duplicate(n: Int, xs: List[Symbol], acc: List[Symbol]): List[Symbol] = xs match {
+      case Nil    => acc
+      case h :: t => duplicate(n, t, acc ++ nTimes(n, h))
+    }
+
+    def test(): Unit = {
+      val source = List('x, 'a, 'b, 'c, 'a, 'd, 'e)
+      println(s"Source: $source")
+      val actual = duplicate(3, source, Nil)
+      println(s"Actual: $actual")
+    }
+  }
+//  P15TR.test()
+
+  object P15R {
+    def nTimes(n: Int, sym: Symbol): List[Symbol] = 1 to n map { _ => sym } toList
+
+    def duplicate(n: Int, xs: List[Symbol]): List[Symbol] = xs match {
+      case Nil    => Nil
+      case h :: t => nTimes(n, h) ++ duplicate(n, t)
+    }
+
+    def test(): Unit = {
+      val source = List('x, 'a, 'b, 'c, 'a, 'd, 'e)
+      println(s"Source: $source")
+      val actual = duplicate(3, source)
+      println(s"Actual: $actual")
+    }
+  }
+//  P15R.test()
+
+  object P16R {
+    def dropNth(n: Int, xs: List[Symbol]): List[Symbol] = {
+
+      def dropNth(n: Int, cnt: Int, xs: List[Symbol]): List[Symbol] = xs match {
+        case Nil    => Nil
+        case h :: t =>
+          if (n==cnt) dropNth(n, 1, t)
+          else        h::dropNth(n, cnt+1, t)
+      }
+
+      dropNth(n, 1, xs)
+    }
+
+    def test(): Unit = {
+      val source = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+      println(s"Source: $source")
+      val actual = dropNth(3, source)
+      println(s"Actual: $actual")
+    }
+  }
+//  P16R.test()
+
+  object P16TR {
+    def dropNth(n: Int, xs: List[Symbol]): List[Symbol] = {
+      @tailrec
+      def dropNth(n: Int, cnt: Int, xs: List[Symbol], acc: List[Symbol]): List[Symbol] = xs match {
+        case Nil    => acc
+        case h :: t =>
+          if (n == cnt) dropNth(n, 1, t, acc)
+          else          dropNth(n, cnt + 1, t, h::acc)
+      }
+      dropNth(n, 1, xs, Nil) reverse
+    }
+
+    def test(): Unit = {
+      val source = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+      println(s"Source: $source")
+      val actual = dropNth(3, source)
+      println(s"Actual: $actual")
+    }
+  }
+//  P16TR.test()
+
+  object P17TR {
+    def splitAt(n: Int, xs: List[Symbol]): (List[Symbol], List[Symbol]) = {
+      @tailrec
+      def moveAndCount(n: Int, tail: List[Symbol], acc: List[Symbol]): (List[Symbol], List[Symbol]) = tail match {
+        case h :: t =>
+          if (n == 0) (acc, tail)
+          else moveAndCount(n-1, t, h::acc)
+        case _    => ???
+      }
+      val (l, r) = moveAndCount(n, xs, Nil)
+      (l.reverse, r)
+    }
+
+    def test(): Unit = {
+      val source = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+      println(s"Source: $source")
+      val actual = splitAt(3, source)
+      println(s"Actual: $actual")
+    }
+  }
+//  P17TR.test()
+
+  object P18TR {
+    def sliceAt(i: Int, k: Int, xs: List[Symbol]): List[Symbol] = {
+      @tailrec
+      def go(c: Int, tail: List[Symbol], acc: List[Symbol]): List[Symbol] = tail match {
+        case h :: t => if (c < i)      go(c+1, t, acc)
+                       else if (c < k) go(c+1, t, h::acc)
+                       else acc
+        case Nil => ???
+      }
+
+      go(0, xs, Nil).reverse
+    }
+
+    def test(): Unit = {
+      val source = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+      println(s"Source: $source")
+      val actual = sliceAt(3, 7, source) //List('d, 'e, 'f, 'g)
+      println(s"Actual: $actual")
+    }
+  }
+//  P18TR.test()
+
+  object P18R {
+    def sliceAt(i: Int, k: Int, c: Int, xs: List[Symbol]): List[Symbol] = xs match {
+      case Nil => ???
+      case h :: t => if (c < i) sliceAt(i, k, c+1, t)
+                     else if (c < k) h::sliceAt(i, k, c+1, t)
+                     else Nil
+    }
+
+    def test(): Unit = {
+      val source = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+      println(s"Source: $source")
+      val actual = sliceAt(3, 7, 0, source) //List('d, 'e, 'f, 'g)
+      println(s"Actual: $actual")
+    }
+  }
+//  P18R.test()
+
+  object P19 {
+    import P17TR.splitAt
+
+    // n > 0 - rotate left
+    def rotate(n: Int, xs: List[Symbol]): List[Symbol] =
+      if (n > 0) splitAt(n, xs) match { case (l, r) => r ++ l }
+      else if (n < 0) splitAt(xs.length + n, xs) match { case (l, r) => r ++ l }
+      else xs
+
+    def test(): Unit = {
+      val source = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+      println(s"Source: $source")
+      val actual1 = rotate(3, source)  // List('d, 'e, 'f, 'g, 'h, 'i, 'j, 'k, 'a, 'b, 'c) <--
+      val actual2 = rotate(-3, source) // List('i, 'j, 'k, 'a, 'b, 'c, 'd, 'e, 'f, 'g, 'h) -->
+      println(s"Actual1: $actual1")
+      println(s"Actual2: $actual2")
+    }
+  }
+//  P19.test()
+
+  object P20R {
+    def deleteAt(n: Int, cnt: Int, xs: List[Symbol]): List[Symbol] = xs match {
+      case h::t => if (cnt<n) h::deleteAt(n, cnt+1, t)
+                   else if (cnt == n) deleteAt(n, cnt+1, t)
+                   else h::t
+      case _ => Nil
+    }
+
+    def test(): Unit = {
+      val source = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+      println(s"Source: $source")
+      val actual1 = deleteAt(3, 0, source)
+      println(s"Actual1: $actual1")
+    }
+  }
+  P20R.test()
+
   object PXX {
     val data: List[Int] = List(1, 1, 2, 3, 5, 8)
 
