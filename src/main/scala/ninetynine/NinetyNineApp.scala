@@ -630,20 +630,32 @@ object NinetyNineApp extends App {
     * a ::: b === concatenation for lists especially
     */
   object P26 {
-    def flatMapL[A, B](xa: List[A])(f: List[A] => List[B]): List[B] =
-      xa match {
-        case Nil => Nil
-        case la @ _ => f(la) ::: flatMapL(la.tail)(f)
-      }
+    /**
+      * that's variance of flatMap
+      * which joins results f(list) and flatMapTail(list.tail)(f)
+      *
+      * if we provide identity function as a parameter
+      * flatMapTail(List('a, 'b, 'c, 'd))(l => l) will produce:
+      *
+      * List('a, 'b, 'c, 'd,   'b, 'c, 'd,   'c, 'd,   'd)
+      */
+    def flatMapTail[A, B](la: List[A])(f: List[A] => List[B]): List[B] = la match {
+      case Nil => Nil
+      case _ => f(la) ::: flatMapTail(la.tail)(f)
+    }
 
-    def combinations[A](n: Int, ls: List[A]): List[List[A]] =
-      if (n == 0) List(Nil) else
-        flatMapL(ls) { la => combinations(n - 1, la.tail) map { x => la.head :: x } }
+    def combinations[A](n: Int, la: List[A]): List[List[A]] = n match {
+      case 0 => List(Nil)
+      case _ => flatMapTail(la) {
+        // List[A] => List[List[A]]
+               lsa => combinations(n - 1, lsa.tail) map { x => lsa.head :: x }
+      }
+    }
 
     def test(): Unit = {
       val data: List[Symbol] = List('a, 'b, 'c, 'd)
       println(data)
-      val r = combinations(3, data)
+      val r = combinations(3, data) // List(List('a, 'b, 'c), List('a, 'b, 'd), List('a, 'c, 'd), List('b, 'c, 'd))
       println(r)
     }
   }
