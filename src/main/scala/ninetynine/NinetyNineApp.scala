@@ -549,6 +549,106 @@ object NinetyNineApp extends App {
   }
 //  P20R.test()
 
+  object P21 {
+    def insertAt(el: Symbol, n: Int, xs: List[Symbol]): (List[Symbol], Symbol) = {
+
+      @tailrec
+      def go(el: Symbol, cnt: Int, xs: List[Symbol], acc: List[Symbol]): (List[Symbol], Symbol) = xs match {
+        case h::t =>
+          if (cnt < n) go(el, cnt + 1, t, h::acc)
+          else ( (el::acc).reverse ++ t, h)
+        case Nil => ???
+      }
+
+      go(el, 0, xs, Nil)
+    }
+
+    def test(): Unit = {
+      val source = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+      println(s"Source: $source")
+      val actual = insertAt('new, 3, source)
+      println(s"Actual1: $actual")
+    }
+  }
+  //P21.test()
+
+  object P22 {
+    def range(min: Int, max: Int): List[Int] = min to max toList
+
+    def test(): Unit = {
+      val r = range(4,9)
+      println(r)
+    }
+  }
+//  P22.test()
+
+  object P24 {
+    // extracts ONE element at index from list to (el, rest)
+    def extractAt[A](idx: Int, xs: List[A]): (A, List[A]) = {
+      @tailrec
+      def go(cnt: Int, xs: List[A], acc: List[A]): (A, List[A]) = xs match {
+        case h::t => if (cnt < idx) go(cnt + 1, t, h::acc) else (h, acc.reverse ++ t)
+        case _ => throw new NoSuchElementException
+      }
+      go(0, xs, Nil)
+    }
+
+    @tailrec
+    def takeNrnd[A](xs: List[A], acc: List[A], cnt: Int): (List[A], List[A]) =
+      if (acc.length == cnt) (acc, xs)
+      else {
+        val idx: Int = scala.util.Random.nextInt(xs.length)
+        val (extracted:A, rest:List[A]) = extractAt[A](idx, xs)
+        takeNrnd(rest, extracted::acc, cnt)
+      }
+
+    def lotto(cnt: Int, max: Int): (List[Int], List[Int]) = {
+      val items: List[Int] = P22.range(1, max)
+      println(items)
+      takeNrnd(items, Nil, cnt)
+    }
+
+    def test(): Unit = {
+      val lot = lotto(6,49)
+      println(lot)
+    }
+  }
+//  P24.test()
+
+  object P25 {
+    def permutate[A](xs: List[A]): List[A] = P24.takeNrnd(xs, Nil, xs.length)._1
+
+    def test(): Unit = {
+      val permutation = permutate(P22.range(1, 30))
+      println(permutation)
+    }
+  }
+//  P25.test()
+
+  /**
+    * a ++ b  === concatenation for any iterables
+    * a ::: b === concatenation for lists especially
+    */
+  object P26 {
+    def flatMapL[A, B](xa: List[A])(f: List[A] => List[B]): List[B] =
+      xa match {
+        case Nil => Nil
+        case la @ _ => f(la) ::: flatMapL(la.tail)(f)
+      }
+
+    def combinations[A](n: Int, ls: List[A]): List[List[A]] =
+      if (n == 0) List(Nil) else
+        flatMapL(ls) { la => combinations(n - 1, la.tail) map { x => la.head :: x } }
+
+    def test(): Unit = {
+      val data: List[Symbol] = List('a, 'b, 'c, 'd)
+      println(data)
+      val r = combinations(3, data)
+      println(r)
+    }
+  }
+  P26.test()
+
   object PXX {
     val data: List[Int] = List(1, 1, 2, 3, 5, 8)
 
