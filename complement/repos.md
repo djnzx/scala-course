@@ -1,9 +1,3 @@
-- learn-scala-cook-book-aa
-- CoinFlipGameWithCatsIOfunctional-scala
-- config
-- helloworldapp - lagom minimal example
-- play - bunch of play examples from official site
-
 ### BLOGS, COMPANIES, GUYS TO FOLLOW
 - John De Goes (ZIO)
   - [blog](http://degoes.net)
@@ -62,7 +56,6 @@
 ### SQL
 - [essential-slick-code](https://github.com/alexr007/essential-slick-code.git)
 - [scala-sql-compare](https://github.com/softwaremill/scala-sql-compare.git)
-- [scala-sql-compare2](https://github.com/softwaremill/scala-sql-compare.git)
 - []()
 
 ### ZIO

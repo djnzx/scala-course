@@ -1,6 +1,6 @@
 package cats
 
-import cats.data.{IndexedStateT, State}
+import cats.data.State
 import cats.data.State._
 
 object C122State extends App {
