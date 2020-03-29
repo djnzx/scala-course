@@ -7,7 +7,7 @@ import cats.syntax.writer._
 
 import scala.annotation.tailrec
 
-object C117WriterExercise3 extends App {
+object C113WriterExercise3 extends App {
 
   type Logged[A] = Writer[Vector[String], A]
 
