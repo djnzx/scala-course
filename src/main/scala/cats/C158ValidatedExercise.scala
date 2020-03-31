@@ -2,40 +2,48 @@ package cats
 
 import cats.data.Validated
 import cats.syntax.either._
-import cats.syntax.validated._
+import cats.syntax.apply._
+import cats.instances.list._
 
 object C158ValidatedExercise extends App {
+
+  type FailFast[A] = Either[List[String], A]
+  type FailSlow[A] = Validated[List[String], A]
 
   val FNAME = "name"
   val FAGE = "age"
 
-  val formFromWeb: Map[String, String] = Map(
+  type FormData = Map[String, String]
+  val webForm: FormData = Map(
     FNAME -> "Alex",
-    FAGE -> "40"
+    FAGE -> "44"
   )
 
   case class User(name: String, age: Int)
 
-  val readName: Map[String, String] => Option[String] =
-    (form: Map[String, String]) => form.get(FNAME)
-  val readAge: Map[String, String] => Option[String] =
-    (form: Map[String, String]) => form.get(FAGE)
-  /**
-    * the name and age must be specified;
-    * the name must not be blank;
-    * the age must be a valid non-negative integer.
-    */
-  def validate(name: Option[String], age: Option[String]): Validated[List[String], User] = {
+  def getValue(name: String)(data: FormData)(emsg: => String) =
+    data.get(name).toRight(List(emsg))
+  val readName = getValue(FNAME) _
+  val readAge = getValue(FAGE) _
 
+  def valIsNotEmpty(emsg: => String)(s: String) =
+    Right(s).ensure(List(emsg))(_.nonEmpty)
+  def toNumber(emsg: => String)(s: String) =
+    Either.catchOnly[NumberFormatException](s.toInt).leftMap(_ => List(emsg))
+  def valIsValidNumber(emsg: => String)(n: Int) =
+    Right(n).ensure(List(emsg))(_ > 0)
 
-    // validated to combine
-    // either to fail-fast
-    ???
-  }
+  def name(form: FormData) = readName(form)("name should be defined")
+    .flatMap(valIsNotEmpty("name should be non blank"))
+  def age(form: FormData) = readAge(form)("age should be defined")
+    .flatMap(toNumber("age should be a number"))
+    .flatMap(valIsValidNumber("age should be non negative"))
 
-  val result: Either[List[String], User] =
-    validate(readName(formFromWeb), readAge(formFromWeb))
-      .toEither
+  def validateAndCreate(form: FormData) = (
+    Validated.fromEither(name(form)),
+    Validated.fromEither(age(form))
+    ).mapN(User.apply).toEither
 
+  val result: Either[List[String], User] = validateAndCreate(webForm)
   print(result)
 }
