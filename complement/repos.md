@@ -56,6 +56,7 @@
 ### SQL
 - [essential-slick-code](https://github.com/alexr007/essential-slick-code.git)
 - [scala-sql-compare](https://github.com/softwaremill/scala-sql-compare.git)
+   - [my clone](https://github.com/alexr007/scala-sql-compare.git)
 - []()
 
 ### ZIO
