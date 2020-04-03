@@ -83,3 +83,12 @@
 - []()
 - []()
 - []()
+
+### LINKS
+[Functional Effect #1](https://www.slideshare.net/pjschwarz/functional-effects-part-1)
+[Functional Effect #2](https://www.slideshare.net/pjschwarz/functional-effects-part-2)
+[stack safety for free](http://functorial.com/stack-safety-for-free/index.pdf)
+[One Monad To Rule Them All](https://www.slideshare.net/jdegoes/one-monad-to-rule-them-all)
+
+### BOOKS
+[Practical FP in Scala: A hands-on approach - Gabriel Volpe](https://leanpub.com/pfp-scala)
