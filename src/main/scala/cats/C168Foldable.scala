@@ -121,9 +121,16 @@ object C168Foldable extends App {
   val fr1r: String = foldRight1(data, "")(foldFn1)
   val fr2r: String = foldRight2(data, "")(foldFn2)
   val fr3r: String = foldRight3(data, Eval.now(""))(evalFoldFn7).value
+
   val fr4r: String = Foldable[List].foldRight(data, Eval.now(""))((a, eb) => eb.map(b => s"$b : $a")).value
   println(fr1r)
   println(fr2r)
   println(fr3r)
   println(fr4r)
+
+  /**
+    * different contracts:
+    * foldLeft:  f:(acc, a) => acc
+    * foldRight: f:(a, acc) => acc
+    */
 }
