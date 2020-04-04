@@ -132,5 +132,10 @@ object C168Foldable extends App {
     * different contracts:
     * foldLeft:  f:(acc, a) => acc
     * foldRight: f:(a, acc) => acc
+    *
+    * List.foldLeft has O(N) complexity
+    * List.foldLeft has O(2*N) complexity
+    *
     */
+
 }
