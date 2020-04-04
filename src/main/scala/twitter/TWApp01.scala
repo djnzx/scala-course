@@ -17,8 +17,8 @@ object TWApp01 extends App {
   val addOne = new AddOne
   val x1 = addOne.apply(1)
   val x2 = addOne(1)
-  println(x1)
-  println(x2)
+//  println(x1)
+//  println(x2)
 
   case class Calculator(brand: String, model: String)
   val hp20b = Calculator("HP", "20b")
@@ -42,5 +42,9 @@ object TWApp01 extends App {
   val partial: PartialFunction[Int, String] = one orElse two orElse three
   val full: PartialFunction[Int, String] = partial orElse wildcard
 
+  println(one.isDefinedAt(1)) // true
+  println(one.isDefinedAt(2)) // false
+  val r: String = one(2) // exception
+  println(r)
 
 }

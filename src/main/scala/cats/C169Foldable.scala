@@ -1,5 +1,8 @@
 package cats
 
+import cats.instances.list._
+import cats.instances.int._
+
 object C169Foldable extends App {
   val data = 1 to 10 toList
 
@@ -23,4 +26,8 @@ object C169Foldable extends App {
   // manually written
   def anyMatch[A](xs: List[A])(p: A => Boolean): Boolean =
     xs.foldLeft(false)((acc, a) => acc || p(a))
+
+  val f = Foldable[List]
+  f.maximumOption(data)
+
 }
