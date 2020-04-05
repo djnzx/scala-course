@@ -14,9 +14,9 @@ object PartialExperimentsApp extends App {
 
   // business logic emulation
   def process(variance: Int): ResultOrError = variance match {
-    case 0 => Left(Badness1("A"))
-    case 1 => Left(Badness2("B"))
-    case 2 => Left(new Badness {})
+    case 0   => Left(Badness1("A"))
+    case 1   => Left(Badness2("B"))
+    case 2   => Left(new Badness {})
     case n@_ => Right(n)
   }
 
