@@ -7,7 +7,7 @@ import cats.instances.list._
 import cats.instances.future._  // Applicative[Future]
 import cats.syntax.apply._
 
-object C172TraversableRepeat extends App {
+object C172TraversableRepeat1 extends App {
 
   val hosts = List(
     "alpha.ibm.com",
