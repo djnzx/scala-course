@@ -48,16 +48,20 @@ object C176TraverseViaApplicative extends App {
   { //
     def listTraverseA7[F[_]: Applicative, A, B](list: List[A])(func: A => F[B]): F[List[B]] =
       list.foldLeft(zero[F, B])((acc, item) => {
+        // extract instances
         val functor  = Functor[F]
         val semigroupal = Semigroupal[F]
+        // apply function
         val fb: F[B] = func(item)
-//        val r = functor.map(semigroupal.product(acc, fb)) { case (a0, a1) => (a0, a1) => func(a0, a1) }
-        val r1: F[List[B]] = Semigroupal.map2(acc, fb)(_ :+ _)
-        r1
+        // make product
+        val tupled: F[(List[B], B)] = semigroupal.product(acc, fb)
+        // map
+        val r = functor.map(tupled) { case (a0, a1)  => a0 :+ a1 }
+        r
       })
   }
 
-  { // Semigroupal direct call
+  { // Semigroupal.map2 direct call
     def listTraverseA8[F[_]: Applicative, A, B](list: List[A])(func: A => F[B]): F[List[B]] =
       list.foldLeft(zero[F, B])((acc, item) => {
         val fb: F[B] = func(item)
