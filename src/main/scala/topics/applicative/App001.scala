@@ -72,7 +72,13 @@ object App001 extends App {
   val al = new Apply[List] {
     // we use list embedded implementation
     override def map[A, B](fa: List[A])(f: A => B): List[B] = fa.map(f)
-    override def ap[A, B](ff: List[A => B])(fa: List[A]): List[B] = ???
+
+    /**
+      * if our structure doesn't have flatMap
+      * implementation is way more complicated
+      */
+    override def ap[A, B](ff: List[A => B])(fa: List[A]): List[B] =
+      fa.flatMap(a => ff.map(f => f(a)))
   }
 
 
