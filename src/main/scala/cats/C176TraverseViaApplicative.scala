@@ -110,4 +110,26 @@ object C176TraverseViaApplicative extends App {
       ) { combinerFn3 }
     )
 
+  /**
+    * exercises:
+    */
+  import cats.instances.option._
+
+  def process(data: List[Int]): Option[List[Int]] = listTraverseA5(data)(n => if (n%2==0) Some(n) else None)
+  println(process(List(2,4,6)))   // Some[List[2,4,6]]
+  println(process(List(1,3,5)))   // None
+  println(process(List(1,2,4,6))) // Option implementation, if we have at least one None the whole result is None
+
+  import cats.data.Validated
+  import cats.instances.list._
+
+  type ErrorOr[A] = Either[String, A]
+
+  def process2(data: List[Int]): Validated[List[String], List[Int]] = listTraverseA5(data)(n =>
+    if(n%2==0) Validated.valid(n)
+    else Validated.invalid(List(s"$n is not even"))
+  )
+  println(process2(List(2,4,6)))   // Valid[Nothing, List(2,4,6)]
+  println(process2(List(1,3,5)))   // Invalid[List("1 is not even", "3 is not even", "5 is not even")]
+  println(process2(List(1,2,4,6))) // Invalid[List("1 is not even")]. if we have at least one Invalid the whole result is Invalid
 }
