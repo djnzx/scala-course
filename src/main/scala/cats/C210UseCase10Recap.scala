@@ -1,6 +1,6 @@
 package cats
 
-import cats.data.NonEmptyList
+import cats.data.{NonEmptyList, Validated}
 
 object C210UseCase10Recap extends App {
   import C206UseCase10ValidPredFlatMap.Check
@@ -22,13 +22,46 @@ object C210UseCase10Recap extends App {
   type Errors = NonEmptyList[String]
   def error(line: String): NonEmptyList[String] = NonEmptyList(line, Nil)
 
-  def longerThat(n: Int): Predicate[Errors, String] = Predicate.lift(
+  def longerThan(n: Int): Predicate[Errors, String] = Predicate.lift(
     error(s"must be longer that $n character"),
-    (s: String) => s.length > n
+    s => s.length > n
   )
 
   def isAlphanumeric: Predicate[Errors, String] = Predicate.lift(
     error(s"Must contain only alphanumeric chars"),
     s => s.forall(_.isLetterOrDigit)
   )
+
+  def contains(c: Char): Predicate[Errors, String] = Predicate.lift(
+    error(s"Must contain at least one `$c` char"),
+    s => s.contains(c)
+  )
+
+  def containsOnce(c: Char): Predicate[Errors, String] = Predicate.lift(
+    error(s"Must contain char `$c` only once"),
+    s => s.count(_ == c) == 1
+  )
+
+  val leftToAt = (s: String) => s.substring(0, s.indexOf('@'))
+  val rightFromAt = (s: String) => s.substring(s.indexOf('@')+1)
+
+  case class User(name: String, email: String)
+
+  def validate(name: String, email: String): Validated[Errors, User] = {
+
+    import cats.syntax.apply._
+
+    val nameValidator = Check(longerThan(3) and isAlphanumeric)
+    val emailValidator =
+      Check(containsOnce('@')) andThen Check(
+          Pure { s: String => longerThan(3)(leftToAt(s)) } and
+          Pure { s: String => longerThan(2)(rightFromAt(s)) }
+      ) andThen Check(contains('.'))
+
+    ( nameValidator(name),
+      emailValidator(email)
+      ).mapN(User.apply)
+  }
+  val r: Validated[Errors, User] = validate("alex","alexr@gmail.com")
+  println(r)
 }
