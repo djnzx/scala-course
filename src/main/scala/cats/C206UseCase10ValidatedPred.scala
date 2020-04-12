@@ -26,21 +26,21 @@ object C206UseCase10ValidatedPred extends App {
   }
 
   object Predicate {
+    def apply[E, A](f: CheckFn[E, A]): Predicate[E, A] = Pure(f)
+    final case class Pure[E, A](f: CheckFn[E, A]) extends Predicate[E, A]
     final case class And[E, A](left: Predicate[E, A], right: Predicate[E, A]) extends Predicate[E, A]
     final case class Or[E, A](left: Predicate[E, A], right: Predicate[E, A]) extends Predicate[E, A]
     def lift[E, A](err: E, p: A => Boolean): Predicate[E, A] =
       Pure { a => if (p(a)) a.valid else err.invalid }
   }
 
-  final case class Pure[E, A](f: CheckFn[E, A]) extends Predicate[E, A]
-
   def test(): Unit = {
     val gt10: Predicate[List[String], Int] =
-      Pure { x: Int => if (x>10) Valid(x) else Invalid(List("not gt10")) }
+      Predicate { x: Int => if (x>10) Valid(x) else Invalid(List("not gt10")) }
     val gt20: Predicate[List[String], Int] =
-      Pure { x: Int => if (x>20) Valid(x) else Invalid(List("not gt20")) }
+      Predicate { x: Int => if (x>20) Valid(x) else Invalid(List("not gt20")) }
     val noFail: Predicate[List[String], Int] =
-      Pure { x: Int => Valid(x) }
+      Predicate { x: Int => Valid(x) }
     val gt1020: Predicate[List[String], Int] =
       noFail and gt10 and gt20
     val or10or20: Predicate[List[String], Int] =

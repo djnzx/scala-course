@@ -25,7 +25,6 @@ object C206UseCase10ValidPredFlatMap extends App {
     final case class Pure[E, A](p: Predicate[E, A]) extends Check[E, A, A] {
       def apply(in: A)(implicit ev: Semigroup[E]): Validated[E, A] = p(in)
     }
-
     final case class Map[E, A, B, C](check: Check[E, A, B], f: B => C) extends Check[E, A, C] {
       def apply(in: A)(implicit ev: Semigroup[E]): Validated[E, C] = {
         val veb: Validated[E, B] = check(in)
@@ -33,7 +32,6 @@ object C206UseCase10ValidPredFlatMap extends App {
         vec
       }
     }
-
     final case class FlatMap[E, A, B, C](check: Check[E, A, B], f: B => Check[E, A, C]) extends Check[E, A, C] {
       def apply(in: A)(implicit ev: Semigroup[E]): Validated[E, C] = {
         val veb: Validated[E, B] = check(in)
@@ -63,16 +61,16 @@ object C206UseCase10ValidPredFlatMap extends App {
         // or
 //        veb.withEither(eeb => eeb.flatMap(b => second(b).toEither))
         // or
-        first(in).withEither(_.flatMap(second(_).toEither))
+        veb.withEither(_.flatMap(second(_).toEither))
       }
     }
   }
 
   def test_ch(): Unit = {
     val gt10: Predicate[List[String], Int] =
-      Pure { x: Int => if (x>10) Valid(x) else Invalid(List("not gt10")) }
+      Predicate { x: Int => if (x>10) Valid(x) else Invalid(List("not gt10")) }
     val gt20: Predicate[List[String], Int] =
-      Pure { x: Int => if (x>20) Valid(x) else Invalid(List("not gt20")) }
+      Predicate { x: Int => if (x>20) Valid(x) else Invalid(List("not gt20")) }
 
     val chGt10:    Check[List[String], Int, Int] = Check(gt10)
     val chGt20:    Check[List[String], Int, Int] = Check(gt20)

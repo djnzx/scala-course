@@ -27,7 +27,7 @@ object C206UseCase10ValidPredCheck extends App {
 
   def test_ch(): Unit = {
     val gt10: Predicate[List[String], Int] =
-      Pure { x: Int => if (x>10) Valid(x) else Invalid(List("not gt10")) }
+      Predicate { x: Int => if (x>10) Valid(x) else Invalid(List("not gt10")) }
 
     val chGt10:   Check[List[String], Int, Int]    = Check(gt10)
     val chGt10m1: Check[List[String], Int, Int]    = chGt10.map { _ + 1}

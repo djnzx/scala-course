@@ -6,6 +6,8 @@ object C210UseCase10Recap extends App {
   import C206UseCase10ValidPredFlatMap.Check
   import C206UseCase10ValidatedPred._
 
+  import cats.syntax.apply._
+
   /**
     * A username
     * - must contain at least four characters
@@ -20,7 +22,7 @@ object C210UseCase10Recap extends App {
     */
 
   type Errors = NonEmptyList[String]
-  def error(line: String): NonEmptyList[String] = NonEmptyList(line, Nil)
+  def error(line: String) = NonEmptyList(line, Nil)
 
   def longerThan(n: Int): Predicate[Errors, String] = Predicate.lift(
     error(s"must be longer that $n character"),
@@ -38,30 +40,35 @@ object C210UseCase10Recap extends App {
   )
 
   def containsOnce(c: Char): Predicate[Errors, String] = Predicate.lift(
-    error(s"Must contain char `$c` only once"),
+    error(s"Must contain single `$c` char"),
     s => s.count(_ == c) == 1
   )
 
-  val leftToAt = (s: String) => s.substring(0, s.indexOf('@'))
-  val rightFromAt = (s: String) => s.substring(s.indexOf('@')+1)
+  val nameValidator = longerThan(3) and isAlphanumeric
+
+  val splitToTuple = (s: String) => {
+    val at = s.indexOf('@')
+    (s.substring(0, at), s.substring(at + 1))
+  }
+  val tupleValidator: Predicate[Errors, (String, String)] = Predicate { case (address, domain) =>
+      (longerThan(0)(address),
+      (longerThan(3) and contains('.'))(domain)
+      ).mapN((_, _))
+  }
+  val tupleCombine: ((String, String)) => String = { case (addr, dom) => s"$addr@$dom" }
+
+  val emailValidator =
+    Check(containsOnce('@')) map splitToTuple andThen Check(tupleValidator) map tupleCombine
 
   case class User(name: String, email: String)
 
-  def validate(name: String, email: String): Validated[Errors, User] = {
-
-    import cats.syntax.apply._
-
-    val nameValidator = Check(longerThan(3) and isAlphanumeric)
-    val emailValidator =
-      Check(containsOnce('@')) andThen Check(
-          Pure { s: String => longerThan(3)(leftToAt(s)) } and
-          Pure { s: String => longerThan(2)(rightFromAt(s)) }
-      ) andThen Check(contains('.'))
-
+  def validate(name: String, email: String): Validated[Errors, User] =
     ( nameValidator(name),
       emailValidator(email)
       ).mapN(User.apply)
-  }
-  val r: Validated[Errors, User] = validate("alex","alexr@gmail.com")
-  println(r)
+
+  println(validate("alex","alexr@gmail.com"))
+  println(validate("ale","alexr@gmail.com")) // Invalid(NonEmptyList(must be longer that 3 character))
+  println(validate("alex","@gmail.com"))     // Invalid(NonEmptyList(must be longer that 0 character))
+  println(validate("alex","@gma"))           // Invalid(NonEmptyList(must be longer that 0 character, must be longer that 3 character, Must contain at least one `.` char))
 }
