@@ -9,6 +9,8 @@ object C206UseCase10ValidatedPred extends App {
 
   type CheckFn[E, A] = A => Validated[E, A]
   sealed trait Predicate[E, A] {
+    import Predicate._
+
     def apply(a: A)(implicit ev: Semigroup[E]): Validated[E, A] = this match {
       case Pure(f) => f(a)
       case And(lf, rf) => (lf(a), rf(a)).mapN((_, _) => a)
@@ -21,8 +23,12 @@ object C206UseCase10ValidatedPred extends App {
     def and(that: Predicate[E, A]): Predicate[E, A] = And(this, that)
     def or(that: Predicate[E, A]): Predicate[E, A] = Or(this, that)
   }
-  final case class And[E, A](left: Predicate[E, A], right: Predicate[E, A]) extends Predicate[E, A]
-  final case class Or[E, A](left: Predicate[E, A], right: Predicate[E, A]) extends Predicate[E, A]
+
+  object Predicate {
+    final case class And[E, A](left: Predicate[E, A], right: Predicate[E, A]) extends Predicate[E, A]
+    final case class Or[E, A](left: Predicate[E, A], right: Predicate[E, A]) extends Predicate[E, A]
+  }
+
   final case class Pure[E, A](f: CheckFn[E, A]) extends Predicate[E, A]
 
   def test(): Unit = {
