@@ -37,7 +37,7 @@
 
 ### BOOKS
 - Underscore 
-- []()
+  - [scala with cats HTML](https://www.scalawithcats.com/dist/scala-with-cats.html)
 
 ### PURE FP
 - [fp-stack-2020-pres](https://github.com/adamw/fp-stack-2020-pres.git)

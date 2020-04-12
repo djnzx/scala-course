@@ -1,6 +1,6 @@
 package cats
 
-object C206UseCase10ValidatedPredCheck extends App {
+object C206UseCase10ValidPredCheck extends App {
 
   import cats.data.Validated
   import cats.data.Validated.{Invalid, Valid}
