@@ -4,8 +4,9 @@ object C206UseCase10ValidatedPred extends App {
   import cats.data.Validated
   import cats.data.Validated.{Invalid, Valid}
   import cats.instances.list._
-  import cats.syntax.apply._
+  import cats.syntax.apply._     // mapN
   import cats.syntax.semigroup._ // |+|
+  import cats.syntax.validated._ // .valid, .invalid
 
   type CheckFn[E, A] = A => Validated[E, A]
   sealed trait Predicate[E, A] {
@@ -27,6 +28,8 @@ object C206UseCase10ValidatedPred extends App {
   object Predicate {
     final case class And[E, A](left: Predicate[E, A], right: Predicate[E, A]) extends Predicate[E, A]
     final case class Or[E, A](left: Predicate[E, A], right: Predicate[E, A]) extends Predicate[E, A]
+    def lift[E, A](err: E, p: A => Boolean): Predicate[E, A] =
+      Pure { a => if (p(a)) a.valid else err.invalid }
   }
 
   final case class Pure[E, A](f: CheckFn[E, A]) extends Predicate[E, A]

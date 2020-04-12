@@ -16,7 +16,7 @@ object C206UseCase10ValidPredFlatMap extends App {
     // we map current validation on another validation which can fail
     def flatMap[C](f: B => Check[E, A, C]): Check[E, A, C] = FlatMap[E, A, B, C](this, f)
     // handy chaining
-    def andThen[C](f: Check[E, B, C]): Check[E, A, C] = AndThen[E, A, B, C](this, f)
+    def andThen[C](next: Check[E, B, C]): Check[E, A, C] = AndThen[E, A, B, C](this, next)
   }
 
   object Check {
@@ -25,6 +25,7 @@ object C206UseCase10ValidPredFlatMap extends App {
     final case class Pure[E, A](p: Predicate[E, A]) extends Check[E, A, A] {
       def apply(in: A)(implicit ev: Semigroup[E]): Validated[E, A] = p(in)
     }
+
     final case class Map[E, A, B, C](check: Check[E, A, B], f: B => C) extends Check[E, A, C] {
       def apply(in: A)(implicit ev: Semigroup[E]): Validated[E, C] = {
         val veb: Validated[E, B] = check(in)
@@ -32,6 +33,7 @@ object C206UseCase10ValidPredFlatMap extends App {
         vec
       }
     }
+
     final case class FlatMap[E, A, B, C](check: Check[E, A, B], f: B => Check[E, A, C]) extends Check[E, A, C] {
       def apply(in: A)(implicit ev: Semigroup[E]): Validated[E, C] = {
         val veb: Validated[E, B] = check(in)
