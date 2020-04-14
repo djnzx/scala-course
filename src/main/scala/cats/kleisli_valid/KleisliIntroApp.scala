@@ -24,11 +24,14 @@ object KleisliIntroApp extends App {
   val s01 = k0 andThen k1
   val s12 = k1 andThen k2
   val s012 = k0 andThen k1 andThen k2
+  val s012a = k0 map { _ + 1000 } andThen k1 andThen k2
 
   val fm01 = (x: List[Int]) => x.flatMap(f0).flatMap(f1).flatMap(f2)
 
   val r012a: List[String] = fm01(List(10))
   val r012b: List[String] = s012.run(10)
+  val r012c: List[String] = s012a.run(10)
   println(r012a)
   println(r012b)
+  println(r012c)
 }
