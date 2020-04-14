@@ -46,6 +46,12 @@ object C206UseCase10ValidatedPred extends App {
     val or10or20: Predicate[List[String], Int] =
       gt10 or gt20
 
+    val fn = (a: Int) => if (a>10) Validated.valid(a) else Validated.invalid(List("Wrong"))
+    // object Predicate.apply
+    val pfn: Predicate[List[String], Int] = Predicate(fn)
+    // trait Predicate.apply
+    pfn(1)
+
     println(s"And: ${gt1020(5)}")  // Invalid(List(not gt10, not gt20))
     println(s"And: ${gt1020(15)}") // Invalid(List(not gt20))
     println(s"And: ${gt1020(25)}") // Valid(25)
