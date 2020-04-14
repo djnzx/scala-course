@@ -20,6 +20,12 @@
   - [scala school](https://twitter.github.io/scala_school/)
 - Dalton Sweeney
   - [site](https://daltyboy11.github.io)
+- Li Haoyi
+  - [blog](http://www.lihaoyi.com)
+- Daniel (Rock The JVM)
+  - [reddit](https://www.reddit.com/user/danielciocirlan/)
+  - [youtube](https://www.youtube.com/playlist?list=PLmtsMNDRU0BxryRX4wiwrTZ661xcp6VPM)
+ 
 
 ### BASIC / LEARNING
 - [fpinscala](https://github.com/alexr007/fpinscala.git)
@@ -49,9 +55,12 @@
 - []()
 
 ### PLAY
+- [play-from-scratch-reddit-thread](https://www.reddit.com/r/scala/comments/fx6u4t/play_framework_create_application_from_scratch/)
+- [play-from-scratch-document](https://dvirf1.github.io/play-tutorial/)
+
 - [scala-play-heroku-my](https://github.com/alexr007/scala-play-heroku.git)
 - [scala-todo-api](https://github.com/alexr007/scala-todo-api.git)
-- []()
+
 
 ### SQL
 - [essential-slick-code](https://github.com/alexr007/essential-slick-code.git)
@@ -92,3 +101,6 @@
 
 ### BOOKS
 [Practical FP in Scala: A hands-on approach - Gabriel Volpe](https://leanpub.com/pfp-scala)
+
+### ScalaJS
+[](http://www.lihaoyi.com/hands-on-scala-js/)

@@ -100,7 +100,7 @@ object KleisliValidated extends App {
 
   val nameValidator: Check[String, String] = predToCheck(longerThan(3) and isAlphanumeric)
 
-  def validate(name: String, email: String): VResult[User] =
+  def validate(name: String, email: String): Either[Errors, User] =
     ( nameValidator(name),
       emailValidator(email)
       ).mapN(User.apply)
