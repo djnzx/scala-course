@@ -1,4 +1,4 @@
-package warmup
+package hackerrank
 
 import java.math.BigDecimal
 
