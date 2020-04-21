@@ -1,5 +1,10 @@
 package hackerrankfp.d200421_01
 
+import java.io.File
+
+import scala.annotation.tailrec
+import scala.io.BufferedSource
+
 object IntroApp extends App {
   /**
     * https://www.hackerrank.com/challenges/fp-filter-positions-in-a-list/problem
@@ -74,4 +79,37 @@ object IntroApp extends App {
       println(r.formatted("%.4f"))
     }
   }
+
+  def consume_data(srcx: BufferedSource): List[List[(Int, Int)]] = {
+    val origin: List[String] = srcx.getLines().map(_.trim).toList
+
+    @tailrec
+    def consume(sr: List[String], buf: List[(Int, Int)], acc: List[List[(Int, Int)]]): List[List[(Int, Int)]] = {
+//      print(s"SR: $sr   ")
+//      print(s"BUF: $buf   ")
+//      println(s"ACC: $acc")
+      sr match {
+        case line::lines => line.split(" ") match {
+          case Array(x, y) => consume(lines, (x.toInt, y.toInt)::buf, acc)
+          case Array(_)    => consume(lines, List.empty, if (buf.isEmpty) acc else buf.reverse::acc)
+        }
+        case Nil => buf.reverse::acc
+      }
+    }
+
+    consume(origin.tail, List.empty, List.empty) reverse
+  }
+
+  def process(data: List[(Int, Int)]): String = {
+//    println(s"${data.length}: $data")
+    if(data.groupBy(_._1).forall(kv => kv._2.size==1)) "YES" else "NO"
+  }
+
+  def main_is_fn(args: Array[String]): Unit = {
+    val src: BufferedSource =
+      scala.io.Source.fromFile(new File("src/main/scala/hackerrankfp/d200421_01/test1"))
+    consume_data(src) map { process } foreach println
+  }
+
+  main_is_fn(Array.empty)
 }
