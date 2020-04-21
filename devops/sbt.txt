@@ -1,11 +1,14 @@
-brew instal sbt
+# SBT installation / upgrade:
+brew install sbt
 brew upgrade sbt
--> sbt 1.2.8
+# sbt installed to:
+/usr/local/Cellar/sbt/1.3.10/libexec/bin/sbt-launch.jar
+inside sbt:
+  about
+
 brew install scala
 brew upgrade scala
 -> scala 2.12.8
-
-sbt about
 
 To use with IntelliJ, set the Scala home to:
   /usr/local/opt/scala/idea

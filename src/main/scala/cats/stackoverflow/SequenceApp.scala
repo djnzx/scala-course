@@ -48,4 +48,13 @@ object SequenceApp extends App {
   println(rs1)
   println(rs2)
   println(rs3)
+
+  val d1: List[Int] = 1 to 1000 toList
+  val d2: Vector[Int] = 1 to 1000 toVector
+  val l1 = d1.length // O(N)
+  val l2 = d2.length // O(1)
+  val el1 = d1(10) // d1.apply(10) // O(N)
+  val el2 = d2(10) // d2.apply(10) // O(1)
+  d1.grouped(100)
+  d2.grouped(100)
 }
