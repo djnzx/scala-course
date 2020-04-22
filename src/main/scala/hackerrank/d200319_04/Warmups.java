@@ -222,16 +222,18 @@ public class Warmups {
    * https://www.hackerrank.com/challenges/counting-valleys/problem
    */
   static int migratoryBirds(List<Integer> arr) {
-    Map<Integer, Long> types = arr.stream().collect(Collectors.groupingBy(a -> a, Collectors.counting()));
-    Long size = types.entrySet().stream().map(ent -> new Pair<>(ent.getKey(), ent.getValue()))
-        .max((p1, p2) -> (int) (p1.b - p2.b))
-        .map(p -> p.b)
-        .orElse(0L);
-    return types.entrySet().stream().filter(e -> e.getValue() == size)
-        .map(ent -> new Pair<>(ent.getKey(), ent.getValue()))
-        .min((p1, p2) -> (p1.a - p2.a))
-        .map(p -> p.a)
-        .orElse(0);
+    Map<Integer, Long> types = arr.stream()
+        .collect(Collectors.groupingBy(a -> a, Collectors.counting()));
+
+    long max_size = types.values().stream()
+        .max(Comparator.comparingLong(a -> a))
+        .orElseThrow(RuntimeException::new);
+
+    return types.entrySet().stream()
+        .filter(e -> e.getValue() == max_size)
+        .map(Map.Entry::getKey)
+        .min(Comparator.comparingInt(a->a))
+        .orElseThrow(RuntimeException::new);
   }
 
   static String dayOfProgrammer(int year) {
