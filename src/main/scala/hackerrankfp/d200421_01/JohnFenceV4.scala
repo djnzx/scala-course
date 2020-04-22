@@ -1,59 +1,59 @@
 package hackerrankfp.d200421_01
 
-import java.io.File
+import scala.annotation.tailrec
 
-import scala.collection.mutable
-import scala.io.BufferedSource
-
-object JohnFenceV4 extends App {
+object JohnFenceV4 {
   def readLine = scala.io.StdIn.readLine()
 
-  case class Area(height: Int, l: Int, r: Int)
-
-  val process: mutable.Map[Int, Set[Area]] = mutable.Map.empty
-
-  // that's cache gives you ability to improve only by 10%
-  def isVisited(height: Int, idx: Int): Boolean =
-    process.get(height).exists { _.exists { a: Area => (a.l <= idx) && (idx <= a.r) } }
-
-  def extendFrom(fence: Vector[Int], height: Int, idx: Int): Int = {
-    if (isVisited(height, idx)) 0 else {
-      val zero = (true, 0)
-      val foldFn: ((Boolean, Int), Int) => (Boolean, Int) = (acc, h) => acc match {
-        case (true, extend) => if (height <= fence(h)) (true, extend + 1) else (false, extend)
-        case (false, extend) => (false, extend)
-      }
-      val to_l = Range.inclusive(idx - 1, 0, -1).foldLeft(zero) { foldFn }._2
-      val to_r = Range.inclusive(idx + 1, fence.length - 1, 1).foldLeft(zero) { foldFn }._2
-
-      val st: Set[Area] = process.getOrElse(height, Set.empty)
-      val st2: Set[Area] = st + Area(height, idx - to_l, idx + to_r)
-      process.put(height, st2)
-      List(1, to_l, to_r).sum * height
-    }
+  def calcArea(oldMax: Int, idx: Int, s: List[Int], topHeight: Int): Int = {
+    val width = if (s.isEmpty) idx else idx-1 -s.head
+    scala.math.max(oldMax, width * topHeight)
   }
 
-  def calcFence(fence: Vector[Int]): Int = {
-    fence.zipWithIndex.foldLeft(0) { (acc, el) =>
-      scala.math.max(acc, extendFrom(fence, el._1, el._2))}
-  }
-  //  platform
-  //  val _ = readLine
-  //  val fence = readLine.split(" ").map(_.toInt).toVector
+  case class XState(idx: Int, stack: List[Int], max: Int)
 
-  //  local
-  val src: BufferedSource =
-    scala.io.Source.fromFile(new File("src/main/scala/hackerrankfp/d200421_01/test2big"))
-  val _ = src.getLines().take(1).next()
-  val fence = src.getLines().map(_.trim).next().split(" ").map(_.toInt).toVector
-  val t0 = System.currentTimeMillis()
-  val max = calcFence(fence)
-  val spent = System.currentTimeMillis()-t0
-  println(s"ms: $spent")
-  println(max)
-  println(process)
-  println(process.size)
-//  process.foreach { case (h: Int, a: Set[Area]) => println(s"h:$h, s:${a.size}") }
-  val t = process.foldLeft(0) {case (acc, (h, a: Set[Area])) => acc + a.size }
-  println(t)
+  @tailrec
+  def process1(x: XState, fence: Vector[Int]): XState =
+    if (x.idx < fence.length) process1(
+      if (x.stack.isEmpty || fence(x.stack.head) < fence(x.idx))
+        XState(x.idx+1, x.idx::x.stack, x.max) else
+        XState(x.idx,   x.stack.tail,   calcArea(x.max, x.idx, x.stack.tail, fence(x.stack.head)))
+      , fence)
+    else x
+
+  @tailrec
+  def process2(x: XState, fence: Vector[Int]): XState = x.stack match {
+    case Nil => x
+    case _   => process2(
+      XState(x.idx, x.stack.tail, calcArea(x.max, x.idx, x.stack.tail, fence(x.stack.head)))
+      , fence
+    )
+  }
+
+  def calcFence(fence: Vector[Int]): XState = {
+    val x0 = XState(0, List.empty, 0)
+    val x1 = process1(x0, fence)
+    process2(x1, fence)
+  }
+
+  def main(args: Array[String]) {
+    val _ = readLine
+    val fence = readLine.split(" ").map(_.toInt).toVector
+    val max = calcFence(fence).max
+    println(max)
+  }
+
+  def main_test1(args: Array[String]) {
+    val fence = Vector(1, 2, 3, 4, 5, 6, 5, 4, 3, 0, 4, 5, 6, 7, 8, 6, 4, 2)
+    val max = calcFence(fence).max
+    println(max)
+  }
+
+  def main_test2(args: Array[String]) {
+      val src = scala.io.Source.fromFile(new java.io.File("src/main/scala/hackerrankfp/d200421_01/test2big"))
+      val _ = src.getLines().take(1).next()
+      val fence = src.getLines().map(_.trim).next().split(" ").map(_.toInt).toVector
+    val max = calcFence(fence).max
+    println(max)
+  }
 }

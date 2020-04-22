@@ -7,38 +7,45 @@ import java.util.List;
 public class JohnFenceV3 {
 
   static LinkedList<Integer> stack = new LinkedList<>();
-  static int area;
   static int maxArea = 0;
   static int idx;
 
-  static void calcAreaAndUpdate(List<Integer> fence, int top) {
-    int width = stack.isEmpty() ? idx : idx-stack.peekFirst()-1;
-    area = fence.get(top) * width;
-    maxArea = Math.max(area, maxArea);
+  static int max(int oldMax, int width, int height) {
+    return Math.max(oldMax, width * height);
+  }
+
+  static int calcArea(int oldMax, int idx, LinkedList<Integer> s, int topHeight) {
+    int width = s.isEmpty() ? idx : idx-1 -s.peekFirst();
+    return max(oldMax, width, topHeight);
   }
 
   static int maxFence(List<Integer> fence) {
-    maxArea = 0;
-    stack.clear();
-
     // first fold (idx, maxArea, stack )
-    for (idx = 0; idx < fence.size();)
+    for (idx = 0; idx < fence.size();) {
       if (stack.isEmpty() || fence.get(stack.peekFirst()) < fence.get(idx)) {
-        stack.addFirst(idx++);
+        stack.addFirst(idx);
+        System.out.printf("%2d : %23s : add\n", idx, stack);
+        idx++;
       } else {
-        calcAreaAndUpdate(fence, stack.removeFirst());
+        maxArea = calcArea(maxArea, idx, stack, fence.get(stack.removeFirst()));
+        System.out.printf("%2d : %23s : %d\n", idx, stack, maxArea);
       }
+    }
 
+    System.out.println("--");
     // second fold (idx, maxArea, stack)
-    while (!stack.isEmpty())
-      calcAreaAndUpdate(fence, stack.removeFirst());
+    // calculate to back
+    while (!stack.isEmpty()) {
+      maxArea = calcArea(maxArea, idx, stack, fence.get(stack.removeFirst()));
+      System.out.printf("%2d : %23s : %d\n", idx, stack, maxArea);
+    }
 
     return maxArea;
   }
 
   public static void main(String[] args) {
     System.out.println(maxFence(Arrays.asList(
-        2,5,7,4,1,8
+        1,2,3,4,5,6,5,4,3,0,4,5,6,7,8,6,4,2
     )));
   }
 }

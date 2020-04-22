@@ -50,7 +50,10 @@ object JohnFenceV2 extends App {
   val _ = src.getLines().take(1).next()
   val fence = src.getLines().map(_.trim).next().split(" ").map(_.toInt).toVector
   val t0 = System.currentTimeMillis()
-  val max = calcFence(fence)
+//  val max = calcFence(fence)
+  val max = calcFence(Vector(
+    1,2,3,4,5,6,6,4,3,4,5,6,7,8,6,4,2
+  ))
   val spent = System.currentTimeMillis()-t0
   println(s"ms: $spent")
   println(max)
