@@ -5,7 +5,10 @@ import java.io.File
 import scala.collection.mutable
 import scala.io.BufferedSource
 
-object JohnFence extends App {
+/**
+  * 28s
+  */
+object JohnFenceV2 extends App {
   def readLine = scala.io.StdIn.readLine()
 
   case class Area(height: Int, l: Int, r: Int)
@@ -43,7 +46,7 @@ object JohnFence extends App {
 
   //  local
   val src: BufferedSource =
-    scala.io.Source.fromFile(new File("src/main/scala/hackerrankfp/d200421_01/test2"))
+    scala.io.Source.fromFile(new File("src/main/scala/hackerrankfp/d200421_01/test2big"))
   val _ = src.getLines().take(1).next()
   val fence = src.getLines().map(_.trim).next().split(" ").map(_.toInt).toVector
   val t0 = System.currentTimeMillis()
@@ -52,4 +55,8 @@ object JohnFence extends App {
   println(s"ms: $spent")
   println(max)
   println(process)
+  println(process.size)
+//  process.foreach { case (h: Int, a: Set[Area]) => println(s"h:$h, s:${a.size}") }
+  val t = process.foldLeft(0) {case (acc, (h, a: Set[Area])) => acc + a.size }
+  println(t)
 }
