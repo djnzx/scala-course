@@ -12,17 +12,25 @@ object JohnFence extends App {
 
   val process: mutable.Map[Int, Set[Area]] = mutable.Map.empty
 
-  def extendFrom(fence: Vector[Int], height: Int, idx: Int): Int = {
-    val zero = (true, 0)
-    val foldFn: ((Boolean, Int), Int) => (Boolean, Int) = (acc, h) => acc match {
-      case (true, extend) => if (height <= fence(h)) (true, extend+1) else (false, extend)
-      case (false, extend) => (false, extend)
-    }
-    val to_l = Range.inclusive(idx-1, 0, -1).foldLeft(zero) { foldFn }._2
-    val to_r = Range.inclusive(idx+1, fence.length-1, 1).foldLeft(zero) { foldFn }._2
+  // that's cache gives you ability to improve only by 10%
+  def isVisited(height: Int, idx: Int): Boolean =
+    process.get(height).exists { _.exists { a: Area => (a.l <= idx) && (idx <= a.r) } }
 
-//    process put (height->Area(height, idx-to_l, idx+to_r))
-    List(1, to_l, to_r).sum * height
+  def extendFrom(fence: Vector[Int], height: Int, idx: Int): Int = {
+    if (isVisited(height, idx)) 0 else {
+      val zero = (true, 0)
+      val foldFn: ((Boolean, Int), Int) => (Boolean, Int) = (acc, h) => acc match {
+        case (true, extend) => if (height <= fence(h)) (true, extend + 1) else (false, extend)
+        case (false, extend) => (false, extend)
+      }
+      val to_l = Range.inclusive(idx - 1, 0, -1).foldLeft(zero) { foldFn }._2
+      val to_r = Range.inclusive(idx + 1, fence.length - 1, 1).foldLeft(zero) { foldFn }._2
+
+      val st: Set[Area] = process.getOrElse(height, Set.empty)
+      val st2: Set[Area] = st + Area(height, idx - to_l, idx + to_r)
+      process.put(height, st2)
+      List(1, to_l, to_r).sum * height
+    }
   }
 
   def calcFence(fence: Vector[Int]): Int = {
@@ -43,4 +51,5 @@ object JohnFence extends App {
   val spent = System.currentTimeMillis()-t0
   println(s"ms: $spent")
   println(max)
+  println(process)
 }
