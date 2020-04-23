@@ -52,11 +52,9 @@ object RangeMinimumQueryApp {
       left <= node.left && node.right <= right
   }
 
-  /**
-    * naive approach, complexity N^2
-    */
-  def process_naive(st: SegmentTree, mnx: (Int, Int)): Int =
-    (mnx._1 to mnx._2).foldLeft(Integer.MAX_VALUE) { (min, idx) => scala.math.min(min, data(idx)) }
+// naive approach, complexity N^2
+//  def process_naive(st: SegmentTree, mnx: (Int, Int)): Int =
+//    (mnx._1 to mnx._2).foldLeft(Integer.MAX_VALUE) { (min, idx) => scala.math.min(min, data(idx)) }
 
   /**
     * Segment tree, complexity Log N
