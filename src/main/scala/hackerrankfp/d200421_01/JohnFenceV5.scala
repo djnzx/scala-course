@@ -1,5 +1,7 @@
 package hackerrankfp.d200421_01
 
+import cats.data.State
+
 object JohnFenceV5 {
   def readLine = scala.io.StdIn.readLine()
 
@@ -30,6 +32,15 @@ object JohnFenceV5 {
     case _   => process2(calcArea(x), fence)
   }
 
+  def calcFenceM(fence: Vector[Int]): XState = {
+    val x0 = XState(0, List.empty, 0)
+    val combined = for {
+      _ <- State { x: XState => (process1(x, fence), ()) }
+      _ <- State { x: XState => (process2(x, fence), ()) }
+    } yield ()
+    combined.run(x0).value._1
+  }
+
   def calcFence(fence: Vector[Int]): XState = {
     val x0 = XState(0, List.empty, 0)
     val x1 = process1(x0, fence)
@@ -40,7 +51,8 @@ object JohnFenceV5 {
   def main(args: Array[String]) {
     //                 0  1  2  3  4  5  6  7  8  9  10
     val fence = Vector(1, 2, 3, 4, 5, 6, 7, 8, 6, 4, 2)
-    val max = calcFence(fence).max
+//    val max = calcFence(fence).max
+    val max = calcFenceM(fence).max
     println(max)
   }
 
