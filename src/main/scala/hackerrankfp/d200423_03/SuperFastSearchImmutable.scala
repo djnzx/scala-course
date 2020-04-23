@@ -6,8 +6,10 @@ import scala.util.Using
   * Knuth–Morris–Pratt algorithm
   * https://en.wikipedia.org/wiki/Knuth–Morris–Pratt_algorithm
   * https://www.hackerrank.com/challenges/kmp-fp/problem
+  *
+  *
   */
-object SuperFastSearch {
+object SuperFastSearchImmutable {
 
   def buildMeta(word: String): Vector[Int] = {
     val meta = Array.fill[Int](word.length + 1)(-1)
@@ -65,7 +67,7 @@ object SuperFastSearch {
 //  def main(p: Array[String]): Unit = {
 //    body { scala.io.StdIn.readLine }
 //  }
-
+//
   def main(p: Array[String]): Unit = {
     Using(
       scala.io.Source.fromFile(new java.io.File("src/main/scala/hackerrankfp/d200423_03/strings.txt"))
