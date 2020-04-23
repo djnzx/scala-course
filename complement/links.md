@@ -77,7 +77,7 @@
 - [zio-examples](https://github.com/alexr007/zio-examples.git)
 - [zio-structured](https://github.com/alexr007/zio-structured.git)
 - [zio-todo-backend](https://github.com/mschuwalow/zio-todo-backend.git)
-- []()
+- [zio+http4s](https://juliano-alves.com/2020/04/20/zio-http4s-a-simple-api-client/)
 
 ### GITHUB
 - [rockthejvm](https://github.com/rockthejvm)
