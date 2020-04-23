@@ -1,26 +1,16 @@
 package hackerrankfp.d200423_03
 
+/**
+  * https://www.hackerrank.com/challenges/valid-bst/problem
+  * https://www.geeksforgeeks.org/check-if-a-given-array-can-represent-preorder-traversal-of-binary-search-tree/
+  */
 object IsBST {
 
-  case class Node(data: Int, l: Node, r:Node)
-
-  var root: Node = _
-
-  def isBST(root: Node, prev: Int): Boolean =
-    if (root == null) true else {
-      if      (!isBST(root.l, prev)) false
-      else if (root.data <= prev) false
-      else isBST(root.r, root.data)
-    }
-
-  def isBST(root: Node): Boolean =
-    isBST(root, Integer.MIN_VALUE)
-
-  def add(item: Int): Node = ???
 
   def process(line1: String, line2: String): Boolean = {
-    line2.split(" ") map { _.toInt } foreach add
-    isBST(root)
+//    line2.split(" ") map { _.toInt } foreach add
+//    isBST(root)
+    true
   }
 
   def body(readLine: => String) = {
