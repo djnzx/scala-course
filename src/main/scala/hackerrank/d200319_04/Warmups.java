@@ -8,6 +8,7 @@ import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
+import static java.util.stream.Collectors.toList;
 
 public class Warmups {
   static void staircase(int n) {
@@ -117,13 +118,13 @@ public class Warmups {
     return LocalTime.parse(s, DateTimeFormatter.ofPattern("hh:mm:ss a", Locale.US)).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
   }
 
+  /**
+   * https://www.hackerrank.com/challenges/grading/problem
+   */
   public static List<Integer> gradingStudents(List<Integer> grades) {
-    return grades.stream().skip(1).map(grade -> {
-      if (grade<=40) return grade;
-      int rem = grade % 5;
-      if (rem < 2) return grade + 5 - rem;
-      return grade;
-    }).collect(Collectors.toList());
+    return grades.stream().map(g ->
+      g < 38 ? g : g % 5 > 2 ? (g / 5 + 1) * 5 : g
+    ).collect(toList());
   }
 
   static void countApplesAndOranges(int s, int t, int a, int b, int[] apples, int[] oranges) {

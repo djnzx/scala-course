@@ -8,8 +8,12 @@ public class ArrayManipulationApp {
   static long arrayManipulation(int n, int[][] queries) {
     long []process = new long[n+1];
     for (int[] query : queries) {
-      process[query[0] - 1] += query[2];
-      process[query[1]    ] -= query[2];
+      int idx_plus = query[0] - 1;
+      int idx_minus = query[1];
+      int val = query[2];
+
+      process[idx_plus] += val;
+      process[idx_minus] -= val;
     }
 
     long max = 0;
