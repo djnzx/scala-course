@@ -21,8 +21,8 @@ object PasswordCracker extends App {
         pwds.sortWith { (s1, s2) => s2.length < s1.length }
           .flatMap { pwd => if (pwd.length <= part.length && pwd == part.substring(0, pwd.length)) Some(pwd) else None }
           .foldLeft((true, Option.empty[List[String]])) { (acc, sub) =>
-            if (!acc._1) acc else
-            crack(part.substring(sub.length), sub :: parts) match {
+            if (!acc._1) acc
+            else crack(part.substring(sub.length), sub :: parts) match {
               case Some(value) => (false, Some(value))
               case None        => (true, None)
             }
