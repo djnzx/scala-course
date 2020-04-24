@@ -28,10 +28,9 @@ object PasswordCracker extends App {
             }
           }._2
 
-    ((List(attempt).flatten.toSet -- pwds.flatten.toSet).nonEmpty match {
-      case true  => None
-      case false => crack(attempt, Nil) map { _.reverse.mkString(" ") }
-    }) getOrElse "WRONG PASSWORD"
+    (if ((List(attempt).flatten.toSet -- pwds.flatten.toSet).nonEmpty) None
+    else crack(attempt, Nil) map { _.reverse.mkString(" ") }
+      ) getOrElse "WRONG PASSWORD"
   }
 
   val pwds = List(
