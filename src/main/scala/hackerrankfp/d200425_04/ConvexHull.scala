@@ -6,6 +6,7 @@ package hackerrankfp.d200425_04
   * https://www.geometrictools.com/Documentation/TriangulationByEarClipping.pdf
   * https://math.stackexchange.com/questions/978642/how-to-sort-vertices-of-a-polygon-in-counter-clockwise-order
   */
+
 object ConvexHull {
   import scala.math.sqrt
   import scala.math.abs
