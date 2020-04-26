@@ -1,7 +1,9 @@
-package hackerrankfp
+package hackerrankfp.d200426_05
 
-object TemplateApp {
-
+/**
+  * https://www.hackerrank.com/challenges/lists-and-gcd/problem
+  */
+object ListsAndGCD {
   implicit class StringToOps(s: String) {
     def splitToInt: Array[Int] = s.split(" ").map(_.toInt)
     def toVectorInt: Vector[Int] = splitToInt.toVector
@@ -9,7 +11,22 @@ object TemplateApp {
     def toTuple2Int: (Int, Int) = { val a = splitToInt; (a(0), a(1)) }
   }
 
-  def process(a: Int) = a
+  @scala.annotation.tailrec
+  def toPairs(x: List[Int], acc: List[(Int, Int)]): List[(Int, Int)] = x match {
+    case Nil => acc.reverse
+    case a::b::tail => toPairs(tail, (a,b)::acc)
+  }
+
+  def process(data: List[List[Int]]) = {
+    val maps = data.map { toPairs(_, Nil) } map { _.toMap }
+    maps
+      .foldLeft(Set.empty[Int]) { (acc, item) => acc ++ item.keys }
+      .map { p => (p, maps.map { _.getOrElse(p, 0) } .min ) }
+      .filter { _._2 > 0 }
+      .toList.sorted
+      .map { t => s"${t._1} ${t._2}" }
+      .mkString(" ")
+  }
 
   def body(readLine: => String): Unit = {
     val N: Int = readLine.toInt
@@ -21,7 +38,7 @@ object TemplateApp {
       case _ => readNLines(n-1, readOneLine::acc)
     }
 
-    val r = process(1)
+    val r = process(readNLines(N, Nil))
     println(r)
   }
 

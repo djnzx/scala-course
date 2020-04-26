@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class PasswordApp {
+public class PasswordAppJava {
   static int p = 131;
   static long M = 1_000_000_000L+7;
 
