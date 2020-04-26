@@ -3,12 +3,13 @@ package hackerrankfp.d200425_04
 /**
   * https://www.hackerrank.com/challenges/lambda-march-compute-the-perimeter-of-a-polygon/problem
   * 14/24 passed
+  * TODO: this is convex implementation
+  * TODO: need to be fixed for concave one
+  * https://www.mathsisfun.com/geometry/area-irregular-polygons.html
   */
 object PolygonAreaApp {
   import scala.math.sqrt
   import scala.math.abs
-  import scala.math.toDegrees
-  import scala.math.atan2
   def sq(x: Double): Double = x * x
 
   implicit class StringToOps(s: String) {
