@@ -1,9 +1,10 @@
 package hackerrankfp.d200425_04
 
 /**
-  * https://www.hackerrank.com/challenges/lambda-march-compute-the-perimeter-of-a-polygon/problem
+  * https://www.hackerrank.com/challenges/lambda-march-compute-the-area-of-a-polygon/problem
   * 14/24 passed
-  * TODO: this is convex implementation
+  * - convex implementation
+  * - star implementation
   * TODO: need to be fixed for concave one
   * https://www.mathsisfun.com/geometry/area-irregular-polygons.html
   */
@@ -25,30 +26,21 @@ object PolygonAreaApp {
 
   def distance(a: Pt, b: Pt): Double = sqrt(sq(a.x-b.x) + sq(a.y-b.y))
 
-  def sign(p1: Pt, p2: Pt, p3: Pt): Double =
-    (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y)
-
   case class Triangle(a: Pt, b: Pt, c: Pt) {
-    def abc3: (Double, Double, Double) = {
+    def sides: (Double, Double, Double) = {
       val lab = distance(a, b)
       val lac = distance(a, c)
       val lbc = distance(b, c)
       (lab, lac, lbc)
     }
-    def hc: Double = {
-      val (lab, lac, lbc) = abc3
-      val dc = (sq(lab) + sq(lbc) - sq(lac)) / (2 * lab)
-      sqrt(abs(sq(lbc) - sq(dc)))
-    }
-    def area = hc * distance(a,b) / 2
-    def area2 = {
-      val (lab, lac, lbc) = abc3
+    def area = {
+      val (lab, lac, lbc) = sides
       val s2 = (lab + lac + lbc)/2
       sqrt(s2*(s2-lab)*(s2-lac)*(s2-lbc))
     }
   }
 
-  def listToTriangles(points: List[Pt]): List[Triangle] = {
+  def listToTrianglesConvex(points: List[Pt]): List[Triangle] = {
     val p0 = points.head
     @scala.annotation.tailrec
     def make(acc: List[Triangle], pts: List[Pt]): List[Triangle] = pts match {
@@ -59,12 +51,29 @@ object PolygonAreaApp {
     make(Nil, points.tail)
   }
 
-  def calcArea(points: List[Pt]): Double = {
-    listToTriangles(points)
-      .foldLeft(0.toDouble) { (a, t) => a + t.area }
+  private def centroid(points: List[Pt]): Pt = {
+    val cnt = points.length
+    val sum = points.reduce { (p1, p2) => Pt(p1.x+p2.x, p1.y+p2.y) }
+    Pt(sum.x/cnt, sum.y/cnt)
   }
 
-  def process(points: List[Pt]): Double = calcArea(points)
+  def listToTrianglesStar(points: List[Pt]): List[Triangle] = {
+    val p0 = centroid(points)
+    @scala.annotation.tailrec
+    def make(acc: List[Triangle], pts: List[Pt]): List[Triangle] = pts match {
+      case Nil        => acc
+      case z::Nil     => make(Triangle(p0, z, points.head) :: acc, Nil)
+      case a::b::tail => make(Triangle(p0, a, b          ) :: acc, b::tail)
+    }
+    make(Nil, points)
+  }
+
+  def calcArea(points: List[Pt]): Double =
+    listToTrianglesStar(points)
+      .foldLeft(0.toDouble) { (a, t) => a + t.area }
+
+  def process(ps: List[Pt]) =
+    calcArea(ps)
 
   def body(readLine: => String): Unit = {
     val N: Int = readLine.toInt
