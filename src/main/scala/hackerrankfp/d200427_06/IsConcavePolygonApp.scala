@@ -2,13 +2,8 @@ package hackerrankfp.d200427_06
 
 /**
   * https://www.hackerrank.com/challenges/lambda-march-concave-polygon/problem
-  * 14/24 passed
-  * - convex implementation
-  * - star implementation
-  * TODO: need to be fixed for concave one
-  * https://www.mathsisfun.com/geometry/area-irregular-polygons.html
   */
-object ConcavePolygonApp {
+object IsConcavePolygonApp {
   import scala.math.sqrt
   def sq(x: Double): Double = x * x
 
@@ -110,35 +105,22 @@ object ConcavePolygonApp {
     case _ => ???
   }
 
-  def calcArea(points: List[Pt]): Double =
-    listToTrianglesConcave(points, Nil)
-      .foldLeft(0.toDouble) { (a, t) => a + t.area }
+  def isConcave(ps: List[Pt]): Boolean = {
+    val sign = Line(ps(0), ps(1)).sign(ps(2))
 
-  /**
-    * https://www.mathopenref.com/coordpolygonarea.html
-    * https://en.wikipedia.org/wiki/Shoelace_formula
-    */
-  def calcAreaQuadrilateral(ps: List[Pt]): Double = {
-    val pts = (ps :+ ps.head).toArray
-    val x2 = (1 until pts.length).foldLeft(0.0) { (sum, i) => sum + pts(i-1).x*pts(i).y - pts(i-1).y*pts(i).x }
-    math.abs(x2/2)
+    def doCheck(px: List[Pt], acc: (Boolean, Double)): Boolean = px match {
+      case a::b::Nil => true
+      case a::b::c::tail => {
+        val sign = Line(a,b).sign(c)
+        if (sign == acc._2) doCheck(b::c::tail, (true, sign)) else false
+      }
+    }
+
+    !doCheck(ps, (true, sign))
   }
 
   def process(ps: List[Pt]) =
-//    calcArea(ps)
-    calcAreaQuadrilateral(ps)
-
-  def area2(a: IndexedSeq[Array[Double]]): Double = {
-    val result = (1 until a.length).foldLeft(0.0) {
-      (acc, i) => acc + a(i-1)(0)*a(i)(1) - a(i)(0)*a(i-1)(1) }
-    math.abs(result) / 2
-  }
-
-  def main2(args: Array[String]) {
-    val N = scala.io.StdIn.readInt
-    val points = (1 to N).take(N).map(_ => scala.io.StdIn.readLine().split(" ").map(_.toDouble))
-    println(area2(points :+ points.head))
-  }
+    if (isConcave(ps ::: (ps.head :: ps.tail.head :: Nil))) "YES" else "NO"
 
   def body(readLine: => String): Unit = {
     val N: Int = readLine.toInt
@@ -160,7 +142,7 @@ object ConcavePolygonApp {
     main_file(p)
   }
 
-  val fname = "src/main/scala/hackerrankfp/d200425_04/area.txt"
+  val fname = "src/main/scala/hackerrankfp/d200427_06/isconcave.txt"
   def main_file(p: Array[String]): Unit = {
     scala.util.Using(
       scala.io.Source.fromFile(new java.io.File(fname))
