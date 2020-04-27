@@ -22,6 +22,25 @@ object PolygonAreaApp {
 
   case class Pt(x: Double, y: Double) {
     def this(xy: Array[Int]) = this(xy(0), xy(1))
+    def isAtRightFrom(line: Line): Boolean = line.isPtAtRight(this)
+    def isAtLeftFrom(line: Line): Boolean = line.isPtAtLeft(this)
+    def isOn(line: Line): Boolean = line.isPtOn(this)
+  }
+
+  /** line from a to b */
+  case class Line(a: Pt, b: Pt) {
+    /**
+      * a bit of math:
+      * https://math.stackexchange.com/questions/274712/calculate-on-which-side-of-a-straight-line-is-a-given-point-located
+      * sign = (x-x1)(y2-y1)-(y-y1)(x2-x1)
+      */
+    def sign(pt: Pt): Double = {
+      val r = (pt.x - b.x) * (a.y - b.y) - (a.x - b.x) * (pt.y - b.y)
+      if (r>0) 1 else if (r<0) -1 else 0
+    }
+    def isPtAtLeft(pt: Pt): Boolean = sign(pt) > 0
+    def isPtAtRight(pt: Pt): Boolean = sign(pt) < 0
+    def isPtOn(pt: Pt): Boolean = sign(pt) == 0
   }
 
   def distance(a: Pt, b: Pt): Double = sqrt(sq(a.x-b.x) + sq(a.y-b.y))
@@ -33,12 +52,23 @@ object PolygonAreaApp {
       val lbc = distance(b, c)
       (lab, lac, lbc)
     }
+    def isInside(p: Pt): Boolean = {
+      val d1 = Line(a,b).sign(p)
+      val d2 = Line(b,c).sign(p)
+      val d3 = Line(c,a).sign(p)
+      val neg = d1<0 && d2<0 && d3<0
+      val pos = d1>0 && d2>0 && d3>0
+      neg ^ pos
+    }
+    def isNoneInside(pts: List[Pt]): Boolean = pts.forall(!isInside(_))
+    def isAnyInside(pts: List[Pt]): Boolean = pts.exists(isInside)
     def area = {
       val (lab, lac, lbc) = sides
       val s2 = (lab + lac + lbc)/2
       sqrt(s2*(s2-lab)*(s2-lac)*(s2-lbc))
     }
   }
+
 
   def listToTrianglesConvex(points: List[Pt]): List[Triangle] = {
     val p0 = points.head
@@ -68,12 +98,48 @@ object PolygonAreaApp {
     make(Nil, points)
   }
 
+  @scala.annotation.tailrec
+  def listToTrianglesConcave(pts: List[Pt], trios: List[Triangle]): List[Triangle] = pts match {
+    case a :: b :: c :: Nil => Triangle(a,b,c) :: trios
+    case a :: b :: c :: tail => {
+      val t = Triangle(a,b,c)
+      val ac = Line(a, c)
+      if (ac.isPtAtRight(b) && t.isNoneInside(pts))
+           listToTrianglesConcave(a::c::tail,         t::trios)
+      else listToTrianglesConcave(b::c::tail:::(a::Nil), trios)
+    }
+    case _ => ???
+  }
+
   def calcArea(points: List[Pt]): Double =
-    listToTrianglesStar(points)
+    listToTrianglesConcave(points, Nil)
       .foldLeft(0.toDouble) { (a, t) => a + t.area }
 
+  /**
+    * https://www.mathopenref.com/coordpolygonarea.html
+    * https://en.wikipedia.org/wiki/Shoelace_formula
+    */
+  def calcAreaQuadrilateral(ps: List[Pt]): Double = {
+    val pts = (ps :+ ps.head).toArray
+    val x2 = (1 until pts.length).foldLeft(0.0) { (sum, i) => sum + pts(i-1).x*pts(i).y - pts(i-1).y*pts(i).x }
+    math.abs(x2/2)
+  }
+
   def process(ps: List[Pt]) =
-    calcArea(ps)
+//    calcArea(ps)
+    calcAreaQuadrilateral(ps)
+
+  def area2(a: IndexedSeq[Array[Double]]): Double = {
+    val result = (1 until a.length).foldLeft(0.0) {
+      (acc, i) => acc + a(i-1)(0)*a(i)(1) - a(i)(0)*a(i-1)(1) }
+    math.abs(result) / 2
+  }
+
+  def main2(args: Array[String]) {
+    val N = scala.io.StdIn.readInt
+    val points = (1 to N).take(N).map(_ => scala.io.StdIn.readLine().split(" ").map(_.toDouble))
+    println(area2(points :+ points.head))
+  }
 
   def body(readLine: => String): Unit = {
     val N: Int = readLine.toInt
