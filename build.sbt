@@ -1,5 +1,5 @@
-name         := "learn-scala-cook-book-aa"
-version      := "0.2.22"
+name         := "learn-scala-ar"
+version      := "20.4.28"
 scalaVersion := "2.13.1"
 
 // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project

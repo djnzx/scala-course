@@ -9,6 +9,7 @@
   - [youtube](https://www.youtube.com/user/DrBartosz/playlists)
 - Adam Warski
   - [SoftwareMill](http://www.softwaremill.com)
+    - [cats](https://blog.softwaremill.com/9-tips-about-using-cats-in-scala-you-might-want-to-know-e1bafd365f88)
   - [github](https://github.com/adamw)
 - Riccardo Cardin
   - [blog](http://rcardin.github.io)
