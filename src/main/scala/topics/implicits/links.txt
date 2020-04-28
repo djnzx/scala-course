@@ -1,6 +1,0 @@
-https://www.theguardian.com/info/developer-blog/2016/dec/22/parental-advisory-implicit-content
-https://habr.com/ru/post/354028/
-https://github.com/andr83/scalaconfig.git
-Aaron Levin
-https://www.youtube.com/watch?v=Nm4OIhjjA2o
-https://gist.github.com/aaronlevin/d3911ba50d8f5253c85d2c726c63947b

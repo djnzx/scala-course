@@ -7,7 +7,8 @@
 - Bartosz Milewski (Category Theory)
   - [blog](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
   - [youtube](https://www.youtube.com/user/DrBartosz/playlists)
-- Adam Warski [SoftwareMill](http://www.softwaremill.com)
+- Adam Warski
+  - [SoftwareMill](http://www.softwaremill.com)
   - [github](https://github.com/adamw)
 - Riccardo Cardin
   - [blog](http://rcardin.github.io)
@@ -22,10 +23,16 @@
   - [site](https://daltyboy11.github.io)
 - Li Haoyi
   - [blog](http://www.lihaoyi.com)
-- Daniel (Rock The JVM)
+- Daniel Ciocîrlan (Rock The JVM)
+  - [blog](https://rockthejvm.com/blog/)
   - [reddit](https://www.reddit.com/user/danielciocirlan/)
   - [youtube](https://www.youtube.com/playlist?list=PLmtsMNDRU0BxryRX4wiwrTZ661xcp6VPM)
- 
+  - [github](https://github.com/rockthejvm)
+- Adrian Filip
+  - [blog](https://adrianfilip.com)
+- Aaron Levin
+  - [youtube](https://www.youtube.com/watch?v=Nm4OIhjjA2o)
+  - [github](https://gist.github.com/aaronlevin/d3911ba50d8f5253c85d2c726c63947b)
 
 ### BASIC / LEARNING
 - [fpinscala](https://github.com/alexr007/fpinscala.git)
@@ -42,8 +49,10 @@
 - [Scala Exercises](https://www.scala-exercises.org)
 
 ### BOOKS
-- Underscore 
-  - [scala with cats HTML](https://www.scalawithcats.com/dist/scala-with-cats.html)
+- [Underscore. scala with cats HTML](https://www.scalawithcats.com/dist/scala-with-cats.html)
+- [Li Haoyi. Hands-on Scala Programming](https://www.handsonscala.com)
+- [Sam Halliday. Functional Programming for Mortals](https://leanpub.com/fpmortals)
+- [Gabriel Volpe. Practical FP in Scala: A hands-on approach](https://leanpub.com/pfp-scala)
 
 ### PURE FP
 - [fp-stack-2020-pres](https://github.com/adamw/fp-stack-2020-pres.git)
@@ -52,21 +61,20 @@
 - [learn-scala-pfp](https://github.com/alexr007/learn-scala-pfp.git)
 - [learn-scala-pfp-examples](https://github.com/alexr007/pfps-examples.git)
 - [learn-scala-pfp-shopping-cart](https://github.com/alexr007/pfps-shopping-cart.git)
-- []()
+- [scalaz-streams](https://gist.github.com/djspiewak/d93a9c4983f63721c41c)
+- [scalaz-reddit](https://www.reddit.com/r/scala/comments/ftgqtp/where_can_i_practically_use_fs2/)
 
 ### PLAY
 - [play-from-scratch-reddit-thread](https://www.reddit.com/r/scala/comments/fx6u4t/play_framework_create_application_from_scratch/)
 - [play-from-scratch-document](https://dvirf1.github.io/play-tutorial/)
-
+- [Playing with Scala - ReST](https://medium.com/@pvinchon/playing-with-scala-rest-2dcd85f241cc)
 - [scala-play-heroku-my](https://github.com/alexr007/scala-play-heroku.git)
 - [scala-todo-api](https://github.com/alexr007/scala-todo-api.git)
-
 
 ### SQL
 - [essential-slick-code](https://github.com/alexr007/essential-slick-code.git)
 - [scala-sql-compare](https://github.com/softwaremill/scala-sql-compare.git)
    - [my clone](https://github.com/alexr007/scala-sql-compare.git)
-- []()
 
 ### ZIO
 - [zio-workshop](https://github.com/alexr007/zio-workshop.git)
@@ -78,29 +86,43 @@
 - [zio-structured](https://github.com/alexr007/zio-structured.git)
 - [zio-todo-backend](https://github.com/mschuwalow/zio-todo-backend.git)
 - [zio+http4s](https://juliano-alves.com/2020/04/20/zio-http4s-a-simple-api-client/)
-
-### GITHUB
-- [rockthejvm](https://github.com/rockthejvm)
-- []()
+- [From Kotlin + Spring Reactor + Arrow to Scala + ZIO](https://adrianfilip.com/2020/04/07/moving-from-kotlin-spring-reactor-arrow-to-scala-zio/)
 
 ### YOUTUBE
 - [John De Goes](https://www.youtube.com/results?search_query=john+de+goes)
 - [#Scala - Your First Programming Language](https://www.youtube.com/playlist?list=PLJGDHERh23x-YBJ8LmYU_IGBFflvsKfLu)
+- [Recording: SF Scala: Enhancing Spark's Power with ZIO, Qubism and NLP at Scale, Using Nix for Haskell](https://www.youtube.com/watch?v=Ov7WZroBkv0)
+- [data jugging](https://www.youtube.com/watch?v=_BxVIXVoNPE&feature=youtu.be)
 
-### MEDIUM
-- []()
-- []()
-- []()
-- []()
+### FROM REDDIT &  MEDIUM
+- [r/scala](https://www.reddit.com/r/scala/)
+- [Functional Tracing using Scala](https://medium.com/@ayushm4489/functional-tracing-using-scala-dc98b1f2ec5)
+- [The Power of Akka Streams](https://aleksandarskrbic.github.io/power-of-akka-streams/)
+- [Composable resource management in Scala](https://medium.com/@bszwej/composable-resource-management-in-scala-ce902bda48b2)
+- [Effectful* programming in scala](https://www.youtube.com/watch?v=kTsAMzar5Qc&t=89s)
+- [Why Applicative[Either] does not accumulate (combine) error values](https://www.reddit.com/r/scala/comments/g7pwo4/why_applicativeeither_does_not_accumulate_combine/)
+- [IntelliJ Scala Bundle](https://github.com/JetBrains/intellij-scala-bundle/releases/tag/v2020-04-23)
+- [FrontEnd](https://www.reddit.com/r/scala/comments/g5brvk/what_else_can_you_use_to_create_frontends_other/)
+- [Optics from the ground up](https://nrinaudo.github.io/optics/)
+- [GraphQLize](https://www.graphqlize.org/blog/graphqlize-update-2/)
+- [Mill Build tool](https://vimeo.com/409165552)
+- [How to SBT + crossScalaVersions + Bintray](https://www.acervera.com/blog/2020/04/sbt-crossversion-release-bintray/)
+- [How to SBT + Docker buildX + Multi-Arch](https://www.acervera.com/blog/2020/04/sbt-docker-buildx-multi-arch/index.html)
+- [Functional Tree Traversal In Scala](https://medium.com/@muse.mekuria_89677/functional-algorithms-in-scala-3fbb32fd96af)
 
 ### LINKS
-[Functional Effect #1](https://www.slideshare.net/pjschwarz/functional-effects-part-1)
-[Functional Effect #2](https://www.slideshare.net/pjschwarz/functional-effects-part-2)
-[stack safety for free](http://functorial.com/stack-safety-for-free/index.pdf)
-[One Monad To Rule Them All](https://www.slideshare.net/jdegoes/one-monad-to-rule-them-all)
+- [Functional Effect #1](https://www.slideshare.net/pjschwarz/functional-effects-part-1)
+- [Functional Effect #2](https://www.slideshare.net/pjschwarz/functional-effects-part-2)
+- [stack safety for free](http://functorial.com/stack-safety-for-free/index.pdf)
+- [One Monad To Rule Them All](https://www.slideshare.net/jdegoes/one-monad-to-rule-them-all)
 
 ### BOOKS
-[Practical FP in Scala: A hands-on approach - Gabriel Volpe](https://leanpub.com/pfp-scala)
+- [Practical FP in Scala: A hands-on approach - Gabriel Volpe](https://leanpub.com/pfp-scala)
 
 ### ScalaJS
-[](http://www.lihaoyi.com/hands-on-scala-js/)
+- [ScalaJS manual](http://www.lihaoyi.com/hands-on-scala-js/)
+
+### implicits
+- [guardian](https://www.theguardian.com/info/developer-blog/2016/dec/22/parental-advisory-implicit-content)
+- [habr](https://habr.com/ru/post/354028/)
+- [misc](https://github.com/andr83/scalaconfig.git)

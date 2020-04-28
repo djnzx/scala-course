@@ -1,4 +1,4 @@
-package degoes.zip
+package degoes.zio
 
 object ZIOBasicIdea extends App {
 
