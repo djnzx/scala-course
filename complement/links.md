@@ -49,7 +49,12 @@
 - [Scala Exercises](https://www.scala-exercises.org)
 
 ### BOOKS
-- [Underscore. scala with cats HTML](https://www.scalawithcats.com/dist/scala-with-cats.html)
+- [Underscore. Essential Scala](https://books.underscore.io/essential-scala/essential-scala.html)
+- [Underscore. Scala with Cats](https://www.scalawithcats.com/dist/scala-with-cats.html)
+- [Underscore. Essential Slick](https://books.underscore.io/essential-slick/essential-slick-3.html)
+- [Underscore. Essential Play](https://books.underscore.io/essential-play/essential-play.html)
+- [Underscore. The Type Astronaut’s Guide to Shapeless](https://books.underscore.io/shapeless-guide/shapeless-guide.html)
+- [Underscore. Creative Scala](https://www.creativescala.org/creative-scala.html)
 - [Li Haoyi. Hands-on Scala Programming](https://www.handsonscala.com)
 - [Sam Halliday. Functional Programming for Mortals](https://leanpub.com/fpmortals)
 - [Gabriel Volpe. Practical FP in Scala: A hands-on approach](https://leanpub.com/pfp-scala)
@@ -115,9 +120,6 @@
 - [Functional Effect #2](https://www.slideshare.net/pjschwarz/functional-effects-part-2)
 - [stack safety for free](http://functorial.com/stack-safety-for-free/index.pdf)
 - [One Monad To Rule Them All](https://www.slideshare.net/jdegoes/one-monad-to-rule-them-all)
-
-### BOOKS
-- [Practical FP in Scala: A hands-on approach - Gabriel Volpe](https://leanpub.com/pfp-scala)
 
 ### ScalaJS
 - [ScalaJS manual](http://www.lihaoyi.com/hands-on-scala-js/)
