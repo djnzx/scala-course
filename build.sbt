@@ -1,3 +1,5 @@
+import Dependencies.Libraries
+
 name         := "learn-scala-ar"
 version      := "20.4.28"
 scalaVersion := "2.13.1"
@@ -12,6 +14,7 @@ javacOptions ++= Seq(
 //  "-target", "1.8"
 )
 scalacOptions ++= Seq(
+  "-deprecation",
   "-language:postfixOps",
   "-language:higherKinds",
   "-language:existentials",
@@ -52,7 +55,7 @@ resolvers ++= Seq(
 )
 
 lazy val akkaVersion       = "2.6.3"
-lazy val ZIOVersion        = "1.0.0-RC17"
+lazy val ZIOVersion        = "1.0.0-RC18-2"
 lazy val CatsVersion       = "2.0.0"
 lazy val CatsEffectVersion = "2.1.1"
 lazy val MonixVersion      = "3.0.0"
@@ -86,12 +89,27 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka"      %% "akka-actor-typed"           % akkaVersion,
 //  "com.typesafe.akka"      %% "akka-actor-testkit-typed"   % akkaVersion     % Test,
 
-  // scalatest section
-  "org.scalatest"          %% "scalatest"                  % "3.1.1",
-  "org.scalactic"          %% "scalactic"                  % "3.1.1",
-
-  "org.scalacheck"         %% "scalacheck"                 % "1.14.1",
   "com.softwaremill.quicklens" %% "quicklens"              % "1.4.12",
+
+  // Serialization
+  Libraries.circeCore,
+  Libraries.circeGeneric,
+  Libraries.circeParser,
+  Libraries.circeRefined,
+
+  // HTTP
+  Libraries.http4sDsl,
+  Libraries.http4sServer,
+  Libraries.http4sClient,
+  Libraries.http4sCirce,
+  Libraries.http4sJwtAuth,
+
+  // actually should be moved to a different sub-project
+  Libraries.scalaCheck,
+  Libraries.scalaTest,
+  Libraries.scalaTestPlus,
+  Libraries.scalactic,
 )
 
+// SBT shell
 initialCommands in console := "import scalaz._, Scalaz._"
