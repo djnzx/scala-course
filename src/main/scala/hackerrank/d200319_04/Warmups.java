@@ -4,10 +4,6 @@ import java.time.LocalTime;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.IntPredicate;
-import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
@@ -77,7 +73,6 @@ public class Warmups {
 
   static long aVeryBigSum(long[] ar) {
     return Arrays.stream(ar).sum();
-
   }
 
   static List<Integer> compareTriplets(List<Integer> a, List<Integer> b) {
@@ -88,8 +83,6 @@ public class Warmups {
       cnt2 += a.get(i)<b.get(i)?1:0;
     }
     return Arrays.asList(cnt1, cnt2);
-
-
   }
 
   static class Pair<A, B> {
@@ -128,69 +121,6 @@ public class Warmups {
     return grades.stream().map(g ->
       g < 38 ? g : g % 5 > 2 ? (g / 5 + 1) * 5 : g
     ).collect(toList());
-  }
-
-  /**
-   * https://www.hackerrank.com/challenges/apple-and-orange/problem
-   */
-  static void countApplesAndOranges1(int s, int t, int a, int b, int[] apples, int[] oranges) {
-    long ac = Arrays.stream(apples).map(x -> x + a).filter(p -> p >= s && p <= t).count();
-    long oc = Arrays.stream(oranges).map(x -> x + b).filter(p -> p >= s && p <= t).count();
-    System.out.printf("%d\n%d\n", ac, oc);
-  }
-
-  static void countApplesAndOranges2(int s, int t, int a, int b, int[] apples, int[] oranges) {
-    IntPredicate ip = p -> p >= s && p <= t;
-    long ac = Arrays.stream(apples).map(x -> x + a).filter(ip).count();
-    long oc = Arrays.stream(oranges).map(x -> x + b).filter(ip).count();
-    System.out.printf("%d\n%d\n", ac, oc);
-  }
-
-  static void countApplesAndOranges3(int s, int t, int a, int b, int[] apples, int[] oranges) {
-    IntPredicate ip = p -> p >= s && p <= t;
-    IntUnaryOperator plusa = x -> x + a;
-    IntUnaryOperator plusb = x -> x + b;
-    long ac = Arrays.stream(apples).map(plusa).filter(ip).count();
-    long oc = Arrays.stream(oranges).map(plusb).filter(ip).count();
-    System.out.printf("%d\n%d\n", ac, oc);
-  }
-
-  static void countApplesAndOranges4(int s, int t, int a, int b, int[] apples, int[] oranges) {
-    IntPredicate ip = p -> p >= s && p <= t;
-    Function<Integer, IntUnaryOperator> plus = y -> x -> x + y;
-    long ac = Arrays.stream(apples).map(plus.apply(a)).filter(ip).count();
-    long oc = Arrays.stream(oranges).map(plus.apply(b)).filter(ip).count();
-    System.out.printf("%d\n%d\n", ac, oc);
-  }
-
-  static void countApplesAndOranges5(int s, int t, int a, int b, int[] apples, int[] oranges) {
-    IntPredicate ip = p -> p >= s && p <= t;
-    Function<Integer, IntUnaryOperator> plus = y -> x -> x + y;
-    BiFunction<int[], IntUnaryOperator, Long> count =
-        (ints, f) -> Arrays.stream(ints).map(f).filter(ip).count();
-    long ac = count.apply(apples, plus.apply(a));
-    long oc = count.apply(oranges, plus.apply(b));
-    System.out.printf("%d\n%d\n", ac, oc);
-  }
-
-  static boolean check_remainder(int x1, int v1, int x2, int v2) {
-    double v = (double) (x2 - x1) / (v1 - v2);
-    return (int) v == v;
-  }
-
-  static String bs(boolean b) {
-    return b ? "YES" : "NO";
-  }
-
-  static String answer(int x1, int v1, int x2, int v2) {
-    return bs(check_remainder(x1,v1,x2,v2));
-  }
-
-  static String kangaroo(int x1, int v1, int x2, int v2) {
-    if (x2 > x1 && v1 > v2) return answer(x1,v1,x2,v2);
-    if (x2 < x1 && v1 < v2) return answer(x1,v1,x2,v2);
-    if (x1 == x2 && v1 == v2) return answer(x1,v1,x2,v2);
-    return "NO";
   }
 
   static int gcd(int a, int b) {
@@ -259,7 +189,7 @@ public class Warmups {
   }
 
   /**
-   * https://www.hackerrank.com/challenges/counting-valleys/problem
+   * https://www.hackerrank.com/challenges/migratory-birds/problem
    */
   static int migratoryBirds(List<Integer> arr) {
     Map<Integer, Long> types = arr.stream()

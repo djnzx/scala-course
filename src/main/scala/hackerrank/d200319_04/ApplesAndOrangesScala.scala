@@ -1,6 +1,6 @@
 package hackerrank.d200319_04
 
-object ApplesAndOranges {
+object ApplesAndOrangesScala {
   def countApplesAndOranges5(s: Int, t: Int, a: Int, b: Int, apples: Array[Int], oranges: Array[Int]): Unit = {
     type FII = Int => Int
     def ip(p: Int): Boolean = p >= s && p <= t
