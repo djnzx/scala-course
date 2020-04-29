@@ -7,7 +7,7 @@ import java.util.function.IntConsumer;
  */
 public class CountingValleys {
 
-  static int count(int n, String s) {
+  static int count1(int n, String s) {
     int level = 0;
     int count = 0;
     int prev = 0;
@@ -22,31 +22,67 @@ public class CountingValleys {
     return count;
   }
 
-  static int count2(int n, String s) {
-    class State {
-      int level = 0;
-      int count = 0;
-      int prev = 0;
+  static class State {
+    int level;
+    int count;
+
+    public State() {
+      this(0,0);
     }
 
+    public State(int level, int count) {
+      this.level = level;
+      this.count = count;
+    }
+  }
+
+  static int count2(int n, String s) {
     State st = new State();
 
     IntConsumer processChar = c -> {
+      int prev = st.level;
       switch (c) {
-        case 'D': st.prev = st.level; st.level--; break;
-        case 'U': st.prev = st.level; st.level++; break;
+        case 'D': st.level--; break;
+        case 'U': st.level++; break;
       }
-      if (st.level==0 && st.prev<0) st.count++;
+      if (st.level==0 && prev<0) st.count++;
     };
 
     s.chars().forEach(processChar);
     return st.count;
   }
 
+  static State process(int idx, String s, State st) {
+    if (idx==s.length()) return st;
+    int prev = st.level;
+    int nL = st.level + (s.charAt(idx) == 'D' ? -1 : 1);
+    int nC = st.count + ((nL==0 && prev<0) ? 1 : 0);
+    return process(idx+1, s, new State(nL, nC));
+  }
+
+  static int count3(int n, String s) {
+    return process(0, s, new State()).count;
+  }
+
+  static int process4(int idx, String s, int level, int count) {
+    if (idx==s.length()) return count;
+    int nL = level + (s.charAt(idx) == 'U' ? 1 : -1);
+    int nC = count + (nL==0 && level<0 ? 1 : 0);
+    return process4(idx+1, s, nL, nC);
+  }
+
+  static int count4(int n, String s) {
+    return process4(0, s, 0, 0);
+  }
+
   /**
    * your solution answer is "How to write small tasks look like great project ?" question. :D
    */
   public static void main(String[] args) {
-    System.out.println(count(8, "UDDDUDUU"));
+    String s = "UDDDUDUU";
+    System.out.println(count1(s.length(), s));
+    System.out.println(count2(s.length(), s));
+    System.out.println(count3(s.length(), s));
+    System.out.println(count4(s.length(), s));
   }
 }
