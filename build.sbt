@@ -19,6 +19,7 @@ scalacOptions ++= Seq(
   "-language:higherKinds",
   "-language:existentials",
 
+//  "-Ypartial-unification", // by default since 2.13
   "-Ywarn-numeric-widen",
   "-Ywarn-value-discard",
   "-Yrepl-class-based",
@@ -101,6 +102,7 @@ libraryDependencies ++= Seq(
   Libraries.http4sDsl,
   Libraries.http4sServer,
   Libraries.http4sClient,
+  
   Libraries.http4sCirce,
   Libraries.http4sJwtAuth,
 

@@ -129,3 +129,6 @@
 - [guardian](https://www.theguardian.com/info/developer-blog/2016/dec/22/parental-advisory-implicit-content)
 - [habr](https://habr.com/ru/post/354028/)
 - [misc](https://github.com/andr83/scalaconfig.git)
+
+###
+- [cats-effect](https://typelevel.org/cats-effect/)
