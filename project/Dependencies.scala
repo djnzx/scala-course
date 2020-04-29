@@ -15,10 +15,11 @@ object Dependencies {
     val http4sJwtAuth = "0.0.4"
     val log4cats      = "1.0.1"
     val newtype       = "0.4.3"
-    val refined       = "0.9.13"
+    val refined        = "0.9.13"
     val redis4cats    = "0.9.6"
     val skunk         = "0.0.7"
     val squants       = "1.6.0"
+    val slick         = "3.3.2"
 
     val betterMonadicFor = "0.3.1"
     val kindProjector    = "0.11.0"
@@ -77,6 +78,9 @@ object Dependencies {
 
     // Runtime
     val logback = "ch.qos.logback" % "logback-classic" % Versions.logback
+
+    val slick       = "com.typesafe.slick" %% "slick"          % Versions.slick
+    val slickHikari = "com.typesafe.slick" %% "slick-hikaricp" % Versions.slick
 
     // Test
     val scalaCheck    = "org.scalacheck"    %% "scalacheck"      % Versions.scalaCheck

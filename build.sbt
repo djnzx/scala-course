@@ -62,7 +62,6 @@ lazy val CatsEffectVersion = "2.1.1"
 lazy val MonixVersion      = "3.0.0"
 lazy val ScalaZVersion     = "7.2.30"
 lazy val playVersion       = "2.8.1"
-lazy val slickVersion      = "3.3.2"
 lazy val pgDriverVersion   = "42.2.10"
 
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
@@ -74,8 +73,8 @@ libraryDependencies ++= Seq(
   //  "com.h2database" % "h2" % "1.4.200",
   "org.tpolecat"           %% "doobie-core"                % "0.8.8",
   "org.tpolecat"           %% "doobie-postgres"            % "0.8.8",
-  "com.typesafe.slick"     %% "slick"                      % slickVersion,
-  "com.typesafe.slick"     %% "slick-hikaricp"             % slickVersion,
+  Libraries.slick,
+  Libraries.slickHikari,
   "com.typesafe.play"      %% "play-json"                  % playVersion,
   "com.typesafe"           %  "config"                      % "1.4.0",
   "com.chuusai"            %% "shapeless"                  % "2.3.3",
@@ -88,8 +87,6 @@ libraryDependencies ++= Seq(
   "org.scalaz"             %% "scalaz-core"                % ScalaZVersion,
   "org.scalaz"             %% "scalaz-effect"              % ScalaZVersion,
   "com.typesafe.akka"      %% "akka-actor-typed"           % akkaVersion,
-//  "com.typesafe.akka"      %% "akka-actor-testkit-typed"   % akkaVersion     % Test,
-
   "com.softwaremill.quicklens" %% "quicklens"              % "1.4.12",
 
   // Serialization

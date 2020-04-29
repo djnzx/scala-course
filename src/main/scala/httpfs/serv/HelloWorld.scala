@@ -1,4 +1,4 @@
-package httpfs
+package httpfs.serv
 
 import cats.Applicative
 import cats.implicits._
@@ -10,16 +10,17 @@ trait HelloWorld[F[_]]{
   def hello(n: HelloWorld.Name): F[HelloWorld.Greeting]
 }
 
+/**
+  * service
+  */
 object HelloWorld {
   implicit def apply[F[_]](implicit ev: HelloWorld[F]): HelloWorld[F] = ev
 
+  // service param(s)
   final case class Name(name: String) extends AnyVal
-  /**
-    * More generally you will want to decouple your edge representations from
-    * your internal data structures, however this shows how you can
-    * create encoders for your data.
-    **/
+  // service response
   final case class Greeting(greeting: String) extends AnyVal
+  // implicits to encode Greeting to JSON
   object Greeting {
     implicit val greetingEncoder: Encoder[Greeting] = new Encoder[Greeting] {
       final def apply(a: Greeting): Json = Json.obj(
@@ -30,8 +31,13 @@ object HelloWorld {
       jsonEncoderOf[F, Greeting]
   }
 
+  // real implementation
   def impl[F[_]: Applicative]: HelloWorld[F] = new HelloWorld[F]{
-    def hello(n: HelloWorld.Name): F[HelloWorld.Greeting] =
-        Greeting("Hello, " + n.name).pure[F]
+    def hello(n: HelloWorld.Name): F[HelloWorld.Greeting] = {
+      // have a value
+      val g = Greeting(s"Hello, ${n.name}")
+      // lift to applicative
+      g.pure[F]
+    }
   }
 }

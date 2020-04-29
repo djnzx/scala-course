@@ -2,6 +2,7 @@ package httpfs
 
 import cats.effect.Sync
 import cats.implicits._
+import serv.{HelloWorld, Jokes}
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
 
@@ -26,7 +27,7 @@ object AppRoutes {
       case GET -> Root / "hello" / name =>
         for {
           greeting <- H.hello(HelloWorld.Name(name))
-          resp <- Ok(greeting)
+          resp     <- Ok(greeting)
         } yield resp
     }
   }
