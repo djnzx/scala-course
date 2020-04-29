@@ -7,6 +7,9 @@ import java.util.function.IntConsumer;
  */
 public class CountingValleys {
 
+  /**
+   * naive iterative implementation
+   */
   static int count1(int n, String s) {
     int level = 0;
     int count = 0;
@@ -36,6 +39,9 @@ public class CountingValleys {
     }
   }
 
+  /**
+   * stream implementation with external state
+   */
   static int count2(int n, String s) {
     State st = new State();
 
@@ -52,18 +58,24 @@ public class CountingValleys {
     return st.count;
   }
 
-  static State process(int idx, String s, State st) {
+  /**
+   * recursive implementation with state passing between iterations
+   */
+  static State process3(int idx, String s, State st) {
     if (idx==s.length()) return st;
     int prev = st.level;
     int nL = st.level + (s.charAt(idx) == 'D' ? -1 : 1);
     int nC = st.count + ((nL==0 && prev<0) ? 1 : 0);
-    return process(idx+1, s, new State(nL, nC));
+    return process3(idx+1, s, new State(nL, nC));
   }
 
   static int count3(int n, String s) {
-    return process(0, s, new State()).count;
+    return process3(0, s, new State()).count;
   }
 
+  /**
+   * recursive implementation without state just with variables
+   */
   static int process4(int idx, String s, int level, int count) {
     if (idx==s.length()) return count;
     int nL = level + (s.charAt(idx) == 'U' ? 1 : -1);
