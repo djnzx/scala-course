@@ -28,49 +28,61 @@ object Dependencies {
     val scalaCheck    = "1.14.3"
     val scalaTest     = "3.1.1"
     val scalaTestPlus = "3.1.1.1"
+
+    val zio           = "1.0.0-RC18-2"
+
+    val sqlPg         = "42.2.10"
+    val sqlH2         = "1.4.200"
   }
 
   object Libraries {
     def circe(artifact: String): ModuleID  = "io.circe"   %% artifact % Versions.circe
     def ciris(artifact: String): ModuleID  = "is.cir"     %% artifact % Versions.ciris
     def http4s(artifact: String): ModuleID = "org.http4s" %% artifact % Versions.http4s
+    def zio(artifact: String): ModuleID    = "dev.zio"    %% artifact % Versions.zio
 
-    val cats        = "org.typelevel"    %% "cats-core"     % Versions.cats
-    val catsMeowMtl = "com.olegpy"       %% "meow-mtl-core" % Versions.catsMeowMtl
-    val catsEffect  = "org.typelevel"    %% "cats-effect"   % Versions.catsEffect
-    val catsRetry   = "com.github.cb372" %% "cats-retry"    % Versions.catsRetry
-    val squants     = "org.typelevel"    %% "squants"       % Versions.squants
-    val fs2         = "co.fs2"           %% "fs2-core"      % Versions.fs2
+    val cats          = "org.typelevel"    %% "cats-core"     % Versions.cats
+    val catsMeowMtl   = "com.olegpy"       %% "meow-mtl-core" % Versions.catsMeowMtl
+    val catsEffect    = "org.typelevel"    %% "cats-effect"   % Versions.catsEffect
+    val catsRetry     = "com.github.cb372" %% "cats-retry"    % Versions.catsRetry
+    val squants       = "org.typelevel"    %% "squants"       % Versions.squants
+    val fs2           = "co.fs2"           %% "fs2-core"      % Versions.fs2
 
-    val circeCore    = circe("circe-core")
-    val circeGeneric = circe("circe-generic")
-    val circeParser  = circe("circe-parser")
-    val circeRefined  = circe("circe-refined")
+    val circeCore     = circe("circe-core")
+    val circeGeneric  = circe("circe-generic")
+    val circeParser   = circe("circe-parser")
+    val circeRefined   = circe("circe-refined")
 
-    val cirisCore    = ciris("ciris")
-    val cirisEnum    = ciris("ciris-enumeratum")
-    val cirisRefined  = ciris("ciris-refined")
+    val cirisCore     = ciris("ciris")
+    val cirisEnum     = ciris("ciris-enumeratum")
+    val cirisRefined   = ciris("ciris-refined")
 
-    val http4sDsl    = http4s("http4s-dsl")
-    val http4sServer = http4s("http4s-blaze-server")
-    val http4sClient = http4s("http4s-blaze-client")
-    val http4sCirce  = http4s("http4s-circe")
+    val http4sServer  = http4s("http4s-blaze-server")
+    val http4sDsl     = http4s("http4s-dsl")
+    val http4sClient  = http4s("http4s-blaze-client")
+    val http4sCirce   = http4s("http4s-circe")
 
-    val http4sJwtAuth = "dev.profunktor" %% "http4s-jwt-auth" % Versions.http4sJwtAuth
+    val zioCore       = zio("zio")
+    val zioStreams    = zio("zio-streams")
 
-    val refinedCore = "eu.timepit" %% "refined"      % Versions.refined
-    val refinedCats = "eu.timepit" %% "refined-cats" % Versions.refined
+    val sqlPg         = "org.postgresql"      % "postgresql"       % Versions.sqlPg
+    val sqlH2         = "com.h2database"      % "h2"               % Versions.sqlH2
 
-    val log4cats = "io.chrisdavenport" %% "log4cats-slf4j" % Versions.log4cats
-    val newtype  = "io.estatico"       %% "newtype"        % Versions.newtype
+    val http4sJwtAuth = "dev.profunktor"      %% "http4s-jwt-auth" % Versions.http4sJwtAuth
 
-    val javaxCrypto = "javax.xml.crypto" % "jsr105-api" % Versions.javaxCrypto
+    val refinedCore    = "eu.timepit"          %% "refined"          % Versions.refined
+    val refinedCats    = "eu.timepit"          %% "refined-cats"     % Versions.refined
+
+    val log4cats      = "io.chrisdavenport"   %% "log4cats-slf4j"  % Versions.log4cats
+    val newtype       = "io.estatico"         %% "newtype"         % Versions.newtype
+
+    val javaxCrypto   = "javax.xml.crypto"    % "jsr105-api"       % Versions.javaxCrypto
+
+    val skunkCore     = "org.tpolecat"        %% "skunk-core"      % Versions.skunk
+    val skunkCirce    = "org.tpolecat"        %% "skunk-circe"     % Versions.skunk
 
     val redis4catsEffects  = "dev.profunktor" %% "redis4cats-effects"  % Versions.redis4cats
     val redis4catsLog4cats = "dev.profunktor" %% "redis4cats-log4cats" % Versions.redis4cats
-
-    val skunkCore  = "org.tpolecat" %% "skunk-core"  % Versions.skunk
-    val skunkCirce = "org.tpolecat" %% "skunk-circe" % Versions.skunk
 
     // Compiler plugins
     val betterMonadicFor = "com.olegpy"    %% "better-monadic-for" % Versions.betterMonadicFor

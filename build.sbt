@@ -1,7 +1,7 @@
 import Dependencies.Libraries
 
 name         := "learn-scala-ar"
-version      := "20.4.28"
+version      := "20.4.30"
 scalaVersion := "2.13.1"
 
 // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
@@ -55,39 +55,36 @@ resolvers ++= Seq(
   Repos.artima,
 )
 
-lazy val akkaVersion       = "2.6.3"
-lazy val ZIOVersion        = "1.0.0-RC18-2"
-lazy val CatsVersion       = "2.0.0"
-lazy val CatsEffectVersion = "2.1.1"
-lazy val MonixVersion      = "3.0.0"
 lazy val ScalaZVersion     = "7.2.30"
-lazy val playVersion       = "2.8.1"
-lazy val pgDriverVersion   = "42.2.10"
 
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
 libraryDependencies ++= Seq(
   "ch.qos.logback"         % "logback-classic"             % "1.2.3",
   "org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0",
   "org.scala-lang.modules" %% "scala-xml"                  % "1.2.0",
-  "org.postgresql"         % "postgresql"                  % pgDriverVersion,
-  //  "com.h2database" % "h2" % "1.4.200",
   "org.tpolecat"           %% "doobie-core"                % "0.8.8",
   "org.tpolecat"           %% "doobie-postgres"            % "0.8.8",
-  Libraries.slick,
-  Libraries.slickHikari,
-  "com.typesafe.play"      %% "play-json"                  % playVersion,
+  "com.typesafe.play"      %% "play-json"                  % "2.8.1",
   "com.typesafe"           %  "config"                      % "1.4.0",
   "com.chuusai"            %% "shapeless"                  % "2.3.3",
   "io.lemonlabs"           %% "scala-uri"                  % "1.5.1",
-  "io.monix"               %% "monix"                      % MonixVersion,
-  "org.typelevel"          %% "cats-core"                  % CatsVersion,
-  "org.typelevel"          %% "cats-effect"                % CatsEffectVersion,
-  "dev.zio"                %% "zio"                        % ZIOVersion,
-  "dev.zio"                %% "zio-streams"                % ZIOVersion,
+  "io.monix"               %% "monix"                      % "3.0.0",
   "org.scalaz"             %% "scalaz-core"                % ScalaZVersion,
   "org.scalaz"             %% "scalaz-effect"              % ScalaZVersion,
-  "com.typesafe.akka"      %% "akka-actor-typed"           % akkaVersion,
+  "com.typesafe.akka"      %% "akka-actor-typed"           % "2.6.3",
   "com.softwaremill.quicklens" %% "quicklens"              % "1.4.12",
+
+  Libraries.sqlPg,
+  Libraries.sqlH2,
+
+  Libraries.cats,
+  Libraries.catsEffect,
+
+  Libraries.slick,
+  Libraries.slickHikari,
+
+  Libraries.zioCore,
+  Libraries.zioStreams,
 
   // Serialization
   Libraries.circeCore,
@@ -96,10 +93,9 @@ libraryDependencies ++= Seq(
   Libraries.circeRefined,
 
   // HTTP
-  Libraries.http4sDsl,
   Libraries.http4sServer,
+  Libraries.http4sDsl,
   Libraries.http4sClient,
-  
   Libraries.http4sCirce,
   Libraries.http4sJwtAuth,
 

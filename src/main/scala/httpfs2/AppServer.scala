@@ -1,6 +1,6 @@
 package httpfs2
 
-import cats.effect.{ConcurrentEffect, Timer}
+import cats.effect.{ConcurrentEffect, ContextShift, IO, Timer}
 import cats.syntax.semigroupk._
 import fs2.Stream
 import httpfs2.serv.ServiceA
