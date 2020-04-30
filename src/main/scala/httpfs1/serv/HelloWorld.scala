@@ -1,4 +1,4 @@
-package httpfs.serv
+package httpfs1.serv
 
 import cats.Applicative
 import cats.implicits._
@@ -28,7 +28,7 @@ object HelloWorld {
       )
     }
     implicit def greetingEntityEncoder[F[_]: Applicative]: EntityEncoder[F, Greeting] =
-      jsonEncoderOf[F, Greeting]
+      jsonEncoderOf//[F, Greeting]
   }
 
   // real implementation

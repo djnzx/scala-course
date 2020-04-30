@@ -10,6 +10,7 @@
 - Adam Warski
   - [SoftwareMill](http://www.softwaremill.com)
     - [cats](https://blog.softwaremill.com/9-tips-about-using-cats-in-scala-you-might-want-to-know-e1bafd365f88)
+    - [tapir](https://blog.softwaremill.com/three-easy-endpoints-a6cbd52b0a6e)
   - [github](https://github.com/adamw)
 - Riccardo Cardin
   - [blog](http://rcardin.github.io)
@@ -59,6 +60,7 @@
 - [Li Haoyi. Hands-on Scala Programming](https://www.handsonscala.com)
 - [Sam Halliday. Functional Programming for Mortals](https://leanpub.com/fpmortals)
 - [Gabriel Volpe. Practical FP in Scala: A hands-on approach](https://leanpub.com/pfp-scala)
+- [red book](https://livebook.manning.com/book/functional-programming-in-scala/chapter-7/)
 
 ### PURE FP
 - [fp-stack-2020-pres](https://github.com/adamw/fp-stack-2020-pres.git)

@@ -1,4 +1,4 @@
-package httpfs.serv
+package httpfs1.serv
 
 import cats.Applicative
 import cats.effect.Sync

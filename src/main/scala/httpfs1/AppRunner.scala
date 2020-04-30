@@ -1,8 +1,8 @@
-package httpfs
+package httpfs1
 
 import cats.effect.{ExitCode, IO, IOApp}
 
-object MainAppRunner extends IOApp {
+object AppRunner extends IOApp {
 
   def run(args: List[String]) =
     AppServer
