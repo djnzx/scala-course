@@ -14,9 +14,10 @@ object ServerApp extends IOApp {
   val service: ServiceA[IO] = ServiceA.impl[IO]
 
   val routes: HttpApp[IO] = Router(
-    "/ax" -> ServerRoutes.routeA[IO](service),
-    "/bx" -> ServerRoutes.routeB[IO],
-    "/cx" -> ServerRoutes.routeC[IO],
+    "/a" -> ServerRoutes.routeA[IO](service),
+    "/b" -> ServerRoutes.routeB[IO],
+    "/c" -> ServerRoutes.routeC[IO],
+    "/d" -> ServerRoutes.routeD[IO],
   ).orNotFound
 
   val context: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global

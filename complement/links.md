@@ -53,14 +53,30 @@
 ### BOOKS
 - [Underscore. Essential Scala](https://books.underscore.io/essential-scala/essential-scala.html)
 - [Underscore. Scala with Cats](https://www.scalawithcats.com/dist/scala-with-cats.html)
+- [Cats-Effect. The IO Monad for Scala](https://typelevel.org/cats-effect/)
 - [Underscore. Essential Slick](https://books.underscore.io/essential-slick/essential-slick-3.html)
 - [Underscore. Essential Play](https://books.underscore.io/essential-play/essential-play.html)
 - [Underscore. The Type Astronaut’s Guide to Shapeless](https://books.underscore.io/shapeless-guide/shapeless-guide.html)
 - [Underscore. Creative Scala](https://www.creativescala.org/creative-scala.html)
-- [Li Haoyi. Hands-on Scala Programming](https://www.handsonscala.com)
-- [Sam Halliday. Functional Programming for Mortals](https://leanpub.com/fpmortals)
-- [Gabriel Volpe. Practical FP in Scala: A hands-on approach](https://leanpub.com/pfp-scala)
-- [red book](https://livebook.manning.com/book/functional-programming-in-scala/chapter-7/)
+- [Li Haoyi. Hands-on Scala Programming](https://www.handsonscala.com/chapter-1-hands-on-scala.html)
+- Sam Halliday. Functional Programming for Mortals
+  - [shop](https://leanpub.com/fpmortals)
+  - [local copy#1](../../../../../Dropbox/_books/_NEW_BOUGHT_2020/fpmortals.pdf)
+- Gabriel Volpe. Practical FP in Scala: A hands-on approach
+  - [shop](https://leanpub.com/pfp-scala)
+  - [local copy#1](../../../../../Dropbox/_books/_NEW_BOUGHT_2020/pfp-scala.pdf)
+- Red book
+  - [shop](https://livebook.manning.com/book/functional-programming-in-scala)
+  - [local copy#1](../../../../../Dropbox/_books/_NEW_BOUGHT_2020/Functional_Programming_in_Scala.pdf)
+- [red book - 7](https://livebook.manning.com/book/functional-programming-in-scala/chapter-7/)
+- [red book - 7](https://livebook.manning.com/book/functional-programming-in-scala/chapter-7/)
+- [red book - 8](https://livebook.manning.com/book/functional-programming-in-scala/chapter-8/)
+- [red book - 9](https://livebook.manning.com/book/functional-programming-in-scala/chapter-9/)
+- [red book - 10](https://livebook.manning.com/book/functional-programming-in-scala/chapter-10/)
+- [red book - 11](https://livebook.manning.com/book/functional-programming-in-scala/chapter-11/)
+- [red book - 12](https://livebook.manning.com/book/functional-programming-in-scala/chapter-12/)
+- [red book - 13](https://livebook.manning.com/book/functional-programming-in-scala/chapter-13/)
+- [red book - 14](https://livebook.manning.com/book/functional-programming-in-scala/chapter-14/)
 
 ### PURE FP
 - [fp-stack-2020-pres](https://github.com/adamw/fp-stack-2020-pres.git)

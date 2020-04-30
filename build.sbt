@@ -107,4 +107,6 @@ libraryDependencies ++= Seq(
 )
 
 // SBT shell
-initialCommands in console := "import scalaz._, Scalaz._"
+//initialCommands in console := "import scalaz._, Scalaz._"
+initialCommands in console := "import cats.effect._, org.http4s._, org.http4s.dsl.io._, org.http4s.implicits._;" +
+  "implicit val timer : Timer[IO] = IO.timer(scala.concurrent.ExecutionContext.global)"
