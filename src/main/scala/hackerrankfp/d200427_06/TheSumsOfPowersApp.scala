@@ -5,35 +5,22 @@ package hackerrankfp.d200427_06
   */
 object TheSumsOfPowersApp {
 
-  def pow(x: Int, n: Int): Int = (1 to n).foldLeft(1)((acc, _) => acc * x)
-
-  def tryFromL(n: Int, p: Int, options: List[Int], subsum: Int, acc: List[Int]): List[Option[List[Int]]] = {
-    println(s"N=$n, X=$p, from=$options, sub=$subsum, acc=$acc")
-    if (n==subsum) List(Some(acc.reverse))
-    else if (n<subsum) List(None)
-    else if (options.isEmpty) List(None)
-    else options match {
-      case h::t => {
-        val pw = pow(h, p)
-        if (subsum + pw > n) tryFromL(n, p, t, subsum   ,    acc)
-        else                 tryFromL(n, p, t, subsum+pw, h::acc)
-      }
-    }
-  }
-
   def process(n: Int, x: Int) = {
+    def pow(n: Int, p: Int): Int = (1 to p).foldLeft(1) { (a, _) => a * n }
+    case class NP(n: Int, np: Int)
     val max = math.ceil(math.sqrt(n)).toInt
-    val nums = (1 to max+1).reverse.toList
+    val powers: List[NP] = (1 to max).map { n=>NP(n, pow(n,x)) }.toList
 
-    type LOLI = List[Option[List[Int]]]
-    def proc(opts: List[Int], acc: List[Option[List[Int]]]): List[Option[List[Int]]] = opts match {
-      case Nil => acc
-      case _::t => proc(t, tryFromL(n, x, t, 0, Nil):::acc)
-    }
+    def tryFromL(options: List[NP], sub: Int, acc: List[Int]): List[Option[List[Int]]] =
+      if (sub == n) List(Some(acc))
+      else if (sub > n) List(None)
+      else options match {
+        case Nil  => List(None)
+        case h::t => if (sub + h.np > n) tryFromL(t, sub   ,    acc)
+                     else                tryFromL(t, sub + h.np, h.n::acc):::tryFromL(t, sub, acc)
+      }
 
-    val r: List[List[Int]] = proc(nums, Nil).flatten
-    println("--")
-    r
+    tryFromL(powers, 0, Nil).flatten
   }
 
   def body(readLine: => String): Unit = {
