@@ -653,10 +653,10 @@ object NinetyNineApp extends App {
     }
 
     def test(): Unit = {
-      val data: List[Symbol] = List('a, 'b, 'c, 'd)
+      val data: List[Symbol] = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j)
       println(data)
-      val r = combinations(3, data) // List(List('a, 'b, 'c), List('a, 'b, 'd), List('a, 'c, 'd), List('b, 'c, 'd))
-      println(r)
+      val r = combinations(5, data) // List(List('a, 'b, 'c), List('a, 'b, 'd), List('a, 'c, 'd), List('b, 'c, 'd))
+      println(r.length)
     }
   }
   P26.test()
