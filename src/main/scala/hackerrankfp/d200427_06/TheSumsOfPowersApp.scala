@@ -9,18 +9,18 @@ object TheSumsOfPowersApp {
     def pow(n: Int, p: Int): Int = (1 to p).foldLeft(1) { (a, _) => a * n }
     case class NP(n: Int, np: Int)
     val max = math.ceil(math.sqrt(n)).toInt
-    val powers: List[NP] = (1 to max).map { n=>NP(n, pow(n,x)) }.toList
+    val powers: List[NP] = (1 to max).map { n => NP(n, pow(n,x)) }.toList
 
-    def tryFromL(options: List[NP], sub: Int, acc: List[Int]): List[Option[List[Int]]] =
+    def split(options: List[NP], sub: Int, acc: List[Int]): List[Option[List[Int]]] =
       if (sub == n) List(Some(acc))
       else if (sub > n) List(None)
       else options match {
         case Nil  => List(None)
-        case h::t => if (sub + h.np > n) tryFromL(t, sub   ,    acc)
-                     else                tryFromL(t, sub + h.np, h.n::acc):::tryFromL(t, sub, acc)
+        case h::t if sub + h.np > n => split(t, sub, acc)
+        case h::t => split(t, sub + h.np, h.n::acc):::split(t, sub, acc)
       }
 
-    tryFromL(powers, 0, Nil).flatten
+    split(powers, 0, Nil).flatten
   }
 
   def body(readLine: => String): Unit = {
