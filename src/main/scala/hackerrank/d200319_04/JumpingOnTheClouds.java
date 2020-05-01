@@ -1,6 +1,10 @@
 package hackerrank.d200319_04;
 
-public class Problem05_Clouds {
+/**
+ * https://www.hackerrank.com/challenges/jumping-on-the-clouds/problem
+ */
+public class JumpingOnTheClouds {
+
   static int calc(int[] clouds) {
     final int SAFE = 0;
     int len = clouds.length;
@@ -26,4 +30,5 @@ public class Problem05_Clouds {
     int c = calc(new int[]{0, 0, 1, 0, 0, 1, 0});
     System.out.println(c);
   }
+
 }

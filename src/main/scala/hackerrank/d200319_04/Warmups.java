@@ -235,10 +235,6 @@ public class Warmups {
     }).toArray();
   }
 
-  static String angryProfessor(int k, int[] a) {
-    return Arrays.stream(a).filter(t -> t <= 0).count() >= k ? "YES" : "NO";
-  }
-
   static int[] cutTheSticks(int[] arr) {
     ArrayList<Integer> amount = new ArrayList<>();
     while (true) {
