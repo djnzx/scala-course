@@ -1,5 +1,7 @@
 package hackerrankfp.d200427_06
 
+import cats.Foldable
+
 /**
   * https://www.hackerrank.com/challenges/different-ways-fp/problem
   * with Immutable Map Cats Library
@@ -35,7 +37,17 @@ object DifferentWaysImmutableCats {
   }
 
   case class Step(list: List[Int], cache: Cache)
+
+  import cats.instances.list._
+  // Scala Cats Foldable implementation
   def process(cases: List[NK]): List[Int] =
+  Foldable[List].foldLeft(cases, Step(List.empty, cache0)) { (acc, a) =>
+    val (newCache, rbd) = doCount(a).run(acc.cache).value
+    Step(rbd.remainder(t8p7).intValueExact :: acc.list, newCache)
+  }.list
+
+  // plain Scala implementation
+  def process1(cases: List[NK]): List[Int] =
     cases.foldLeft( Step(List.empty, cache0) ) { (acc, a) =>
       val (newCache, rbd) = doCount(a).run(acc.cache).value
       Step(rbd.remainder(t8p7).intValueExact :: acc.list, newCache)
