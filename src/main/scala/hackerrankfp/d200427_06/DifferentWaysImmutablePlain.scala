@@ -13,14 +13,14 @@ object DifferentWaysImmutablePlain {
   val cache0: Cache = Map[NK, BD]()
 
   def count(nk: NK, cache: Cache): (BD, Cache) = {
-    val newCache = if (nk.k==0 || nk.k==nk.n) {
-      cache + (nk -> bd1)
-    } else if (!cache.contains(nk)) {
+    val newCache = if (cache.contains(nk)) cache
+    else if (nk.k==0 || nk.k==nk.n) cache + (nk -> bd1)
+    else {
       val (a, nc2) = count(NK(nk.n-1, nk.k-1), cache)
       val (b, nc3) = count(NK(nk.n-1, nk.k),   nc2)
       val c = a.add(b)
       nc3 + (nk -> c)
-    } else cache
+    }
     (newCache(nk), newCache)
   }
 
