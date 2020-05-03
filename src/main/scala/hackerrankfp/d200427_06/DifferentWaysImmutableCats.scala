@@ -2,9 +2,14 @@ package hackerrankfp.d200427_06
 
 /**
   * https://www.hackerrank.com/challenges/different-ways-fp/problem
-  * with Immutable Map Plain Scala
+  * with Immutable Map Cats Library
+  * recursion troubles (stack)
   */
-object DifferentWaysImmutablePlain {
+object DifferentWaysImmutableCats {
+
+  import cats.data.State
+  import cats.data.State._
+
   case class NK(n: Int, k: Int)
   type BD = java.math.BigDecimal
   val t8p7 = new BD(100000007)
@@ -12,24 +17,28 @@ object DifferentWaysImmutablePlain {
   type Cache = Map[NK, BD]
   val cache0: Cache = Map[NK, BD]()
 
-  def count(nk: NK, cache: Cache): (BD, Cache) = {
-    val newCache = if (nk.k==0 || nk.k==nk.n) {
-      cache + (nk -> bd1)
-    } else if (!cache.contains(nk)) {
-      val (a, nc2) = count(NK(nk.n-1, nk.k-1), cache)
-      val (b, nc3) = count(NK(nk.n-1, nk.k),   nc2)
-      val c = a.add(b)
-      nc3 + (nk -> c)
-    } else cache
-    (newCache(nk), newCache)
+  def doCount(nk: NK): State[Cache, BD] = State[Cache, BD] { cache =>
+    if (cache.contains(nk)) {
+      (cache, cache(nk))
+    } else if (nk.k==0 || nk.k==nk.n) {
+      val nCache: Cache = cache + (nk -> bd1)
+      (nCache, nCache(nk))
+    } else {
+      val cs = for {
+        a <- doCount(NK(nk.n - 1, nk.k - 1))
+        b <- doCount(NK(nk.n - 1, nk.k))
+        c = a.add(b)
+        _ <- modify[Cache](_ + (nk->c))
+      } yield c
+      cs.run(cache).value
+    }
   }
 
   case class Step(list: List[Int], cache: Cache)
   def process(cases: List[NK]): List[Int] =
     cases.foldLeft( Step(List.empty, cache0) ) { (acc, a) =>
-      count(a, acc.cache) match { case (rbd, newCache) =>
-        Step(rbd.remainder(t8p7).intValueExact :: acc.list, newCache)
-      }
+      val (newCache, rbd) = doCount(a).run(acc.cache).value
+      Step(rbd.remainder(t8p7).intValueExact :: acc.list, newCache)
     }.list//.reverse
 
   def body(readLine: => String): Unit = {
