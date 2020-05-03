@@ -19,6 +19,18 @@ object DifferentWaysImmutableCats {
   type Cache = Map[NK, BD]
   val cache0: Cache = Map[NK, BD]()
 
+  def doCount2(nk: NK): State[Cache, BD] = State[Cache, BD] { cache =>
+    val newCache = if (cache.contains(nk)) cache
+    else if (nk.k==0 || nk.k==nk.n) cache + (nk -> bd1)
+    else (for {
+        a <- doCount2(NK(nk.n-1, nk.k-1))
+        b <- doCount2(NK(nk.n-1, nk.k))
+        c = a.add(b)
+        _ <- modify[Cache](_ + (nk -> c))
+      } yield c).run(cache).value._1
+    (newCache, newCache(nk))
+  }
+
   def doCount(nk: NK): State[Cache, BD] = State[Cache, BD] { cache =>
     if (cache.contains(nk)) {
       (cache, cache(nk))
@@ -42,7 +54,7 @@ object DifferentWaysImmutableCats {
   // Scala Cats Foldable implementation
   def process(cases: List[NK]): List[Int] =
   Foldable[List].foldLeft(cases, Step(List.empty, cache0)) { (acc, a) =>
-    val (newCache, rbd) = doCount(a).run(acc.cache).value
+    val (newCache, rbd) = doCount2(a).run(acc.cache).value
     Step(rbd.remainder(t8p7).intValueExact :: acc.list, newCache)
   }.list
 
