@@ -4,12 +4,15 @@ import scala.collection.mutable
 
 /**
   * https://www.hackerrank.com/challenges/different-ways-fp/problem
+  * with mutable Map
+  * scala.collection.mutable.Map
   */
-object DifferentWays {
+object DifferentWaysMutable {
   type BD = java.math.BigDecimal
-  val K7 = new BD(100000007)
+  type II = (Int, Int)
+  val t8p7 = new BD(100000007)
   val bd1 = new BD(1)
-  val cache: mutable.Map[(Int, Int), BD] = mutable.Map[(Int, Int), BD]()
+  val cache: mutable.Map[II, BD] = mutable.Map[II, BD]()
 
   def count(n: Int, k: Int): BD =
     if (k==0) bd1
@@ -24,7 +27,8 @@ object DifferentWays {
       cache((n,k))
     }
 
-  def process(cases: List[(Int, Int)]): List[Int] = cases map { c => count(c._1, c._2).remainder(K7).intValueExact }
+  def process(cases: List[II]): List[Int] =
+    cases map { c => count(c._1, c._2).remainder(t8p7).intValueExact }
 
   def body(readLine: => String): Unit = {
     val N: Int = readLine.toInt
