@@ -13,9 +13,8 @@ import org.http4s.circe.jsonEncoderOf
 import org.http4s.dsl.Http4sDsl
 import org.http4s.headers.`Cache-Control`
 import org.http4s._
-import org.http4s.dsl.impl.{OptionalQueryParamDecoderMatcher, QueryParamDecoderMatcher, ValidatingQueryParamDecoderMatcher}
+import org.http4s.dsl.impl.{FlagQueryParamMatcher, OptionalQueryParamDecoderMatcher, QueryParamDecoderMatcher, QueryParamMatcher, ValidatingQueryParamDecoderMatcher}
 
-import scala.concurrent.ExecutionContext
 import scala.util.Try
 
 /**
@@ -69,7 +68,7 @@ object ServerRoutes {
   object ParOptMonth extends OptionalQueryParamDecoderMatcher[Month]("month")
   // manual handling missed parameter
   object ParValidYear extends ValidatingQueryParamDecoderMatcher[Year]("year")
-
+  object FlagX extends FlagQueryParamMatcher("x")
 
   // dsl syntax
   def routeC[F[_]: Sync: Clock]: HttpRoutes[F] = {
@@ -79,13 +78,10 @@ object ServerRoutes {
     HttpRoutes.of[F] {
       // just status 200
       case GET -> Root / "c1"   => Response[F](Status.Ok).pure[F]
-
       // status 200 and content
       case GET -> Root / "c2"   => Ok("Ok")
-
       // headers management
       case GET -> Root / "c3"   => Ok("Ok + cache", `Cache-Control`(NonEmptyList(`no-cache`(), Nil)))
-
       // cookies set
       case GET -> Root / "c4"   => for {
         resp <- Ok("Ok + set cookies")
@@ -93,37 +89,32 @@ object ServerRoutes {
         nowi = now.toInstant(ZoneOffset.ofHours(0))
         plus10m = HttpDate.unsafeFromInstant(nowi)
       } yield resp.addCookie(ResponseCookie("a", "b", expires = Some(plus10m), httpOnly = true))
-
       // get cookies from rq
       case rq @ GET -> Root / "c5"   => for {
         resp <- Ok(s"Ok. cookie from rq: ${rq.cookies.mkString}")
       } yield resp
-
       // cookies remove
       case GET -> Root / "c6"   => for {
         resp <- Ok("Ok + cookie remove")
       } yield resp.removeCookie("a")
-
       // binary content
       case GET -> Root / "c7"   => Ok("binary".getBytes(StandardCharsets.UTF_8))
-
-      // root
-      case GET -> Root  => Ok("root")
-
       // chunks after "c8"
       case GET -> "c8" /: chunks => Ok(s"""c8+${chunks.toList.mkString("_", "_", "_")}!""")
       case GET -> "c9" /: "a" /: "b" /: ab=> Ok(s"/c/c9/a/b/ ${ab.toList.mkString("_", "_", "_")}")
       // '.json' extractor (http://127.0.0.1:8090/c/c10/aaa.json) => file=aaa
       case GET -> Root / "c10" / file ~ "json" => Ok(s"""{"response": "You asked for $file"}""")
       case GET -> Root / "c11" :? ParCountry(co) +& ParYear(year) +& ParOptMonth(m) => Ok(s"c11 GOT:${co}_${year}_$m")
+      // year is presented but didn't pass the validation
       case GET -> Root / "c12" :? ParValidYear(yearValid) => yearValid.fold(
         failures => BadRequest("/c/c12: year should be specified"),
         year => Ok(s"/c/c12: year: $year")
       )
-
-
-//      case _   => Ok("/c/_")
-//      case GET -> Root / "c1" => Ok("/c/c1")
+      case GET -> Root / "c13" :? FlagX(x) => Ok(s"c13 GOT:x=${x}") // true/false
+      // root
+      case GET -> Root  => Ok("root")
+      // everything else
+      case _   => Ok("/c/_")
     }
   }
 
@@ -131,7 +122,13 @@ object ServerRoutes {
     val dsl = new Http4sDsl[F] {}
     import dsl._
     HttpRoutes.of[F] {
-      case GET -> Root / "d" => Ok("d")
+      case GET -> Root / "200" => Ok("200")
+      case GET -> Root / "201" => Created("201")
+      case GET -> Root / "202" => Accepted("202")
+
+      case GET -> Root / "400" => BadRequest("400")
+      case GET -> Root / "403" => Forbidden("403")
+      case GET -> Root / "404" => NotFound("204")
     }
   }
 
