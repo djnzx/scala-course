@@ -7,14 +7,6 @@ import java.util.stream.IntStream;
 
 public class ProblemsDay5 {
 
-  public static void xtralongfact(int n) {
-    BigDecimal r = new BigDecimal(1);
-    for (int i = 1; i <= n; i++) {
-      r = r.multiply(new BigDecimal(i));
-    }
-    System.out.println(r.toString());
-  }
-
   static String encryption(String sx) {
     final String s2 = sx.replace(" ", "");
     int len = s2.length();

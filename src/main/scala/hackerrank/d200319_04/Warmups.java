@@ -75,16 +75,6 @@ public class Warmups {
     return Arrays.stream(ar).sum();
   }
 
-  static List<Integer> compareTriplets(List<Integer> a, List<Integer> b) {
-    int cnt1=0;
-    int cnt2=0;
-    for (int i = 0; i < a.size(); i++) {
-      cnt1 += a.get(i)>b.get(i)?1:0;
-      cnt2 += a.get(i)<b.get(i)?1:0;
-    }
-    return Arrays.asList(cnt1, cnt2);
-  }
-
   static class Pair<A, B> {
     final A a;
     final B b;
@@ -249,21 +239,6 @@ public class Warmups {
       }
     }
     return amount.stream().mapToInt(x->x).toArray();
-  }
-
-  static int[] split(int n) {
-    int digits[] = new int[20];
-    int cnt=0;
-    while (n > 0) {
-      int r = n % 10;
-      if (r!=0) digits[cnt++]=r;
-      n /= 10;
-    }
-    return Arrays.copyOf(digits, cnt);
-  }
-
-  static int findDigits(int n) {
-    return (int) Arrays.stream(split(n)).filter(d -> n % d == 0).count();
   }
 
   static int chocolateFeast(int initial, int price1, int exch) {
