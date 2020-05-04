@@ -10,6 +10,9 @@ import java.util.stream.IntStream;
  */
 public class CompareTripletsApp {
 
+  /**
+   * the biggest problem of that code - TWO externally mutated variable
+   */
   static List<Integer> compareTriplets1(List<Integer> a, List<Integer> b) {
     int cnt1=0;
     int cnt2=0;
@@ -20,6 +23,9 @@ public class CompareTripletsApp {
     return Arrays.asList(cnt1, cnt2);
   }
 
+  /**
+   * the biggest problem of that code - ONE externally mutated variable
+   */
   static List<Integer> compareTriplets2(List<Integer> a, List<Integer> b) {
     Summer s = new Summer();
     IntStream.range(0, a.size()).forEach(i-> {
@@ -43,11 +49,22 @@ public class CompareTripletsApp {
       this.cnt2 = cnt2;
     }
 
+    static Summer fromComp(int c) {
+      return new Summer(c > 0 ? 1 : 0, c < 0 ? 1 : 0);
+    }
+
+    static Summer zero() {
+      return new Summer(0, 0);
+    }
+
     public List<Integer> toList() {
       return Arrays.asList(cnt1, cnt2);
     }
   }
 
+  /**
+   * the biggest problem of that code - DUPLICATED comparision of Objects
+   */
   static List<Integer> compareTriplets3(List<Integer> a, List<Integer> b) {
     return IntStream.range(0, a.size()).mapToObj(i -> new Summer(
         a.get(i) > b.get(i) ? 1 : 0,
@@ -57,6 +74,9 @@ public class CompareTripletsApp {
         .toList();
   }
 
+  /**
+   * the best implementation
+   */
   static List<Integer> compareTriplets4(List<Integer> a, List<Integer> b) {
     Comparator<Integer> cmp = Comparator.comparingInt(z->z);
     return IntStream.range(0, a.size()).mapToObj(i -> {
@@ -66,6 +86,22 @@ public class CompareTripletsApp {
         new Summer(0, 0),
         (s1, s2) -> new Summer(s1.cnt1 + s2.cnt1, s1.cnt2 + s2.cnt2)
     )
+        .toList();
+  }
+
+  /**
+   * even better ;)
+   */
+  static List<Integer> compareTriplets5(List<Integer> a, List<Integer> b) {
+    Comparator<Integer> cmp = Comparator.comparingInt(i -> i);
+    return IntStream.range(0, a.size())
+        .mapToObj(i ->
+            Summer.fromComp(cmp.compare(a.get(i), b.get(i)))
+        )
+        .reduce(
+            Summer.zero(),
+            (s1, s2) -> new Summer(s1.cnt1 + s2.cnt1, s1.cnt2 + s2.cnt2)
+        )
         .toList();
   }
 

@@ -639,24 +639,29 @@ object NinetyNineApp extends App {
       *
       * List('a, 'b, 'c, 'd,   'b, 'c, 'd,   'c, 'd,   'd)
       */
-    def flatMapTail[A, B](la: List[A])(f: List[A] => List[B]): List[B] = la match {
-      case Nil => Nil
-      case _ => f(la) ::: flatMapTail(la.tail)(f)
+    def tail[A, B](la: List[A])(f: List[A] => List[B]): List[B] = {
+      la match {
+        case Nil => Nil
+        case _::t => f(la) ::: tail(t) { f }
+      }
     }
 
-    def combinations[A](n: Int, la: List[A]): List[List[A]] = n match {
-      case 0 => List(Nil)
-      case _ => flatMapTail(la) {
-        // List[A] => List[List[A]]
-               lsa => combinations(n - 1, lsa.tail) map { x => lsa.head :: x }
+    def combinations[A](n: Int, la: List[A]): List[List[A]] = {
+      println(s"combinations: n=$n la=$la")
+      n match {
+        case 0 => List(Nil)
+        case _ => tail(la) { case h::t => combinations(n - 1, t) map { x => h :: x } }
       }
     }
 
     def test(): Unit = {
-      val data: List[Symbol] = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j)
+      val data: List[Symbol] = List('a, 'b, 'c, 'd, 'e)
+//      val data: List[Symbol] = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j)
+//      val data: List[Symbol] = List('a, 'b, 'c, 'd)
       println(data)
-      val r = combinations(5, data) // List(List('a, 'b, 'c), List('a, 'b, 'd), List('a, 'c, 'd), List('b, 'c, 'd))
-      println(r.length)
+//      val r = combinations(3, data) // List(List('a, 'b, 'c), List('a, 'b, 'd), List('a, 'c, 'd), List('b, 'c, 'd))
+      val r = tail(data) { identity }
+      println(r)
     }
   }
   P26.test()
