@@ -62,13 +62,15 @@
 - Sam Halliday. Functional Programming for Mortals
   - [shop](https://leanpub.com/fpmortals)
   - [local copy#1](../../../../../Dropbox/_books/_NEW_BOUGHT_2020/fpmortals.pdf)
+  - [local copy#2](../../../../Dropbox/_books/_NEW_BOUGHT_2020/fpmortals.pdf)
 - Gabriel Volpe. Practical FP in Scala: A hands-on approach
   - [shop](https://leanpub.com/pfp-scala)
   - [local copy#1](../../../../../Dropbox/_books/_NEW_BOUGHT_2020/pfp-scala.pdf)
+  - [local copy#2](../../../../Dropbox/_books/_NEW_BOUGHT_2020/pfp-scala.pdf)
 - Red book
   - [shop](https://livebook.manning.com/book/functional-programming-in-scala)
   - [local copy#1](../../../../../Dropbox/_books/_NEW_BOUGHT_2020/Functional_Programming_in_Scala.pdf)
-- [red book - 7](https://livebook.manning.com/book/functional-programming-in-scala/chapter-7/)
+  - [local copy#2](../../../../Dropbox/_books/_NEW_BOUGHT_2020/Functional_Programming_in_Scala.pdf)
 - [red book - 7](https://livebook.manning.com/book/functional-programming-in-scala/chapter-7/)
 - [red book - 8](https://livebook.manning.com/book/functional-programming-in-scala/chapter-8/)
 - [red book - 9](https://livebook.manning.com/book/functional-programming-in-scala/chapter-9/)
@@ -77,6 +79,7 @@
 - [red book - 12](https://livebook.manning.com/book/functional-programming-in-scala/chapter-12/)
 - [red book - 13](https://livebook.manning.com/book/functional-programming-in-scala/chapter-13/)
 - [red book - 14](https://livebook.manning.com/book/functional-programming-in-scala/chapter-14/)
+- [red book - 15](https://livebook.manning.com/book/functional-programming-in-scala/chapter-15/)
 
 ### PURE FP
 - [fp-stack-2020-pres](https://github.com/adamw/fp-stack-2020-pres.git)

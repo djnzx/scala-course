@@ -14,32 +14,27 @@ javacOptions ++= Seq(
 //  "-target", "1.8"
 )
 scalacOptions ++= Seq(
+  "-encoding", "UTF-8",
+  "-feature",
   "-deprecation",
+  "-unchecked",
+//  "-Xfatal-warnings",     // treat warning as fatal
   "-language:postfixOps",
   "-language:higherKinds",
   "-language:existentials",
-
 //  "-Ypartial-unification", // by default since 2.13
   "-Ywarn-numeric-widen",
   "-Ywarn-value-discard",
   "-Yrepl-class-based",
   "-Ywarn-extra-implicit",
-//  "-Ywarn-unused:_,imports",
-//  "-Ywarn-unused:imports",
+  "-Xlint:unused,-type-parameter-shadow",
   "-Yrangepos",
-
-  "-deprecation",
-  "-encoding", "UTF-8",
   "-explaintypes",
-  "-feature",
-  "-unchecked",
   // https://docs.scala-lang.org/overviews/compiler-options/index.html#Warning_Settings
   // http://eed3si9n.com/stricter-scala-with-xlint-xfatal-warnings-and-scalafix
-  "-Xlint:_,-type-parameter-shadow",
   "-opt-warnings",
   "-opt:l:inline",
   "-opt-inline-from:<source>",
-  //  "-Xfatal-warnings",     // treat warning as fatal. 53 warnings @ Nov 30
 )
 
 //addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6")
