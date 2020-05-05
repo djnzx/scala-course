@@ -26,7 +26,7 @@ object Fps116D extends App {
   } yield fr1 + fr2 + fr3
   r.onComplete {
     case Success(value) => println(s"done. value = ${value}, spent: ${t()-s0}, thread:${tn()}")
-    case Failure(ex)    => println("Exception was")
+    case Failure(_)    => println("Exception was")
   }
 
   println("sleep...")

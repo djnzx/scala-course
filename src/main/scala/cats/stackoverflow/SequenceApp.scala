@@ -6,17 +6,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 object SequenceApp extends App {
 
-  trait Smth {
-    val use: String
-  }
-
   def foo(x:String): Future[Seq[Int]] = Future { List(1,2,3) }
   val r: Future[Map[Int, Seq[Int]]] = foo("").map { e => e.groupBy(identity) }
 
 
   def getStrings(lst: Traversable[String]): Traversable[String] = {
     val someStrings = lst.filter(_.length >= 6)
-    val stringCount = someStrings.foldLeft(0)((accum, line) => accum + 1)
+    val stringCount = someStrings.foldLeft(0)((accum, _) => accum + 1)
     println(stringCount)
     someStrings
   }

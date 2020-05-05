@@ -1,8 +1,6 @@
 package degoes.ziointro
 
-import degoes.ziointro.Z4Loop.repeat
 import zio._
-import zio.console.putStrLn
 
 object Z1HelloWord extends App {
   import zio.console._
@@ -77,10 +75,11 @@ object Z6NumberGuesser extends App {
 }
 
 object AlarmImproved extends App {
-  import zio.console._
-  import zio.duration._
   import java.io.IOException
   import java.util.concurrent.TimeUnit
+
+  import zio.console._
+  import zio.duration._
 
   def toDouble(s: String): Either[NumberFormatException, Double] =
     try Right(s.toDouble) catch { case e: NumberFormatException => Left(e) }
@@ -113,8 +112,6 @@ object ComputePi extends App {
   import zio.console._
   import zio.duration._
   import zio.random._
-  import zio.clock._
-  import zio.stm._
 
   final case class PiState(inside: Long, total: Long)
 
@@ -151,11 +148,6 @@ object ComputePi extends App {
 }
 
 object StmDiningPhilosophers extends App {
-  import zio.console._
-  import zio.duration._
-  import zio.random._
-  import zio.clock._
-  import zio.stm._
 
 
 

@@ -1,6 +1,6 @@
 package aa_cookbook.x015json_custom
 
-import play.api.libs.json.{JsString, JsValue, Json, Writes}
+import play.api.libs.json.{JsString, Json, Writes}
 
 sealed trait Flag
 case object Important extends Flag

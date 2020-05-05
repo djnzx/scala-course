@@ -1,7 +1,7 @@
 import Dependencies.Libraries
 
-name         := "learn-scala-ar"
-version      := "20.4.30"
+name         := "learn-scala-deeper"
+version      := "20.5.05"
 scalaVersion := "2.13.1"
 
 // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
@@ -24,8 +24,8 @@ scalacOptions ++= Seq(
   "-Ywarn-value-discard",
   "-Yrepl-class-based",
   "-Ywarn-extra-implicit",
-  "-Ywarn-unused:_,imports",
-  "-Ywarn-unused:imports",
+//  "-Ywarn-unused:_,imports",
+//  "-Ywarn-unused:imports",
   "-Yrangepos",
 
   "-deprecation",
@@ -55,9 +55,6 @@ resolvers ++= Seq(
   Repos.artima,
 )
 
-lazy val ScalaZVersion     = "7.2.30"
-lazy val silencerVersion     = "1.6.0"
-
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
 libraryDependencies ++= Seq(
   "ch.qos.logback"         % "logback-classic"             % "1.2.3",
@@ -70,21 +67,22 @@ libraryDependencies ++= Seq(
   "com.chuusai"            %% "shapeless"                  % "2.3.3",
   "io.lemonlabs"           %% "scala-uri"                  % "1.5.1",
   "io.monix"               %% "monix"                      % "3.0.0",
-  "org.scalaz"             %% "scalaz-core"                % ScalaZVersion,
-  "org.scalaz"             %% "scalaz-effect"              % ScalaZVersion,
   "com.typesafe.akka"      %% "akka-actor-typed"           % "2.6.3",
   "com.softwaremill.quicklens" %% "quicklens"              % "1.4.12",
-  // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
-  compilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full),
- "com.github.ghik" % "silencer-lib" % silencerVersion % Provided cross CrossVersion.full,
+
+  Libraries.silencesAnnotation,
+  Libraries.silencesCompilerPlugin,
 
   Libraries.sqlPg,
   Libraries.sqlH2,
 
+  Libraries.scalazCore,
+  Libraries.scalazEffect,
+
   Libraries.cats,
   Libraries.catsEffect,
 
-  Libraries.slick,
+  Libraries.slickCore,
   Libraries.slickHikari,
 
   Libraries.zioCore,

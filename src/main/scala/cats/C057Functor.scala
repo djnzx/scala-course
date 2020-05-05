@@ -1,7 +1,5 @@
 package cats
 
-import scala.language.higherKinds
-import cats.Functor
 import cats.instances.list._ // for Functor
 import cats.instances.option._ // for Functor
 

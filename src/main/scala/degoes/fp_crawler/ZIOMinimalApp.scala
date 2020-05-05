@@ -2,8 +2,8 @@ package degoes.fp_crawler
 
 import java.io.IOException
 
-import zio.{ZIO, CanFail}
-import zio.console.{Console, putStr, putStrLn, getStrLn}
+import zio.ZIO
+import zio.console.{Console, getStrLn, putStr, putStrLn}
 
 object ZIOMinimalApp extends App {
 

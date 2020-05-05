@@ -1,8 +1,8 @@
 package aa_fp
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Try, Success, Failure}
+import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 object Fps116A extends App {
 
@@ -12,7 +12,7 @@ object Fps116A extends App {
   println("future built")
   a.onComplete {
     case Success(value) => println(s"done. value = ${value}")
-    case Failure(ex)    => println("Exception was")
+    case Failure(_)    => println("Exception was")
   }
   println("going to sleep...")
   Thread.sleep(2000)

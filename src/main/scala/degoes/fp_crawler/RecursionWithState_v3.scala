@@ -1,6 +1,5 @@
 package degoes.fp_crawler
 
-import scala.io.StdIn.readLine
 import scala.util.{Failure, Success, Try}
 
 object RecursionWithState_v3 extends App {

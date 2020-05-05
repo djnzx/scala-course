@@ -1,7 +1,7 @@
 package aa_cookbook.x015json
 
-import play.api.libs.json.{JsLookupResult, JsPath, JsResult, JsString, JsSuccess, JsValue, Json, Reads, Writes}
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
 object JsonWrite06ImplicitReads extends App {
   implicit val personWriter: Writes[Person1] = (p: Person1) => Json.obj("name" -> p.name, "age" -> p.age)

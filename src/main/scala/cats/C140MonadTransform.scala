@@ -1,13 +1,11 @@
 package cats
 
-import cats.data.{EitherT, OptionT}
-import cats.instances.either._
+import cats.data.EitherT
 import cats.instances.future._
-import cats.syntax.applicative._
 
-import scala.concurrent.{Await, Future}
-import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 
 object C140MonadTransform extends App {
 

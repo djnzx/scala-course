@@ -52,7 +52,7 @@ object Functions extends App {
     // this function takes two parsers and return another parser
     def alt[E, A](l: Parser[E, A], r: Parser[E, A]): Parser[E, A] =
       // it tries to apply left parser. if it returns E(left), we just apply right parser.
-      (i: String) => l(i).fold(e => r(i), r => Right(r))
+      (i: String) => l(i).fold(_ => r(i), r => Right(r))
 
     val p: Parser[String, Int] = alt(
       s => if (s.isEmpty) Left("is empty") else Right((s, s.length)),
