@@ -1,9 +1,7 @@
-package fpinscala
+package fp_red.a_exercises
 
-import language.higherKinds
-
-package object iomonad {
-  import fpinscala.parallelism.Nonblocking._
+package object c13iomonad {
+  import fp_red.c_answers.c07parallelism.Nonblocking._
 
   type IO[A] = IO3.IO[A]
   def IO[A](a: => A): IO[A] = IO3.IO[A](a)

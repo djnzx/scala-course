@@ -1,7 +1,6 @@
-package fpinscala.iomonad
+package fp_red.a_exercises.c13iomonad
 
 import language.postfixOps
-import language.higherKinds
 import scala.io.StdIn.readLine
 
 object IO0 {
@@ -306,7 +305,8 @@ object IO2bTests {
 
 object IO2c {
 
-  import fpinscala.parallelism.Nonblocking._
+//  import fpinscala.parallelism.Nonblocking._
+  import fp_red.c_answers.c07parallelism.Nonblocking._
 
   /*
    * We've solved our first problem of ensuring stack safety, but we're still
@@ -391,7 +391,8 @@ object IO3 {
   only console I/O effects.
   */
 
-  import fpinscala.parallelism.Nonblocking.Par
+  import fp_red.c_answers.c07parallelism.Nonblocking.Par
+//  import fpinscala.parallelism.Nonblocking.Par
 
   sealed trait Console[A] {
     def toPar: Par[A]

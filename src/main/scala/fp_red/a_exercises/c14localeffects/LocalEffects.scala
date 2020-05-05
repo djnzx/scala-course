@@ -1,6 +1,6 @@
-package fpinscala.localeffects
+package fp_red.a_exercises.c14localeffects
 
-import fpinscala.monads._
+import fp_red.a_exercises.c11monads._
 
 object Mutable {
   def quicksort(xs: List[Int]): List[Int] = if (xs.isEmpty) xs else {

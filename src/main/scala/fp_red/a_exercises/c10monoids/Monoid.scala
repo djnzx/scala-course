@@ -1,8 +1,8 @@
-package fpinscala.monoids
+package fp_red.a_exercises.c10monoids
 
-import fpinscala.parallelism.Nonblocking._
-import fpinscala.parallelism.Nonblocking.Par.toParOps // infix syntax for `Par.map`, `Par.flatMap`, etc
-import language.higherKinds
+import fp_red.c_answers.c07parallelism.Nonblocking._
+import fp_red.c_answers.c07parallelism.Nonblocking.Par.toParOps // infix syntax for `Par.map`, `Par.flatMap`, etc
+import fp_red.c_answers.c08testing.Gen
 
 trait Monoid[A] {
   def op(a1: A, a2: A): A
@@ -40,8 +40,8 @@ object Monoid {
   // TODO: Placeholder for `Gen`. Remove once you have implemented the `Gen`
   // data type from Part 2.
 
-  import fpinscala.testing._
-  import Prop._
+//  import fpinscala.testing._
+//  import fp_red.c_answers.c08testing.Prop._
   def monoidLaws[A](m: Monoid[A], gen: Gen[A]): Prop = ???
 
   def trimMonoid(s: String): Monoid[String] = ???

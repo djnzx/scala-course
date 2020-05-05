@@ -56,6 +56,7 @@ resolvers ++= Seq(
 )
 
 lazy val ScalaZVersion     = "7.2.30"
+lazy val silencerVersion     = "1.6.0"
 
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
 libraryDependencies ++= Seq(
@@ -73,6 +74,9 @@ libraryDependencies ++= Seq(
   "org.scalaz"             %% "scalaz-effect"              % ScalaZVersion,
   "com.typesafe.akka"      %% "akka-actor-typed"           % "2.6.3",
   "com.softwaremill.quicklens" %% "quicklens"              % "1.4.12",
+  // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
+  compilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full),
+ "com.github.ghik" % "silencer-lib" % silencerVersion % Provided cross CrossVersion.full,
 
   Libraries.sqlPg,
   Libraries.sqlH2,

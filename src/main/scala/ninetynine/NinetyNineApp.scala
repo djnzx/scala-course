@@ -1,7 +1,9 @@
 package ninetynine
 
+import com.github.ghik.silencer.silent
 import scala.annotation.tailrec
 
+@silent
 object NinetyNineApp extends App {
 
   object P01 {

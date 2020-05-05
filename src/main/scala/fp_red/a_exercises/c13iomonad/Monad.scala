@@ -1,6 +1,5 @@
-package fpinscala.iomonad
+package fp_red.a_exercises.c13iomonad
 
-import language.higherKinds // Disable warnings for type constructor polymorphism
 import language.implicitConversions
 
 trait Functor[F[_]] {

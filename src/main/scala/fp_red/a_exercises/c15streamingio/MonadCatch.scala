@@ -1,6 +1,7 @@
-package fpinscala.streamingio
+package fp_red.a_exercises.c15streamingio
 
-import fpinscala.iomonad._
+import fp_red.a_exercises.c13iomonad._
+
 import language.higherKinds
 
 /*

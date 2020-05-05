@@ -1,12 +1,11 @@
-package fpinscala
-package monads
+package fp_red.a_exercises.c11monads
 
-import parsing._
-import testing._
-import parallelism._
-import state._
-import parallelism.Par._
-import language.higherKinds
+import fp_red.a_exercises.c09parsing._
+//import fp_red.c_answers.c09parsing._
+import fp_red.c_answers.c08testing._
+import fp_red.c_answers.c07parallelism._
+import fp_red.c_answers.c06state._
+import fp_red.c_answers.c07parallelism.Par._
 
 
 trait Functor[F[_]] {
