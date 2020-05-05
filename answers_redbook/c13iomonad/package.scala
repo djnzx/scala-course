@@ -1,4 +1,4 @@
-package book_red.answers
+package fp_red.answers
 
 import language.higherKinds
 

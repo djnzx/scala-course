@@ -1,4 +1,4 @@
-package book_red.answers.c15streamingio
+package fp_red.answers.c15streamingio
 
 /*
  * `Eq[A,B]` provides evidence that types `A` and `B` are equal. 

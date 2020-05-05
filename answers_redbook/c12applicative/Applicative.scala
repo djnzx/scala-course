@@ -1,4 +1,4 @@
-package book_red.answers.c12applicative
+package fp_red.answers.c12applicative
 
 import c11monads.Functor
 import c06state._

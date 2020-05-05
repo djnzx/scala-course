@@ -1,4 +1,4 @@
-package book_red.answers.c13iomonad
+package fp_red.answers.c13iomonad
 
 import scala.io.StdIn.readLine
 import language.higherKinds

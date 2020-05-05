@@ -1,4 +1,4 @@
-package book_red.answers.c10monoids
+package fp_red.answers.c10monoids
 
 import fpinscala.c07parallelism.Nonblocking._
 import fpinscala.c07parallelism.Nonblocking.Par.toParOps // infix syntax for `Par.map`, `Par.flatMap`, etc

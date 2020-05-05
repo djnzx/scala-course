@@ -1,4 +1,4 @@
-package book_red.answers.c11monads
+package fp_red.answers.c11monads
 
 import c09parsing._
 import c08testing._
