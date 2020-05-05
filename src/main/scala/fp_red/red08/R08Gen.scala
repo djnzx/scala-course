@@ -2,9 +2,9 @@ package fp_red.red08
 
 import java.util.concurrent.{ExecutorService, Executors}
 
-import fp_red.answers.c05laziness.Stream
-import fp_red.answers.c06state.{RNG, State}
-import fp_red.answers.c07parallelism.Par
+import fp_red.c_answers.c05laziness.Stream
+import fp_red.c_answers.c06state.{RNG, State}
+import fp_red.c_answers.c07parallelism.Par
 import Prop.{CountToRun, Falsified, MaxSize, Passed, Result}
 
 // property description
