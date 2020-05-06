@@ -40,13 +40,16 @@ object Dependencies {
     def zio(artifact: String): ModuleID    = "dev.zio"    %% artifact % Versions.zio
     def scalaz(artifact: String): ModuleID = "org.scalaz" %% artifact % Versions.scalaz
     def slick(artifact: String): ModuleID  = "com.typesafe.slick" %% artifact % Versions.slick
+    def fs2(artifact: String): ModuleID    = "co.fs2"     %% artifact % Versions.fs2
 
     val cats          = "org.typelevel"    %% "cats-core"     % Versions.cats
     val catsMeowMtl   = "com.olegpy"       %% "meow-mtl-core" % Versions.catsMeowMtl
     val catsEffect    = "org.typelevel"    %% "cats-effect"   % Versions.catsEffect
     val catsRetry     = "com.github.cb372" %% "cats-retry"    % Versions.catsRetry
     val squants       = "org.typelevel"    %% "squants"       % Versions.squants
-    val fs2           = "co.fs2"           %% "fs2-core"      % Versions.fs2
+
+    val fs2core       = fs2("fs2-core")
+    val fs2reactive   = fs2("fs2-reactive-streams")
 
     val scalazCore    = scalaz("scalaz-core")
     val scalazEffect  = scalaz("scalaz-effect")

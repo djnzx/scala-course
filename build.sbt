@@ -1,7 +1,7 @@
 import Dependencies.Libraries
 
 name         := "learn-scala-deeper"
-version      := "20.5.05"
+version      := "20.5.06"
 scalaVersion := "2.13.1"
 
 // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
@@ -71,15 +71,23 @@ libraryDependencies ++= Seq(
   Libraries.sqlPg,
   Libraries.sqlH2,
 
+  // scalaZ
   Libraries.scalazCore,
   Libraries.scalazEffect,
 
+  // FS2
+  Libraries.fs2core,
+  Libraries.fs2reactive,
+
+  // CATS
   Libraries.cats,
   Libraries.catsEffect,
 
+  // Slick
   Libraries.slickCore,
   Libraries.slickHikari,
 
+  // ZIO
   Libraries.zioCore,
   Libraries.zioStreams,
 

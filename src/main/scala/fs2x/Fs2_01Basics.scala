@@ -3,7 +3,7 @@ package fs2x
 import fs2.{INothing, Pure, Stream}
 import cats.effect.IO
 
-object Fs2App1 extends App {
+object Fs2_01Basics extends App {
   // initiating
   val s0: Stream[Pure, INothing] = Stream.empty
   val s1: Stream[Pure, Int] = Stream.emit(1)
@@ -29,20 +29,20 @@ object Fs2App1 extends App {
 
   val eff1: Stream[IO, Int] = Stream.eval(IO { println("BEING RUN!!"); 1 + 1 }).repeatN(2)
 
-  // just run, and throw away the result
+  // just run, and throw away the result O
   val sa: Unit = eff1.compile
     .drain
     .unsafeRunSync()
 //  println("--")
 
-  // run and collect the data to collection
+  // run ALL F[_] and collect the data O to collection
   val sb: Vector[Int] = eff1.compile
     .toVector
     .unsafeRunSync()
 //  println(sb)
 //  println("--")
 
-  // run and fold
+  // run ALL F[_] and fold O
   val sc: Int = eff1.compile
     .fold(0) { _ + _}
     .unsafeRunSync()
