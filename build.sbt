@@ -1,8 +1,8 @@
 import Dependencies.Libraries
 
 name         := "learn-scala-deeper"
-version      := "20.5.06"
-scalaVersion := "2.13.1"
+version      := "20.5.07"
+scalaVersion := "2.13.2"
 
 // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
 // sbt compile

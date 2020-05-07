@@ -11,6 +11,8 @@
   - [SoftwareMill](http://www.softwaremill.com)
     - [cats](https://blog.softwaremill.com/9-tips-about-using-cats-in-scala-you-might-want-to-know-e1bafd365f88)
     - [tapir](https://blog.softwaremill.com/three-easy-endpoints-a6cbd52b0a6e)
+    - [scala from zero](https://softwaremill.com/scala/)
+    - [scala3macros](https://blog.softwaremill.com/starting-with-scala-3-macros-a-short-tutorial-88e9d2b2584c)
   - [github](https://github.com/adamw)
 - Riccardo Cardin
   - [blog](http://rcardin.github.io)
@@ -35,6 +37,8 @@
 - Aaron Levin
   - [youtube](https://www.youtube.com/watch?v=Nm4OIhjjA2o)
   - [github](https://gist.github.com/aaronlevin/d3911ba50d8f5253c85d2c726c63947b)
+- Juliano Alves
+  - [Building the Death Star with ZIO Stream](https://juliano-alves.com/2020/05/04/deathstar-zio-stream/)
 
 ### BASIC / LEARNING
 - [fpinscala](https://github.com/alexr007/fpinscala.git)
@@ -71,8 +75,6 @@
   - [shop](https://livebook.manning.com/book/functional-programming-in-scala)
   - [local copy#1](../../../../../Dropbox/_books/_NEW_BOUGHT_2020/Functional_Programming_in_Scala.pdf)
   - [local copy#2](../../../../Dropbox/_books/_NEW_BOUGHT_2020/Functional_Programming_in_Scala.pdf)
-- [red book - 7](https://livebook.manning.com/book/functional-programming-in-scala/chapter-7/)
-- [red book - 8](https://livebook.manning.com/book/functional-programming-in-scala/chapter-8/)
 - [red book - 9](https://livebook.manning.com/book/functional-programming-in-scala/chapter-9/)
 - [red book - 10](https://livebook.manning.com/book/functional-programming-in-scala/chapter-10/)
 - [red book - 11](https://livebook.manning.com/book/functional-programming-in-scala/chapter-11/)
@@ -114,6 +116,7 @@
 - [zio-todo-backend](https://github.com/mschuwalow/zio-todo-backend.git)
 - [zio+http4s](https://juliano-alves.com/2020/04/20/zio-http4s-a-simple-api-client/)
 - [From Kotlin + Spring Reactor + Arrow to Scala + ZIO](https://adrianfilip.com/2020/04/07/moving-from-kotlin-spring-reactor-arrow-to-scala-zio/)
+- [CLI with Decline for my ZIO App](https://medium.com/@pascal.mengelt/building-a-cool-cli-with-decline-for-my-zio-app-80e095b2899a)
 
 ### YOUTUBE
 - [John De Goes](https://www.youtube.com/results?search_query=john+de+goes)
@@ -153,3 +156,6 @@
 
 ###
 - [cats-effect](https://typelevel.org/cats-effect/)
+- [declarative data visualization](http://haifengl.github.io/vegalite.html)
+- [WIX @ meduim](https://medium.com/wix-engineering/6-event-driven-architecture-patterns-part-1-93758b253f47)
+- [K4 vs S3](https://www.youtube.com/watch?v=sIL4mduqHe0&feature=youtu.be&list=PLEx5khR4g7PI57l4MJvLlhOJIKHLKghos)

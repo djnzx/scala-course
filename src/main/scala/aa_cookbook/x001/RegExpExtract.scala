@@ -3,7 +3,7 @@ package aa_cookbook.x001
 object RegExpExtract extends App {
   def case1 = {
     val pattern = "([0-9]+)\\s+([A-Za-z]+)\\s+(\\w+)".r
-    val pattern2 = """([0-9]+)\s+([A-Za-z]+)\s+(\w+)""".r // we can omit in case triple quotes
+    val pattern2 = """([0-9]+)\s+([A-Za-z]+)\s+(\w+)""".r // we can omit DOUBLE backslash in case of using triple quotes
     val pattern(count, name, extra) = "100   bananas   extra"
     println(count)
     println(name)
