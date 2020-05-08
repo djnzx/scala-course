@@ -30,22 +30,22 @@ object Fs2_01Basics extends App {
   val eff1: Stream[IO, Int] = Stream.eval(IO { println("BEING RUN!!"); 1 + 1 }).repeatN(2)
 
   // just run, and throw away the result O
-  val sa: Unit = eff1.compile
-    .drain
-    .unsafeRunSync()
+  val sa1: Stream.CompileOps[IO, IO, Int] = eff1.compile
+  val sa2: IO[Unit] = sa1.drain
+  val sa3: Unit = sa2.unsafeRunSync()
 //  println("--")
 
   // run ALL F[_] and collect the data O to collection
-  val sb: Vector[Int] = eff1.compile
-    .toVector
-    .unsafeRunSync()
+  val sb1: Stream.CompileOps[IO, IO, Int] = eff1.compile
+  val sb2: IO[Vector[Int]] = sb1.toVector
+  val sb3: Vector[Int] = sb2.unsafeRunSync()
 //  println(sb)
 //  println("--")
 
   // run ALL F[_] and fold O
-  val sc: Int = eff1.compile
-    .fold(0) { _ + _}
-    .unsafeRunSync()
+  val sc1: Stream.CompileOps[IO, IO, Int] = eff1.compile
+  val sc2: IO[Int] = sc1.fold(0) { _ + _}
+  val sc3: Int = sc2.unsafeRunSync()
 //  println(sc)
 
 }
