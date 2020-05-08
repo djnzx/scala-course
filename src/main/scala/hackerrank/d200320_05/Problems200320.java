@@ -172,29 +172,6 @@ public class Problems200320 {
     Files.write(Paths.get("my.txt"), Arrays.asList(r));
   }
 
-  static List<Integer> common(String[] topics, int i1, int i2) {
-    return IntStream.range(0, topics[0].length()).mapToObj(idx -> new Pair<>(idx,
-        topics[i1].charAt(idx) == '1' || topics[i2].charAt(idx) == '1'))
-        .filter(p -> p.b)
-        .map(p -> p.a)
-        .collect(Collectors.toList());
-  }
-
-  static int[] acmTeam(String[] topics) {
-    List<Integer> data = IntStream.range(0, topics.length).boxed().flatMap(a1 ->
-        IntStream.range(a1 + 1, topics.length).mapToObj(a2 ->
-            new Pair<>(a1, a2)
-        )
-    ) // Pair<Integer, Integer> // a1, a2
-        .map(p -> new Pair<>(p, common(topics, p.a, p.b).size())) // Pair<Pair<Int, Int>, Int>> // ((a1, a2), size)
-        .filter(p -> p.b > 0)
-        .map(p -> p.b)
-        .collect(Collectors.toList());
-    int maxT =       data.stream().max((q,w)->q-w).orElseThrow(RuntimeException::new);
-    int maxG = (int) data.stream().filter(n -> n == maxT).count();
-    return new int[]{ maxT, maxG };
-  }
-
   // all even
   static boolean isDone(int[] amount) {
     return Arrays.stream(amount).allMatch(n -> (n & 1) == 0);
