@@ -1,12 +1,13 @@
 package mt
 
 import cats.Monad
-import cats.data.EitherT
+import cats.data.{EitherT, Kleisli, Reader, State, Writer, WriterT}
 import cats.syntax.OptionOps
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
+import scala.util.Try
 
 object MTApp1 extends App {
 
@@ -59,16 +60,38 @@ object MTApp1 extends App {
   val o3: Future[Int] = o2.getOrElse(-999)
   println(o3)
 
-  val r1: Option[Right[Nothing, Int]] = Option(Right(5))
+  val r1: Option[Either[Nothing, Int]] = Option(5.asRight[Nothing])
   val r2: EitherT[Option, Nothing, Int] = EitherT(r1)
   val r3: EitherT[Option, Nothing, Int] = r2.map(_*10) // 50
   val r4: Option[Int] = r3.getOrElse(-99)
 
-  val ooi = Some(Some(20))
+  val ooi = Some(20.some)
   val oot: OptionT[Option, Int] = OptionT(ooi)
   val oot2: OptionT[Option, Int] = oot.map { _ / 10}
   val oot3: Option[Int] = oot2.getOrElse(-9)
 
-  def convert[F[_], A, B](fa: F[A])(f: A => B): F[B] = ???
+  def convert[F[_]: Monad, A, B](fa: F[A])(f: A => B): F[B] = fa.map(f)
+  val opt1: Option[Int] = Some(1)
+  convert(opt1)(_ + 1)
+
+  def toInt1(s: String): Option[Int] = Try(s.toInt).toOption
+  val toInt2: Kleisli[Option, String, Int] = Kleisli { s: String => Try(s.toInt).toOption }
+  val i1: Option[Int] = toInt1("10")
+  val i2: Option[Int] = toInt2.run("20")
+
+  case class OptionEx[F[_]: Monad, A](fo: F[Option[A]]) {
+    def getOrElse(ea: => A): F[A] = fo map {
+      case None => ea
+      case Some(a) => a
+    }
+  }
+
+  val xx1: Future[Int] = OptionEx(Future { 1.some } ).getOrElse(-999)
+  val xx2: Future[Int] = OptionEx(Future { none[Int] } ).getOrElse(-999)
+
+  println(xx1)
+  println(xx2)
+
+
 
 }
