@@ -1,27 +1,18 @@
 package pfps
 
-import cats._
-import cats.effect._
-import cats.implicits._
+import cats.{ApplicativeError, Functor, MonadError}
+import cats.data.{Kleisli, OptionT}
+import cats.effect.Sync
 import scala.util.control.NoStackTrace
-//
-//import cats.data.{Kleisli, OptionT}
-//import cats.effect.Sync
-//import cats.{ApplicativeError, Functor, MonadError}
-//import cats.syntax.applicative._
-//import cats.syntax.applicativeError._
-//import cats.syntax.eq._
-//import cats.syntax.functor._
-//
-////import cats.syntax.all._
-////import cats.implicits._
-//import cats._
-//import cats.effect._
-//import cats.implicits._
+import cats.syntax.applicative._          // .pure
+import cats.syntax.applicativeError._     // .raiseError
+import cats.syntax.flatMap._               // .ifM
+import cats.syntax.functor._              // .map
+import cats.syntax.eq._                   // ===
+import cats.instances.int._               // ===
 
 import org.http4s.dsl.Http4sDsl
 import org.http4s.{HttpRoutes, Response}
-import scala.util.control.NoStackTrace
 
 object A037ErrorHandling extends App {
   case class Category(name: String)
@@ -34,8 +25,7 @@ object A037ErrorHandling extends App {
   object Random {
     implicit def syncInstance[F[_]: Sync]: Random[F] = new Random[F] {
       def int: F[Int]      = Sync[F].delay(scala.util.Random.nextInt(100))
-      def bool: F[Boolean] = ???
-//      def bool: F[Boolean] = int.map(_ % 2 === 0)
+      def bool: F[Boolean] = int.map { _ % 2 === 0 }
     }
   }
 
@@ -51,8 +41,6 @@ object A037ErrorHandling extends App {
       List.empty[Category].pure[F],
       RandomError.raiseError[F, List[Category]] )
   }
-
-
 
   class Program[F[_]: Functor](categories: Categories[F]) {
 

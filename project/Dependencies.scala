@@ -31,7 +31,7 @@ object Dependencies {
     val sqlH2            = "1.4.200"
     val silencer         = "1.6.0"
     val scalaz           = "7.2.30"
-    val contextApplied   = "0.1.2"
+    val contextApplied   = "0.1.4"
   }
 
   object Libraries {
@@ -94,10 +94,11 @@ object Dependencies {
     val redis4catsEffects  = "dev.profunktor" %% "redis4cats-effects"  % Versions.redis4cats
     val redis4catsLog4cats = "dev.profunktor" %% "redis4cats-log4cats" % Versions.redis4cats
 
-    // Compiler plugins
-    val betterMonadicFor = "com.olegpy"     %% "better-monadic-for" % Versions.betterMonadicFor
-    val kindProjector    = "org.typelevel"  %% "kind-projector"     % Versions.kindProjector cross CrossVersion.full
-    val contextApplied   = "org.augustjune" %% "context-applied"    % Versions.contextApplied
+    object CompilerPlugins {
+      val betterMonadicFor = compilerPlugin("com.olegpy"     %% "better-monadic-for" % Versions.betterMonadicFor)
+      val contextApplied   = compilerPlugin("org.augustjune" %% "context-applied"    % Versions.contextApplied)
+      val kindProjector    = compilerPlugin("org.typelevel"  %% "kind-projector"     % Versions.kindProjector cross CrossVersion.full)
+    }
 
     // Runtime
     val logback = "ch.qos.logback" % "logback-classic" % Versions.logback

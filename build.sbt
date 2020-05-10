@@ -1,7 +1,8 @@
 import Dependencies.Libraries
+import Dependencies.Libraries.CompilerPlugins
 
 name         := "learn-scala-deeper"
-version      := "20.5.08"
+version      := "20.5.10"
 scalaVersion := "2.13.2"
 
 // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
@@ -23,6 +24,7 @@ scalacOptions ++= Seq(
   "-language:higherKinds",
   "-language:existentials",
 //  "-Ypartial-unification", // by default since 2.13
+  "-Ymacro-annotations", // used by newtype
   "-Ywarn-numeric-widen",
   "-Ywarn-value-discard",
   "-Yrepl-class-based",
@@ -36,7 +38,11 @@ scalacOptions ++= Seq(
   "-opt:l:inline",
   "-opt-inline-from:<source>",
 )
-
+scalacOptions --= Seq(
+  "-Xfatal-warnings",
+  //  "-Ywarn-unused",
+  //  "-Ywarn-dead-code",
+)
 //addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6")
 //addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
 //addCommandAlias("check", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")
@@ -52,6 +58,10 @@ resolvers ++= Seq(
 
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
 libraryDependencies ++= Seq(
+  CompilerPlugins.betterMonadicFor,
+//  CompilerPlugins.contextApplied,
+  CompilerPlugins.kindProjector,
+
   "ch.qos.logback"         % "logback-classic"             % "1.2.3",
   "org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0",
   "org.scala-lang.modules" %% "scala-xml"                  % "1.2.0",
@@ -109,6 +119,12 @@ libraryDependencies ++= Seq(
   Libraries.scalaTest,
   Libraries.scalaTestPlus,
   Libraries.scalactic,
+
+  // @newtype annotation
+  Libraries.newtype,
+  // refined types
+  Libraries.refinedCore,
+
 )
 
 // SBT shell
