@@ -1,6 +1,8 @@
 import Dependencies.Libraries
 import Dependencies.Libraries.CompilerPlugins
 
+Global / onChangedBuildSource := ReloadOnSourceChanges
+
 name         := "learn-scala-deeper"
 version      := "20.5.10"
 scalaVersion := "2.13.2"
@@ -59,7 +61,7 @@ resolvers ++= Seq(
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
 libraryDependencies ++= Seq(
   CompilerPlugins.betterMonadicFor,
-//  CompilerPlugins.contextApplied,
+  CompilerPlugins.contextApplied,
   CompilerPlugins.kindProjector,
 
   "ch.qos.logback"         % "logback-classic"             % "1.2.3",
