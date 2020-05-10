@@ -1,7 +1,7 @@
-package catsx
+package catsx.c176
 
-import cats.Monoid
-import cats.{Applicative, Semigroupal, Traverse}
+import cats.{Applicative, Monoid, Semigroupal, Traverse}
+import cats.implicits._
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
@@ -50,8 +50,7 @@ object C176TraverseRecap extends App {
     * we can extract empty element from cats
     */
   {
-    import cats.instances.list._     // Monoid[List[Int]]
-    import cats.instances.future._   // Applicative[Future]
+    import cats.instances.list._
     import cats.syntax.applicative._ // .pure syntax
 
     def empty: Future[List[Int]] = Monoid[List[Int]].empty.pure[Future]
@@ -67,8 +66,7 @@ object C176TraverseRecap extends App {
     * let's make empty more generic
     */
   {
-    import cats.instances.list._     // Monoid[List[Int]]
-    import cats.instances.future._   // Applicative[Future]
+    import cats.instances.list._
     import cats.syntax.applicative._ // .pure syntax
 
     def empty[A]= Monoid[List[A]].empty.pure[Future]
@@ -85,8 +83,7 @@ object C176TraverseRecap extends App {
     * right now we can fold over any F[_], not only Future[]
     */
   {
-    import cats.instances.list._     // Monoid[List[Int]]
-    import cats.instances.future._   // Applicative[Future]
+    import cats.instances.list._
     import cats.syntax.applicative._ // .pure syntax
 
     def empty[F[_]: Applicative, A]: F[List[A]] = Monoid[List[A]].empty.pure[F]
@@ -111,7 +108,6 @@ object C176TraverseRecap extends App {
     */
   {
     import cats.instances.list._
-    import cats.instances.future._
 
     val result3: Future[List[Int]] = Traverse[List].traverse(names)(getUptime)
 //    xo("S3", result3)
@@ -122,15 +118,14 @@ object C176TraverseRecap extends App {
     * by using Applicative
     */
   {
-    import cats.instances.future._
     import cats.instances.list._
-    import cats.syntax.applicative._ // pure
+    import cats.syntax.applicative._
     import cats.syntax.apply._       // mapN
 
     def empty0[B]                   : Future[List[B]] = List()               .pure[Future]
     def empty1[B]                   : Future[List[B]] = List.empty[B]        .pure[Future]
     def empty2[B]                   : Future[List[B]] = Monoid[List[B]].empty.pure[Future]
-    def empty3[F[_]: Applicative, B]:      F[List[B]] = Monoid[List[B]].empty.pure[F]
+//    def empty3[F[_]: Applicative, B]:      F[List[B]] = Monoid[List[B]].empty.pure[F]
 
     val combine1: (Future[List[Int]], Future[Int]) => Future[List[Int]] =
       (facc: Future[List[Int]], fitem: Future[Int]) => for {
@@ -149,26 +144,26 @@ object C176TraverseRecap extends App {
     def combine4[B](facc: Future[List[B]], fitem: Future[B]): Future[List[B]] =
         (facc, fitem).mapN(_ :+ _)
 
-    def combine5[F[_]: Applicative, B](facc: F[List[B]], fitem: F[B]): F[List[B]] =
-        (facc, fitem).mapN(_ :+ _)
-
-    val result4a: Future[List[Int]] = upTimes.foldLeft(empty3[Future, Int])(combine1)
-    val result4b: Future[List[Int]] = upTimes.foldLeft(empty3[Future, Int])(combine2)
-    val result4c: Future[List[Int]] = upTimes.foldLeft(empty3[Future, Int])(combine3)
-    xo("S4C", result4c)
-
-    // traverse reinvention
-    def listTraverse[F[_]: Applicative, A, B](list: List[A])(func: A => F[B]): F[List[B]] =
-      list.foldLeft(empty3[F, B])((as, a) => combine5(as, func(a)))
-
-    val result5a: Future[List[Int]] = listTraverse(names)(getUptime)
-
-    def listSequence1[F[_]: Applicative, B] (list: List[F[B]]): F[List[B]] =
-      list.foldLeft(empty3[F, B])((as, a) => combine5(as, a))
-
-    def listSequence2[F[_]: Applicative, B] (list: List[F[B]]): F[List[B]] =
-      listTraverse(list)(identity)
-
+//    def combine5[F[_]: Applicative, B](facc: F[List[B]], fitem: F[B]): F[List[B]] =
+//        (facc, fitem).mapN(_ :+ _)
+//
+//    val result4a: Future[List[Int]] = upTimes.foldLeft(empty3[Future, Int])(combine1)
+//    val result4b: Future[List[Int]] = upTimes.foldLeft(empty3[Future, Int])(combine2)
+//    val result4c: Future[List[Int]] = upTimes.foldLeft(empty3[Future, Int])(combine3)
+//    xo("S4C", result4c)
+//
+//    // traverse reinvention
+//    def listTraverse[F[_]: Applicative, A, B](list: List[A])(func: A => F[B]): F[List[B]] =
+//      list.foldLeft(empty3[F, B])((as, a) => combine5(as, func(a)))
+//
+//    val result5a: Future[List[Int]] = listTraverse(names)(getUptime)
+//
+//    def listSequence1[F[_]: Applicative, B] (list: List[F[B]]): F[List[B]] =
+//      list.foldLeft(empty3[F, B])((as, a) => combine5(as, a))
+//
+//    def listSequence2[F[_]: Applicative, B] (list: List[F[B]]): F[List[B]] =
+//      listTraverse(list)(identity)
+//
   }
 
 
