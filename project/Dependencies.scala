@@ -14,7 +14,7 @@ object Dependencies {
     val http4s           = "0.21.4"
     val http4sJwtAuth    = "0.0.4"
     val log4cats         = "1.0.1"
-    val newtype          = "0.4.3"
+    val newtype          = "0.4.4"
     val refined           = "0.9.13"
     val redis4cats       = "0.9.6"
     val skunk            = "0.0.7"
@@ -31,6 +31,7 @@ object Dependencies {
     val sqlH2            = "1.4.200"
     val silencer         = "1.6.0"
     val scalaz           = "7.2.30"
+    val contextApplied   = "0.1.2"
   }
 
   object Libraries {
@@ -94,8 +95,9 @@ object Dependencies {
     val redis4catsLog4cats = "dev.profunktor" %% "redis4cats-log4cats" % Versions.redis4cats
 
     // Compiler plugins
-    val betterMonadicFor = "com.olegpy"    %% "better-monadic-for" % Versions.betterMonadicFor
-    val kindProjector    = "org.typelevel" % "kind-projector"      % Versions.kindProjector
+    val betterMonadicFor = "com.olegpy"     %% "better-monadic-for" % Versions.betterMonadicFor
+    val kindProjector    = "org.typelevel"  %% "kind-projector"     % Versions.kindProjector cross CrossVersion.full
+    val contextApplied   = "org.augustjune" %% "context-applied"    % Versions.contextApplied
 
     // Runtime
     val logback = "ch.qos.logback" % "logback-classic" % Versions.logback

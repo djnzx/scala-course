@@ -21,6 +21,7 @@
 - Alvin Alexander
   - [site](https://alvinalexander.com/scala)
   - [github](https://github.com/alvinj)
+  - [Scala Book](https://alvinalexander.com/scala/scala-book-free/)
 - Twitter
   - [scala school](https://twitter.github.io/scala_school/)
 - Dalton Sweeney
@@ -93,6 +94,11 @@
 - [scalaz-streams](https://gist.github.com/djspiewak/d93a9c4983f63721c41c)
 - [scalaz-reddit](https://www.reddit.com/r/scala/comments/ftgqtp/where_can_i_practically_use_fs2/)
 
+### AKKA
+- [Actors using Scala & Akka — Part 1 : Introduction](https://medium.com/@bilalfazlani/actors-using-scala-akka-part-1-introduction-c373f5d45084?source=linkShare-ca25bf2b588d-1589006067&_branch_match_id=788098039642386209)
+  - [reddit thread](https://www.reddit.com/r/scala/comments/ggamlh/i_wrote_another_blog_for_beginners_in_the_actor/)
+  
+
 ### PLAY
 - [play-from-scratch-reddit-thread](https://www.reddit.com/r/scala/comments/fx6u4t/play_framework_create_application_from_scratch/)
 - [play-from-scratch-document](https://dvirf1.github.io/play-tutorial/)
@@ -117,6 +123,7 @@
 - [zio+http4s](https://juliano-alves.com/2020/04/20/zio-http4s-a-simple-api-client/)
 - [From Kotlin + Spring Reactor + Arrow to Scala + ZIO](https://adrianfilip.com/2020/04/07/moving-from-kotlin-spring-reactor-arrow-to-scala-zio/)
 - [CLI with Decline for my ZIO App](https://medium.com/@pascal.mengelt/building-a-cool-cli-with-decline-for-my-zio-app-80e095b2899a)
+- [Simple message processing pipeline using ZIO Streams](https://medium.com/@brianxiang/write-a-simple-message-processing-pipeline-using-zio-streams-cb72a3289913)
 
 ### YOUTUBE
 - [John De Goes](https://www.youtube.com/results?search_query=john+de+goes)
