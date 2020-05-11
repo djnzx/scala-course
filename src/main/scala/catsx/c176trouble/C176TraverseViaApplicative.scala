@@ -1,4 +1,4 @@
-package catsx.c176
+package catsx.c176trouble
 
 import cats.{Applicative, Apply, Functor, Semigroupal, Traverse}
 

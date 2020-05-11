@@ -1,4 +1,4 @@
-package catsx.c176
+package catsx.c176trouble
 
 import cats.{Applicative, Monoid, Semigroupal, Traverse}
 import cats.implicits._

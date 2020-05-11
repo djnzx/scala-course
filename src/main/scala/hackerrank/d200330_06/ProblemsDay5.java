@@ -7,28 +7,6 @@ import java.util.stream.IntStream;
 
 public class ProblemsDay5 {
 
-  static String encryption(String sx) {
-    final String s2 = sx.replace(" ", "");
-    int len = s2.length();
-    double l = Math.sqrt(len);
-    final int l1 = (int) Math.floor(l);
-    final int l2 = (int) Math.ceil(l);
-    int cols = l2;
-    int rows = l1 == l2 ? l2 : l1*l2 < len ? l2 : l1;
-
-    return IntStream.range(0, cols).boxed().flatMap(c ->
-        IntStream.range(0, rows).boxed().map(r -> {
-          int idx = r*cols+c;
-          String ch = idx < len ? String.valueOf(s2.charAt(idx)) : "";
-          return r==rows-1 ? ch +" ": ch;
-        })).collect(Collectors.joining());
-  }
-
-  public static void main_encryption(String[] args) {
-//    System.out.println(encryption("have a nice day"));
-//    System.out.println(encryption("feed the dog"));
-    System.out.println(encryption("chillout"));
-  }
 
   static int[][] convert(String[] grid) {
     int[][] data = new int[grid.length][grid[0].length()];
