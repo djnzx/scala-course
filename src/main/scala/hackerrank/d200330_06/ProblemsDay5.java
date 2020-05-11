@@ -1,12 +1,10 @@
 package hackerrank.d200330_06;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ProblemsDay5 {
-
 
   static int[][] convert(String[] grid) {
     int[][] data = new int[grid.length][grid[0].length()];
