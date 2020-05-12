@@ -1,10 +1,11 @@
 package httpfs1
 
+import cats.data.Kleisli
 import cats.effect.{ConcurrentEffect, ContextShift, ExitCode, Timer}
 import cats.syntax.semigroupk._
 import fs2.Stream
 import httpfs1.serv.{HelloWorld, Jokes}
-import org.http4s.HttpApp
+import org.http4s.{HttpApp, HttpRoutes, Request, Response}
 import org.http4s.client.blaze.BlazeClientBuilder
 import org.http4s.implicits._
 import org.http4s.server.blaze.BlazeServerBuilder
@@ -29,6 +30,8 @@ object AppServer {
       // Can also be done via a Router if you want to extract
       // a segments not checked in the underlying routes.
 
+      x: HttpRoutes[F] = AppRoutes.helloWorldRoutes[F](helloWorldAlg)
+      y: HttpApp[F] = x.orNotFound
       rqHandler: HttpApp[F] = (
         AppRoutes.helloWorldRoutes[F](helloWorldAlg) <+>
         AppRoutes.jokeRoutes[F](jokeAlg)

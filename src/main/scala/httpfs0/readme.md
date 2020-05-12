@@ -4,8 +4,3 @@
 [http4s+twirl](https://medium.com/@poslegm/простое-приложение-на-http4s-a9ddb4be85b8)
 ### how to create bare
 sbt -sbt-version 1.3.10 new http4s/http4s.g8 -b 0.21
-
-### how to test
-http://127.0.0.1:8080/joke
-http://127.0.0.1:8080/hello/Alex
-
