@@ -32,6 +32,7 @@ object Dependencies {
     val silencer         = "1.6.0"
     val scalaz           = "7.2.30"
     val contextApplied   = "0.1.4"
+    val jsoup            = "1.13.1"
   }
 
   object Libraries {
@@ -43,6 +44,7 @@ object Dependencies {
     def slick(artifact: String): ModuleID  = "com.typesafe.slick" %% artifact % Versions.slick
     def fs2(artifact: String): ModuleID    = "co.fs2"     %% artifact % Versions.fs2
 
+    val jsoup         = "org.jsoup"        %  "jsoup"         % Versions.jsoup
     val cats          = "org.typelevel"    %% "cats-core"     % Versions.cats
     val catsMeowMtl   = "com.olegpy"       %% "meow-mtl-core" % Versions.catsMeowMtl
     val catsEffect    = "org.typelevel"    %% "cats-effect"   % Versions.catsEffect
