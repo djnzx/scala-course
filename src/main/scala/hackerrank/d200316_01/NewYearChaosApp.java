@@ -3,7 +3,10 @@ package hackerrank.d200316_01;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-public class Problem03_NewYearChaos {
+/**
+ * https://www.hackerrank.com/challenges/new-year-chaos/problem
+ */
+public class NewYearChaosApp {
 
   static class Pair<A, B> {
     public final A a;
