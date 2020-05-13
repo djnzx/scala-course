@@ -55,8 +55,10 @@ object HttpRsApp extends App {
       .flatMap(identity)
 
     case rqx @ POST -> Root / "bookx3" => for {
+      // automatic decoding
       book  <- rqx.as[Book]
       book2 = modify(book)
+      // automatic encoding
       rs    <- Ok(book2)
     } yield rs
 
