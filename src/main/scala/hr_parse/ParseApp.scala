@@ -21,10 +21,10 @@ object ParseApp extends App {
 
   val buildUri = (topic: String) => (name: String) =>
     uri"https://www.hackerrank.com" / "leaderboard" withQueryParams Map(
-      "filter" -> name,
+      "filter"    -> name,
       "filter_on" -> "hacker",
-      "track" -> topic,
-      "type" -> "practice"
+      "track"    -> topic,
+      "type"     -> "practice"
     )
 
   val topic = "algorithms"

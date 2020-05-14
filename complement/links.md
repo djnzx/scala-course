@@ -28,6 +28,7 @@
   - [site](https://daltyboy11.github.io)
 - Li Haoyi
   - [blog](http://www.lihaoyi.com)
+  - [ammonite](https://www.lihaoyi.com/post/WorkingwithDatabasesusingScalaandQuill.html#ammonite)
 - Daniel Ciocîrlan (Rock The JVM)
   - [blog](https://rockthejvm.com/blog/)
   - [reddit](https://www.reddit.com/user/danielciocirlan/)

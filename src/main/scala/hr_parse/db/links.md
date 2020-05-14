@@ -1,0 +1,3 @@
+- [quill](https://www.lihaoyi.com/post/WorkingwithDatabasesusingScalaandQuill.html)
+- [date vs date](https://stackoverflow.com/questions/2305973/java-util-date-vs-java-sql-date)
+- [encoders](https://github.com/getquill/quill/blob/master/quill-jdbc/src/main/scala/io/getquill/context/jdbc/Encoders.scala)

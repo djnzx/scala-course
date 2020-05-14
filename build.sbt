@@ -77,6 +77,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka"      %% "akka-actor-typed"           % "2.6.3",
   "com.softwaremill.quicklens" %% "quicklens"              % "1.4.12",
 
+  "io.getquill" %% "quill-jdbc" % "3.5.1",
+
   Libraries.silencesAnnotation,
   Libraries.silencesCompilerPlugin,
 
