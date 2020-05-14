@@ -2,8 +2,9 @@ package hr_parse
 
 import org.http4s.Uri
 import org.jsoup._
-import org.jsoup.select.Elements
 import org.http4s.implicits._
+import Data.users
+import org.jsoup.nodes.Document
 
 /**
   * Parser for HackerRank scores
@@ -11,20 +12,11 @@ import org.http4s.implicits._
   */
 object ParseApp extends App {
 
-  case class HackerDetails(name: String, rank: Int, country: String, score: Double)
-
-  // TODO put validation here and make return type Either[String, HackerDetails]
-  val toHacker = (el: Elements) => {
-    val hacker  = el.select(".hacker a").attr("data-value")
-    val rank    = el.select(".rank div").text
-    val country = el.select(".extra .flag-tooltip").attr("data-balloon")
-    val score   = el.select(".score div").text
-    HackerDetails(hacker, rank.toInt, country, score.toDouble)
-  }
-
-  val toElement = (uri: Uri) =>
+  val uriToDocument = (uri: Uri) =>
     Jsoup.connect(uri renderString).get
-      .select(".ui-leaderboard-table .table-body .table-row")
+
+  val documentToElement = (doc: Document) =>
+    doc.select(".ui-leaderboard-table .table-body .table-row")
 
   val buildUri = (topic: String) => (name: String) =>
     uri"https://www.hackerrank.com" / "leaderboard" withQueryParams Map(
@@ -35,14 +27,14 @@ object ParseApp extends App {
     )
 
   val topic = "algorithms"
-  val names = Vector("elgun_cumayev", "alexr007", "ibcelal", "lcavadova", "realserxanbeyli")
 
-  val rqWithTopic = buildUri(topic)
+  val rqWithTopicByUser = buildUri(topic)
 
-  names
-    .map { rqWithTopic }
-    .map { toElement }
-    .map { toHacker }
+  users
+    .map { rqWithTopicByUser }
+    .map { uriToDocument }
+    .map { documentToElement }
+    .map { HackerDetails.fromHtml }
     .sortBy { _.rank }
     .foreach { println }
 }
