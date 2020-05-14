@@ -4,7 +4,7 @@ import Dependencies.Libraries.CompilerPlugins
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 name         := "learn-scala-deeper"
-version      := "20.5.10"
+version      := "20.5.14"
 scalaVersion := "2.13.2"
 
 // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project

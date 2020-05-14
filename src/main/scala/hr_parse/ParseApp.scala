@@ -12,10 +12,11 @@ import org.jsoup.nodes.Document
   */
 object ParseApp extends App {
 
+  // TODO: change return types to handle exceptions
   val uriToDocument = (uri: Uri) =>
     Jsoup.connect(uri renderString).get
 
-  val documentToElement = (doc: Document) =>
+  val documentToElements = (doc: Document) =>
     doc.select(".ui-leaderboard-table .table-body .table-row")
 
   val buildUri = (topic: String) => (name: String) =>
@@ -28,12 +29,14 @@ object ParseApp extends App {
 
   val topic = "algorithms"
 
-  val rqWithTopicByUser = buildUri(topic)
+  val userToUri = buildUri(topic)
+
+  // TODO: consider fetching documents in parallel in another thread pool
 
   users
-    .map { rqWithTopicByUser }
+    .map { userToUri }
     .map { uriToDocument }
-    .map { documentToElement }
+    .map { documentToElements }
     .map { HackerDetails.fromHtml }
     .sortBy { _.rank }
     .foreach { println }

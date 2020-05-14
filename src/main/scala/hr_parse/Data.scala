@@ -36,6 +36,6 @@ object Data {
     "ElbrusGarayev",
   )
 
-  val users: Vector[String] = trainers ++ be4 ++ be3
+  val users: Vector[String] = Vector(trainers, be4, be3) flatten
 
 }
