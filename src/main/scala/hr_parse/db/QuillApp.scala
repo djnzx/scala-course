@@ -4,21 +4,25 @@ import io.getquill._
 import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
 import org.postgresql.ds.PGSimpleDataSource
 
-object QuillApp extends App {
-  val src = new PGSimpleDataSource {{
+object QuillApp extends App with DbSetup {
+  dbSetup()
+
+  val pgSrc = new PGSimpleDataSource {{
+    setServerNames(Array("localhost"))
+    setPortNumbers(Array(5432))
+    setDatabaseName("ibatech")
     setUser("postgres")
     setPassword("secret")
-    setDatabaseName("ibatech")
   }}
   val config = new HikariConfig() {{
-    setDataSource(src)
+    setDataSource(pgSrc)
   }}
-  val ctx = new PostgresJdbcContext(LowerCase, new HikariDataSource(config))
+  val ctx = new PostgresJdbcContext(LowerCase,
+    new HikariDataSource(config))
   import ctx._
 
   import v_ranks_current._
   ctx
     .run(query[v_ranks_current])
     .foreach { println }
-
 }
