@@ -8,7 +8,10 @@ object Data {
 
   val be4 = Vector(
     "abdurrazakliadil",
+    "efqan_mustafaye1",
     "a_velibeyli6",
+    "umid_ismayilov",
+    "farid_najafov",
     "nagiyevintiqam",
     "fidan97ismailova",
     "ibcelal",
@@ -18,6 +21,8 @@ object Data {
     "a_nazim2007",
     "Celine_H",
     "sarayeva_sevinc",
+    "shf_ahmd13",
+    "saiqhuseynzade98",
     "sidiqa",
     "Susann",
     "zeynebb2022",
@@ -38,10 +43,13 @@ object Data {
     "ElbrusGarayev",
   )
 
-  val debug = Vector("kamranbekirovyz")
+  val debug = Vector(
+    "efqan_mustafaye1",
+  )
 
   val users: Vector[String] = Vector(
-      trainers, be4, be3
+      trainers,
+    //      be4, be3
 //      debug
     ) flatten
 
