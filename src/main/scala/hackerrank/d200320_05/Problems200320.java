@@ -22,48 +22,6 @@ public class Problems200320 {
     }
   }
 
-  static long sq(long n) {
-    return n*n;
-  }
-
-  static String itos(long n) {
-    return Long.toString(n);
-  }
-
-  static long stoi(String s) {
-    if (s.isEmpty()) return 0;
-    return Long.parseLong(s);
-  }
-
-  static int len(int n) {
-    return itos(n).length();
-  }
-
-  static Pair<String, String> split(long nn, int size) {
-    String ss = itos(nn);
-    String s1 = ss.substring(0, ss.length()-size);
-    String s2 = ss.substring(ss.length()-size);
-    return new Pair<>(s1, s2);
-  }
-
-  static Pair<Long, Long> ptoi(Pair<String, String> p) {
-    return new Pair<>(stoi(p.a), stoi(p.b));
-  }
-
-  static void kaprekarNumbers(int p, int q) {
-    if (p<=0 || p>=100000 || p>=q) System.out.println("INVALID RANGE");
-    else {
-      String nums = IntStream.rangeClosed(p, q)
-          .mapToObj(n -> new Pair<>(n, ptoi(split(sq(n), len(n)))))
-          .filter(pa -> pa.a == pa.b.a + pa.b.b)
-          .map(pa -> pa.a)
-          .map(n -> itos(n))
-          .collect(Collectors.joining(" "));
-      if (nums.isEmpty()) nums="INVALID RANGE";
-      System.out.println(nums);
-    }
-  }
-
   static byte[][] stoa(String[] strings) {
     int len = strings.length;
     byte[][] data = new byte[len][len];

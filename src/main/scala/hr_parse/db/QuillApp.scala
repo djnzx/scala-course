@@ -5,7 +5,7 @@ import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
 import org.postgresql.ds.PGSimpleDataSource
 
 object QuillApp extends App with DbSetup {
-  dbSetup()
+  dbSetup(true)
 
   val pgSrc = new PGSimpleDataSource {{
     setServerNames(Array("localhost"))
