@@ -6,7 +6,7 @@ package hackerrank.d200515_09
   */
 object SpecialStringAgainApp extends App {
   val oneToN = (n: Long) => n*(n+1)/2
-  final case class Item(c: Char, cnt: Long)
+  final case class Item(ch: Char, cnt: Long)
   final case class Res(l: List[Item], buf: List[Char])
   def substrCount(n: Int, origin: String): Long = {
     val rx: Res = origin.foldLeft(Res(Nil, Nil)) { (r, c) => r match {
@@ -16,7 +16,10 @@ object SpecialStringAgainApp extends App {
         else                         Res(Item(h, r.buf.size)::list, c::Nil)
     }}
     val ls = Item(rx.buf.head, rx.buf.size)::rx.l
-    def fold(tl: List[Item], acc: Long): Long = tl match {
+    println(ls)
+    def fold(tl: List[Item], acc: Long): Long = {
+      println(s"$tl : $acc")
+      tl match {
         case Nil             => acc
         case h::Nil          => fold(Nil,    acc + oneToN(h.cnt))
         case h::t::Nil       => fold(t::Nil, acc + oneToN(h.cnt))
@@ -24,8 +27,9 @@ object SpecialStringAgainApp extends App {
           if (l==r && c.cnt==1) fold(c::r::tail, acc + oneToN(l.cnt) + l.cnt)
           else                  fold(c::r::tail, acc + oneToN(l.cnt))
       }
+    }
     fold(ls, 0)
   }
-  val s = "asasd"
+  val s = "aabaa"
   println(substrCount(s.length, s))
 }
