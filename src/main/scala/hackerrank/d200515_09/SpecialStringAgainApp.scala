@@ -1,63 +1,53 @@
 package hackerrank.d200515_09
 
-import scala.collection.mutable
-
 /**
   * https://www.hackerrank.com/challenges/special-palindrome-again/problem
-  * doesn't pass the tests because of timeout
+  * 14/17 test cases failed :(
   */
 object SpecialStringAgainApp extends App {
 
-//  def fabc[A, B, C](a: A, b: B): C = ???
-//  def fabcc1[A, B, C](a: A): B => C = (b: B) => fabc(a, b)
-//  def fabcc2[A, B, C](b: B): A => C = (a: A) => fabc(a, b)
-//  def fabct[A, B, C](t: (A, B)): C = fabc(t._1, t._2)
+  sealed trait Itm
+  final case class Item(c: Char, cnt: Int) extends Itm
+  final case object Empty extends Itm
+  final case class Res(l: List[Item], max: Int, buf: Itm)
 
-  def allTheSameEven(s: String): Boolean = {
-    var idx = 1
-    val c = s(0)
-    while (idx < s.length) {
-      if (s(idx) != c) return false
-      idx +=1
-    }
-    true
-  }
-  def allTheSameOdd(s: String): Boolean = {
-    var idx = 1
-    val c = s(0)
-    while (idx < s.length) {
-      if (idx != s.length/2 && s(idx) != c) return false
-      idx +=1
-    }
-    true
-  }
+  def substrCount(n: Int, origin: String): Long = {
+    val rx: Res = origin.foldLeft(Res(Nil, 0, Empty)) { (r, c) => r match {
+      case Res(list, max, Empty)         => Res(list, max, Item(c, 1))
+      case Res(list, max, Item(ch, cnt)) =>
+        if (c==ch)                               Res(list, max, Item(c, cnt+1))
+        else      Res(Item(ch, cnt)::list, math.max(max, cnt), Item(c, 1))
+    }}
+    val (ls, max) = (rx.buf::rx.l reverse, math.max(rx.max, rx.buf.asInstanceOf[Item].cnt))
+      println(s"ls: $ls")
+      println(s"max: $max")
 
-  def isSpecial(s: String): Boolean = {
-    val l = s.length
-    if (l == 1) true else
-      if (l % 2 == 0) allTheSameEven(s) else
-        allTheSameOdd(s)
-  }
+    def calcOneToN(n: Int, acc: List[Int]): Vector[Int] =
+      if      (n == 1  ) calcOneToN(n+1, List(1))
+      else if (n <= max) calcOneToN(n+1, n+acc.head::acc)
+      else 0::(acc reverse) toVector
 
-  val special: mutable.Map[String, Long] = mutable.Map[String, Long]()
-  val wrong: mutable.Map[String, Long] = mutable.Map[String, Long]()
+    val oneToN = calcOneToN(1, Nil)
+      println(s"oneToN: $oneToN")
 
-  def substrCount(n: Int, s: String): Long = {
-    (1 to n).flatMap { len =>
-      (0 to n - len).map { start =>
-        s.substring(start, start + len)
+    def fold(tl: List[Item], acc: Int): Int = {
+//      println(s"$tl : $acc")
+      tl match {
+        case Nil           => acc
+        case h::Nil        => fold(Nil,    acc + oneToN(h.cnt))
+        case h::t::Nil     => fold(t::Nil, acc + oneToN(h.cnt))
+        case l::c::r::tail =>
+          if (l==r && c.cnt==1) fold(c::r::tail, acc + oneToN(l.cnt) + l.cnt)
+          else                  fold(c::r::tail, acc + oneToN(l.cnt))
       }
     }
-      .foreach { s =>
-        if      (special.contains(s)) special.updateWith(s) { _.map { _+1 } }
-        else if (wrong.contains(s)) { }
-        else if (isSpecial(s)) special.put(s, 1)
-        else    wrong.put(s, 1)
-      }
 
-    special.toVector map {_._2} sum
+    val n = fold(ls.asInstanceOf[List[Item]], 0)
+    println(n)
+    n
   }
 
-  println(substrCount(4, "aaaa"))
+  val s = "abcbaba"
+  substrCount(s.length, s)
 
 }
