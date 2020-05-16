@@ -1,39 +1,46 @@
 package hackerrank.d200515_09
 
-import scala.util.{Failure, Success, Try}
 import scala.math.min
+import scala.util.{Failure, Success}
 
 /**
   * https://www.hackerrank.com/challenges/special-palindrome-again/problem
   */
 object SpecialStringAgainApp extends App {
-  val oneToN = (n: Long) => n*(n+1)/2
-  final case class Item(ch: Char, cnt: Long)
 
   def substrCount(N: Int, origin: String): Long = {
+    val oneToN = (n: Long) => n*(n+1)/2
+    final case class Item(ch: Char, cnt: Long) {
+      def inc = Some(Item(ch, cnt + 1))
+    }
+    object Item {
+      val one = (c: Char) => Some(Item(c,1))
+    }
 
-    def toTuples(idx: Int, acc: List[Item], buf: List[Char]): List[Item] = N-idx match {
-      case 0 => Item(buf.head, buf.length)::acc
-      case _ =>
+    def toTuples(idx: Int, acc: List[Item], buf: Option[Item]): List[Item] =
+      if (idx==N) buf.get::acc
+      else {
         val c = origin(idx)
         buf match {
-          case Nil   => toTuples(idx+1, acc, c::Nil)
-          case bh::_ =>
-            if (bh==c)  toTuples(idx+1, acc, c::buf)
-            else        toTuples(idx+1, Item(bh, buf.length)::acc, c::Nil)
+          case None     => toTuples(idx+1, acc,          Item.one(c))
+          case Some(bh)
+            if bh.ch==c => toTuples(idx+1, acc,          bh.inc)
+          case _        => toTuples(idx+1, buf.get::acc, Item.one(c))
+        }
+      }
+
+    def fold(tl: List[Item], acc: Long): Long = tl match {
+      case Nil     => acc
+      case a::tail =>
+        val acc2 = acc + oneToN(a.cnt)
+        tail match {
+          case b::c::_ if b.cnt==1 && a.ch==c.ch
+                   => fold(tail, acc2 + min(a.cnt, c.cnt))
+          case _   => fold(tail, acc2)
         }
     }
 
-    def fold(tl: List[Item], acc: Long): Long = tl match {
-      case Nil                     => acc
-      case a::Nil                  => fold(Nil,        acc + oneToN(a.cnt))
-      case a::b::Nil               => fold(b::Nil,     acc + oneToN(a.cnt))
-      case a::b::c::tail
-        if b.cnt==1 && a.ch==c.ch  => fold(b::c::tail, acc + oneToN(a.cnt) + min(a.cnt, c.cnt))
-      case a::tail                 => fold(tail,       acc + oneToN(a.cnt))
-    }
-
-    val tuples = toTuples(0, Nil, Nil)
+    val tuples = toTuples(0, Nil, None)
     fold(tuples, 0)
   }
 
