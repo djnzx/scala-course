@@ -1,5 +1,8 @@
 package hackerrank.d200515_09
 
+/**
+  * https://www.hackerrank.com/challenges/sherlock-and-valid-string/problem
+  */
 object SherlockAndTheValidStringApp extends App {
   val YES = "YES"
   val NO = "NO"

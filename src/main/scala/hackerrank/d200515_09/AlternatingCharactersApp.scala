@@ -1,5 +1,8 @@
 package hackerrank.d200515_09
 
+/**
+  * https://www.hackerrank.com/challenges/alternating-characters/problem
+  */
 object AlternatingCharactersApp extends App {
 
   def alternatingCharacters(s: String): Int =
