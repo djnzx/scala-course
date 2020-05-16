@@ -42,6 +42,7 @@ object Data {
     "Mad_Rabb1t",
     "koceri_agalarov",
     "lcavadova",
+    "mmemmedzade2",
     "ramilh085",
     "realserxanbeyli",
     "sevilshahzadeh",
@@ -54,7 +55,7 @@ object Data {
   )
 
   val debug = Vector(
-    "sevilshahzadeh",
+    "alexr007",
   )
 
   val users: Vector[String] = Vector(
