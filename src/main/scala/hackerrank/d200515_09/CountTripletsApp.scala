@@ -17,9 +17,6 @@ object CountTripletsApp extends App {
           .flatMap { case (j, y) =>
             (j+1 to len-1)
               .filter { k => a(k) == y }
-              .map { k =>
-                (i,j,k)
-              }
           }
       }
       .length
