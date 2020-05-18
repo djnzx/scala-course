@@ -37,7 +37,8 @@ public class MinimumSwapsApp {
     Map<Integer, Integer> process = IntStream.range(0, arr.length).boxed()
         .flatMap(idx -> {
           int valAt = arr[idx];
-          return valAt == idx + min ? Stream.empty() : Stream.of(new Pair<>(idx + min, valAt));
+          int index = idx + min;
+          return valAt == index ? Stream.empty() : Stream.of(new Pair<>(index, valAt));
         }).collect(Collectors.toMap(p -> p.a, p -> p.b));
     int steps = 0;
     while (!process.isEmpty()) {

@@ -1,6 +1,7 @@
 ### BLOGS, COMPANIES, GUYS TO FOLLOW
 - John De Goes (ZIO)
   - [blog](http://degoes.net)
+   - [effect tracking](https://degoes.net/articles/no-effect-tracking)
   - [github](https://github.com/jdegoes)
 - Gabriel Volpe (Practical Functional Programming Book)
   - [github](https://github.com/gvolpe)
@@ -12,7 +13,7 @@
     - [cats](https://blog.softwaremill.com/9-tips-about-using-cats-in-scala-you-might-want-to-know-e1bafd365f88)
     - [tapir](https://blog.softwaremill.com/three-easy-endpoints-a6cbd52b0a6e)
     - [scala from zero](https://softwaremill.com/scala/)
-    - [scala3macros](https://blog.softwaremill.com/starting-with-scala-3-macros-a-short-tutorial-88e9d2b2584c)
+    - [scala 3 macros](https://blog.softwaremill.com/starting-with-scala-3-macros-a-short-tutorial-88e9d2b2584c)
   - [github](https://github.com/adamw)
 - Riccardo Cardin
   - [blog](http://rcardin.github.io)
@@ -31,6 +32,7 @@
   - [ammonite](https://www.lihaoyi.com/post/WorkingwithDatabasesusingScalaandQuill.html#ammonite)
 - Daniel Ciocîrlan (Rock The JVM)
   - [blog](https://rockthejvm.com/blog/)
+    - [string interpolator](https://rockthejvm.com/blog/208610/custom-interpolator)
   - [reddit](https://www.reddit.com/user/danielciocirlan/)
   - [youtube](https://www.youtube.com/playlist?list=PLmtsMNDRU0BxryRX4wiwrTZ661xcp6VPM)
   - [github](https://github.com/rockthejvm)
@@ -98,7 +100,6 @@
 ### AKKA
 - [Actors using Scala & Akka — Part 1 : Introduction](https://medium.com/@bilalfazlani/actors-using-scala-akka-part-1-introduction-c373f5d45084?source=linkShare-ca25bf2b588d-1589006067&_branch_match_id=788098039642386209)
   - [reddit thread](https://www.reddit.com/r/scala/comments/ggamlh/i_wrote_another_blog_for_beginners_in_the_actor/)
-  
 
 ### PLAY
 - [play-from-scratch-reddit-thread](https://www.reddit.com/r/scala/comments/fx6u4t/play_framework_create_application_from_scratch/)
@@ -106,6 +107,8 @@
 - [Playing with Scala - ReST](https://medium.com/@pvinchon/playing-with-scala-rest-2dcd85f241cc)
 - [scala-play-heroku-my](https://github.com/alexr007/scala-play-heroku.git)
 - [scala-todo-api](https://github.com/alexr007/scala-todo-api.git)
+- [play auth](https://pedrorijo.com/blog/scala-play-auth/)
+- [twirl](https://plippe.github.io/blog/2020/05/01/playing-with-scala-rest-ui.html)
 
 ### SQL
 - [essential-slick-code](https://github.com/alexr007/essential-slick-code.git)
@@ -125,12 +128,15 @@
 - [From Kotlin + Spring Reactor + Arrow to Scala + ZIO](https://adrianfilip.com/2020/04/07/moving-from-kotlin-spring-reactor-arrow-to-scala-zio/)
 - [CLI with Decline for my ZIO App](https://medium.com/@pascal.mengelt/building-a-cool-cli-with-decline-for-my-zio-app-80e095b2899a)
 - [Simple message processing pipeline using ZIO Streams](https://medium.com/@brianxiang/write-a-simple-message-processing-pipeline-using-zio-streams-cb72a3289913)
+- [rate limiter](https://medium.com/wix-engineering/building-a-super-easy-rate-limiter-with-zio-88f1ccb49776)
+- [zio-properties](https://adrianfilip.com/2020/05/03/zio-properties-a-zio-alternative-to-spring-properties/)
 
 ### YOUTUBE
 - [John De Goes](https://www.youtube.com/results?search_query=john+de+goes)
 - [#Scala - Your First Programming Language](https://www.youtube.com/playlist?list=PLJGDHERh23x-YBJ8LmYU_IGBFflvsKfLu)
 - [Recording: SF Scala: Enhancing Spark's Power with ZIO, Qubism and NLP at Scale, Using Nix for Haskell](https://www.youtube.com/watch?v=Ov7WZroBkv0)
 - [data jugging](https://www.youtube.com/watch?v=_BxVIXVoNPE&feature=youtu.be)
+- [circe](https://www.youtube.com/watch?v=0yMoYU-rodw&feature=youtu.be)
 
 ### FROM REDDIT &  MEDIUM
 - [r/scala](https://www.reddit.com/r/scala/)
