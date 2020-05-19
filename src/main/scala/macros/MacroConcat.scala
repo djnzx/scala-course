@@ -1,4 +1,4 @@
-package x89macros
+package macros
 
 import scala.language.experimental.macros
 import scala.reflect.macros.whitebox
@@ -7,7 +7,6 @@ object MacroConcat {
 
   implicit class SuperFastInterpolator(sc: StringContext) {
     def so(args: Any*): String = macro soImpl
-
     def sfi(args: Any*): String = macro sfiImpl
   }
 

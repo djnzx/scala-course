@@ -1,4 +1,4 @@
-package warmup
+package warmup.charcoord
 
 object CharacterCoordinates extends App {
   val origin = "Hello, my dear friend, please keep learning, I'll guarantee you'll reach the moment you understand everything"

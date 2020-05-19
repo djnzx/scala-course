@@ -43,6 +43,9 @@
   - [github](https://gist.github.com/aaronlevin/d3911ba50d8f5253c85d2c726c63947b)
 - Juliano Alves
   - [Building the Death Star with ZIO Stream](https://juliano-alves.com/2020/05/04/deathstar-zio-stream/)
+- Jichao Ouyang's Blog
+  - [blog](https://blog.oyanglul.us)
+  - [github](https://github.com/jcouyang)
 
 ### BASIC / LEARNING
 - [fpinscala](https://github.com/alexr007/fpinscala.git)
