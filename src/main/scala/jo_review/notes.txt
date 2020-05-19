@@ -1,0 +1,43 @@
+I'm impressed how you were able to keep moderate learning curve and made it steep enough
+very close to the end of the book
+
+- we write code not for computers and compilers.
+- we write the code for humans, for us, tomorrow.
+- it's easy to write spaghetti code, its's hard to write good readable code.
+
+- p31 - VISIBLE, ACCESSIBLE, NESTED ?
+but the second part of that sentence seems okay to me
+cool explanation
+
++ good that you started from visibility in the beginning
+
+very cool that you provide the tasks to involve reader into investigations and further reading
+- p32
+  don't you want to
+  explain that `undefined` means `nothing` in terms of assignment operation?
+  put scheme of memory model variable/reference/memory/heap/stack
+    probably, it will be easier further
+    (Yes, in Scala we don't have primitives)
+  And I have found it easier to teach about JMM on the lesson 5 out of 50
+
+- p33
+  When you buy a car, it has either two pedals or three one =>
+  - When you buy a car, it has either two pedals or three
+  - When you buy a car, it has either two pedals or three ones
+
+- p38
+  very cool, that you have explained that all operators are shortcut for object methods
+
+- p39
+  missed closing diamond bracket
+
+- p42
+  typo
+
+- p43
+  according to the declaration on p42 function vault has 2 arguments: storage and entrance
+  but in the code snippet on p.43 you have passed only one, and it is an entrance (2nd)
+  where is the 1st one (storage)
+
+- 54
+  cool that you have introduced testing in so early stage

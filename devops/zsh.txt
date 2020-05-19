@@ -1,0 +1,13 @@
+brew info zsh
+brew upgrade zsh
+
+# add shell path
+sudo vim /etc/shells
+
+# add the following line into the very end of the file(/etc/shells)
+/usr/local/bin/zsh
+
+# change default shell
+chsh -s /usr/local/bin/zsh
+
+upgrade_oh_my_zsh
