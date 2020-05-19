@@ -64,7 +64,7 @@
 ### BOOKS
 - [Underscore. Essential Scala](https://books.underscore.io/essential-scala/essential-scala.html)
 - [Underscore. Scala with Cats](https://www.scalawithcats.com/dist/scala-with-cats.html)
-- [Cats-Effect. The IO Monad for Scala](https://typelevel.org/cats-effect/)
+- [Cats-Effect. The IO Monad for Scala](https://typelevel.org/cats-effect/tutorial/tutorial.html)
 - [Underscore. Essential Slick](https://books.underscore.io/essential-slick/essential-slick-3.html)
 - [Underscore. Essential Play](https://books.underscore.io/essential-play/essential-play.html)
 - [Underscore. The Type Astronaut’s Guide to Shapeless](https://books.underscore.io/shapeless-guide/shapeless-guide.html)
@@ -133,6 +133,7 @@
 - [Simple message processing pipeline using ZIO Streams](https://medium.com/@brianxiang/write-a-simple-message-processing-pipeline-using-zio-streams-cb72a3289913)
 - [rate limiter](https://medium.com/wix-engineering/building-a-super-easy-rate-limiter-with-zio-88f1ccb49776)
 - [zio-properties](https://adrianfilip.com/2020/05/03/zio-properties-a-zio-alternative-to-spring-properties/)
+- [zioAkkaHttpTemplate.g8](https://github.com/KaizenLab-ScalaFP/zioAkkaHttpTemplate.g8)
 
 ### YOUTUBE
 - [John De Goes](https://www.youtube.com/results?search_query=john+de+goes)

@@ -39,5 +39,7 @@ very cool that you provide the tasks to involve reader into investigations and f
   but in the code snippet on p.43 you have passed only one, and it is an entrance (2nd)
   where is the 1st one (storage)
 
-- 54
-  cool that you have introduced testing in so early stage
+- 54 cool that you have introduced testing in so early stage
+- 55 mocking very cool explanation
+- 56 dependency injection!
+- 61 build

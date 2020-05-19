@@ -1,10 +1,11 @@
 import Dependencies.Libraries
 import Dependencies.Libraries.CompilerPlugins
+import ScalacOpts._
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 name         := "learn-scala-deeper"
-version      := "20.5.14"
+version      := "20.5.19"
 scalaVersion := "2.13.2"
 
 // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
@@ -18,14 +19,14 @@ javacOptions ++= Seq(
 )
 scalacOptions ++= Seq(
   "-encoding", "UTF-8",
-  "-feature",
-  "-deprecation",
-  "-unchecked",
+  feature,
+  deprecation,
+  unchecked,
+  postfix,
+  higherKindedTypes,
 //  "-Xfatal-warnings",     // treat warning as fatal
-  "-language:postfixOps",
-  "-language:higherKinds",
-  "-language:existentials",
 //  "-Ypartial-unification", // by default since 2.13
+  "-language:existentials",
   "-Ymacro-annotations", // used by newtype
   "-Ywarn-numeric-widen",
   "-Ywarn-value-discard",

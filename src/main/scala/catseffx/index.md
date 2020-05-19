@@ -1,0 +1,3 @@
+- [copy](https://typelevel.org/cats-effect/tutorial/tutorial.html)
+- [fibers-are-not-threads](https://typelevel.org/cats-effect/tutorial/tutorial.html#fibers-are-not-threads)
+- [concurrency](https://typelevel.org/cats-effect/concurrency/semaphore.html)

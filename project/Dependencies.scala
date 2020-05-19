@@ -4,7 +4,7 @@ object Dependencies {
 
   object Versions {
     val cats             = "2.1.1"
-    val catsEffect       = "2.1.2"
+    val catsEffect       = "2.1.3" // needs cats 2.x
     val catsMeowMtl      = "0.4.0"
     val catsRetry        = "1.1.0"
     val circe            = "0.13.0"
@@ -47,7 +47,7 @@ object Dependencies {
     val jsoup         = "org.jsoup"        %  "jsoup"         % Versions.jsoup
     val cats          = "org.typelevel"    %% "cats-core"     % Versions.cats
     val catsMeowMtl   = "com.olegpy"       %% "meow-mtl-core" % Versions.catsMeowMtl
-    val catsEffect    = "org.typelevel"    %% "cats-effect"   % Versions.catsEffect
+    val catsEffect    = "org.typelevel"    %% "cats-effect"   % Versions.catsEffect       withSources()    withJavadoc()
     val catsRetry     = "com.github.cb372" %% "cats-retry"    % Versions.catsRetry
     val squants       = "org.typelevel"    %% "squants"       % Versions.squants
 
