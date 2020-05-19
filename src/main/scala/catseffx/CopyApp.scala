@@ -4,7 +4,8 @@ import java.io._
 
 import cats.Applicative
 import cats.effect.concurrent.Semaphore
-import cats.effect.{Concurrent, Console, ExitCode, IO, IOApp, Resource, Sync}
+import cats.effect.{Concurrent, ExitCode, IO, IOApp, Resource, Sync}
+//import cats.effect.Console
 import cats.implicits._
 
 object CopyApp extends IOApp {
@@ -54,10 +55,10 @@ object CopyApp extends IOApp {
   /**
     * transfer WHOLE content
     */
-  def transmit[F[_]: Console](is: IS, os: OS, buffer: Array[Byte], acc: Long)(implicit F: Sync[F]): F[Long] =
+  def transmit[F[_]](is: IS, os: OS, buffer: Array[Byte], acc: Long)(implicit F: Sync[F]): F[Long] =
     for {
       amount <- F.delay(is.read(buffer, 0, buffer.length))
-      _      <- Console[F].putStr(".") // F[Unit]. actually we do the same stuff, but under the hood
+//      _      <- Console[F].putStr(".") // F[Unit]. actually we do the same stuff, but under the hood
       _      <- F.delay(print("#"))        // F[Unit]
       count  <- if (amount == -1) F.pure(acc)
                 else // write + flatMap (recursively) next step (IO is Stack Safe)
@@ -69,7 +70,7 @@ object CopyApp extends IOApp {
     * transfer ONE buffer
     * it isn't cancellable since it hasn't wrapped into .use
     */
-  def transfer[F[_]: Console](is: FIS, os: FOS)(implicit F: Sync[F]): F[Long] =
+  def transfer[F[_]](is: FIS, os: FOS)(implicit F: Sync[F]): F[Long] =
     for {
       buffer <- F.delay(new Array[Byte](128)) // buffer = 128 bytes
       total  <- transmit(is, os, buffer, 0L)
@@ -104,7 +105,7 @@ object CopyApp extends IOApp {
     *
     * Console could be passed through implicit of `copy` caller or as a parameter
     */
-  def copy[F[_]: Console](origin: File, destination: File)(implicit F: Concurrent[F]): F[Long] =
+  def copy[F[_]](origin: File, destination: File)(implicit F: Concurrent[F]): F[Long] =
     for {
       sem   <- Semaphore[F](1)
       res: Resource[F, (FIS, FOS)] = mkResources(origin, destination, sem)
@@ -116,7 +117,8 @@ object CopyApp extends IOApp {
       count <- result
   } yield count
 
-  def printErr(msg: String): Unit = scala.Console.err.println(msg)
+  import scala.Console._
+  def printErr(msg: String): Unit = scala.Console.err.println(s"$RED$msg$RESET")
 
   def validate[F[_]: Applicative](args: List[String]): F[Either[String, (File, File)]] =
     (args match {
@@ -125,28 +127,16 @@ object CopyApp extends IOApp {
       case _                     => "Need TWO file names as a params".asLeft
     }).pure[F]
 
-  override def run(args: List[String]): IO[ExitCode] = {
-    import cats.effect.Console.implicits._       // Console[IO]
-
+  //    import cats.effect.Console.implicits._       // Console[IO]
+  override def run(args: List[String]): IO[ExitCode] =
     for {
-      vr  <- validate[IO](args)
-      v0 = vr match {
-        case Left(errMsg)  => IO(printErr(errMsg))
-        case Right((f1,f2)) =>
+      vr <- validate[IO](args)
+      _  <- vr match {
+        case Left(errMsg) => IO(printErr(errMsg))
+        case Right((fsrc, fdst)) => for {
+                    cnt <- copy[IO](fsrc, fdst)
+                    msg = println(s"$GREEN\n$cnt bytes copied from ${fsrc.getPath} to ${fdst.getPath}$RESET")
+                  } yield msg
       }
-
-      _   <- IO(printErr("Hello"))
-      fn1 = args(0)
-      fn2 = args(1)
-      _   <- if (args.length < 2) IO.raiseError(new IEX("Need TWO file names as a params"))
-             else IO.unit
-      _   <- if (fn1 == fn2) IO.raiseError(new IEX(s"source and destination files mustn't be similar!: $fn1"))
-             else IO.unit
-      src = new File(fn1)
-      dst = new File(fn2)
-      cnt <- copy[IO](src, dst)
-      _   <- IO(println(s"\n$cnt bytes copied from ${src.getPath} to ${dst.getPath}"))
-
     } yield ExitCode.Success
-  }
 }
