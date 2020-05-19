@@ -19,8 +19,6 @@ object CopyApp extends IOApp {
     * File => Resource
     */
   def mkRsInput[F[_]](f: File, sem: Semaphore[F])(implicit F: Sync[F]): Resource[F, FIS] =
-  // first parameter   - how to acquire
-  // second parameter - how to release
     Resource.make {
       F.delay(new FIS(f))
     } { is: FIS =>
@@ -83,7 +81,6 @@ object CopyApp extends IOApp {
   def copyBracketEditionWoSemaphore(origin: File, destination: File): IO[Long] = {
     val inIO : IO[FileInputStream]  = IO(new FileInputStream(origin))
     val outIO: IO[FileOutputStream] = IO(new FileOutputStream(destination))
-
     import cats.effect.Console.implicits._       // Console[IO]
 
     (inIO, outIO)                                // ( IO[FIS], IO[FOS] )
@@ -111,32 +108,37 @@ object CopyApp extends IOApp {
       res: Resource[F, (FIS, FOS)] = mkResources(origin, destination, sem)
       result: F[Long] = res.use { case (fis, fos) =>
                  // body which should be cancellable is wrapped into .withPermit
-                 val r: F[Long] = sem.withPermit(transfer(fis, fos))
+                 val body: F[Long] = transfer(fis, fos)
+                 val r: F[Long] = sem.withPermit(body)
                  r
                }
       count <- result
   } yield count
 
   import scala.Console._
-  def printErr(msg: String): Unit = scala.Console.err.println(s"$RED$msg$RESET")
+  def printErr(msg: String): Unit = println(s"$RED$msg$RESET")
+  def printOk(cnt: Long, n1: String, n2: String): Unit = println(s"$GREEN\n$cnt bytes copied from $n1 to $n2$RESET")
 
-  def validate[F[_]: Applicative](args: List[String]): F[Either[String, (File, File)]] =
-    (args match {
-      case n1::n2::_ if n1 != n2 => (new File(n1), new File(n2)).asRight
-      case n1::_::_              => s"Source and destination files mustn't be similar!: $n1".asLeft
-      case _                     => "Need TWO file names as a params".asLeft
-    }).pure[F]
-
-  //    import cats.effect.Console.implicits._       // Console[IO]
-  override def run(args: List[String]): IO[ExitCode] =
-    for {
-      vr <- validate[IO](args)
-      _  <- vr match {
-        case Left(errMsg) => IO(printErr(errMsg))
-        case Right((fsrc, fdst)) => for {
-                    cnt <- copy[IO](fsrc, fdst)
-                    msg = println(s"$GREEN\n$cnt bytes copied from ${fsrc.getPath} to ${fdst.getPath}$RESET")
-                  } yield msg
+  def validate(args: List[String]): Either[String, (File, File)] = args match {
+    case n1::n2::_ if n1 == n2 => s"Source and destination files mustn't be similar!: $n1".asLeft
+    case n1::n2::_ =>
+      val f1 = new File(n1)
+      val f2 = new File(n2)
+      (f1.exists, f2.exists) match {
+        case (false, _)        => s"Source file ${f1.getPath} doesn't exist".asLeft
+        case (_, true)         => s"Destination file ${f2.getPath} already exists".asLeft
+        case _                 => (f1, f2).asRight
       }
-    } yield ExitCode.Success
+    case _                     => "Need TWO file names as a params".asLeft
+  }
+
+  override def run(args: List[String]): IO[ExitCode] = for {
+    _  <- validate(args) match {
+      case Left(errMsg) => IO(printErr(errMsg))
+      case Right((fsrc, fdst)) => for {
+                                    cnt <- copy[IO](fsrc, fdst)
+                                    msg = printOk(cnt, fsrc.getPath, fdst.getPath)
+                                  } yield msg
+    }
+  } yield ExitCode.Success
 }
