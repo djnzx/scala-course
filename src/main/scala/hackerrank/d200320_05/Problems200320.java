@@ -64,21 +64,6 @@ public class Problems200320 {
     return represent(a);
   }
 
-  static List<Integer> next(List<Integer> curr, int a, int b) {
-    return curr.stream().flatMap(n -> Stream.of(n+a, n+b)).distinct().collect(Collectors.toList());
-  }
-
-  static int[] stones(int n, int a, int b) {
-    List<Integer> step = Arrays.asList(a, b);
-    while (--n>1) {
-      step = next(step, a, b);
-    }
-    return step.stream().mapToInt(x->x).distinct().sorted().toArray();
-  }
-
-  public static void main2(String[] args) {
-    System.out.println(Arrays.toString(stones(2,1,1)));
-  }
 
   public static void main1(String[] args) throws IOException {
     String[] grid = Files.lines(Paths.get("100.txt")).toArray(String[]::new);
