@@ -4,9 +4,10 @@ import java.io._
 
 import cats.Applicative
 import cats.effect.concurrent.Semaphore
-import cats.effect.{Concurrent, ExitCode, IO, IOApp, Resource, Sync}
+import cats.effect.{Concurrent, ContextShift, ExitCode, IO, IOApp, Resource, Sync, Timer}
 //import cats.effect.Console
 import cats.implicits._
+import scala.concurrent.duration._
 
 object CopyApp extends IOApp {
   type FIS = FileInputStream

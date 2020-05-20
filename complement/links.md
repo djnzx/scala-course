@@ -134,6 +134,7 @@
 - [rate limiter](https://medium.com/wix-engineering/building-a-super-easy-rate-limiter-with-zio-88f1ccb49776)
 - [zio-properties](https://adrianfilip.com/2020/05/03/zio-properties-a-zio-alternative-to-spring-properties/)
 - [zioAkkaHttpTemplate.g8](https://github.com/KaizenLab-ScalaFP/zioAkkaHttpTemplate.g8)
+- [ZIO & Cats Effect](https://habr.com/ru/company/oleg-bunin/blog/472386/)
 
 ### YOUTUBE
 - [John De Goes](https://www.youtube.com/results?search_query=john+de+goes)
@@ -163,6 +164,8 @@
 - [Functional Effect #2](https://www.slideshare.net/pjschwarz/functional-effects-part-2)
 - [stack safety for free](http://functorial.com/stack-safety-for-free/index.pdf)
 - [One Monad To Rule Them All](https://www.slideshare.net/jdegoes/one-monad-to-rule-them-all)
+- [Transaction Ideas](https://habr.com/ru/post/490612/)
+- [async](https://progi.pro/scala-cats-effects-io-async-shift-kak-eto-rabotaet-8408597)
 
 ### ScalaJS
 - [ScalaJS manual](http://www.lihaoyi.com/hands-on-scala-js/)
