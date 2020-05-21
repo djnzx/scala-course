@@ -63,8 +63,8 @@ object Data {
 
   val users: Vector[String] = Vector(
 //      trainers,
-    //      be4, be3
-      debug
+          be4, be3
+//      debug
     ) flatten
 
 }
