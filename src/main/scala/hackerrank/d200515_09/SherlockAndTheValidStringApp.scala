@@ -9,13 +9,13 @@ object SherlockAndTheValidStringApp extends App {
 
   def isValid(s: String): String = {
     val m = s.toVector
-      .groupBy { identity}
+      .groupBy { identity }
       .map { case (c, l) => (c, l.size) }
       .toVector
       .groupBy { case (_, cnt) => cnt }
       .toVector
       .map { case (cnt, v) => (cnt, v map { _._1 }) }
-      .sortBy(_._1)
+      .sortBy { _._1 }
 
     if (m.length == 1) YES
     else if (m.length > 2) NO
@@ -24,5 +24,4 @@ object SherlockAndTheValidStringApp extends App {
     else NO
   }
 
-  println(isValid("aabbc"))
 }

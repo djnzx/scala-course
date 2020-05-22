@@ -99,10 +99,14 @@
 - [learn-scala-pfp-shopping-cart](https://github.com/alexr007/pfps-shopping-cart.git)
 - [scalaz-streams](https://gist.github.com/djspiewak/d93a9c4983f63721c41c)
 - [scalaz-reddit](https://www.reddit.com/r/scala/comments/ftgqtp/where_can_i_practically_use_fs2/)
+- [Time traveling in tests with Cats Effect](https://blog.softwaremill.com/time-traveling-in-tests-with-cats-effect-b22084f6a89)
+- [FP Scala w/ Slick and Tagless Final](https://medium.com/panaseer-labs-engineering-data-science/architecting-a-flexible-and-purely-functional-scala-back-end-using-slick-and-tagless-final-97b9754f5817)
+- [functional error handling](https://guillaumebogard.dev/posts/functional-error-handling/)
 
 ### AKKA
 - [Actors using Scala & Akka — Part 1 : Introduction](https://medium.com/@bilalfazlani/actors-using-scala-akka-part-1-introduction-c373f5d45084?source=linkShare-ca25bf2b588d-1589006067&_branch_match_id=788098039642386209)
   - [reddit thread](https://www.reddit.com/r/scala/comments/ggamlh/i_wrote_another_blog_for_beginners_in_the_actor/)
+- [Akka Stream and Akka Typed](https://kaplan.dev/articles/akka-stream-coexistence-with-akka-typed/)
 
 ### PLAY
 - [play-from-scratch-reddit-thread](https://www.reddit.com/r/scala/comments/fx6u4t/play_framework_create_application_from_scratch/)
@@ -180,3 +184,5 @@
 - [declarative data visualization](http://haifengl.github.io/vegalite.html)
 - [WIX @ meduim](https://medium.com/wix-engineering/6-event-driven-architecture-patterns-part-1-93758b253f47)
 - [K4 vs S3](https://www.youtube.com/watch?v=sIL4mduqHe0&feature=youtu.be&list=PLEx5khR4g7PI57l4MJvLlhOJIKHLKghos)
+- [Orchestrating startup and shutdown in Scala](https://medium.com/bestmile/orchestrating-startup-and-shutdown-in-scala-f7ad2644835a)
+- [docker monitor](https://github.com/vasilmkd/docker-stats-monitor)

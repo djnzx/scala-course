@@ -3,7 +3,11 @@ package hackerrank.d200317_02;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-public class Problem06HelenHomework {
+/**
+ * https://www.hackerrank.com/challenges/lilys-homework/problem
+ * doesn't work
+ */
+public class LilysHomeworkApp {
 
   static class Pair {
     final int a;
@@ -26,18 +30,20 @@ public class Problem06HelenHomework {
         .orElse(0);
   }
 
+  static void swap(int[] arr, int i1, int i2) {
+    int t = arr[i1];
+    arr[i1] = arr[i2];
+    arr[i2] = t;
+  }
+
   static int lilysHomework(int[] arr) {
     int counter = 0;
     int currentPos = 0;
     while (currentPos < arr.length && !isPerfect(arr)) {
       int minIdx = indexOfMinFrom(arr, currentPos);
       if (minIdx != currentPos) {
-        // swap
-        int t = arr[currentPos];
-        arr[currentPos] = arr[minIdx];
-        arr[minIdx] = t;
+        swap(arr, currentPos, minIdx);
         counter++;
-        System.out.printf("%s : %d\n",Arrays.toString(arr),counter);
       }
       currentPos++;
     }
