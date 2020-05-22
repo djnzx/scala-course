@@ -45,7 +45,7 @@ object Dependencies {
     def fs2(artifact: String): ModuleID    = "co.fs2"     %% artifact % Versions.fs2
 
     val jsoup         = "org.jsoup"        %  "jsoup"         % Versions.jsoup
-    val cats          = "org.typelevel"    %% "cats-core"     % Versions.cats
+    val cats          = "org.typelevel"    %% "cats-core"     % Versions.cats             withSources()    withJavadoc()
     val catsMeowMtl   = "com.olegpy"       %% "meow-mtl-core" % Versions.catsMeowMtl
     val catsEffect    = "org.typelevel"    %% "cats-effect"   % Versions.catsEffect       withSources()    withJavadoc()
     val catsRetry     = "com.github.cb372" %% "cats-retry"    % Versions.catsRetry

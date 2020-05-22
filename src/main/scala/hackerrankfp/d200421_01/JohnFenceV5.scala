@@ -48,7 +48,7 @@ object JohnFenceV5 {
     x2
   }
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]) = {
     //                 0  1  2  3  4  5  6  7  8  9  10
     val fence = Vector(1, 2, 3, 4, 5, 6, 7, 8, 6, 4, 2)
 //    val max = calcFence(fence).max
@@ -56,14 +56,14 @@ object JohnFenceV5 {
     println(max)
   }
 
-  def main_test3(args: Array[String]) {
+  def main_test3(args: Array[String]) = {
     val _ = readLine
     val fence = readLine.split(" ").map(_.toInt).toVector
     val max = calcFence(fence).max
     println(max)
   }
 
-  def main_test1(args: Array[String]) {
+  def main_test1(args: Array[String]) = {
     val fence = Vector(1, 2, 3, 4, 5, 6, 5, 4, 3, 0, 4, 5, 6, 7, 8, 6, 4, 2)
     val max = calcFence(fence).max
     println(max)

@@ -25,5 +25,4 @@ object BracketsLevel extends App {
     "()(()())()" -> 2,
     "()(()())((()()))(())()" -> 3,
   ).foreach(t => assert(t._2 == level(t._1)))
-  printf("Done")
 }

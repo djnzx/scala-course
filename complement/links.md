@@ -46,7 +46,12 @@
 - Jichao Ouyang's Blog
   - [blog](https://blog.oyanglul.us)
   - [github](https://github.com/jcouyang)
-
+- Guillaume Bogard
+  - [blog](https://guillaumebogard.dev/posts/)
+  - [video](https://www.youtube.com/watch?v=6WXgEGbf0iQ&t=387s)
+- kubuszok.com
+  - [blog](https://kubuszok.com/2018/different-ways-to-understand-a-monad/#monad)
+  
 ### BASIC / LEARNING
 - [fpinscala](https://github.com/alexr007/fpinscala.git)
 - jdg-functional-scala
@@ -65,6 +70,7 @@
 - [Underscore. Essential Scala](https://books.underscore.io/essential-scala/essential-scala.html)
 - [Underscore. Scala with Cats](https://www.scalawithcats.com/dist/scala-with-cats.html)
 - [Cats-Effect. The IO Monad for Scala](https://typelevel.org/cats-effect/tutorial/tutorial.html)
+  - [async](https://typelevel.org/cats-effect/datatypes/io.html#concurrent-start--cancel)
 - [Underscore. Essential Slick](https://books.underscore.io/essential-slick/essential-slick-3.html)
 - [Underscore. Essential Play](https://books.underscore.io/essential-play/essential-play.html)
 - [Underscore. The Type Astronaut’s Guide to Shapeless](https://books.underscore.io/shapeless-guide/shapeless-guide.html)
@@ -147,7 +153,7 @@
 - [data jugging](https://www.youtube.com/watch?v=_BxVIXVoNPE&feature=youtu.be)
 - [circe](https://www.youtube.com/watch?v=0yMoYU-rodw&feature=youtu.be)
 
-### FROM REDDIT &  MEDIUM
+### FROM REDDIT & MEDIUM
 - [r/scala](https://www.reddit.com/r/scala/)
 - [Functional Tracing using Scala](https://medium.com/@ayushm4489/functional-tracing-using-scala-dc98b1f2ec5)
 - [The Power of Akka Streams](https://aleksandarskrbic.github.io/power-of-akka-streams/)

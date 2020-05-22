@@ -4,7 +4,6 @@ import scala.annotation.switch
 
 object P03_07Match_wann extends App {
   val dayOfWeek = (d: Int) => {
-    val t = 2
     (d: @switch) match {
       case 1 => "Monday"
       case t => "Tuesday"

@@ -1,16 +1,16 @@
 package aa_cookbook.x004
 
 class Pizza(val name: String = Pizza.DEFAULT_NAME, val size: Int = Pizza.DEFAULT_SIZE) {
-  def this(name: String) {
+  def this(name: String) = {
     this(name, 30)
   }
-  def this(size: Int) {
+  def this(size: Int) = {
     this("Medium", size)
   }
-  def this(from: List[String]) {
+  def this(from: List[String]) = {
     this(from.head)
   }
-  def this() {
+  def this() = {
     this(Pizza.DEFAULT_NAME, Pizza.DEFAULT_SIZE)
   }
   println("constructor")
