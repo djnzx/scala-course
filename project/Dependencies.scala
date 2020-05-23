@@ -5,8 +5,9 @@ object Dependencies {
   object Versions {
     val cats             = "2.1.1"
     val catsEffect       = "2.1.3" // needs cats 2.x
-    val catsMeowMtl      = "0.4.0"
+    val catsMtlCore      = "0.7.0"
     val catsRetry        = "1.1.0"
+
     val circe            = "0.13.0"
     val ciris            = "1.0.4"
     val javaxCrypto      = "1.0.1"
@@ -20,8 +21,6 @@ object Dependencies {
     val skunk            = "0.0.7"
     val squants          = "1.6.0"
     val slick            = "3.3.2"
-    val betterMonadicFor = "0.3.1"
-    val kindProjector    = "0.11.0"
     val logback          = "1.2.3"
     val scalaCheck       = "1.14.3"
     val scalaTest        = "3.1.1"
@@ -29,10 +28,13 @@ object Dependencies {
     val zio              = "1.0.0-RC18-2"
     val sqlPg            = "42.2.10"
     val sqlH2            = "1.4.200"
-    val silencer         = "1.6.0"
     val scalaz           = "7.2.30"
-    val contextApplied   = "0.1.4"
     val jsoup            = "1.13.1"
+    // compiler plugins
+    val silencer         = "1.6.0"
+    val betterMonadicFor = "0.3.1"
+    val kindProjector    = "0.11.0"
+    val contextApplied   = "0.1.4"
   }
 
   object Libraries {
@@ -46,7 +48,7 @@ object Dependencies {
 
     val jsoup         = "org.jsoup"        %  "jsoup"         % Versions.jsoup
     val cats          = "org.typelevel"    %% "cats-core"     % Versions.cats             withSources()    withJavadoc()
-    val catsMeowMtl   = "com.olegpy"       %% "meow-mtl-core" % Versions.catsMeowMtl
+    val catsMtlCore   = "org.typelevel"    %% "cats-mtl-core" % Versions.catsMtlCore      withSources()    withJavadoc()
     val catsEffect    = "org.typelevel"    %% "cats-effect"   % Versions.catsEffect       withSources()    withJavadoc()
     val catsRetry     = "com.github.cb372" %% "cats-retry"    % Versions.catsRetry
     val squants       = "org.typelevel"    %% "squants"       % Versions.squants
@@ -100,6 +102,7 @@ object Dependencies {
       val betterMonadicFor = compilerPlugin("com.olegpy"     %% "better-monadic-for" % Versions.betterMonadicFor)
       val contextApplied   = compilerPlugin("org.augustjune" %% "context-applied"    % Versions.contextApplied)
       val kindProjector    = compilerPlugin("org.typelevel"  %% "kind-projector"     % Versions.kindProjector cross CrossVersion.full)
+      val silencer         = compilerPlugin("com.github.ghik" % "silencer-plugin"    % Versions.silencer      cross CrossVersion.full)
     }
 
     // Runtime
@@ -111,9 +114,8 @@ object Dependencies {
     val scalactic     = "org.scalactic"     %% "scalactic"       % Versions.scalaTest
     val scalaTestPlus = "org.scalatestplus" %% "scalacheck-1-14" % Versions.scalaTestPlus
 
-    val silencesAnnotation = "com.github.ghik" % "silencer-lib" % Versions.silencer % Provided cross CrossVersion.full
     // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
-    val silencesCompilerPlugin = compilerPlugin("com.github.ghik" % "silencer-plugin" % Versions.silencer cross CrossVersion.full)
+    val silencerAnnotation = "com.github.ghik" % "silencer-lib" % Versions.silencer % Provided cross CrossVersion.full
   }
 
 }

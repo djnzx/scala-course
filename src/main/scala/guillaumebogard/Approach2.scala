@@ -2,8 +2,14 @@ package guillaumebogard
 
 import java.util.Date
 
+import cats.Applicative
 import cats.data.{EitherT, ReaderT, StateT}
 import cats.effect.IO
+import cats.instances._
+import cats.syntax.flatMap._
+import cats.implicits._
+import cats.mtl._
+import cats.mtl.implicits._
 
 object Approach2 extends App {
 
@@ -16,22 +22,22 @@ object Approach2 extends App {
   case object BannedUser extends AuthenticationError
 
   def findUserByName(username: String): IO[Either[AuthenticationError, User]] = ???
-  def checkPassword(user: User, password: String): IO[Either[AuthenticationError, Unit]] = ???
+  def checkPassword2(user: User, password: String): IO[Either[AuthenticationError, Unit]] = ???
   def checkSubscription(user: User): IO[Either[AuthenticationError, Unit]] = ???
   def checkUserStatus(user: User): IO[Either[AuthenticationError, Unit]] = ???
 
   // trash
-  def authenticate0(userName: String, password: String): IO[Either[AuthenticationError, User]] =
-    findUserByName(userName).flatMap({
-      case Right(user) => checkPassword(user, password).flatMap({
-        case Right(_) => checkSubscription(user).flatMap({
-          case Right(_) => checkUserStatus(user).map(_ => Right(user))
-          case Left(err) => IO.pure(Left(err))
-        })
-        case Left(err) => IO.pure(Left(err))
-      })
-      case Left(err) => IO.pure(Left(err))
-    })
+//  def authenticate0(userName: String, password: String): IO[Either[AuthenticationError, User]] =
+//    findUserByName(userName).flatMap({
+//      case Right(user) => checkPassword(user, password).flatMap({
+//        case Right(_) => checkSubscription(user).flatMap({
+//          case Right(_) => checkUserStatus(user).map(_ => Right(user))
+//          case Left(err) => IO.pure(Left(err))
+//        })
+//        case Left(err) => IO.pure(Left(err))
+//      })
+//      case Left(err) => IO.pure(Left(err))
+//    })
 
   // monad transformers
   val userIO: IO[Either[AuthenticationError, User]] = IO.pure(Left(WrongUserName))
@@ -41,7 +47,7 @@ object Approach2 extends App {
   def authenticate(userName: String, password: String): EitherT[IO, AuthenticationError, User] =
     for {
       user <- EitherT(findUserByName(userName))
-      _    <- EitherT(checkPassword(user, password))
+      _    <- EitherT(checkPassword2(user, password))
       _    <- EitherT(checkSubscription(user))
       _    <- EitherT(checkUserStatus(user))
     } yield user
@@ -73,5 +79,15 @@ object Approach2 extends App {
 
     state.run(0).map(_._2).mapF(EitherT(_)).run
   }
+
+
+  def checkPasswordX[F[_]](user: User, password: String)(
+    implicit FR: FunctorRaise[F, AuthenticationError],
+    A: Applicative[F]
+  ): F[Unit] =
+    if (password == "1234") A.unit
+    else FR.raise(WrongPassword)
+
+  println("MTL")
 
 }

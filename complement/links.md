@@ -29,6 +29,7 @@
   - [site](https://daltyboy11.github.io)
 - Li Haoyi
   - [blog](http://www.lihaoyi.com)
+  - [book](https://github.com/handsonscala/handsonscala)
   - [ammonite](https://www.lihaoyi.com/post/WorkingwithDatabasesusingScalaandQuill.html#ammonite)
 - Daniel Ciocîrlan (Rock The JVM)
   - [blog](https://rockthejvm.com/blog/)
@@ -193,3 +194,4 @@
 - [K4 vs S3](https://www.youtube.com/watch?v=sIL4mduqHe0&feature=youtu.be&list=PLEx5khR4g7PI57l4MJvLlhOJIKHLKghos)
 - [Orchestrating startup and shutdown in Scala](https://medium.com/bestmile/orchestrating-startup-and-shutdown-in-scala-f7ad2644835a)
 - [docker monitor](https://github.com/vasilmkd/docker-stats-monitor)
+- [F[_] in Scala](https://medium.com/bigpanda-engineering/understanding-f-in-scala-4bec5996761f)

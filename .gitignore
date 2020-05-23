@@ -3,4 +3,5 @@
 .metals/
 .vscode/
 target/
-project/target/
+classes/
+**/*.iml
