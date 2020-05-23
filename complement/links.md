@@ -48,6 +48,7 @@
   - [github](https://github.com/jcouyang)
 - Guillaume Bogard
   - [blog](https://guillaumebogard.dev/posts/)
+  - [functional error handling](https://guillaumebogard.dev/posts/functional-error-handling/#the-issues-with-exceptions)
   - [video](https://www.youtube.com/watch?v=6WXgEGbf0iQ&t=387s)
 - kubuszok.com
   - [blog](https://kubuszok.com/2018/different-ways-to-understand-a-monad/#monad)
