@@ -1,6 +1,5 @@
 // artima scalatest section
 resolvers ++= Seq(
-//  Repos.artima,
   MavenRepository("Artima", "https://repo.artima.com/releases")
 )
 

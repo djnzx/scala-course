@@ -1,7 +1,7 @@
+# https://labs.consol.de/development/git/2017/02/22/gitignore.html
 .bloop/
 .idea/
 .metals/
 .vscode/
 target/
-classes/
-**/*.iml
+*.iml
