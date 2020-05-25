@@ -83,6 +83,14 @@ lazy val root = (project in file("."))
       "io.getquill"            %% "quill-jdbc"                 % "3.5.1",
       "org.flywaydb"            %  "flyway-core"                 % "6.4.2",
       "dev.profunktor"         %% "console4cats"               % "0.8.1",
+      // just investigation
+      "com.lihaoyi"            %% "os-lib"                     % "0.7.0",
+      "com.lihaoyi"            %% "pprint"                     % "0.5.9",
+      "com.lihaoyi"            %% "scalatags"                  % "0.9.1",
+      "com.lihaoyi"            %% "geny"                       % "0.6.0",
+      "com.lihaoyi"            %% "upickle"                    % "1.1.0",
+      // md parsing
+      "com.atlassian.commonmark" % "commonmark"                % "0.15.0",
 
       Libraries.sqlPg,
       Libraries.sqlH2,
