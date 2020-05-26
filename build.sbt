@@ -142,17 +142,25 @@ lazy val root = (project in file("."))
       Libraries.refinedCore
     ),
   )
-  .aggregate(scala_plain)
+  .aggregate(scala_plain, fp_red)
 
 lazy val scala_plain = (project in file("scala_plain"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "com.typesafe.play"          %% "play-json"              % "2.8.1",
-      "com.softwaremill.quicklens" %% "quicklens"              % "1.4.12",
-      "org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0",
-      "com.chuusai"            %% "shapeless"                  % "2.3.3",
-      "com.typesafe"           %  "config"                      % "1.4.0",
+      "com.typesafe.play"          %% "play-json"                  % "2.8.1",
+      "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
+      "org.scala-lang.modules"     %% "scala-parallel-collections" % "0.2.0",
+      "com.chuusai"                %% "shapeless"                  % "2.3.3",
+      "com.typesafe"               %  "config"                      % "1.4.0",
+    )
+  )
+
+lazy val fp_red = (project in file("fp_red"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      Libraries.scalaCheck,
     )
   )
 
