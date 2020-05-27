@@ -4,7 +4,7 @@ import scala.math.min
 import scala.util.{Failure, Success}
 
 /**
-  * https://www.hackerrank.com/challenges/special-palindrome-again/problem
+  * htt`ps://www.hackerrank.com/challenges/special-palindrome-again/problem
   */
 object SpecialStringAgainApp extends App {
 

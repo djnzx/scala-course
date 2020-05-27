@@ -1,4 +1,4 @@
-package lihaoyi.oslib
+package oslib
 
 import os.{CommandResult, Path}
 

@@ -1,5 +1,3 @@
-package lihaoyi
-
 object Snippets01 extends App {
   val s: String = java.lang.Integer.toBinaryString(65)
   val nzeroes = java.lang.Integer.numberOfLeadingZeros(1)

@@ -5,6 +5,7 @@ def mergeSort[T: Ordering](items: IndexedSeq[T]): IndexedSeq[T] = {
     val (sortedLeft, sortedRight) = (mergeSort(left), mergeSort(right))
     var (leftIdx, rightIdx) = (0, 0)
     val output = IndexedSeq.newBuilder[T]
+
     while (leftIdx < sortedLeft.length || rightIdx < sortedRight.length) {
       val takeLeft = (leftIdx < sortedLeft.length, rightIdx < sortedRight.length) match {
         case (true, false) => true
@@ -19,6 +20,7 @@ def mergeSort[T: Ordering](items: IndexedSeq[T]): IndexedSeq[T] = {
         rightIdx += 1
       }
     }
+
     output.result()
   }
 }
