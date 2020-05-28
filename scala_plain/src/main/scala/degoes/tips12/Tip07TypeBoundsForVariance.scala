@@ -1,7 +1,8 @@
 package degoes.tips12
 
-import shapeless.Prism
-
+/**
+  * https://kubuszok.com/2018/adt-through-the-looking-glass/#prism
+  */
 class Tip07TypeBoundsForVariance {
   // first intention
   trait ProductID
@@ -17,7 +18,7 @@ class Tip07TypeBoundsForVariance {
   trait ProductGood[T] {
     def id: T
     // runtime proof that every T is a ProductID
-    def prism: Prism[ProductID, T]
+//    def prism: Prism[ProductID, T]
   }
   trait MovieGood extends ProductGood[MovieID]
 

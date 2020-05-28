@@ -19,6 +19,7 @@ object Dependencies {
     val refined           = "0.9.13"
     val redis4cats       = "0.9.6"
     val skunk            = "0.0.7"
+    val doobie           = "0.9.0"
     val squants          = "1.6.0"
     val logback          = "1.2.3"
     val scalaCheck       = "1.14.3"
@@ -29,6 +30,7 @@ object Dependencies {
     val sqlH2            = "1.4.200"
     val scalaz           = "7.2.30"
     val jsoup            = "1.13.1"
+    val shapeless        = "2.3.3"
     // compiler plugins
     val silencer         = "1.6.0"
     val betterMonadicFor = "0.3.1"
@@ -38,12 +40,14 @@ object Dependencies {
     // typesafe stack
     val akka             = "2.6.5"
     val slick            = "3.3.2"
+    val tsconfig            = "1.4.0"
     val slf4j17          = "1.7.30"
   }
 
   object pf {
     val typesafe = "com.typesafe"
     val slf4j    = "org.slf4j"
+    val tpolecat = "org.tpolecat"
   }
 
   object Libraries {
@@ -57,13 +61,15 @@ object Dependencies {
     def slick(artifact: String):  ModuleID = s"${pf.typesafe}.slick" %% artifact % Versions.slick
     def akka(artifact: String):   ModuleID = s"${pf.typesafe}.akka"  %% artifact % Versions.akka
     def slf4j(artifact: String):  ModuleID = pf.slf4j                %  artifact % Versions.slf4j17
+    val tsconfig:                  ModuleID = pf.typesafe             %  "config"  % Versions.tsconfig
 
+    val shapeless     = "com.chuusai"      %% "shapeless"     % Versions.shapeless
     val jsoup         = "org.jsoup"        %  "jsoup"         % Versions.jsoup
     val cats          = "org.typelevel"    %% "cats-core"     % Versions.cats             withSources()    withJavadoc()
     val catsMtlCore   = "org.typelevel"    %% "cats-mtl-core" % Versions.catsMtlCore      withSources()    withJavadoc()
     val catsEffect    = "org.typelevel"    %% "cats-effect"   % Versions.catsEffect       withSources()    withJavadoc()
-    val catsRetry     = "com.github.cb372" %% "cats-retry"    % Versions.catsRetry
     val squants       = "org.typelevel"    %% "squants"       % Versions.squants
+    val catsRetry     = "com.github.cb372" %% "cats-retry"    % Versions.catsRetry
 
     val fs2core       = fs2("fs2-core")
     val fs2reactive   = fs2("fs2-reactive-streams")
@@ -102,10 +108,12 @@ object Dependencies {
     val log4cats      = "io.chrisdavenport"   %% "log4cats-slf4j"  % Versions.log4cats
     val newtype       = "io.estatico"         %% "newtype"         % Versions.newtype
 
-    val javaxCrypto   = "javax.xml.crypto"    % "jsr105-api"       % Versions.javaxCrypto
+    val javaxCrypto   = "javax.xml.crypto"    %  "jsr105-api"      % Versions.javaxCrypto
 
-    val skunkCore     = "org.tpolecat"        %% "skunk-core"      % Versions.skunk
-    val skunkCirce    = "org.tpolecat"        %% "skunk-circe"     % Versions.skunk
+    val doobieCore    = pf.tpolecat           %% "doobie-core"     % Versions.doobie
+    val doobiePg      = pf.tpolecat           %% "doobie-postgres" % Versions.doobie
+    val skunkCore     = pf.tpolecat           %% "skunk-core"      % Versions.skunk
+    val skunkCirce    = pf.tpolecat           %% "skunk-circe"     % Versions.skunk
 
     val redis4catsEffects  = "dev.profunktor" %% "redis4cats-effects"  % Versions.redis4cats
     val redis4catsLog4cats = "dev.profunktor" %% "redis4cats-log4cats" % Versions.redis4cats

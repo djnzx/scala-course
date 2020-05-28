@@ -1,7 +1,7 @@
 package topics.hlist
 
-import slick.collection.heterogeneous.HNil
-import slick.collection.heterogeneous.syntax.{::, HNil}
+import shapeless.HNil
+import shapeless.::
 
 object HListApp extends App {
   type HList0 = HNil

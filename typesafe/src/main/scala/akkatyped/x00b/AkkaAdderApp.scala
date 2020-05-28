@@ -3,21 +3,24 @@ package akkatyped.x00b
 import akka.actor.typed.{ActorRef, ActorSystem}
 import akka.actor.typed.scaladsl.{ActorContext, Behaviors}
 
-sealed trait Message
+sealed trait Event
 
-//sealed trait MediatorMessage
-case object Finish extends Message
-case object Shutdown extends Message
-case class Just(n: Int) extends Message
-case class AdderRs(n: Int) extends Message
+sealed trait EventRoot extends Event
+case object Terminate extends EventRoot
+case class Just(n: Int) extends EventRoot
 
-//sealed trait AdderMessage extends Message
-case class AdderRq(n: Int, replyTo: ActorRef[Message]) extends Message
-case class FinishMe(me: ActorRef[Message]) extends Message
+sealed trait EventMediator
+case object Finish extends EventMediator
+case object Shutdown extends EventMediator
+case class AdderRs(n: Int) extends EventMediator
+case class Go(n: Int) extends EventMediator
 
+sealed trait EventAdder extends Event
+case class FinishMe(me: ActorRef[EventMediator]) extends EventAdder
+case class AdderRq(n: Int, replyTo: ActorRef[EventMediator]) extends EventAdder
 
 object AdderActor {
-  def apply(): Behaviors.Receive[Message] = Behaviors.receiveMessage {
+  def apply(): Behaviors.Receive[EventAdder] = Behaviors.receiveMessage {
     case AdderRq(n, replyTo) =>
       val n100 = n + 100
       println(s"Adder: $n => $n100")
@@ -30,7 +33,7 @@ object AdderActor {
 }
 
 object MediatorActor {
-  def apply(adder: Option[ActorRef[Message]]): Behaviors.Receive[Message] = Behaviors.receive { (ctx, msg) =>
+  def apply(adder: Option[ActorRef[EventAdder]]): Behaviors.Receive[EventMediator] = Behaviors.receive { (ctx, msg) =>
     (adder, msg) match {
       case (_, Shutdown) =>
         println("Simple. Shutting down")
@@ -39,15 +42,17 @@ object MediatorActor {
         println("Simple. Stopping")
         a ! FinishMe(ctx.self)
         Behaviors.same
-      case (None, Just(n)) =>
+
+      case (None, Go(n)) =>
         println(s"Simple: $n")
         val adder = ctx.spawn(AdderActor(), "adder")
         adder ! AdderRq(n, ctx.self)
         apply(Some(adder))
-      case (Some(a), Just(n)) =>
+      case (Some(a), Go(n)) =>
         println(s"Simple: $n")
         a ! AdderRq(n, ctx.self)
         Behaviors.same
+
       case (_, AdderRs(n)) =>
         println(s"Simple:Response got: $n")
         Behaviors.same
@@ -55,33 +60,33 @@ object MediatorActor {
   }
 }
 
-object RootBehavior {
-  def apply(handler: Option[ActorRef[Message]]): Behaviors.Receive[Message] = Behaviors.receive { (ctx: ActorContext[Message], msg: Message) =>
-    (handler, msg) match {
-      case (Some(h), Finish) =>
-        println("Root. Shutdown")
+object RootActor {
+  def apply(mediator: Option[ActorRef[EventMediator]]): Behaviors.Receive[EventRoot] = Behaviors.receive { (ctx: ActorContext[EventRoot], msg: EventRoot) =>
+    (mediator, msg) match {
+      case (Some(h), Terminate) =>
+        println("Root. Terminate")
         h ! Finish
         Behaviors.stopped
 
       case (None, Just(n)) =>
-        println(s"Root. Just($n) Simple initialization")
-        val simple = ctx.spawn(MediatorActor(None), "simple")
-        simple ! msg
-        apply(Some(simple))
+        println(s"Root. Just($n) got. Simple initialization and Send Go")
+        val mediator = ctx.spawn(MediatorActor(None), "simple")
+        mediator ! Go(n)
+        apply(Some(mediator))
 
       case (Some(h), Just(n)) =>
-        println(s"Root. Just($n)")
-        h ! msg
-        apply(handler)
+        println(s"Root. Just($n) got. Send Go. ")
+        h ! Go(n)
+        apply(mediator)
     }
   }
 }
 
 object AkkaAdderApp extends App {
-  val root = ActorSystem(RootBehavior(None), "root")
+  val root = ActorSystem(RootActor(None), "root")
 
   (1 to 3).map(Just).foreach(root ! _)
 
-  root ! Finish
+  root ! Terminate
 }
 

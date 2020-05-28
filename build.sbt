@@ -75,17 +75,17 @@ lazy val root = (project in file("."))
       CompilerPlugins.kindProjector,
 
       "ch.qos.logback"         % "logback-classic"             % "1.2.3",
-      "org.tpolecat"           %% "doobie-core"                % "0.8.8",
-      "org.tpolecat"           %% "doobie-postgres"            % "0.8.8",
       "io.lemonlabs"           %% "scala-uri"                  % "1.5.1",
-//      "com.typesafe.akka"      %% "akka-actor-typed"           % "2.6.3",
-
       "io.getquill"            %% "quill-jdbc"                 % "3.5.1",
       "org.flywaydb"            %  "flyway-core"                 % "6.4.2",
       "dev.profunktor"         %% "console4cats"               % "0.8.1",
       // markdown parsing
       "com.atlassian.commonmark" % "commonmark"                % "0.15.0",
 
+      Libraries.doobieCore,
+      Libraries.doobiePg,
+
+      Libraries.shapeless,
       Libraries.sqlPg,
       Libraries.sqlH2,
 
@@ -101,10 +101,6 @@ lazy val root = (project in file("."))
       Libraries.cats,
       Libraries.catsEffect,
       Libraries.catsMtlCore,
-
-      // Slick
-      Libraries.slickCore,
-      Libraries.slickHikari,
 
       // ZIO
       Libraries.zioCore,
@@ -143,10 +139,9 @@ lazy val scala_plain = (project in file("scala_plain"))
   .settings(
     libraryDependencies ++= Seq(
       "com.typesafe.play"          %% "play-json"                  % "2.8.1",
-      "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
       "org.scala-lang.modules"     %% "scala-parallel-collections" % "0.2.0",
-      "com.chuusai"                %% "shapeless"                  % "2.3.3",
-      "com.typesafe"               %  "config"                      % "1.4.0",
+      "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
+      Libraries.shapeless,
     )
   )
 
@@ -179,6 +174,11 @@ lazy val typesafe = (project in file("typesafe"))
       // typed - current version
       Libraries.akka("akka-actor-typed"),
       Libraries.slf4j("slf4j-simple"),
+      // Slick
+      Libraries.slickCore,
+      Libraries.slickHikari,
+      // config
+      Libraries.tsconfig,
     )
   )
 
