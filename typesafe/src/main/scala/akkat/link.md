@@ -1,0 +1,1 @@
+- [Akka Typed](https://medium.com/bestmile/domain-driven-event-sourcing-with-akka-typed-5f5b8bbfb823)

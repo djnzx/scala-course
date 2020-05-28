@@ -1,2 +1,6 @@
 https://askubuntu.com/questions/731721/is-there-a-way-to-create-multiple-directories-at-once-with-mkdir
+
 mkdir -p step{01..05}/{img,data}
+
+for n in {01..14}; do mkdir "ch$n"; done
+for n in {01..14}; do touch "ch$n/info.txt"; done

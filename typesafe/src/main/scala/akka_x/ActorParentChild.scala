@@ -1,4 +1,4 @@
-package akkat26
+package akka_x
 
 import akka.actor.{Actor, ActorSelection, ActorSystem, PoisonPill, Props}
 

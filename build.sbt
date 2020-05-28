@@ -8,7 +8,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 lazy val commonSettings = Seq(
   scalaVersion := "2.13.2",
   organization := "org.alexr",
-  version      := "20.5.25",
+  version      := "20.5.28",
 
   javacOptions  ++= Seq(
     //  "-source", "1.8",
@@ -64,7 +64,7 @@ lazy val commonSettings = Seq(
 lazy val root = (project in file("."))
   .settings(commonSettings)
   .settings(
-    name := "learn-scala-deeper",
+    name := "learn-scala",
 
     // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
     mainClass in (Compile, run) := Some("degoes.fp_to_the_max.steps.StepG3"),
@@ -78,12 +78,12 @@ lazy val root = (project in file("."))
       "org.tpolecat"           %% "doobie-core"                % "0.8.8",
       "org.tpolecat"           %% "doobie-postgres"            % "0.8.8",
       "io.lemonlabs"           %% "scala-uri"                  % "1.5.1",
-      "com.typesafe.akka"      %% "akka-actor-typed"           % "2.6.3",
+//      "com.typesafe.akka"      %% "akka-actor-typed"           % "2.6.3",
 
       "io.getquill"            %% "quill-jdbc"                 % "3.5.1",
       "org.flywaydb"            %  "flyway-core"                 % "6.4.2",
       "dev.profunktor"         %% "console4cats"               % "0.8.1",
-      // md parsing
+      // markdown parsing
       "com.atlassian.commonmark" % "commonmark"                % "0.15.0",
 
       Libraries.sqlPg,
@@ -136,7 +136,7 @@ lazy val root = (project in file("."))
       Libraries.refinedCore
     ),
   )
-  .aggregate(scala_plain, fp_red, lihaoyi)
+  .aggregate(scala_plain, fp_red, lihaoyi, typesafe)
 
 lazy val scala_plain = (project in file("scala_plain"))
   .settings(commonSettings)
@@ -167,6 +167,18 @@ lazy val lihaoyi = (project in file("lihaoyi"))
       "com.lihaoyi"            %% "scalatags"                  % "0.9.1",
       "com.lihaoyi"            %% "geny"                       % "0.6.0",
       "com.lihaoyi"            %% "upickle"                    % "1.1.0",
+    )
+  )
+
+lazy val typesafe = (project in file("typesafe"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      // untyped - old examples
+      Libraries.akka("akka-actor"),
+      // typed - current version
+      Libraries.akka("akka-actor-typed"),
+      Libraries.slf4j("slf4j-simple"),
     )
   )
 

@@ -20,7 +20,6 @@ object Dependencies {
     val redis4cats       = "0.9.6"
     val skunk            = "0.0.7"
     val squants          = "1.6.0"
-    val slick            = "3.3.2"
     val logback          = "1.2.3"
     val scalaCheck       = "1.14.3"
     val scalaTest        = "3.1.1"
@@ -35,16 +34,29 @@ object Dependencies {
     val betterMonadicFor = "0.3.1"
     val kindProjector    = "0.11.0"
     val contextApplied   = "0.1.4"
+
+    // typesafe stack
+    val akka             = "2.6.5"
+    val slick            = "3.3.2"
+    val slf4j17          = "1.7.30"
+  }
+
+  object pf {
+    val typesafe = "com.typesafe"
+    val slf4j    = "org.slf4j"
   }
 
   object Libraries {
-    def circe(artifact: String): ModuleID  = "io.circe"   %% artifact % Versions.circe
-    def ciris(artifact: String): ModuleID  = "is.cir"     %% artifact % Versions.ciris
-    def http4s(artifact: String): ModuleID = "org.http4s" %% artifact % Versions.http4s
-    def zio(artifact: String): ModuleID    = "dev.zio"    %% artifact % Versions.zio
-    def scalaz(artifact: String): ModuleID = "org.scalaz" %% artifact % Versions.scalaz
-    def slick(artifact: String): ModuleID  = "com.typesafe.slick" %% artifact % Versions.slick
-    def fs2(artifact: String): ModuleID    = "co.fs2"     %% artifact % Versions.fs2
+    def circe(artifact: String):  ModuleID = "io.circe"              %% artifact % Versions.circe
+    def ciris(artifact: String):  ModuleID = "is.cir"                %% artifact % Versions.ciris
+    def http4s(artifact: String): ModuleID = "org.http4s"            %% artifact % Versions.http4s
+    def zio(artifact: String):    ModuleID = "dev.zio"               %% artifact % Versions.zio
+    def scalaz(artifact: String): ModuleID = "org.scalaz"            %% artifact % Versions.scalaz
+    def fs2(artifact: String):    ModuleID = "co.fs2"                %% artifact % Versions.fs2
+
+    def slick(artifact: String):  ModuleID = s"${pf.typesafe}.slick" %% artifact % Versions.slick
+    def akka(artifact: String):   ModuleID = s"${pf.typesafe}.akka"  %% artifact % Versions.akka
+    def slf4j(artifact: String):  ModuleID = pf.slf4j                %  artifact % Versions.slf4j17
 
     val jsoup         = "org.jsoup"        %  "jsoup"         % Versions.jsoup
     val cats          = "org.typelevel"    %% "cats-core"     % Versions.cats             withSources()    withJavadoc()
