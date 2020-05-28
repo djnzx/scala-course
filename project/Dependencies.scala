@@ -25,12 +25,13 @@ object Dependencies {
     val scalaCheck       = "1.14.3"
     val scalaTest        = "3.1.1"
     val scalaTestPlus    = "3.1.1.1"
-    val zio              = "1.0.0-RC18-2"
+    val zio              = "1.0.0-RC18-2" // RC20
     val sqlPg            = "42.2.10"
     val sqlH2            = "1.4.200"
     val scalaz           = "7.2.30"
     val jsoup            = "1.13.1"
     val shapeless        = "2.3.3"
+
     // compiler plugins
     val silencer         = "1.6.0"
     val betterMonadicFor = "0.3.1"
@@ -39,15 +40,17 @@ object Dependencies {
 
     // typesafe stack
     val akka             = "2.6.5"
+    val play             = "2.8.1"
     val slick            = "3.3.2"
-    val tsconfig            = "1.4.0"
+    val tsconfig          = "1.4.0"
     val slf4j17          = "1.7.30"
   }
 
   object pf {
-    val typesafe = "com.typesafe"
-    val slf4j    = "org.slf4j"
-    val tpolecat = "org.tpolecat"
+    val typelevel = "org.typelevel"
+    val typesafe  = "com.typesafe"
+    val slf4j     = "org.slf4j"
+    val tpolecat  = "org.tpolecat"
   }
 
   object Libraries {
@@ -65,10 +68,10 @@ object Dependencies {
 
     val shapeless     = "com.chuusai"      %% "shapeless"     % Versions.shapeless
     val jsoup         = "org.jsoup"        %  "jsoup"         % Versions.jsoup
-    val cats          = "org.typelevel"    %% "cats-core"     % Versions.cats             withSources()    withJavadoc()
-    val catsMtlCore   = "org.typelevel"    %% "cats-mtl-core" % Versions.catsMtlCore      withSources()    withJavadoc()
-    val catsEffect    = "org.typelevel"    %% "cats-effect"   % Versions.catsEffect       withSources()    withJavadoc()
-    val squants       = "org.typelevel"    %% "squants"       % Versions.squants
+    val cats          = pf.typelevel       %% "cats-core"     % Versions.cats         withSources()  withJavadoc()
+    val catsMtlCore   = pf.typelevel       %% "cats-mtl-core" % Versions.catsMtlCore  withSources()  withJavadoc()
+    val catsEffect    = pf.typelevel       %% "cats-effect"   % Versions.catsEffect   withSources()  withJavadoc()
+    val squants       = pf.typelevel       %% "squants"       % Versions.squants
     val catsRetry     = "com.github.cb372" %% "cats-retry"    % Versions.catsRetry
 
     val fs2core       = fs2("fs2-core")
@@ -100,7 +103,9 @@ object Dependencies {
     val sqlPg         = "org.postgresql"      % "postgresql"       % Versions.sqlPg
     val sqlH2         = "com.h2database"      % "h2"               % Versions.sqlH2
 
-    val http4sJwtAuth = "dev.profunktor"      %% "http4s-jwt-auth" % Versions.http4sJwtAuth
+    val http4sJwtAuth      = "dev.profunktor" %% "http4s-jwt-auth"     % Versions.http4sJwtAuth
+    val redis4catsEffects  = "dev.profunktor" %% "redis4cats-effects"  % Versions.redis4cats
+    val redis4catsLog4cats = "dev.profunktor" %% "redis4cats-log4cats" % Versions.redis4cats
 
     val refinedCore    = "eu.timepit"          %% "refined"          % Versions.refined
     val refinedCats    = "eu.timepit"          %% "refined-cats"     % Versions.refined
@@ -115,13 +120,10 @@ object Dependencies {
     val skunkCore     = pf.tpolecat           %% "skunk-core"      % Versions.skunk
     val skunkCirce    = pf.tpolecat           %% "skunk-circe"     % Versions.skunk
 
-    val redis4catsEffects  = "dev.profunktor" %% "redis4cats-effects"  % Versions.redis4cats
-    val redis4catsLog4cats = "dev.profunktor" %% "redis4cats-log4cats" % Versions.redis4cats
-
     object CompilerPlugins {
       val betterMonadicFor = compilerPlugin("com.olegpy"     %% "better-monadic-for" % Versions.betterMonadicFor)
       val contextApplied   = compilerPlugin("org.augustjune" %% "context-applied"    % Versions.contextApplied)
-      val kindProjector    = compilerPlugin("org.typelevel"  %% "kind-projector"     % Versions.kindProjector cross CrossVersion.full)
+      val kindProjector    = compilerPlugin(pf.typelevel                 %% "kind-projector"     % Versions.kindProjector cross CrossVersion.full)
       val silencer         = compilerPlugin("com.github.ghik" % "silencer-plugin"    % Versions.silencer      cross CrossVersion.full)
     }
 

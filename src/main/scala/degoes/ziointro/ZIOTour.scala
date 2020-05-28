@@ -67,7 +67,7 @@ object Z6NumberGuesser extends App {
 
   def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
     (for {
-      random <- nextInt(3)
+      random <- nextInt//(3)
       _      <- putStrLn("Please guess")
       guess  <- getStrLn
       _      <- analyze(random, guess)
@@ -145,14 +145,6 @@ object ComputePi extends App {
       _        <- putStrLn("any key to terminate")
       _        <- getStrLn *> (fiber1 zip fiber2).interrupt
     } yield 0) orElse ZIO.succeed(1)
-}
-
-object StmDiningPhilosophers extends App {
-
-
-
-
-  override def run(args: List[String]): ZIO[zio.ZEnv, Nothing, Int] = ???
 }
 
 

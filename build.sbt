@@ -1,6 +1,5 @@
-import Dependencies.Libraries
+import Dependencies.{Libraries, Versions}
 import Dependencies.Libraries.CompilerPlugins
-import ScalacOpts._
 import sbt.Keys._
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
@@ -17,30 +16,7 @@ lazy val commonSettings = Seq(
 
   // https://docs.scala-lang.org/overviews/compiler-options/index.html#Warning_Settings
   // http://eed3si9n.com/stricter-scala-with-xlint-xfatal-warnings-and-scalafix
-  scalacOptions ++= Seq(
-    encoding, UTF8,
-    feature,
-    deprecation,
-    unchecked,
-    postfix,
-    higherKindedTypes,
-    "-Xfatal-warnings",     // treat warning as fatal
-    //"-Ypartial-unification", // by default since 2.13
-    "-language:existentials",
-    "-Ymacro-annotations",   // used by newtype
-    "-Ywarn-numeric-widen",
-    "-Ywarn-value-discard",
-    "-Ywarn-dead-code",
-    "-Ywarn-extra-implicit",
-    "-Ywarn-unused",
-    "-Xlint:unused,-type-parameter-shadow",
-    "-Yrepl-class-based",
-    "-Yrangepos",
-    "-explaintypes",
-    "-opt-warnings",
-    "-opt:l:inline",
-    "-opt-inline-from:<source>",
-  ),
+  scalacOptions ++= CompilerOptions.scalac,
 
   scalacOptions --= Seq(
     "-Xfatal-warnings",
@@ -138,10 +114,10 @@ lazy val scala_plain = (project in file("scala_plain"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "com.typesafe.play"          %% "play-json"                  % "2.8.1",
+      Libraries.shapeless,
+      "com.typesafe.play"          %% "play-json"                  % Versions.play,
       "org.scala-lang.modules"     %% "scala-parallel-collections" % "0.2.0",
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
-      Libraries.shapeless,
     )
   )
 
@@ -157,11 +133,11 @@ lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "com.lihaoyi"            %% "os-lib"                     % "0.7.0",
-      "com.lihaoyi"            %% "pprint"                     % "0.5.9",
-      "com.lihaoyi"            %% "scalatags"                  % "0.9.1",
-      "com.lihaoyi"            %% "geny"                       % "0.6.0",
-      "com.lihaoyi"            %% "upickle"                    % "1.1.0",
+      "com.lihaoyi"       %% "os-lib"       % "0.7.0",
+      "com.lihaoyi"       %% "pprint"       % "0.5.9",
+      "com.lihaoyi"       %% "scalatags"    % "0.9.1",
+      "com.lihaoyi"       %% "geny"         % "0.6.0",
+      "com.lihaoyi"       %% "upickle"      % "1.1.0",
     )
   )
 
