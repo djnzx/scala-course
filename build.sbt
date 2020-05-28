@@ -136,7 +136,7 @@ lazy val root = (project in file("."))
       Libraries.refinedCore
     ),
   )
-  .aggregate(scala_plain, fp_red, lihaoyi, typesafe)
+  .aggregate(scala_plain, fp_red, lihaoyi, typesafe, typelevel)
 
 lazy val scala_plain = (project in file("scala_plain"))
   .settings(commonSettings)
@@ -179,6 +179,13 @@ lazy val typesafe = (project in file("typesafe"))
       // typed - current version
       Libraries.akka("akka-actor-typed"),
       Libraries.slf4j("slf4j-simple"),
+    )
+  )
+
+lazy val typelevel = (project in file("typelevel"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
     )
   )
 
