@@ -119,6 +119,10 @@ lazy val typelevel = (project in file("typelevel"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
+      // CATS
+      Libraries.cats,
+      Libraries.catsEffect,
+      Libraries.catsMtlCore,
     )
   )
 
