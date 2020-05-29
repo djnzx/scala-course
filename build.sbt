@@ -7,7 +7,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 lazy val commonSettings = Seq(
   scalaVersion := "2.13.2",
   organization := "org.alexr",
-  version      := "20.5.28",
+  version      := "20.5.29",
 
   javacOptions  ++= Seq(
     //  "-source", "1.8",
@@ -37,11 +37,98 @@ lazy val commonSettings = Seq(
   ),
 )
 
-lazy val root = (project in file("."))
+lazy val whole = (project in file("."))
   .settings(commonSettings)
   .settings(
     name := "learn-scala",
+  )
+  .aggregate(scala_plain, fp_red, lihaoyi, typesafe, typelevel, mix, degoes)
 
+/**
+  * plain Scala
+  * no 3rd-party libraries involved
+  */
+lazy val scala_plain = (project in file("scala_plain"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      Libraries.shapeless,
+      "com.typesafe.play"          %% "play-json"                  % Versions.play,
+      "org.scala-lang.modules"     %% "scala-parallel-collections" % "0.2.0",
+      "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
+    )
+  )
+
+/**
+  * FP in Scala (RED Book)
+  * Mostly plain Scala
+  * only a few libraries involved
+  */
+lazy val fp_red = (project in file("fp_red"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      Libraries.scalaCheck,
+    )
+  )
+
+/**
+  * Project to investigate Li Haoyi libraries
+  * https://www.lihaoyi.com
+  * https://www.handsonscala.com
+  * https://github.com/lihaoyi
+  */
+lazy val lihaoyi = (project in file("lihaoyi"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      "com.lihaoyi"       %% "os-lib"       % "0.7.0",
+      "com.lihaoyi"       %% "pprint"       % "0.5.9",
+      "com.lihaoyi"       %% "scalatags"    % "0.9.1",
+      "com.lihaoyi"       %% "geny"         % "0.6.0",
+      "com.lihaoyi"       %% "upickle"      % "1.1.0",
+    )
+  )
+
+/**
+  * Lightbend (Typesafe) Stack: Akka, Play, Slick, Lagom
+  * https://www.lightbend.com
+  */
+lazy val typesafe = (project in file("typesafe"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      // untyped - old examples
+      Libraries.akka("akka-actor"),
+      // typed - current version
+      Libraries.akka("akka-actor-typed"),
+      Libraries.slf4j("slf4j-simple"),
+      // Slick
+      Libraries.slickCore,
+      Libraries.slickHikari,
+      // config
+      Libraries.tsconfig,
+    )
+  )
+
+/**
+  * Typelevel (FP) stack: Cats, Http4s, Ciris, Shapeless, Doobie, Fs2, Scalacheck, PureConfig
+  * https://typelevel.org
+  */
+lazy val typelevel = (project in file("typelevel"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+    )
+  )
+
+/**
+  * a lot of dirty, mixed code
+  * Needs to be polished
+  */
+lazy val mix = (project in file("mix"))
+  .settings(commonSettings)
+  .settings(
     // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
     mainClass in (Compile, run) := Some("degoes.fp_to_the_max.steps.StepG3"),
 
@@ -78,10 +165,6 @@ lazy val root = (project in file("."))
       Libraries.catsEffect,
       Libraries.catsMtlCore,
 
-      // ZIO
-      Libraries.zioCore,
-      Libraries.zioStreams,
-
       // Serialization
       Libraries.circeCore,
       Libraries.circeGeneric,
@@ -108,63 +191,22 @@ lazy val root = (project in file("."))
       Libraries.refinedCore
     ),
   )
-  .aggregate(scala_plain, fp_red, lihaoyi, typesafe, typelevel)
 
-lazy val scala_plain = (project in file("scala_plain"))
+/**
+  * John A. De Goes Ideas: ZIO
+  * https://zio.dev
+  * https://ziverge.com
+  */
+lazy val degoes = (project in file("degoes"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      Libraries.shapeless,
-      "com.typesafe.play"          %% "play-json"                  % Versions.play,
-      "org.scala-lang.modules"     %% "scala-parallel-collections" % "0.2.0",
-      "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
-    )
-  )
+      "io.lemonlabs"           %% "scala-uri"                  % "1.5.1",
+      // ZIO
+      Libraries.zioCore,
+      Libraries.zioStreams,
 
-lazy val fp_red = (project in file("fp_red"))
-  .settings(commonSettings)
-  .settings(
-    libraryDependencies ++= Seq(
-      Libraries.scalaCheck,
-    )
-  )
-
-lazy val lihaoyi = (project in file("lihaoyi"))
-  .settings(commonSettings)
-  .settings(
-    libraryDependencies ++= Seq(
-      "com.lihaoyi"       %% "os-lib"       % "0.7.0",
-      "com.lihaoyi"       %% "pprint"       % "0.5.9",
-      "com.lihaoyi"       %% "scalatags"    % "0.9.1",
-      "com.lihaoyi"       %% "geny"         % "0.6.0",
-      "com.lihaoyi"       %% "upickle"      % "1.1.0",
-    )
-  )
-
-lazy val typesafe = (project in file("typesafe"))
-  .settings(commonSettings)
-  .settings(
-    libraryDependencies ++= Seq(
-      // untyped - old examples
-      Libraries.akka("akka-actor"),
-      // typed - current version
-      Libraries.akka("akka-actor-typed"),
-      Libraries.slf4j("slf4j-simple"),
-      // Slick
-      Libraries.slickCore,
-      Libraries.slickHikari,
-      // config
-      Libraries.tsconfig,
-    )
-  )
-
-lazy val typelevel = (project in file("typelevel"))
-  .settings(commonSettings)
-  .settings(
-    libraryDependencies ++= Seq(
-      Libraries.cats,
-      Libraries.catsEffect,
-      Libraries.catsMtlCore,
+      Libraries.doobieCore,
     )
   )
 
