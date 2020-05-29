@@ -1,11 +1,12 @@
-package hackerrank.d200515_09
+package hackerrank.d200515_09.special_string
 
 import scala.math.min
 import scala.util.{Failure, Success}
 
 /**
-  * htt`ps://www.hackerrank.com/challenges/special-palindrome-again/problem
+  * https://www.hackerrank.com/challenges/special-palindrome-again/problem
   */
+// https://www.hackerrank.com/challenges/special-palindrome-again/problem
 object SpecialStringAgainApp extends App {
 
   def substrCount(N: Int, origin: String): Long = {
