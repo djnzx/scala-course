@@ -60,5 +60,25 @@ very cool that you provide the tasks to involve reader into investigations and f
 
 - 85. grammar. is it -> it is
 
+- 97 is there any reason for JS developers to know about thread safety?
+     may be the hidden goal is to motivate them to learn Java? )))
 
+- 100. very cool mention about implementing which 'isn't in the scope
 
+* not all the paragraphs are justified left to right some of them aligned to the left side (p102, 104...)
+
+- 105. utility object. ha-ha. finally )))
+- 105. why did you call it a vector? actually it is something like delta. what is the semantic?
+- 106-107. your implementation of smart_div is actually a function off_borders.
+           with just passing underlying div as a constructor parameter
+           to make it object and really encapsulate wouldn't it be better if
+           you delegate the underlying `d` behavior to the smart_div object?
+- 108. patches? maybe filters, behaviors, extras ...
+
+- 112. Refactor the method patched.move() in order get rid of the reduce(). =>
+       Refactor the method patched.move() to get rid of the reduce()
+       OR:
+       Refactor the method patched.move() in order to get rid of the reduce()
+
+- 113. remove `sure` ?
+- 118. don't you want to put the link to your blog about shades af immutability?
