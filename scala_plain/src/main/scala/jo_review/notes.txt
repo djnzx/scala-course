@@ -41,6 +41,24 @@ very cool that you provide the tasks to involve reader into investigations and f
 - 52 unit testing
 - 54 cool that you have introduced testing in so early stage
 - 55 mocking very cool explanation
+- 59 frameworks not only larger, but they are also have moe constraints you should obey to.
 - 56 dependency injection!
 - 61 build
+- 63 cool build-automation explanation
+
+* surprised that JS
+* cool degree of teaching
+
+- 65 typos where->were, unussable->unusable,
+     programms -> programs (???)
+
+- 76. isn't R4 (destroy) is the outcome of meeting the bullet and the invader?
+      because user only moves and fires
+- 76. are lacking => are lack?
+
+- 78. according to implementation - it looks like there is only one bullet on the screen at the moment
+
+- 85. grammar. is it -> it is
+
+
 

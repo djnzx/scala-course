@@ -1,18 +1,19 @@
 package monads_basic
 
+/**
+  * the problem:
+  * having F[A], G[B], and f: (A, B) => C
+  *
+  * we can get only:
+  * F[G[A]] or G[F[A]]
+  */
 object CombineApp extends App {
-  type NoneOr[A] = Either[Nothing, A]
-
-  val o2: Option[Int] = Some(2)
-  val e3: NoneOr[Int] = Right(3)
-
-  println(o2)
-  println(e3)
-
-  val f: (Int, Int) => Int = (a, b) => a + b
+  println(s"o2: $o2")
+  println(s"e3: $e3")
+  println("---")
 
   // we need to stack them in this way
-  val r1: Option[NoneOr[Int]] =
+  val r1: Option[Either[String, Int]] =
     o2.map { ov =>
       e3.map { ev =>
         f(ov, ev)
@@ -20,7 +21,7 @@ object CombineApp extends App {
     }
 
   // we need to stack them in that way
-  val r2: NoneOr[Option[Int]] =
+  val r2: Either[String, Option[Int]] =
     e3.map { ev =>
       o2.map { ov =>
         f(ov, ev)
