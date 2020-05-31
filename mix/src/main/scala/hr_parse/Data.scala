@@ -29,6 +29,7 @@ object Data {
     "zeynebb2022",
     "kamranbekirovyz",
     "aqilzeka99",
+    "talehunited25c",
   )
 
   val be3 = Vector(
@@ -52,19 +53,18 @@ object Data {
     "iturkan6",
     "hasanzadeq",
     "ElbrusGarayev",
+    "Khagani_99",
   )
 
   val debug = Vector(
-    "shamistan1999",
-    "bastille1001",
-    "iturkan6",
-    "hasanzadeq",
+    "talehunited25c",
+    "Khagani_99",
   )
 
   val users: Vector[String] = Vector(
 //      trainers,
-          be4, be3
-//      debug
+//          be4, be3
+      debug
     ) flatten
 
 }
