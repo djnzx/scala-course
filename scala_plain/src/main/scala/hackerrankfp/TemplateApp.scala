@@ -9,35 +9,31 @@ object TemplateApp {
     def toTuple2Int: (Int, Int) = { val a = splitToInt; (a(0), a(1)) }
   }
 
-  def process(a: Int) = a
-
-  def body(readLine: => String): Unit = {
-    val N: Int = readLine.toInt
-
-    def readOneLine = readLine.toListInt
-    // N lines by readline
-    def readNLines(n: Int, acc: List[List[Int]]): List[List[Int]] = n match {
-      case 0 => acc.reverse
-      case _ => readNLines(n-1, readOneLine::acc)
-    }
-
-    val r = process(1)
-    println(r)
+  /** core implementation */
+  def process(data: List[String]) = {
+    println(data)
+  } 
+  
+  def body(line: => String): Unit = {
+    // read one line
+    val N = line.toInt
+    // read N lines
+    val list = (1 to N).map { _ => line }.toList
+    process(list)
   }
-
-  def main(p: Array[String]): Unit = {
-    //  body { scala.io.StdIn.readLine }
-    main_file(p)
-  }
-
-  val fname = "src/main/scala/hackerrankfp/d200426_05/listgcd.txt"
-  def main_file(p: Array[String]): Unit = {
+  
+  /** main to run from the console */
+//  def main(p: Array[String]): Unit = body { scala.io.StdIn.readLine }
+  /** main to run from file */
+  def main(p: Array[String]): Unit = processFile("1.txt", body)
+  def processFile(name: String, process: (=> String) => Unit): Unit = {
+    val file = new java.io.File(this.getClass.getClassLoader.getResource(name).getFile)
     scala.util.Using(
-      scala.io.Source.fromFile(new java.io.File(fname))
+      scala.io.Source.fromFile(file)
     ) { src =>
       val it = src.getLines().map(_.trim)
-      body { it.next() }
-    }
+      process(it.next())
+    }.fold(_ => ???, identity)
   }
 
 }
