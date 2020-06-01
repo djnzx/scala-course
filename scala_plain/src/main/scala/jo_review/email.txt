@@ -1,0 +1,20 @@
+Hello!
+I have finished a review of your book.
+Firstly, I want to say thanks for allowing me to review that book. 
+Secondly, knowing you more than five years, having read all of your books, being an active reader of your blog,
+being mostly agree with your vision and approaches,
+it was a big surprise to me that you decided to explain OOP in terms of Java Scrips.On the other hand,
+JS perfectly fits in your concept, because it gives your ability to create classes without keyword new,
+but by using functions.Also, I want to say, that book is not just OOP for juniors,
+it is a kind of book that should be on the table to explain very serious things in a very relaxed manner.
+You have managed to teach almost all SDLC stages easy and simple at the same moment. Definitely, because of your experience.
+It covers all significant stages, not only coding but also everything is related to it.
+I attached the PDF of the book with marks (yellow and red).
+They are mostly typos; there is no difference between the red and yellow ones.
+
+I also attach the text file with notes you can take into consideration.
+I haven't dived deeply into the JS code provided, but I have cloned the repo. It works. And it is cool.
+It is extremely good that you have different tags to let the reader switch between them and see incremental changes.
+
+Thanks!
+My Best wishes!

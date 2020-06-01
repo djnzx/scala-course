@@ -1,59 +1,53 @@
-I'm impressed how you were able to keep moderate learning curve and made it steep enough
+I'm impressed by how you were able to keep a moderate learning curve and made it steep enough
 very close to the end of the book
 
-- we write code not for computers and compilers.
+- we write code, not for computers and compilers.
 - we write the code for humans, for us, tomorrow.
-- it's easy to write spaghetti code, its's hard to write good readable code.
 
-- p31 - VISIBLE, ACCESSIBLE, NESTED ?
+- 31 - VISIBLE, ACCESSIBLE, NESTED ?
 but the second part of that sentence seems okay to me
 cool explanation
 
 + good that you started from visibility in the beginning
++ it is great, that you provide the tasks, a lot of them to involve the reader into investigations and further reading
 
-very cool that you provide the tasks to involve reader into investigations and further reading
-- p32
-  don't you want to
+- 32
+- don't you want to
   explain that `undefined` means `nothing` in terms of assignment operation?
+- don't you want to
   put scheme of memory model variable/reference/memory/heap/stack
-    probably, it will be easier further
-    (Yes, in Scala we don't have primitives)
-  And I have found it easier to teach about JMM on the lesson 5 out of 50
+  probably, it will be easier further (I found it is easier to teach about JMM on lesson 5 out of 50)
 
-- p33
+- 33
   When you buy a car, it has either two pedals or three one =>
   - When you buy a car, it has either two pedals or three
   - When you buy a car, it has either two pedals or three ones
 
-- p38
-  very cool, that you have explained that all operators are shortcut for object methods
+- 38
+  very cool, that you have explained that all operators are shortcuts for object methods
 
-- p39
+- 39
   missed closing diamond bracket
 
-- p42
+- 42
   typo
 
-- p43
-  according to the declaration on p42 function vault has 2 arguments: storage and entrance
+- 43
+  according to the declaration on p42, function vault has 2 arguments: storage and entrance
   but in the code snippet on p.43 you have passed only one, and it is an entrance (2nd)
   where is the 1st one (storage)
 - 52 unit testing
-- 54 cool that you have introduced testing in so early stage
 - 55 mocking very cool explanation
-- 59 frameworks not only larger, but they are also have moe constraints you should obey to.
-- 56 dependency injection!
-- 61 build
-- 63 cool build-automation explanation
-
-* surprised that JS
-* cool degree of teaching
+     but maybe even get rid of the part of the code `console.log = ....`
+     even you have mentioned that's a terrible practice
+     wouldn't it be better if you just finish with: "there is no way to test that code"?
+- 59 frameworks not only larger, but they are also put more constraints you should obey.
 
 - 65 typos where->were, unussable->unusable,
      programms -> programs (???)
 
 - 76. isn't R4 (destroy) is the outcome of meeting the bullet and the invader?
-      because user only moves and fires
+      because the user only moves and fires
 - 76. are lacking => are lack?
 
 - 78. according to implementation - it looks like there is only one bullet on the screen at the moment
@@ -61,19 +55,17 @@ very cool that you provide the tasks to involve reader into investigations and f
 - 85. grammar. is it -> it is
 
 - 97 is there any reason for JS developers to know about thread safety?
-     may be the hidden goal is to motivate them to learn Java? )))
+     maybe the hidden goal is to motivate them to learn Java? )))
+     JS is designed the way not to deal with concurrency
 
 - 100. very cool mention about implementing which 'isn't in the scope
-
-* not all the paragraphs are justified left to right some of them aligned to the left side (p102, 104...)
-
 - 105. utility object. ha-ha. finally )))
 - 105. why did you call it a vector? actually it is something like delta. what is the semantic?
 - 106-107. your implementation of smart_div is actually a function off_borders.
            with just passing underlying div as a constructor parameter
            to make it object and really encapsulate wouldn't it be better if
            you delegate the underlying `d` behavior to the smart_div object?
-- 108. patches? maybe filters, behaviors, extras ...
+- 108. patches? maybe filters, behaviors, extras, enrichers ...
 
 - 112. Refactor the method patched.move() in order get rid of the reduce(). =>
        Refactor the method patched.move() to get rid of the reduce()
@@ -82,3 +74,6 @@ very cool that you provide the tasks to involve reader into investigations and f
 
 - 113. remove `sure` ?
 - 118. don't you want to put the link to your blog about shades af immutability?
+
+* not all the paragraphs are justified left to right some of them aligned to the left side (p102, 104...)
+* don't you want to put more links to your blog?
