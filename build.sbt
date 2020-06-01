@@ -42,7 +42,16 @@ lazy val whole = (project in file("."))
   .settings(
     name := "learn-scala",
   )
-  .aggregate(scala_plain, fp_red, lihaoyi, typesafe, typelevel, mix, degoes)
+  .aggregate(
+    scala_plain,
+    fp_red,
+    lihaoyi,
+    typesafe,
+    typelevel,
+    mix,
+    degoes,
+    dotty
+  )
 
 /**
   * plain Scala
@@ -214,6 +223,15 @@ lazy val degoes = (project in file("degoes"))
     )
   )
 
+
+lazy val dotty = (project in file("dotty"))
+  .settings(
+    scalaVersion := "0.24.0-RC1"
+  )
+  .settings(
+    libraryDependencies ++= Seq(
+    )
+  )
 //initialCommands in console := "import scalaz._, Scalaz._"
 //addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
 //addCommandAlias("check", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")

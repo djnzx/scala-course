@@ -6,4 +6,7 @@ resolvers ++= Seq(
 addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
 
 // scalatest section
-addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.10")
+//addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.10")
+
+// compile Scala 3
+addSbtPlugin("ch.epfl.lamp" % "sbt-dotty" % "0.4.1")
