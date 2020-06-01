@@ -19,27 +19,26 @@ object SequenceFullOfColors {
         case 'Y' => this.copy(y = y + 1)
         case 'B' => this.copy(b = b + 1)
       }
-      if ((math.abs(c2.r - c2.g)<=1) && (math.abs(c2.y - c2.b)<=1)) Some(c2) 
+      if ((math.abs(c2.r - c2.g)<=1) && (math.abs(c2.y - c2.b)<=1)) Some(c2)
       else None
     }
   }
   def represent(value: Boolean): String = if (value) "True" else "False"
-  
+
   def processOne(s: String): Boolean = {
     def processOneR(i: Int, cco: Option[CC]): Option[CC] = cco match {
       case None => None
-      case Some(cc) => if (i < s.length) processOneR(i+1, cc.process(s(i))) else cco 
+      case Some(cc) => if (i < s.length) processOneR(i+1, cc.process(s(i))) else cco
     }
     processOneR(0, Some(CC(0, 0, 0, 0))) match {
       case None => false
-      case Some(CC(r, g, y, b)) => r == g && y == b 
+      case Some(CC(r, g, y, b)) => r == g && y == b
     }
   }
-  
+
   /** core implementation */
-  def process(data: List[String]) = {
+  def process(data: List[String]) =
     data map processOne map represent
-  }
 
   def body(line: => String): Unit = {
     val N = line.toInt
