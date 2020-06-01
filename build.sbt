@@ -1,4 +1,4 @@
-import Dependencies.{Libraries, Versions}
+import Dependencies.{Libraries, Versions, pf}
 import Dependencies.Libraries.CompilerPlugins
 import sbt.Keys._
 
@@ -82,11 +82,11 @@ lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "com.lihaoyi"       %% "os-lib"       % "0.7.0",
-      "com.lihaoyi"       %% "pprint"       % "0.5.9",
-      "com.lihaoyi"       %% "scalatags"    % "0.9.1",
-      "com.lihaoyi"       %% "geny"         % "0.6.0",
-      "com.lihaoyi"       %% "upickle"      % "1.1.0",
+      pf.lihaoyi         %% "os-lib"       % "0.7.0",
+      pf.lihaoyi         %% "pprint"       % "0.5.9",
+      pf.lihaoyi         %% "scalatags"    % "0.9.1",
+      pf.lihaoyi         %% "geny"         % "0.6.0",
+      pf.lihaoyi         %% "upickle"      % "1.1.0",
     )
   )
 

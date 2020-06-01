@@ -1,14 +1,14 @@
-package monads_basic
+package monad_basics
 
 /**
   * the problem:
   * having F[A], G[B], and f: (A, B) => C
   *
-  * approach 1:
+  * approach 1: narrow and flatMap
   * narrow G[B] to F[B]
   * and get F[C]
   */
-object NarrowApp extends App {
+object B1_Narrowing extends App {
   println(s"o2: $o2")
   println(s"e3: $e3")
   println("---")

@@ -1,4 +1,4 @@
-package monads_basic
+package monad_basics
 
 /**
   * the problem:
@@ -7,7 +7,7 @@ package monads_basic
   * we can get only:
   * F[G[A]] or G[F[A]]
   */
-object CombineApp extends App {
+object A_BasicProblem extends App {
   println(s"o2: $o2")
   println(s"e3: $e3")
   println("---")

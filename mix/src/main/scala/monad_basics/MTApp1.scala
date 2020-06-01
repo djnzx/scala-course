@@ -1,4 +1,4 @@
-package mt
+package monad_basics
 
 import cats.Monad
 import cats.data.{EitherT, Kleisli, Reader, State, Writer, WriterT}

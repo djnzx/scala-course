@@ -51,6 +51,7 @@ object Dependencies {
     val typesafe  = "com.typesafe"
     val slf4j     = "org.slf4j"
     val tpolecat  = "org.tpolecat"
+    val lihaoyi   = "com.lihaoyi"
   }
 
   object Libraries {
