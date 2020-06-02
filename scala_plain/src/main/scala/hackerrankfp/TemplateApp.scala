@@ -2,13 +2,6 @@ package hackerrankfp
 
 object TemplateApp {
 
-  implicit class StringToOps(s: String) {
-    def splitToInt: Array[Int] = s.split(" ").map(_.toInt)
-    def toVectorInt: Vector[Int] = splitToInt.toVector
-    def toListInt: List[Int] = splitToInt.toList
-    def toTuple2Int: (Int, Int) = { val a = splitToInt; (a(0), a(1)) }
-  }
-
   /** core implementation */
   def process(data: List[String]) = {
     println(data)
@@ -32,6 +25,13 @@ object TemplateApp {
       val it = src.getLines().map(_.trim)
       process(it.next())
     }.fold(_ => ???, identity)
+  }
+
+  implicit class StringToOps(s: String) {
+    def splitToInt: Array[Int] = s.split(" ").map(_.toInt)
+    def toVectorInt: Vector[Int] = splitToInt.toVector
+    def toListInt: List[Int] = splitToInt.toList
+    def toTuple2Int: (Int, Int) = { val a = splitToInt; (a(0), a(1)) }
   }
 
 }
