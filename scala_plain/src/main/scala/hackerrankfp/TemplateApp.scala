@@ -15,9 +15,7 @@ object TemplateApp {
   } 
   
   def body(line: => String): Unit = {
-    // read one line
     val N = line.toInt
-    // read N lines
     val list = (1 to N).map { _ => line }.toList
     process(list)
   }

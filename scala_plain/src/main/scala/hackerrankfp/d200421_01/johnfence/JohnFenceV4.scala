@@ -1,4 +1,4 @@
-package hackerrankfp.d200421_01
+package hackerrankfp.d200421_01.johnfence
 
 import scala.annotation.tailrec
 
@@ -50,7 +50,7 @@ object JohnFenceV4 {
   }
 
   def main_test2(args: Array[String]) {
-      val src = scala.io.Source.fromFile(new java.io.File("src/main/scala/hackerrankfp/d200421_01/test2big"))
+      val src = scala.io.Source.fromFile(new java.io.File("scala_plain/src/main/scala/hackerrankfp/d200421_01/test2big"))
       val _ = src.getLines().take(1).next()
       val fence = src.getLines().map(_.trim).next().split(" ").map(_.toInt).toVector
     val max = calcFence(fence).max

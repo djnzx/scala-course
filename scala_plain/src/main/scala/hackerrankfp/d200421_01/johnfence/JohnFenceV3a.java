@@ -1,4 +1,4 @@
-package hackerrankfp.d200421_01;
+package hackerrankfp.d200421_01.johnfence;
 
 import java.util.Arrays;
 import java.util.LinkedList;
