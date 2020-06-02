@@ -33,8 +33,8 @@ object CaptainPrime {
   def process(data: List[String]) = data
     .map { id => (id.contains('0'), isPrime(allToLeft(id)), isPrime(id), isPrime(allToRight(id))) }
     .map {
-      case (true, _,     _,     _    ) => "DEAD"
-      case (_,    _,     false, _    ) => "DEAD"
+      case (true, _,     _,     _    ) |
+           (_,    _,     false, _    ) => "DEAD"
       case (_,    true,  _,     true ) => "CENTRAL"
       case (_,    true,  _,     false) => "RIGHT"
       case (_,    false, _,     true ) => "LEFT"
