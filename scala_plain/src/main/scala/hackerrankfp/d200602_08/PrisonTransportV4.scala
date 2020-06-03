@@ -1,98 +1,59 @@
 package hackerrankfp.d200602_08
 
-import scala.collection.mutable
-import scala.collection.mutable.ArrayBuffer
-
 /**
   * https://www.hackerrank.com/challenges/prison-transport/problem
-  * doesn't pass one test
+  * quick, but wrong with 4 tests
   */
 object PrisonTransportV4 {
-  type MMap[A,B] = mutable.Map[A,B]
-  type MSet[A] = mutable.Set[A]
-  case class Hold(ids: ArrayBuffer[Int], cnt: ArrayBuffer[Int], 
-                  set: MMap[Int, MSet[Int]] = mutable.Map.empty, 
-                  join: ArrayBuffer[(Int, Int)] = ArrayBuffer.empty) {
-    def print = {
-      println(s"ids: $ids")
-      println(s"cnt: $cnt")
-      println(s"set: $set")
-    }
-  }
-  // pricing
   def priceOneGroup(n: Int): Int = math.ceil(math.sqrt(n)).toInt
   def priceAllGroups(xs: Iterable[Int]): Int = xs.toVector.map { priceOneGroup }.sum
   def priceTotal(N: Int, xs: Iterable[Int]): Int = N - xs.sum + priceAllGroups(xs)
-  var i = 0
-  def processPair(a: Int, b: Int, h: Hold): Unit = {
-//    println(i)
-//    i += 1
-    (h.ids(a), h.ids(b)) match {
+  
+  import scala.collection.mutable.ArrayBuffer
+  case class Counter(N: Int) {
+    private val id_g    = ArrayBuffer.fill[Int](N+1)(0)   // id    -> group mapping 
+    private val g_cnt   = ArrayBuffer.fill[Int](N+1)(0)   // group -> count
+    private val members = ArrayBuffer.fill[List[Int]](N+1)(Nil) // group -> members
+    
+    def groups = g_cnt.filter(_ > 0)
+    def print = {
+      println(s"id_g: $id_g")
+      println(s"g_cnt: $g_cnt")
+      println(s"members: $members")
+    }
+    def count(a: Int, b: Int): Unit = (id_g(a), id_g(b)) match {
       case (0, 0) =>
-//        println(s"A: $a $b")
-        // point to group
         val gid = a
-        h.ids(a) = gid
-        h.ids(b) = gid
-        // count the group elements
-        h.cnt(gid) = 2
-        // put the keys
-        h.set.addOne(gid -> mutable.Set(a, b))
+        id_g(a) = gid
+        id_g(b) = gid
+        g_cnt(gid) = 2
+        members(gid) = List(a,b)
 
-      case (gida, 0) =>
-//        println(s"B: $a $b")
-        // point to group
-        h.ids(b) = gida
-        // increment count
-        h.cnt(gida) += 1
-        // add the element
-        h.set(gida).add(b)
+      case (ga, 0) =>
+        id_g(b) = ga               // tie id->gid
+        g_cnt(ga) += 1             // inc counter
+        members(ga) ::= b          // add to set
 
-      case (0, gidb) =>
-//        println(s"C: $a $b")
-        // point to group
-        h.ids(a) = gidb
-        // increment count
-        h.cnt(gidb) += 1
-        // add the element
-        h.set(gidb).add(a)
-        
-      case (gida, gidb) =>
-        println(s"D: $a $b")
-        // set a += set b
-        println("D0")
-        println(s"cnta: ${h.cnt(a)}, cntb: ${h.cnt(b)}")
-        println(s"gida: $gida, gidb: $gidb")
-        val seta: Option[MSet[Int]] = h.set.get(a)
-        val setb: Option[MSet[Int]] = h.set.get(b)
-        println(seta)
-        println(setb)
-        h.set(gida).addAll(h.set(gidb))
-        println("D1")
-        // add counter
-        h.cnt(gida) += h.cnt(gidb)
-        println("D2")
-        // clear 2nd counter
-        h.cnt(gidb) = 0
-        println("D3")
-        // rewrite group number
-        h.set(gidb).foreach(k => h.ids(k) = gida)
-        println("D4")
-        // remove group b
-        h.set.remove(gidb)
-        println("D5")
+      case (0, gb) =>
+        id_g(a) = gb               // tie id->gid
+        g_cnt(gb) += 1             // inc counter
+        members(gb) ::= a          // add to set
+
+      case (ga, gb) =>
+        g_cnt(ga) += g_cnt(gb)     // add to GA counter
+        g_cnt(gb) = 0              // clear  GB counter
+        val seta = members(ga)     // a-members
+        val setb = members(gb)     // b-members
+        setb.foreach(id_g(_) = ga) // rewrite group number for GB
+        members(ga) = seta:::setb
+        members(gb) = Nil
     }
   }
   
-  def simplify(cnt: ArrayBuffer[Int]): Iterable[Int] = cnt.toVector.filter(_ > 0)
-  
-  def process(N: Int, pairs: Seq[(Int, Int)]): Int = {
-    val h = Hold(ArrayBuffer.fill[Int](N+1)(0), ArrayBuffer.fill[Int](N+1)(0))
-    pairs.foreach { case (a, b) => processPair(a, b, h) }
-    val groups = simplify(h.cnt)
-    h.print
-    println(s"g:$groups")
-    priceTotal(N, groups)
+  def process(n: Int, pairs: Seq[(Int, Int)]) = {
+    val c = Counter(n)
+    pairs.foreach { case (a, b) => c.count(a, b) }
+    priceTotal(n, c.groups)
   }
 
   def body(line: => String): Unit = {
@@ -106,9 +67,10 @@ object PrisonTransportV4 {
   /** main to run from the console */
   //  def main(p: Array[String]): Unit = body { scala.io.StdIn.readLine }
   /** main to run from file */
-  def main(p: Array[String]): Unit = processFile("prison2.txt", body)
+  def main(p: Array[String]): Unit = processFile("prison3.txt", body)
   def processFile(name: String, process: (=> String) => Unit): Unit = {
     val file = new java.io.File(this.getClass.getClassLoader.getResource(name).getFile)
+    if (!file.exists()) throw new RuntimeException("file not found")
     scala.util.Using(
       scala.io.Source.fromFile(file)
     ) { src =>
