@@ -24,6 +24,12 @@ public class CavityMap {
   }
 
   static String bytesToString(int[] bytes) {
+    byte[] bb = new byte[bytes.length];
+    for (int i = 0; i < bytes.length; i++) bb[i] = (byte) toChar(bytes[i]);
+    return new String(bb);
+  }
+
+  static String bytesToStringF(int[] bytes) {
     return Arrays.stream(bytes)
         .mapToObj(CavityMap::toChar)
         .map(String::valueOf)
