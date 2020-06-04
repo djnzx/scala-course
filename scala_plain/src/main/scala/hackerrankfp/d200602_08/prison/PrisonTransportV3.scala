@@ -1,63 +1,51 @@
-package hackerrankfp.d200602_08
-
-import scala.collection.mutable
+package hackerrankfp.d200602_08.prison
 
 /**
   * https://www.hackerrank.com/challenges/prison-transport/problem
   * doesn't pass one test
   */
-object PrisonTransportV2 {
+object PrisonTransportV3 {
 
-  type MMap[A,B] = mutable.Map[A,B]
-  type MSet[A] = mutable.Set[A]
-  
   import scala.collection.mutable
 
   def priceOneGroup(n: Int): Int = math.ceil(math.sqrt(n)).toInt
   
-  def priceAllGroups(xs: Iterable[Int]): Int = xs.toVector.map { priceOneGroup }.sum
+  def priceAllGroups(xs: Iterable[Int]): Int = xs.map { priceOneGroup }.sum
   
   def priceTotal(N: Int, xs: Iterable[Int]): Int = N - xs.sum + priceAllGroups(xs)
   
-  def processPair(a: Int, b: Int, m: MMap[Int, MSet[Int]]): MMap[Int, MSet[Int]] = {
+  val toJoin = mutable.ArrayBuffer[(Int, Int)]()
+
+  def processPair(a: Int, b: Int, m: mutable.Map[Int, Int]): mutable.Map[Int, Int] = {
     (m.contains(a), m.contains(b)) match {
-      case (false, false) =>
-        val ms = mutable.Set(a, b)
-        m.addOne(a -> ms)
-        m.addOne(b -> ms)
-
-      case (true,  false) =>
-        val ms = m(a) 
-        ms.add(b)  
-        m.addOne(b -> ms)
-
-      case (false, true ) =>
-        val ms = m(b)
-        ms.add(a)
-        m.addOne(a -> ms)
-        
-      case (true,  true ) => 
-        val ms1 = m(a)
-        val ms2 = m(b)
-        ms2.foreach(m.put(_, ms1))
-        ms1.addAll(ms2)
+      case (false, false) => m.addAll(Seq(a->a, b->a))
+      case (true,  false) => m.addOne(b -> m(a))
+      case (false, true ) => m.addOne(a -> m(b))
+      case (true,  true ) => toJoin.addOne(a -> b)  
     }
     m
   }
   
-  def simplify(m: MMap[Int, MSet[Int]]): Iterable[Int] = {
-    val a: Iterable[MSet[Int]] = m.values
-    val b: Set[MSet[Int]] = a.toSet
-    val c: Set[Int] = b.map { _.size }
-    c
-  }
-
+  def simplify(m: mutable.Map[Int, Int], join: mutable.ArrayBuffer[(Int, Int)]): Iterable[Int] = {
+    val joins = join.sortInPlace()
+    println(s" = ${joins.size}")
+    println(s" = ${joins}")
+    var i = 0
+    joins.foreach { case (k1, k2) =>
+      val v1 = m(k1)
+      val v2 = m(k2)
+      m.filter { case (_, v) => v == v2 }
+        .keys
+        .foreach { kk21 => m.put(kk21, v1) }
+    }
+    m
+      .groupBy { case (_, v) => v }  // group by values
+      .map { case (_, m) => m.size }
+  } // use only sizes of the group
+  
   def process(N: Int, pairs: Seq[(Int, Int)]): Int = {
-    val map = pairs.foldLeft(mutable.Map.empty[Int, MSet[Int]]) { case (m, (a,b)) => processPair(a, b, m) }
-    println(map)
-    val groups = simplify(map)
-    println(groups)
-    println(s"N = ${N}")
+    val map: mutable.Map[Int, Int] = pairs.foldLeft(mutable.Map.empty[Int, Int]) { case (m, (a,b)) => processPair(a, b, m) }
+    val groups = simplify(map, toJoin)
     priceTotal(N, groups)
   }
 

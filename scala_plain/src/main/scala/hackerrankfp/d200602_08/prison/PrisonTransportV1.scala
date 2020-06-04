@@ -1,4 +1,4 @@
-package hackerrankfp.d200602_08
+package hackerrankfp.d200602_08.prison
 
 /**
   * https://www.hackerrank.com/challenges/prison-transport/problem
