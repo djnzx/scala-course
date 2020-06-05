@@ -8,15 +8,15 @@ import scala.util.Try
 object TreeManager {
   // command representation 
   sealed trait Command
-  final case class CmdChangeValue(x: Int) extends Command
-  final case object CmdPrint extends Command
-  final case object CmdVisitLeft extends Command
-  final case object CmdVisitRight extends Command
-  final case object CmdVisitParent extends Command
-  final case class CmdVisitChild(n: Int) extends Command
-  final case class CmdInsertLeft(x: Int) extends Command
-  final case class CmdInsertRight(x: Int) extends Command
-  final case class CmdInsertChild(x: Int) extends Command
+  final case class CmdChangeValue(x: Int) extends Command // change current value
+  final case object CmdPrint extends Command              // print
+  final case object CmdVisitLeft extends Command          // navigate left
+  final case object CmdVisitRight extends Command         // navigate right
+  final case object CmdVisitParent extends Command        // navigate parent
+  final case class CmdVisitChild(n: Int) extends Command  // navigate to child N (from 1)
+  final case class CmdInsertLeft(x: Int) extends Command  // insert left rel to current
+  final case class CmdInsertRight(x: Int) extends Command // insert right rel to current
+  final case class CmdInsertChild(x: Int) extends Command // add a new child (to 0 pos)
   final case object CmdDelete extends Command
   // command parser
   def parse(s: String): Option[Command] = Try(s match {
