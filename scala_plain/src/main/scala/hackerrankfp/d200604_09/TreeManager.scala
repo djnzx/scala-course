@@ -1,12 +1,74 @@
 package hackerrankfp.d200604_09
 
+import scala.util.Try
+
 /**
   * https://www.hackerrank.com/challenges/tree-manager/problem
   */
 object TreeManager {
-  /** core implementation */
+  // command representation 
+  sealed trait Command
+  final case class CmdChangeValue(x: Int) extends Command
+  final case object CmdPrint extends Command
+  final case object CmdVisitLeft extends Command
+  final case object CmdVisitRight extends Command
+  final case object CmdVisitParent extends Command
+  final case class CmdVisitChild(n: Int) extends Command
+  final case class CmdInsertLeft(x: Int) extends Command
+  final case class CmdInsertRight(x: Int) extends Command
+  final case class CmdInsertChild(x: Int) extends Command
+  final case object CmdDelete extends Command
+  // command parser
+  def parse(s: String): Option[Command] = Try(s match {
+    case s"change $x"       => CmdChangeValue(x.toInt) 
+    case "print"            => CmdPrint 
+    case "visit left"       => CmdVisitLeft 
+    case "visit right"      => CmdVisitRight 
+    case "visit parent"     => CmdVisitParent 
+    case s"visit child $n"  => CmdVisitChild(n.toInt)
+    case s"insert left $x"  => CmdInsertLeft(x.toInt) 
+    case s"insert right $x" => CmdInsertRight(x.toInt) 
+    case s"insert child $x" => CmdInsertChild(x.toInt) 
+    case "delete"           => CmdDelete 
+  }).toOption
+  // tree representation
+  sealed trait XNode
+  final case object NodeEmpty extends XNode
+  final case class Node(value: Int, parent: XNode, children: Vector[XNode]) extends XNode
+  // trie implementation
+  class Trie {
+    private var root: XNode = NodeEmpty
+    private var curr: XNode = root
+    /**
+      * run the command
+      * internally change the state
+      * and optionally return the value
+      */
+    def run(cmd: Command): Option[Int] = {
+      println(s"trie.run: $cmd")
+      (cmd, curr) match {
+        case (CmdPrint, Node(value, _, _)) => Some(value)
+        case (_, _) => cmd match {
+          case CmdChangeValue(x) =>
+          case CmdVisitLeft      =>
+          case CmdVisitRight     =>
+          case CmdVisitParent    =>
+          case CmdVisitChild(n)  =>
+          case CmdInsertLeft(x)  =>
+          case CmdInsertRight(x) =>
+          case CmdInsertChild(x) =>
+          case CmdDelete =>
+          // TODO: remove after implementation
+          case CmdPrint =>
+        }
+          None
+      }
+    }
+  }
+
   def process(data: List[String]) = {
-    println(data)
+    val t = new Trie
+    data flatMap parse flatMap t.run map { _.toString } mkString "\n"
   }
 
   def body(line: => String): Unit = {
@@ -28,12 +90,4 @@ object TreeManager {
       process(it.next())
     }.fold(_ => ???, identity)
   }
-
-  implicit class StringToOps(s: String) {
-    def splitToInt: Array[Int] = s.split(" ").map(_.toInt)
-    def toVectorInt: Vector[Int] = splitToInt.toVector
-    def toListInt: List[Int] = splitToInt.toList
-    def toTuple2Int: (Int, Int) = { val a = splitToInt; (a(0), a(1)) }
-  }
-
 }
