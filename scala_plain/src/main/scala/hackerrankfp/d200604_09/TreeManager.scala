@@ -1,11 +1,13 @@
 package hackerrankfp.d200604_09
 
-import scala.util.Try
-
 /**
   * https://www.hackerrank.com/challenges/tree-manager/problem
+  * 5 out of 19 don't pass the time limits
+  * https://en.wikipedia.org/wiki/Zipper_(data_structure)
   */
 object TreeManager {
+  import scala.collection.mutable.ArrayBuffer
+  import scala.util.Try
   // command representation 
   sealed trait Command
   final case class CmdChangeValue(x: Int) extends Command // change current value
@@ -32,13 +34,19 @@ object TreeManager {
     case "delete"           => CmdDelete 
   }).toOption
   // tree representation
-  sealed trait XNode
-  final case object NodeEmpty extends XNode
-  final case class Node(value: Int, parent: XNode, children: Vector[XNode]) extends XNode
+  final case class Node(var value: Int, 
+                        parent: Option[Node], 
+                        var pos: Int = 1, 
+                        children: ArrayBuffer[Node] = ArrayBuffer.empty) {
+    def renumberChi = {
+      children.zip(LazyList.from(1)).foreach { case (ch, n) => ch.pos = n }
+      this
+    }
+  }
   // trie implementation
   class Trie {
-    private var root: XNode = NodeEmpty
-    private var curr: XNode = root
+    private val root: Node = Node(0, None)
+    private var curr: Node = root
     /**
       * run the command
       * internally change the state
@@ -46,20 +54,36 @@ object TreeManager {
       */
     def run(cmd: Command): Option[Int] = {
       println(s"trie.run: $cmd")
-      (cmd, curr) match {
-        case (CmdPrint, Node(value, _, _)) => Some(value)
-        case (_, _) => cmd match {
-          case CmdChangeValue(x) =>
-          case CmdVisitLeft      =>
-          case CmdVisitRight     =>
-          case CmdVisitParent    =>
-          case CmdVisitChild(n)  =>
-          case CmdInsertLeft(x)  =>
+      cmd match {
+        case CmdPrint => Some(curr.value)
+        case _ => cmd match {
+          case CmdChangeValue(x) => curr.value = x
+          case CmdVisitLeft => curr = curr.parent.get.children(curr.pos-2)
+          case CmdVisitRight => 
+            curr = curr.parent.get.children(curr.pos)
+          case CmdVisitParent => curr = curr.parent.get
+          case CmdVisitChild(n) => curr = curr.children(n-1)
+          case CmdInsertLeft(x) =>
+            val myParent = curr.parent.get
+            val myPos = curr.pos - 1 // convert to 0-based
+            val ch = myParent.children
+            ch.insert(myPos, Node(x, Some(myParent), curr.pos))
+            myParent.renumberChi
           case CmdInsertRight(x) =>
-          case CmdInsertChild(x) =>
+            val myParent = curr.parent.get
+            val myPos0 = curr.pos - 1   // convert to 0-based
+            val chi = myParent.children // all my siblings and me
+            val node = Node(x, Some(myParent), curr.pos + 1)
+            chi.insert(myPos0+1, node)
+            myParent.renumberChi
+          case CmdInsertChild(x) => 
+            curr.children.prepend(Node(x, Some(curr), 0))
+            curr.renumberChi
           case CmdDelete =>
-          // TODO: remove after implementation
-          case CmdPrint =>
+            val newParent = curr.parent.get
+            newParent.children.remove(curr.pos-1)
+            newParent.renumberChi
+            curr = newParent
         }
           None
       }
@@ -74,7 +98,8 @@ object TreeManager {
   def body(line: => String): Unit = {
     val N = line.toInt
     val list = (1 to N).map { _ => line }.toList
-    process(list)
+    val r = process(list)
+    println(r)
   }
 
   /** main to run from the console */
@@ -87,7 +112,8 @@ object TreeManager {
       scala.io.Source.fromFile(file)
     ) { src =>
       val it = src.getLines().map(_.trim)
-      process(it.next())
+      try { process(it.next()) } 
+      catch { case x: Throwable => x.printStackTrace() }
     }.fold(_ => ???, identity)
   }
 }

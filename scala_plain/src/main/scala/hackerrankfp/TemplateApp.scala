@@ -23,7 +23,8 @@ object TemplateApp {
       scala.io.Source.fromFile(file)
     ) { src =>
       val it = src.getLines().map(_.trim)
-      process(it.next())
+      try { process(it.next()) }
+      catch { case x: Throwable => x.printStackTrace() }
     }.fold(_ => ???, identity)
   }
 

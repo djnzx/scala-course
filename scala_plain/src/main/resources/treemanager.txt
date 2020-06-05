@@ -1,12 +1,21 @@
-11
-change 1
+20
+change 986807
 print
-insert child 2
+change 296567
+print
+change 188703
+insert child 662395
 visit child 1
-insert right 3
-visit right
+insert left 761328
+visit left
 print
-insert right 4
+insert left 955007
 delete
 visit child 2
+visit left
+insert left 495344
 print
+insert right 571249
+visit right
+insert left 592419
+visit left
