@@ -1,11 +1,13 @@
 package hackerrankfp.d200604_09
 
+import scala.collection.mutable
+
 /**
   * https://www.hackerrank.com/challenges/tree-manager/problem
   * 5 out of 19 don't pass the time limits
   * https://en.wikipedia.org/wiki/Zipper_(data_structure)
   */
-object TreeManager {
+object TreeManagerV2Mutable {
   import scala.collection.mutable.ArrayBuffer
   import scala.util.Try
   // command representation 
@@ -33,6 +35,7 @@ object TreeManager {
     case s"insert child $x" => CmdInsertChild(x.toInt) 
     case "delete"           => CmdDelete 
   }).toOption
+  //////////////////////////////////////////////////////////////////////
   // tree representation
   final case class Node(var value: Int, 
                         parent: Option[Node], 
@@ -47,13 +50,15 @@ object TreeManager {
   class Trie {
     private val root: Node = Node(0, None)
     private var curr: Node = root
+    private var idx: Int = 0
+    val timer = ArrayBuffer(0L,0L)
     /**
       * run the command
       * internally change the state
       * and optionally return the value
       */
     def run(cmd: Command): Option[Int] = {
-      println(s"trie.run: $cmd")
+//      println(s"trie.run: $cmd")
       cmd match {
         case CmdPrint => Some(curr.value)
         case _ => cmd match {
@@ -76,9 +81,17 @@ object TreeManager {
             val node = Node(x, Some(myParent), curr.pos + 1)
             chi.insert(myPos0+1, node)
             myParent.renumberChi
-          case CmdInsertChild(x) => 
+          case CmdInsertChild(x) =>
+            val t0 = now
             curr.children.prepend(Node(x, Some(curr), 0))
+            val spent1 = delta(t0)
+            
+            val t = now
             curr.renumberChi
+            val spent2 = delta(t0)
+            
+            timer(0)+=spent1
+            timer(1)+=spent2
           case CmdDelete =>
             val newParent = curr.parent.get
             newParent.children.remove(curr.pos-1)
@@ -90,16 +103,21 @@ object TreeManager {
     }
   }
 
+  //////////////////////////////////////////////////////////////////////
   def process(data: List[String]) = {
     val t = new Trie
-    data flatMap parse flatMap t.run map { _.toString } mkString "\n"
+    val r = data flatMap parse flatMap t.run map { _.toString } mkString "\n"
+    (r, t.timer)
   }
 
   def body(line: => String): Unit = {
+    val t0 = now
     val N = line.toInt
     val list = (1 to N).map { _ => line }.toList
-    val r = process(list)
+    val (r, t) = process(list)
     println(r)
+    println(t)
+    println(delta(t0))
   }
 
   /** main to run from the console */
@@ -116,4 +134,6 @@ object TreeManager {
       catch { case x: Throwable => x.printStackTrace() }
     }.fold(_ => ???, identity)
   }
+  def now = System.currentTimeMillis()
+  def delta(t0: Long): Long = System.currentTimeMillis() - t0  
 }
