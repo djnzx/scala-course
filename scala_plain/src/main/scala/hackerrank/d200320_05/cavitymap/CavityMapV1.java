@@ -7,7 +7,10 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class CavityMap {
+/**
+ * https://www.hackerrank.com/challenges/cavity-map/problem
+ */
+public class CavityMapV1 {
   
   static int[][] convert(String[] strings) {
     int len = strings.length;
@@ -31,14 +34,14 @@ public class CavityMap {
 
   static String bytesToStringF(int[] bytes) {
     return Arrays.stream(bytes)
-        .mapToObj(CavityMap::toChar)
+        .mapToObj(CavityMapV1::toChar)
         .map(String::valueOf)
         .collect(Collectors.joining());
   }
 
   static String[] represent(int[][] a) {
     return Arrays.stream(a)
-        .map(CavityMap::bytesToString)
+        .map(CavityMapV1::bytesToString)
         .toArray(String[]::new);
   }
 
