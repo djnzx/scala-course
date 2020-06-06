@@ -1,4 +1,4 @@
-package degoes.ziointro
+package ziointro
 
 import zio._
 
