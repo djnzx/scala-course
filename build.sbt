@@ -86,16 +86,20 @@ lazy val fp_red = (project in file("fp_red"))
   * https://www.lihaoyi.com
   * https://www.handsonscala.com
   * https://github.com/lihaoyi
+  * 
+  * +request
+  * +ujson: upickle vs ujson
+  * +api_macros
   */
 lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      pf.lihaoyi         %% "os-lib"       % "0.7.0",
+      pf.lihaoyi         %% "os-lib"       % "0.7.0", // https://github.com/lihaoyi/os-lib
       pf.lihaoyi         %% "pprint"       % "0.5.9",
       pf.lihaoyi         %% "scalatags"    % "0.9.1",
       pf.lihaoyi         %% "geny"         % "0.6.0",
-      pf.lihaoyi         %% "upickle"      % "1.1.0",
+      pf.lihaoyi         %% "upickle"      % "1.1.0", // http://www.lihaoyi.com/upickle
     )
   )
 
