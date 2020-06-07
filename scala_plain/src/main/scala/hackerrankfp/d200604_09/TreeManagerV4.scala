@@ -2,11 +2,11 @@ package hackerrankfp.d200604_09
 
 /**
   * https://www.hackerrank.com/challenges/tree-manager/problem
-  * passes all the tests
-  * Immutable State
-  * but still uses Mutable Tree
+  * passes all the tests,
+  * State is already immutable from V3
+  * TODO: Immutable Tree
   */
-object TreeManagerV3 {
+object TreeManagerV4 {
   import scala.collection.mutable.ArrayBuffer
   import scala.util.Try
   // command representation 

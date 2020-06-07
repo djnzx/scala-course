@@ -2,7 +2,7 @@ package hackerrankfp.d200604_09
 
 /**
   * https://www.hackerrank.com/challenges/tree-manager/problem
-  * pass all the tests, but still uses 
+  * passes all the tests, but still uses 
   * Mutable Tree and mutable Path 
   */
 object TreeManagerV2Mutable {
