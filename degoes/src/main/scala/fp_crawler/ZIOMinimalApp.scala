@@ -1,4 +1,4 @@
-package degoes.fp_crawler
+package fp_crawler
 
 import java.io.IOException
 

@@ -3,3 +3,11 @@ https://stackoverflow.com/questions/11451535/gitignore-is-ignored-by-git
 git rm -r --cached .
 git add .
 git commit -m "fixed untracked files"
+
+-----------------
+git branch - show all branches and point default one
+git branch `abc` - create branch `abc` and switch to it (?)
+-----------------
+git checkout `abc` - switches to `abc`
+-----------------
+git commit -m "git.txt"
