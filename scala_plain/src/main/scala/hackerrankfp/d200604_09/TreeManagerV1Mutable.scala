@@ -105,7 +105,7 @@ object TreeManagerV1Mutable {
   /** main to run from the console */
   //  def main(p: Array[String]): Unit = body { scala.io.StdIn.readLine }
   /** main to run from file */
-  def main(p: Array[String]): Unit = processFile("treemanager.txt", body)
+  def main(p: Array[String]): Unit = processFile("treemanager100K.txt", body)
   def processFile(name: String, process: (=> String) => Unit): Unit = {
     val file = new java.io.File(this.getClass.getClassLoader.getResource(name).getFile)
     scala.util.Using(

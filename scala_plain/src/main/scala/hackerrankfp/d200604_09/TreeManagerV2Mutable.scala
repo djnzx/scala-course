@@ -1,11 +1,9 @@
 package hackerrankfp.d200604_09
 
-import scala.collection.mutable
-
 /**
   * https://www.hackerrank.com/challenges/tree-manager/problem
-  * 5 out of 19 don't pass the time limits
-  * https://en.wikipedia.org/wiki/Zipper_(data_structure)
+  * pass all the tests, but still uses 
+  * Mutable Tree and mutable Path 
   */
 object TreeManagerV2Mutable {
   import scala.collection.mutable.ArrayBuffer
@@ -35,68 +33,61 @@ object TreeManagerV2Mutable {
     case s"insert child $x" => CmdInsertChild(x.toInt) 
     case "delete"           => CmdDelete 
   }).toOption
-  //////////////////////////////////////////////////////////////////////
   // tree representation
-  final case class Node(var value: Int, 
-                        parent: Option[Node], 
-                        var pos: Int = 1, 
-                        children: ArrayBuffer[Node] = ArrayBuffer.empty) {
-    def renumberChi = {
-      children.zip(LazyList.from(1)).foreach { case (ch, n) => ch.pos = n }
-      this
+  final case class Node(var value: Int, children: ArrayBuffer[Node] = ArrayBuffer.empty)
+  // path node representation
+  final case class PathNode(link: Node, var pos: Int, parent: Option[Node]) {
+    def this(link: Node, pos: Int, parent: Node) = this(link, pos, Some(parent))
+  }
+  object PathNode {
+    def root(node: Node) = PathNode(node, 1, None)
+  }
+  
+  // path representation
+  class Path(root: Node) {
+    var chain = List(PathNode.root(root))
+    private def curr: PathNode = chain.head
+    private def parent: Node = curr.parent.get
+    private def currNode: Node = curr.link
+    private def currPos: Int = curr.pos
+    private def curChi: ArrayBuffer[Node] = currNode.children
+    private def curSiblings: ArrayBuffer[Node] = parent.children
+
+    def currVal: Int = currNode.value
+    def changeValue(x: Int): Unit = currNode.value = x
+    def moveL: Unit = chain match { case h::t => chain = h.copy(pos = h.pos - 1, link = parent.children(h.pos-2))::t}
+    def moveR: Unit = chain match { case h::t => chain = h.copy(pos = h.pos + 1, link = parent.children(h.pos))::t}
+    def moveUp: Unit = chain = chain.tail
+    def moveDown(n: Int): Unit = chain = new PathNode(currNode.children(n-1), n, currNode)::chain
+    def insertLeft(x: Int): Unit = {
+      curSiblings.insert(currPos-1, Node(x))
+      curr.pos += 1
+    }
+    def insertRight(x: Int): Unit = 
+      curSiblings.insert(currPos, Node(x)) 
+    def insertChild(x: Int): Unit =
+      curChi.prepend(Node(x))
+    def delete: Unit = {
+      curSiblings.remove(currPos-1)
+      moveUp
     }
   }
   // trie implementation
   class Trie {
-    private val root: Node = Node(0, None)
-    private var curr: Node = root
-    private var idx: Int = 0
-    val timer = ArrayBuffer(0L,0L)
-    /**
-      * run the command
-      * internally change the state
-      * and optionally return the value
-      */
+    private val path: Path = new Path(Node(0))
     def run(cmd: Command): Option[Int] = {
-//      println(s"trie.run: $cmd")
       cmd match {
-        case CmdPrint => Some(curr.value)
+        case CmdPrint => Some(path.currVal)
         case _ => cmd match {
-          case CmdChangeValue(x) => curr.value = x
-          case CmdVisitLeft => curr = curr.parent.get.children(curr.pos-2)
-          case CmdVisitRight => 
-            curr = curr.parent.get.children(curr.pos)
-          case CmdVisitParent => curr = curr.parent.get
-          case CmdVisitChild(n) => curr = curr.children(n-1)
-          case CmdInsertLeft(x) =>
-            val myParent = curr.parent.get
-            val myPos = curr.pos - 1 // convert to 0-based
-            val ch = myParent.children
-            ch.insert(myPos, Node(x, Some(myParent), curr.pos))
-            myParent.renumberChi
-          case CmdInsertRight(x) =>
-            val myParent = curr.parent.get
-            val myPos0 = curr.pos - 1   // convert to 0-based
-            val chi = myParent.children // all my siblings and me
-            val node = Node(x, Some(myParent), curr.pos + 1)
-            chi.insert(myPos0+1, node)
-            myParent.renumberChi
-          case CmdInsertChild(x) =>
-            val t0 = now
-            curr.children.prepend(Node(x, Some(curr), 0))
-            val spent1 = delta(t0)
-            
-            val t = now
-            curr.renumberChi
-            val spent2 = delta(t0)
-            
-            timer(0)+=spent1
-            timer(1)+=spent2
-          case CmdDelete =>
-            val newParent = curr.parent.get
-            newParent.children.remove(curr.pos-1)
-            newParent.renumberChi
-            curr = newParent
+          case CmdChangeValue(x) => path.changeValue(x)
+          case CmdVisitLeft => path.moveL
+          case CmdVisitRight => path.moveR
+          case CmdVisitParent => path.moveUp
+          case CmdVisitChild(n) => path.moveDown(n)
+          case CmdInsertLeft(x) => path.insertLeft(x)
+          case CmdInsertRight(x) => path.insertRight(x)
+          case CmdInsertChild(x) => path.insertChild(x)
+          case CmdDelete => path.delete
         }
           None
       }
@@ -107,23 +98,20 @@ object TreeManagerV2Mutable {
   def process(data: List[String]) = {
     val t = new Trie
     val r = data flatMap parse flatMap t.run map { _.toString } mkString "\n"
-    (r, t.timer)
+    r
   }
 
   def body(line: => String): Unit = {
-    val t0 = now
     val N = line.toInt
     val list = (1 to N).map { _ => line }.toList
-    val (r, t) = process(list)
+    val r = process(list)
     println(r)
-    println(t)
-    println(delta(t0))
   }
 
   /** main to run from the console */
   //  def main(p: Array[String]): Unit = body { scala.io.StdIn.readLine }
   /** main to run from file */
-  def main(p: Array[String]): Unit = processFile("treemanager.txt", body)
+  def main(p: Array[String]): Unit = processFile("treemanager100K.txt", body)
   def processFile(name: String, process: (=> String) => Unit): Unit = {
     val file = new java.io.File(this.getClass.getClassLoader.getResource(name).getFile)
     scala.util.Using(
