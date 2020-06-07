@@ -1,0 +1,21 @@
+20
+change 986807
+print
+change 296567
+print
+change 188703
+insert child 662395
+visit child 1
+insert left 761328
+visit left
+print
+insert left 955007
+delete
+visit child 2
+visit left
+insert left 495344
+print
+insert right 571249
+visit right
+insert left 592419
+visit left

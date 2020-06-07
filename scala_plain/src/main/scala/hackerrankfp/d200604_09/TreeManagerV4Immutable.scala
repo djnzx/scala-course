@@ -3,12 +3,11 @@ package hackerrankfp.d200604_09
 /**
   * https://www.hackerrank.com/challenges/tree-manager/problem
   * passes all the tests,
-  * State is already immutable from V3
-  * TODO: Immutable Tree
+  * Immutable State, Immutable Tree
   */
-object TreeManagerV4 {
-  import scala.collection.mutable.ArrayBuffer
+object TreeManagerV4Immutable {
   import scala.util.Try
+  import scala.collection.immutable.VectorBuilder
   // command representation 
   sealed trait Command
   final case class CmdChangeValue(x: Int) extends Command // change current value
@@ -35,47 +34,75 @@ object TreeManagerV4 {
     case "delete"           => CmdDelete
   }).toOption
   // tree representation
-  // FIXME: mutable value and mutable children list
-  final case class Node(var value: Int, children: ArrayBuffer[Node] = ArrayBuffer.empty)
+  final case class Node(value: Int, children: Vector[Node] = Vector.empty)
   // path node representation
   final case class PathNode(link: Node, pos: Int, parent: Option[Node])
+  // recursively update two immutable structures
+  def updated(chain: List[PathNode], newNode: Node): List[PathNode] = chain match {
+    case h::Nil =>
+      val newPathNode = h.copy(link = newNode)
+      newPathNode::Nil
+    case h::t =>
+      val parent = h.parent.get
+      val newChildren = parent.children.updated(h.pos-1, newNode)
+      val newParent = h.parent.get.copy(children = newChildren)
+      val newPathNode = h.copy(link = newNode, parent = Some(newParent))
+      newPathNode::updated(t, newParent)
+  }
   // path representation: List[PathNode]
   case class Path(chain: List[PathNode]) {
-    private def curr = chain.head
+    private def curr        = chain.head
     private def currNode    = curr.link
     private def curSiblings = curr.parent.get.children
-
+    private def insertAt[A](v: Vector[A], pos: Int, x: A): Vector[A] = {
+      val (left, right) = (v.slice(0, pos), v.slice(pos, v.size))
+      val vb = new VectorBuilder[A]
+      vb ++= left
+      vb += x
+      vb ++= right
+      vb.result()
+    } 
+    private def removeAt[A](v: Vector[A], pos: Int): Vector[A] = {
+      val left = v.slice(0, pos)
+      val right = v.slice(pos+1, v.size)
+      left ++ right
+    } 
+    
     def value: Int = currNode.value
     def moveL = chain match { case h::t => Path(h.copy(pos = h.pos - 1, link = curSiblings(h.pos-2))::t) }
     def moveR = chain match { case h::t => Path(h.copy(pos = h.pos + 1, link = curSiblings(h.pos))::t) }
     def moveUp = Path(chain.tail)
     def moveDown(n: Int) = Path(PathNode(currNode.children(n-1), n, Some(currNode))::chain)
-    // FIXME: tree mutation
     def changeValue(x: Int) = {
-      currNode.value = x
-      this
+      val newNode = currNode.copy(value = x)
+      Path(updated(chain, newNode))
     }
-    // FIXME: tree mutation
     def insertLeft(x: Int) = {
-      curSiblings.insert(curr.pos-1, Node(x))
-      chain match { case h::t => Path(h.copy(pos = h.pos + 1)::t) }
+      val newParent = curr.parent.get.copy(children = insertAt(curSiblings, curr.pos-1, Node(x)))
+      Path(chain match {
+        case h::t => h.copy(parent = Some(newParent), pos = h.pos + 1)::updated(t, newParent)
+      })
     }
-    // FIXME: tree mutation
     def insertRight(x: Int) = {
-      curSiblings.insert(curr.pos, Node(x))
-      this
+      val newParent = curr.parent.get.copy(children = insertAt(curSiblings, curr.pos, Node(x)))
+      Path(chain match {
+        case h::t => h.copy(parent = Some(newParent))::updated(t, newParent)
+      })
     }
-    // FIXME: tree mutation
     def insertChild(x: Int) = {
-      currNode.children.prepend(Node(x))
-      this
+      val newChildren = Node(x) +: currNode.children
+      val newNode = currNode.copy(children = newChildren)
+      Path(updated(chain, newNode))
     }
-    // FIXME: tree mutation
     def delete = {
-      curSiblings.remove(curr.pos-1)
-      moveUp
+      val newParentChildren = removeAt(curSiblings, curr.pos-1)
+      val newParent = curr.parent.get.copy(children = newParentChildren)
+      Path(chain match {
+        case _::t => updated(t, newParent)
+      })
     }
   }
+  // run one command on the state
   def run(path: Path, cmd: Command): (Path, Option[Int]) = cmd match {
     case CmdPrint => (path, Some(path.value))
     case _ => (cmd match {
@@ -90,7 +117,7 @@ object TreeManagerV4 {
       case CmdDelete         => path.delete
     }, None)
   }
-
+  // process all commands
   def process(data: List[String]) = {
     // initial state - list from one node points to our list with 1 elem
     val p0 = Path(List(PathNode(Node(0), 1, None)))
@@ -116,7 +143,7 @@ object TreeManagerV4 {
   /** main to run from the console */
   //  def main(p: Array[String]): Unit = body { scala.io.StdIn.readLine }
   /** main to run from file */
-  def main(p: Array[String]): Unit = processFile("treemanager100K.txt", body)
+  def main(p: Array[String]): Unit = processFile("treemanager2.txt", body)
   def processFile(name: String, process: (=> String) => Unit): Unit = {
     val file = new java.io.File(this.getClass.getClassLoader.getResource(name).getFile)
     scala.util.Using(
