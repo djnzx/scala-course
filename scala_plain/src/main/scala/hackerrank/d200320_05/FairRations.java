@@ -3,7 +3,10 @@ package hackerrank.d200320_05;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class Problems200320 {
+/**
+ * https://www.hackerrank.com/challenges/fair-rations/problem
+ */
+public class FairRations {
   // all even
   static boolean isDone(int[] amount) {
     return Arrays.stream(amount).allMatch(n -> (n & 1) == 0);
