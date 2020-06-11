@@ -1,8 +1,8 @@
-package fp_red.red09
+package fp_red.red09.playground
 
-import scala.language.implicitConversions
+import fp_red.red09.{Location, ParseError, Parsers}
 
-object Impl001 {
+object Playground2 {
 
   type Parser[+A] = String => Either[ParseError,A]
 
@@ -12,7 +12,7 @@ object Impl001 {
     (input: String) =>
       if (input.startsWith(s)) Right(s)
       else Left(Location(input).toError("Expected: " + s))
-    
+
   }
 
 }

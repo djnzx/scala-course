@@ -1,6 +1,8 @@
-package fp_red.red09
+package fp_red.red09.playground
 
-object Impl002 {
+import fp_red.red09.{Location, ParseError, Parsers}
+
+object Playground3 {
 
   type Parser[+A] = Location => Result[A]
 
@@ -13,11 +15,11 @@ object Impl002 {
   // we can use charsConsumed to update Location further
   case class Success[+A](get: A, charsConsumed: Int) extends Result[A]
   case class Failure(get: ParseError) extends Result[Nothing]
-  
+
   trait Idea002 extends Parsers[Parser] {
     override def scope[A](msg: String)(p: Parser[A]): Parser[A] =
       (s: Location) => p(s).mapError(_.push(s, msg))
     // 9.6.3
   }
-  
+
 }

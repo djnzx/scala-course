@@ -1,4 +1,4 @@
-package fp_red.red09
+package fp_red.red09.playground
 
 import scala.io.BufferedSource
 
