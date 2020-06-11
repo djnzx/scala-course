@@ -1,4 +1,4 @@
-package hackerrank.d200320_05;
+package hackerrank.d200320_05.fairrations;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -6,18 +6,16 @@ import java.util.Optional;
 /**
  * https://www.hackerrank.com/challenges/fair-rations/problem
  */
-public class FairRations {
+public class FairRationsV1 {
   // all even
   static boolean isDone(int[] amount) {
     return Arrays.stream(amount).allMatch(n -> (n & 1) == 0);
   }
 
-  // only one odd
   static boolean isWrongState(int[] amount) {
     return Arrays.stream(amount).filter(n -> (n & 1) == 1).count() == 1;
   }
 
-  // find the 1st
   static int findTheOdd(int[] bread) {
     for (int i = 0; i < bread.length; i++) {
       if ((bread[i]&1) == 1) return i;

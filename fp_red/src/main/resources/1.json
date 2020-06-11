@@ -1,0 +1,8 @@
+{
+  "Company name" : "Microsoft Corporation",
+  "Ticker" : "MSFT",
+  "Active" : true,
+  "Price" : 30.66,
+  "Shares outstanding" : 8.38e9,
+  "Related companies" : [ "HPQ", "IBM", "YHOO", "DELL", "GOOG" ]
+}
