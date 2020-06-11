@@ -77,7 +77,7 @@ trait Parsers[Parser[+_]] { self =>
     */
   implicit def string(s: String): Parser[String]
   // we expect
-  run(string("abc"))("abc") == Right("abc")
+//  run(string("abc"))("abc") == Right("abc")
 
   /**
     * 2. Attach syntax to the Parser 
@@ -95,7 +95,7 @@ trait Parsers[Parser[+_]] { self =>
     */
   def char(c: Char): Parser[Char] = string(c.toString) map { _.charAt(0) }
   // we expect: 
-  run(char('a'))('a'.toString) == Right('a')
+//  run(char('a'))('a'.toString) == Right('a')
 
   /**
     * 5. Always succeeds with the value a (Lifter)
@@ -109,7 +109,7 @@ trait Parsers[Parser[+_]] { self =>
   def succeedDefault[A](a: A): Parser[A] = string("") map (_ => a)
   def succeed[A](a: A): Parser[A]
   // we expect
-  run(succeed("whatever"))("any input") == Right("whatever")
+//  run(succeed("whatever"))("any input") == Right("whatever")
 
   /**
     * 6. Returns the portion of input inspected by p if successful
@@ -117,9 +117,9 @@ trait Parsers[Parser[+_]] { self =>
     */
   def slice[A](p: Parser[A]): Parser[String]
   // we expect:
-  run(slice(("a" | "b").many))("aaba") == Right("aaba")
+//  run(slice(("a" | "b").many))("aaba") == Right("aaba")
   // we can write
-  char('a').many.slice.map(_.length) // String.length is faster that List.size
+//  char('a').many.slice.map(_.length) // String.length is faster that List.size
 
   /** 7. more than 1 */
   def many1[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ }
@@ -131,10 +131,10 @@ trait Parsers[Parser[+_]] { self =>
     if (n<=0) succeed(Nil)
     else map2(p, listOfN(n-1, p)) { _ :: _ }
   // we expect
-  run(listOfN(3, "ab" | "cad"))("ababcad") == Right("ababcad")
-  run(listOfN(3, "ab" | "cad"))("cadabab") == Right("cadabab")
-  run(listOfN(3, "ab" | "cad"))("ababab") == Right("ababab")
-  run(listOfN(3, "ab" | "cad"))("cadcadcad") == Right("ababab")
+//  run(listOfN(3, "ab" | "cad"))("ababcad") == Right("ababcad")
+//  run(listOfN(3, "ab" | "cad"))("cadabab") == Right("cadabab")
+//  run(listOfN(3, "ab" | "cad"))("ababab") == Right("ababab")
+//  run(listOfN(3, "ab" | "cad"))("cadcadcad") == Right("ababab")
 
   /** 9. more than 0 */
   def many[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ } or succeed(Nil)
@@ -145,14 +145,14 @@ trait Parsers[Parser[+_]] { self =>
     */
   def or[A](p1: Parser[A], p2: => Parser[A]): Parser[A]
   // we expect
-  run(or(string("abra"),string("cadabra")))("abra") == Right("abra")
-  run(or(string("abra"),string("cadabra")))("cadabra") == Right("cadabra")
+//  run(or(string("abra"),string("cadabra")))("abra") == Right("abra")
+//  run(or(string("abra"),string("cadabra")))("cadabra") == Right("cadabra")
   // laws
-  val ab: Parser[String] = "a" | "b"
-  val ba: Parser[String] = "b" | "a" // ???
-  val aORb: Parser[String] = "a" or "b"
-  val aORbORc1: Parser[String] = "a" | ("b" | "c")
-  val aORbORc2: Parser[String] = ("a" | "b") | "c" // ???
+//  val ab: Parser[String] = "a" | "b"
+//  val ba: Parser[String] = "b" | "a" // ???
+//  val aORb: Parser[String] = "a" or "b"
+//  val aORbORc1: Parser[String] = "a" | ("b" | "c")
+//  val aORbORc2: Parser[String] = ("a" | "b") | "c" // ???
 
   /**
     * 11. context-sensitive primitive (chaining, based on previous value)
@@ -214,12 +214,12 @@ trait Parsers[Parser[+_]] { self =>
 
   // now, we can write
   // many returns List[A]. we need to count
-  val numA1: Parser[Int] = map(many(char('a')))(_.size)
+//  val numA1: Parser[Int] = map(many(char('a')))(_.size)
   // by given syntax
-  val numA2: Parser[Int] = char('a').many.map(_.size)
+//  val numA2: Parser[Int] = char('a').many.map(_.size)
   // we expect
-  run(numA1)("aaa") == Right(3)
-  run(numA2)("b") == Right(0)
+//  run(numA1)("aaa") == Right(3)
+//  run(numA2)("b") == Right(0)
 
   def label[A](msg: String)(p: Parser[A]): Parser[A]
 
@@ -312,15 +312,12 @@ trait Parsers[Parser[+_]] { self =>
 //      }
 //    }
 
-  val p = label("first magic word")("abra") **
-    " ".many **
-    label("second magic word")("cadabra")
-
-  val spaces = " ".many
-  val p1 = scope("magic spell") { "abra" ** spaces ** "cadabra" }
-  val p2 = scope("gibberish") { "abba" ** spaces ** "babba" }
-  val p3 = p1 or p2
-  val p4 = (attempt("abra" ** spaces ** "abra") ** "cadabra") or ("abra" ** spaces ** "cadabra!")
+//  val p = label("first magic word")("abra") ** " ".many ** label("second magic word")("cadabra")
+//  val spaces = " ".many
+//  val p1 = scope("magic spell") { "abra" ** spaces ** "cadabra" }
+//  val p2 = scope("gibberish") { "abba" ** spaces ** "babba" }
+//  val p3 = p1 or p2
+//  val p4 = (attempt("abra" ** spaces ** "abra") ** "cadabra") or ("abra" ** spaces ** "cadabra!")
 
   /**
     * just syntax

@@ -1,7 +1,7 @@
-package fpinscala
-package c09parsing
+package fp_red.red09
 
-import ReferenceTypes._
+import fp_red.red09.ReferenceTypes._
+
 import scala.util.matching.Regex
 
 object ReferenceTypes {
@@ -127,7 +127,7 @@ object Reference extends Parsers[Parser] {
       case f@Failure(_,_) => f
     }
 
-  /* We provide an overridden version of `many` that accumulates
+  /* overridden version of `many` that accumulates
    * the list of results using a monolithic loop. This avoids
    * stack overflow errors for most grammars.
    */
@@ -138,8 +138,8 @@ object Reference extends Parsers[Parser] {
       def go(p: Parser[A], offset: Int): Result[List[A]] = {
         p(s.advanceBy(offset)) match {
           case Success(a,n)         => buf += a; go(p, offset+n)
-          case f @ Failure(e, true) => f
-          case     Failure(e, _)    => Success(buf.toList,offset)
+          case f @ Failure(_, true) => f
+          case     Failure(_, _)    => Success(buf.toList,offset)
         }
       }
       go(p, 0)
