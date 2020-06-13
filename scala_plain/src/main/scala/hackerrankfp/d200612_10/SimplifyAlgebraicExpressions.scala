@@ -8,13 +8,14 @@ object SimplifyAlgebraicExpressions {
   
   // representation
   case class Monom(k: Int, p: Int) extends Expression {
-    def negate = copy(k = -this.k)
     def isNeg: Boolean = k < 0
+    def isZero: Boolean = k == 0
+    def unary_- = copy(k = -this.k)
     def +(m2: Monom) = Polynom(Seq(this, m2)).squash
     def *(m: Monom) = Monom(k*m.k, p+m.p)
     def /(den: Int) = Monom(k/den, p)
     def toPolynom = Polynom.of((k, p))
-    override def toString: String = if (isNeg) mkString else s"+$mkString"
+    override def toString: String = if (isNeg) mkString else if (!isZero) s"+$mkString" else "" 
     def mkString = {
       // sign
       val ss = if (isNeg) "-" else ""
@@ -33,7 +34,7 @@ object SimplifyAlgebraicExpressions {
   }
   
   case class Polynom(ms: Seq[Monom]) extends Expression {
-    def negate = Polynom(ms map { _.negate })
+    def negate = Polynom(ms map { _.unary_- })
     def sort = Polynom(ms sortBy { -_.p } )
     def squash = Polynom(ms.groupBy(_.p)
       .map { case (p, sm) => (sm.map { _.k } .sum, p) }
@@ -76,24 +77,6 @@ object SimplifyAlgebraicExpressions {
   
   object MonomTest {
     import Console._
-    val data = mutable.LinkedHashMap(
-      Monom(5,2) -> "5x^2",
-      Monom(5,1) -> "5x",
-      Monom(5,0) -> "5",
-      Monom(-3,2) -> "-3x^2",
-      Monom(-3,1) -> "-3x",
-      Monom(-3,0) -> "-3",
-      Monom(-1,2) -> "-x^2",
-      Monom(-1,1) -> "-x",
-      Monom(1,1) -> "x",
-      Monom(0,0) -> "",
-      Monom(0,1) -> "",
-    )
-    val test = () => data.foreach { case (m, r) => 
-      if (m.mkString != r) 
-           println(s"${m.mkString}$RED != $RESET$r")
-      else println(s"${m.mkString}$GREEN == $RESET$r")
-    }
     val m1 = Monom(2,3)
     val m2 = Monom(5,2)
     val m3 = m1 * m2
@@ -137,10 +120,6 @@ object SimplifyAlgebraicExpressions {
   
   /** core implementation */
   def process(data: List[String]) = {
-    PolynomTest.test3()
-    PolynomTest.test4()
-    MonomTest.test2()
-//    println(data)
     data
   }
 
@@ -148,17 +127,7 @@ object SimplifyAlgebraicExpressions {
     val N = line.toInt
     val list = (1 to N).map { _ => line }.toList
     val r = process(list)
-//    r.foreach { println }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    r.foreach { println }
   }
 
   /** main to run from the console */
