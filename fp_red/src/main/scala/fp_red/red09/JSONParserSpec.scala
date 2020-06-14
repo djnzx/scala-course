@@ -27,10 +27,7 @@ class JSONParserSpec extends funspec.AnyFunSpec
 }
 """
 
-    val r: Either[ParseError, JSON] = parser(jsonTxt)
-    val json: JSON = r.getOrElse(???)
-    assert(json == 
-      JObject(Map("Shares outstanding" -> JNumber(8.38E9), "Price" -> JNumber(30.66), "Company name" -> JString("Microsoft Corporation"), "Related companies" -> JArray(Vector(JString("HPQ"), JString("IBM"), JString("YHOO"), JString("DELL"), JString("GOOG"))), "Ticker" -> JString("MSFT"), "Active" -> JBool(true)))
-    )
+    val r = parser(jsonTxt)
+    r.right.value should beJObject(Map("Shares outstanding" -> JNumber(8.38E9), "Price" -> JNumber(30.66), "Company name" -> JString("Microsoft Corporation"), "Related companies" -> JArray(Vector(JString("HPQ"), JString("IBM"), JString("YHOO"), JString("DELL"), JString("GOOG"))), "Ticker" -> JString("MSFT"), "Active" -> JBool(true)))
   }
 }
