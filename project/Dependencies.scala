@@ -22,15 +22,17 @@ object Dependencies {
     val doobie           = "0.9.0"
     val squants          = "1.6.0"
     val logback          = "1.2.3"
-    val scalaCheck       = "1.14.3"
-    val scalaTest        = "3.1.1"
-    val scalaTestPlus    = "3.1.1.1"
     val zio              = "1.0.0-RC18-2" // RC20
     val sqlPg            = "42.2.10"
     val sqlH2            = "1.4.200"
     val scalaz           = "7.2.30"
     val jsoup            = "1.13.1"
     val shapeless        = "2.3.3"
+
+    // testing
+    val scalaCheck       = "1.14.3"
+    val scalaTest        = "3.1.2"
+    val scalaTestPlus    = "3.1.1.1"
 
     // compiler plugins
     val silencer         = "1.6.0"
@@ -135,6 +137,11 @@ object Dependencies {
     val scalaCheck    = "org.scalacheck"    %% "scalacheck"      % Versions.scalaCheck
     val scalaTest     = "org.scalatest"     %% "scalatest"       % Versions.scalaTest
     val scalactic     = "org.scalactic"     %% "scalactic"       % Versions.scalaTest
+    /**
+      * scalatestplus - is a project by scalatest
+      * for integrations
+      * org.scalatestplus::scalacheck-1-14 - library to integrate: scalatest + scalacheck
+      */
     val scalaTestPlus = "org.scalatestplus" %% "scalacheck-1-14" % Versions.scalaTestPlus
 
     // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13

@@ -5,9 +5,14 @@ import org.scalatest._
 
 import scala.collection.mutable
 
-class SimplifyAlgebraicSpec extends funspec.AnyFunSpec {
+class SimplifyAlgebraicSpec extends funspec.AnyFunSpec 
+  with matchers.should.Matchers 
+  with OptionValues 
+  with Inside 
+  with Inspectors
+{
   describe("Monom") {
-    
+
     describe("Representation") {
       it("mkString: don't add the plus at the beginning") {
         mutable.LinkedHashMap(
@@ -42,7 +47,7 @@ class SimplifyAlgebraicSpec extends funspec.AnyFunSpec {
           .foreach { case (m, r) => assert (m.toString == r)}
       }
     }
-    
+
     describe("Operations") {
       it("isNeg") {
         assert(  Monom(-2, 3).isNeg)
@@ -84,19 +89,77 @@ class SimplifyAlgebraicSpec extends funspec.AnyFunSpec {
   }
 
   describe("Polynom") {
-    val p1 = Polynom.of((-12,3), (4,1), (-3,2), (-5,0))
-    val p2 = Polynom.of(( 12,3), (4,1), (-3,2), (-5,0))
-    
-    describe("Representation") {
-      it("should be represented in given order") {
-        assert(p1.toString == "-12x^3+4x-3x^2-5")
-        assert(p2.toString == "12x^3+4x-3x^2-5")
+    describe("Construction") {
+      it("2-nd constructor test") {
+        assert(Polynom.of((3,2)) == Polynom(Seq(Monom(3,2))))
+      }
+      it("2-nd constructor test: unsorted") {
+        assert(Polynom.of((2,2), (3,2)) == Polynom(Seq(Monom(2,2), Monom(3,2))))
+      }
+      it("empty constructor") {
+        assert(Polynom.empty == Polynom.of())
+        assert(Polynom.empty == Polynom(Nil))
       }
     }
     
+    describe("Representation") {
+      it("should be represented in given order, w/o.sorting") {
+        assert(Polynom.of((-12,3), (4,1), (-3,2), (-5,0)).toString == "-12x^3+4x-3x^2-5")
+        assert(Polynom.of(( 12,3), (4,1), (-3,2), (-5,0)).toString ==  "12x^3+4x-3x^2-5")
+        assert(Polynom.of((-12,3)).toString == "-12x^3")
+        assert(Polynom.of(( 12,3)).toString ==  "12x^3")
+      }
+    }
+
     describe("Operations") {
-      it("5") {
-        assert(Set.empty.size == 0)
+      it("isZero:") {
+        assert(Polynom(Nil).isZero)
+        assert(Polynom.of().isZero)
+        assert(Polynom.empty.isZero)
+      }
+      it("unary -") {
+        assert(-Polynom.of() == Polynom.of())
+        assert(-Polynom.of((-12,3), (4,1)) == Polynom.of((12,3), (-4,1)))
+      }
+      it("sort powers in descending order") {
+        assert(Polynom.of().sorted == Polynom.of())
+        assert(Polynom.of((2,2), (3,3)).sorted == Polynom.of((3,3), (2,2)))
+      }
+      it("squash: add the same powers 1") {
+        assert(Polynom.of((2,3), (3,3)).squash == Polynom.of((5,3)))
+      }
+      it("squash: add the same powers 2") {
+        assert(Polynom.of((1,0), (1,0), (1,0)).squash == Polynom.of((3,0)))
+      }
+      it("squash: remove K == 0") {
+        assert(Polynom.of((2,3), (-2,3)).squash == Polynom.empty)
+      }
+      it("squash: sort after squash") {
+        assert(Polynom.of((2,3), (3,3), (1,6)).squash == Polynom.of((1,6),(5,3)))
+      }
+      it("+:") {
+        val p1 = Polynom.of((2,2), (3,3)) // 2x^2+3x^3
+        val p2 = Polynom.of((3,2), (4,3)) // 3x^2+4x^3
+        val p3 = p1 + p2                  // 7x^3+5x^2
+        assert(p3 == Polynom.of((7,3),(5,2)))
+      }
+      it("*") {
+        val p1 = Polynom.of((2,1), (3,2)) // 2x+3x^2
+        val p2 = Polynom.of((3,3), (5,4)) // 3x^3+5x^4
+        val p3 = p1 * p2                  // 15x^6+19x^5+6x^4
+        assert(p3 == Polynom.of((15,6), (19,5), (6,4)))
+      }
+      it("/: just divide K by den") {
+        assert(Polynom.of((4,1), (6,2)) / 2 == Polynom.of((3,2), (2,1)))
+      }
+      it("/: don't take into account fraction") {
+        assert(Polynom.of((5,1), (7,2)) / 2 == Polynom.of((3,2), (2,1)))
+      }
+      it("/: remove K == 0 after 1") {
+        assert(Polynom.of((1,3), (7,2)) / 2 == Polynom.of((3,2)))
+      }
+      it("/: remove K == 0 after 2") {
+        assert(Polynom.of((1,3)) / 2 == Polynom.empty)
       }
     }
   }

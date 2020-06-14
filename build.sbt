@@ -83,6 +83,9 @@ lazy val fp_red = (project in file("fp_red"))
   .settings(
     libraryDependencies ++= Seq(
       Libraries.scalaCheck,
+      Libraries.scalaTest,
+      Libraries.scalaTestPlus,
+      Libraries.scalactic,
     )
   )
 
