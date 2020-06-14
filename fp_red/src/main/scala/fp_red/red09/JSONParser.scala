@@ -1,6 +1,5 @@
 package fp_red.red09
 
-import language.higherKinds
 import language.implicitConversions
 
 /**
@@ -9,6 +8,7 @@ import language.implicitConversions
 trait JSON
 
 object JSON {
+  // domain model representation
   case object JNull extends JSON
   case class JNumber(get: Double) extends JSON
   case class JString(get: String) extends JSON
@@ -16,6 +16,7 @@ object JSON {
   case class JArray(get: IndexedSeq[JSON]) extends JSON
   case class JObject(get: Map[String, JSON]) extends JSON
 
+  // actual implementation
   def jsonParser[Parser[+_]](P: Parsers[Parser]): Parser[JSON] = {
     // we'll hide the string implicit conversion and promote strings to tokens instead
     // this is a bit nicer than having to write token everywhere

@@ -7,7 +7,7 @@ import fp_red.c_answers.c08testing._
 import scala.language.implicitConversions
 import scala.util.matching.Regex
 
-/**
+/** case class to handle input data
   * contains whole input
   * and current position
   */
@@ -62,7 +62,6 @@ case class ParseError(stack: List[(Location,String)]) {
   def formatLoc(l: Location): String = s"${l.line}.${l.col}" 
 }
 
-// now, Parser[_], just a F[_], just a name
 trait Parsers[Parser[+_]] { self =>
   /**
     * 0. runner
@@ -107,7 +106,9 @@ trait Parsers[Parser[+_]] { self =>
     * (say if they provide a custom implementation of `map`, breaking the cycle)
     */
   def succeedDefault[A](a: A): Parser[A] = string("") map (_ => a)
+
   def succeed[A](a: A): Parser[A]
+  def fail[A](msg: String): Parser[A]
   // we expect
 //  run(succeed("whatever"))("any input") == Right("whatever")
 
@@ -212,15 +213,6 @@ trait Parsers[Parser[+_]] { self =>
     pb
   }
 
-  // now, we can write
-  // many returns List[A]. we need to count
-//  val numA1: Parser[Int] = map(many(char('a')))(_.size)
-  // by given syntax
-//  val numA2: Parser[Int] = char('a').many.map(_.size)
-  // we expect
-//  run(numA1)("aaa") == Right(3)
-//  run(numA2)("b") == Right(0)
-
   def label[A](msg: String)(p: Parser[A]): Parser[A]
 
   /** scope to support nesting */
@@ -298,33 +290,12 @@ trait Parsers[Parser[+_]] { self =>
   def root[A](p: Parser[A]): Parser[A] =
     p <* eof
 
-//  // will make non-strict from strict
-//  def wrap[A](p: => Parser[A]): Parser[A]
-//
-//  def errorLocation(e: ParseError): Location
-//  def errorMessage(e: ParseError): String
-//
-//  def labelLaw[A](p: Parser[A], inputs: SGen[String]): Prop =
-//    Prop.forAll(inputs ** Gen.string) { case (input, msg) =>
-//      run(label(msg)(p))(input) match {
-//        case Left(e) => errorMessage(e) == msg
-//        case _ => true
-//      }
-//    }
-
-//  val p = label("first magic word")("abra") ** " ".many ** label("second magic word")("cadabra")
-//  val spaces = " ".many
-//  val p1 = scope("magic spell") { "abra" ** spaces ** "cadabra" }
-//  val p2 = scope("gibberish") { "abba" ** spaces ** "babba" }
-//  val p3 = p1 or p2
-//  val p4 = (attempt("abra" ** spaces ** "abra") ** "cadabra") or ("abra" ** spaces ** "cadabra!")
-
   /**
     * just syntax
     * everything just delegates to self instance
     */
   case class ParserOps[A](p: Parser[A]) {
-    def | [B>:A](p2: => Parser[B]): Parser[B] = self.or(p,p2)
+    def | [B>:A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
     def or[B>:A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
     
     def map[B](f: A => B): Parser[B] = self.map(p)(f)
@@ -338,13 +309,12 @@ trait Parsers[Parser[+_]] { self =>
     def flatMap[B](f: A => Parser[B]): Parser[B] = self.flatMap(p)(f)
 
     def label(msg: String): Parser[A] = self.label(msg)(p)
-
     def scope(msg: String): Parser[A] = self.scope(msg)(p)
 
-    def *>[B](p2: => Parser[B]): Parser[B] = self.skipL(p, p2)
-    def <*(p2: => Parser[Any]): Parser[A] = self.skipR(p, p2)
+    def *>[B](p2: => Parser[B])  : Parser[B] = self.skipL(p, p2)
+    def <*   (p2: => Parser[Any]): Parser[A] = self.skipR(p, p2)
     def token: Parser[A] = self.token(p)
-    def sep(separator: Parser[Any]): Parser[List[A]] = self.sep(p, separator)
+    def sep (separator: Parser[Any]): Parser[List[A]] = self.sep (p, separator)
     def sep1(separator: Parser[Any]): Parser[List[A]] = self.sep1(p, separator)
     def as[B](b: B): Parser[B] = self.map(self.slice(p))(_ => b)
     def opL(op: Parser[(A,A) => A]): Parser[A] = self.opL(p)(op)
@@ -354,13 +324,10 @@ trait Parsers[Parser[+_]] { self =>
     * we will use it during testing phase
     */
   object Laws {
-    
     def equal[A](p1: Parser[A], p2: Parser[A])(in: Gen[String]): Prop =
       Prop.forAll(in) { s => run(p1)(s) == run(p2)(s) }
-    
     def mapLaw[A](p: Parser[A])(in: Gen[String]): Prop =
       equal(p.map { identity }, p)(in)
-    
   }
 
 }

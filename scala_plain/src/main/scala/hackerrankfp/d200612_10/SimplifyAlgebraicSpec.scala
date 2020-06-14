@@ -5,10 +5,10 @@ import org.scalatest._
 
 import scala.collection.mutable
 
-class SimplifyAlgebraicSpec extends funspec.AnyFunSpec 
-  with matchers.should.Matchers 
-  with OptionValues 
-  with Inside 
+class SimplifyAlgebraicSpec extends funspec.AnyFunSpec
+  with matchers.should.Matchers
+  with OptionValues
+  with Inside
   with Inspectors
 {
   describe("Monom") {
@@ -101,7 +101,7 @@ class SimplifyAlgebraicSpec extends funspec.AnyFunSpec
         assert(Polynom.empty == Polynom(Nil))
       }
     }
-    
+
     describe("Representation") {
       it("should be represented in given order, w/o.sorting") {
         assert(Polynom.of((-12,3), (4,1), (-3,2), (-5,0)).toString == "-12x^3+4x-3x^2-5")

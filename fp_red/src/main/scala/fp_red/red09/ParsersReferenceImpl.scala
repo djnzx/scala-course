@@ -72,7 +72,11 @@ object Reference extends Parsers[Parser] {
   }
 
   // consume no characters and succeed with the given value
-  def succeed[A](a: A): Parser[A] = s => Success(a, 0)
+  def succeed[A](a: A): Parser[A] = 
+    _ => Success(a, 0)
+
+  def fail[A](msg: String): Parser[A] =
+    s => Failure(s.loc.toError(msg), true)
 
   def or[A](p: Parser[A], p2: => Parser[A]): Parser[A] =
     s => p(s) match {
@@ -115,8 +119,6 @@ object Reference extends Parsers[Parser] {
   def label[A](msg: String)(p: Parser[A]): Parser[A] =
     s => p(s).mapError(_.label(msg))
 
-  def fail[A](msg: String): Parser[A] =
-    s => Failure(s.loc.toError(msg), true)
 
   def attempt[A](p: Parser[A]): Parser[A] =
     s => p(s).uncommit
@@ -133,7 +135,6 @@ object Reference extends Parsers[Parser] {
    */
   override def many[A](p: Parser[A]): Parser[List[A]] =
     s => {
-      var nConsumed: Int = 0
       val buf = new collection.mutable.ListBuffer[A]
       def go(p: Parser[A], offset: Int): Result[List[A]] = {
         p(s.advanceBy(offset)) match {

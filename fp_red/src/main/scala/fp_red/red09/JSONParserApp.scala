@@ -1,6 +1,6 @@
 package fp_red.red09
 
-object JSONApp extends App {
+object JSONParserApp extends App {
   val jsonTxt = """
 {
   "Company name" : "Microsoft Corporation",
