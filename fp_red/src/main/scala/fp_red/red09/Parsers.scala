@@ -154,66 +154,49 @@ trait Parsers[Parser[+_]] { self =>
     * ABSTRACT
     */
   def slice[A](p: Parser[A]): Parser[String]
-  // we expect:
-  //  run(slice(("a" | "b").many))("aaba") == Right("aaba")
-  // we can write
-  //  char('a').many.slice.map(_.length) // String.length is faster that List.size
-
-
-
 
   /**
-    * 2. Attach syntax to the Parser 
+    * Attach syntax to the Parser 
     */
   implicit def syntaxForParser[A](p: Parser[A]): ParserOps[A] = ParserOps[A](p)
   /**
-    * 3. Attach syntax to everything
+    * Attach syntax to everything
     * what can be lifted to the Parser 
     * it works because of implicit def string(s: String): Parser[String]
     */
   implicit def asStringParser[A](a: A)(implicit f: A => Parser[String]): ParserOps[String] = ParserOps(f(a))
 
+  /** -----------------------------------
+    * everything else is non-primitive
+    * and can be expressed via primitives
+    * -----------------------------------
+    */
+  
   /**
-    * 4. Recognizes and returns a single Character
+    * 11. Recognizes and returns a single Character
     */
   def char(c: Char): Parser[Char] = string(c.toString) map { _.charAt(0) }
-  // we expect: 
-//  run(char('a'))('a'.toString) == Right('a')
 
+  /**
+    * 12. 0 or more repetition of the parser (parsers combination)
+    */  
+  def many[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ } or succeed(Nil)
 
-
-  /** 7. more than 1 */
+  /**
+    * 13. 1 or more repetition of the parser (parsers combination)
+    */
   def many1[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ }
 
   /**
-    * 8. Recognize repetitions
+    * 14. Recognize repetitions
+    * for N times
     */
   def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]] =
     if (n<=0) succeed(Nil)
     else map2(p, listOfN(n-1, p)) { _ :: _ }
-  // we expect
-//  run(listOfN(3, "ab" | "cad"))("ababcad") == Right("ababcad")
-//  run(listOfN(3, "ab" | "cad"))("cadabab") == Right("cadabab")
-//  run(listOfN(3, "ab" | "cad"))("ababab") == Right("ababab")
-//  run(listOfN(3, "ab" | "cad"))("cadcadcad") == Right("ababab")
-
-  /** 9. more than 0 */
-  def many[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ } or succeed(Nil)
-
-  // we expect
-//  run(or(string("abra"),string("cadabra")))("abra") == Right("abra")
-//  run(or(string("abra"),string("cadabra")))("cadabra") == Right("cadabra")
-  // laws
-//  val ab: Parser[String] = "a" | "b"
-//  val ba: Parser[String] = "b" | "a" // ???
-//  val aORb: Parser[String] = "a" or "b"
-//  val aORbORc1: Parser[String] = "a" | ("b" | "c")
-//  val aORbORc2: Parser[String] = ("a" | "b") | "c" // ???
-
-
 
   /**
-    * 13. Sequences two parsers, running p1 and then p2, 
+    * 15. Sequences two parsers, running p1 and then p2, 
     * and returns the pair of their results if both succeed
     * product via flatMap
     * 2-nd param must be lazy!!!
@@ -221,13 +204,10 @@ trait Parsers[Parser[+_]] { self =>
   def product[A, B](pa: Parser[A], pb: => Parser[B]): Parser[(A, B)] = for {
     a <- pa
     b <- pb
-  } yield (a,b)
-  // and we can write (product), because of implicit syntax class
-  val pAB: Parser[(String, String)] = "a" ** "b"
-  val pii: Parser[(Int, Int)] = char('a').many.slice.map(_.length) ** char('b').many1.slice.map(_.length)
+  } yield (a, b)
 
   /**
-    * 14. map2 via flatMap
+    * 16A. map2 via flatMap
     * 2-nd param must be lazy!!!
     */
   def map2[A, B, C](pa: Parser[A], pb: => Parser[B])(f: (A, B) => C): Parser[C] = for {
@@ -237,7 +217,8 @@ trait Parsers[Parser[+_]] { self =>
   } yield c
 
   /**
-    * map2 via product
+    * 16B. map2 via product
+    * 2-nd param must be lazy!!!
     */
   def map2_product[A, B, C](pa: Parser[A], pb: => Parser[B])(f: (A, B) => C): Parser[C] = {
     val p: Parser[(A, B)] = product(pa, pb)
@@ -247,11 +228,9 @@ trait Parsers[Parser[+_]] { self =>
   }
 
   /**
-    * 15. Applies the function f to the result of p, if successful
-    *
+    * 17. map via flatMap 
+    * Applies the function f to the result of p, if successful
     * law: map(p)(a => a) == p
-    *
-    * is no longer a primitive, can be expressed via flatMap
     */
   def map[A,B](pa: Parser[A])(f: A => B): Parser[B] = flatMap(pa) { f andThen succeed }
   def mapExplained[A,B](pa: Parser[A])(f: A => B): Parser[B] = flatMap(pa) { a: A =>
@@ -260,74 +239,123 @@ trait Parsers[Parser[+_]] { self =>
     pb
   }
 
-
-
-  /** Sequences two parsers, ignoring the result of the first.
+  /** 
+    * 18. Sequences two parsers, ignoring the result of the first.
     * We wrap the ignored half in slice, since we don't care about its result. */
   def skipL[B](p: Parser[Any], p2: => Parser[B]): Parser[B] =
     map2(slice(p), p2)((_,b) => b)
 
-  /** Sequences two parsers, ignoring the result of the second.
+  /** 
+    * 19. Sequences two parsers, ignoring the result of the second.
     * We wrap the ignored half in slice, since we don't care about its result. */
   def skipR[A](p: Parser[A], p2: => Parser[Any]): Parser[A] =
     map2(p, slice(p2))((a,_) => a)
 
+  /**
+    * 20. if parsed - map to Some(val)
+    * else None
+    */  
   def opt[A](p: Parser[A]): Parser[Option[A]] =
     p.map(Some(_)) or succeed(None)
 
-  /** Parser which consumes zero or more whitespace characters. */
+  /** 
+    * 21.consumes zero or more whitespace characters.
+    */
   def whitespace: Parser[String] = "\\s*".r
 
-  /** Parser which consumes 1 or more digits. */
+  /** 
+    * 22. consumes 1 or more digits.
+    */
   def digits: Parser[String] = "\\d+".r
 
-  /** Parser which consumes reluctantly until it encounters the given string. */
+  /** 
+    * 23. consumes reluctantly until it encounters the given string.
+    */
   def thru(s: String): Parser[String] = (".*?"+Pattern.quote(s)).r
 
-  /** Unescaped string literals, like "foo" or "bar". */
+  /**
+    * 24. Unescaped string literals, like "foo" or "bar".
+    */
   def quoted: Parser[String] = string("\"") *> thru("\"").map(_.dropRight(1))
 
-  /** Unescaped or escaped string literals, like "An \n important \"Quotation\"" or "bar". */
+  /** 
+    * 25. Unescaped or escaped string literals, like
+    * "An \n important \"Quotation\"" or "bar".
+    */
   def escapedQuoted: Parser[String] =
   // rather annoying to write, left as an exercise
   // we'll just use quoted (unescaped literals) for now
     token(quoted label "string literal")
 
-  /** C/Java style floating point literals, e.g .1, -1.0, 1e9, 1E-23, etc.
+  /**
+    * 26. Integer number as String with + or - before
+    */
+  def intString: Parser[String] =
+    token("[-+]?[0-9]+".r)
+
+  /**
+    * 27. Integer number as Integer
+    */
+  def integer: Parser[Int] =
+    intString map { _.toInt } label "integer literal"
+  
+  /** 
+    * 28. C/Java style floating point literals, e.g .1, -1.0, 1e9, 1E-23, etc.
     * Result is left as a string to keep full precision
     */
   def doubleString: Parser[String] =
     token("[-+]?([0-9]*\\.)?[0-9]+([eE][-+]?[0-9]+)?".r)
 
-  /** Floating point literals, converted to a `Double`. */
+  /** 
+    * 29. Floating point literals, converted to a `Double`.
+    */
   def double: Parser[Double] =
-    doubleString map (_.toDouble) label "double literal"
+    doubleString map { _.toDouble } label "double literal"
 
-  /** Attempts `p` and strips trailing whitespace, usually used for the tokens of a grammar. */
+  /** 
+    * 30. Attempts `p` and strips trailing whitespace, 
+    * usually used for the tokens of a grammar.
+    */
   def token[A](p: Parser[A]): Parser[A] =
     attempt(p) <* whitespace
 
-  /** Zero or more repetitions of `p`, separated by `p2`, whose results are ignored. */
-  def sep[A](p: Parser[A], p2: Parser[Any]): Parser[List[A]] = // use `Parser[Any]` since don't care about result type of separator
+  /**
+    * 31. Zero or more repetitions of `p`,
+    * separated by `p2`,whose results are ignored.
+    * `Parser[Any]` since don't care about result type of separator
+    */
+  def sep[A](p: Parser[A], p2: Parser[Any]): Parser[List[A]] = 
     sep1(p,p2) or succeed(List())
 
-  /** One or more repetitions of `p`, separated by `p2`, whose results are ignored. */
+  /** 
+    * 32. One or more repetitions of `p`, 
+    * separated by `p2`, whose results are ignored.
+    */
   def sep1[A](p: Parser[A], p2: Parser[Any]): Parser[List[A]] =
     map2(p, many(p2 *> p))(_ :: _)
 
-  /** Parses a sequence of left-associative binary operators with the same precedence. */
+  /**
+    * 33.Parses a sequence of left-associative binary
+    * operators with the same precedence.
+    */
   def opL[A](p: Parser[A])(op: Parser[(A,A) => A]): Parser[A] =
     map2(p, many(op ** p))((h,t) => t.foldLeft(h)((a,b) => b._1(a,b._2)))
 
-  /** Wraps `p` in start/stop delimiters. */
+  /** 
+    * 34. Wraps `p` in start/stop delimiters.
+    */
   def surround[A](start: Parser[Any], stop: Parser[Any])(p: => Parser[A]) =
     start *> p <* stop
 
-  /** A parser that succeeds when given empty input. */
+  /** 
+    * 35. A parser that succeeds when given empty input.
+    */
   def eof: Parser[String] =
     regex("\\z".r).label("unexpected trailing characters")
 
-  /** The root of the grammar, expects no further input following `p`. */
+  /**
+    * 36. The root of the grammar, expects no further input following `p`.
+    */
   def root[A](p: Parser[A]): Parser[A] =
     p <* eof
 

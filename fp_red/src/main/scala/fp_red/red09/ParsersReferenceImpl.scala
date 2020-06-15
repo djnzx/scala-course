@@ -2,6 +2,7 @@ package fp_red.red09
 
 import fp_red.red09.ReferenceTypes._
 
+import scala.language.implicitConversions
 import scala.util.matching.Regex
 
 /**
@@ -98,7 +99,7 @@ object Reference extends Parsers[Parser] {
     Failure(s.loc.toError(msg), true)
   
   // 3.
-  def string(w: String): Parser[String] = s =>
+  implicit def string(w: String): Parser[String] = s =>
     firstNonmatchingIndex(s.loc.input, w, s.loc.offset) match {
       case -1 => Success(w, w.length) // they matched
       case i  => Failure(s.loc.advanceBy(i).toError(s"'$w'"), i != 0)
@@ -155,27 +156,23 @@ object Reference extends Parsers[Parser] {
       case f @ Failure(_,_) => f
     }
 
-
-
-
-
-
-
-
-  /* overridden version of `many` that accumulates
-   * the list of results using a monolithic loop. This avoids
-   * stack overflow errors for most grammars.
-   */
+  /**
+    * overridden version of `many` that accumulates
+    * the list of results using a monolithic loop.
+    * This avoids stack overflow errors for most grammars.
+    * 
+    */
   override def many[A](p: Parser[A]): Parser[List[A]] =
     s => {
       val buf = new collection.mutable.ListBuffer[A]
-      def go(p: Parser[A], offset: Int): Result[List[A]] = {
+
+      def go(p: Parser[A], offset: Int): Result[List[A]] = 
         p(s.advanceBy(offset)) match {
           case Success(a,n)         => buf += a; go(p, offset+n)
           case f @ Failure(_, true) => f
           case     Failure(_, _)    => Success(buf.toList,offset)
         }
-      }
+
       go(p, 0)
     }
 }
