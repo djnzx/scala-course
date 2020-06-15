@@ -82,6 +82,7 @@ lazy val fp_red = (project in file("fp_red"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
+      pf.lihaoyi         %% "pprint"       % "0.5.9",
       Libraries.scalaCheck,
       Libraries.scalaTest,
       Libraries.scalaTestPlus,

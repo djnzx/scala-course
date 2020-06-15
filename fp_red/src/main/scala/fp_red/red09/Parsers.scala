@@ -64,19 +64,103 @@ case class ParseError(stack: List[(Location,String)]) {
 
 trait Parsers[Parser[+_]] { self =>
   /**
-    * 0. runner
+    * 0. runner + extractor
     * the idea - how we want to use it
+    * ABSTRACT
     */
   def run[A](p: Parser[A])(input: String): Either[ParseError, A]
 
   /**
-    * 1. Recognizes and returns a single String
-    * actually, lifts String to Parser
-    * -= abstract =-
+    * 1. whatever given -
+    * just SUCCEEDS with a given value
+    * w/o moving the pointer
+    * (consume no characters)
+    * ABSTRACT
+    */
+  def succeed[A](a: A): Parser[A]
+  
+  /**
+    * 2. whatever given -
+    * just FAILS with a given message
+    * w/o moving the pointer
+    * (consume no characters)
+    * ABSTRACT
+    */
+  def fail[A](msg: String): Parser[A]
+
+  /**
+    * 3. Recognizes and returns a single String
+    * actually, just String.startsWth(s)
+    * + move the pointer to the next location
+    * ABSTRACT
     */
   implicit def string(s: String): Parser[String]
-  // we expect
-//  run(string("abc"))("abc") == Right("abc")
+
+  /**
+    * 4. try to apply 1st parser
+    * and if it fails on the Zeroth char
+    * we can try second one
+    * 2-nd param must be lazy, because if 1st OK, we don't need to touch 2nd
+    * ABSTRACT
+    */
+  def or[A](p1: Parser[A], p2: => Parser[A]): Parser[A]
+
+  /**
+    * 5. context-sensitive primitive
+    * chaining, based on previous value
+    * ABSTRACT
+    */
+  def flatMap[A, B](pa: Parser[A])(g: A => Parser[B]): Parser[B]
+  
+  /**
+    * 6. Recognizes a regular expression as a Parser
+    * all-or-nothing
+    * ABSTRACT
+    */
+  implicit def regex(r: Regex): Parser[String]
+
+  /** 
+    * 7. scope to support nesting
+    * result manipulation. 
+    * actually, just a wrapper
+    * doesn't do any parsing
+    * ABSTRACT
+    */
+  def scope[A](msg: String)(p: Parser[A]): Parser[A]
+
+  /**
+    * 8. label errors
+    * result manipulation. 
+    * actually, just a wrapper
+    * doesn't do any parsing
+    * ABSTRACT
+    */
+  def label[A](msg: String)(p: Parser[A]): Parser[A]
+
+  /**
+    * 9. attempt
+    * result manipulation. 
+    * actually, just a wrapper
+    * doesn't do any parsing
+    * ABSTRACT
+    * 9.5.3
+    */
+  def attempt[A](p: Parser[A]): Parser[A]
+  
+  /**
+    * 10. slice
+    * Returns the portion of input inspected by p
+    * if p was successful
+    * ABSTRACT
+    */
+  def slice[A](p: Parser[A]): Parser[String]
+  // we expect:
+  //  run(slice(("a" | "b").many))("aaba") == Right("aaba")
+  // we can write
+  //  char('a').many.slice.map(_.length) // String.length is faster that List.size
+
+
+
 
   /**
     * 2. Attach syntax to the Parser 
@@ -96,31 +180,7 @@ trait Parsers[Parser[+_]] { self =>
   // we expect: 
 //  run(char('a'))('a'.toString) == Right('a')
 
-  /**
-    * 5. Always succeeds with the value a (Lifter)
-    * 
-    * A default `succeed` implementation in terms of `string` and `map`.
-    * We leave `succeed` abstract, since `map` is defined below in terms of
-    * `flatMap` and `succeed`, which would be a circular definition! But we include
-    * the definition here in case implementations wish to use it
-    * (say if they provide a custom implementation of `map`, breaking the cycle)
-    */
-  def succeedDefault[A](a: A): Parser[A] = string("") map (_ => a)
 
-  def succeed[A](a: A): Parser[A]
-  def fail[A](msg: String): Parser[A]
-  // we expect
-//  run(succeed("whatever"))("any input") == Right("whatever")
-
-  /**
-    * 6. Returns the portion of input inspected by p if successful
-    * is going to be a primitive
-    */
-  def slice[A](p: Parser[A]): Parser[String]
-  // we expect:
-//  run(slice(("a" | "b").many))("aaba") == Right("aaba")
-  // we can write
-//  char('a').many.slice.map(_.length) // String.length is faster that List.size
 
   /** 7. more than 1 */
   def many1[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ }
@@ -140,11 +200,6 @@ trait Parsers[Parser[+_]] { self =>
   /** 9. more than 0 */
   def many[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ } or succeed(Nil)
 
-  /**
-    * 10. Chooses between two parsers, first attempting p1, and then p2 if p1 fails
-    * 2-nd param must be lazy, because if 1st OK, we don't need to touch 2nd
-    */
-  def or[A](p1: Parser[A], p2: => Parser[A]): Parser[A]
   // we expect
 //  run(or(string("abra"),string("cadabra")))("abra") == Right("abra")
 //  run(or(string("abra"),string("cadabra")))("cadabra") == Right("cadabra")
@@ -155,15 +210,7 @@ trait Parsers[Parser[+_]] { self =>
 //  val aORbORc1: Parser[String] = "a" | ("b" | "c")
 //  val aORbORc2: Parser[String] = ("a" | "b") | "c" // ???
 
-  /**
-    * 11. context-sensitive primitive (chaining, based on previous value)
-    */
-  def flatMap[A, B](p: Parser[A])(f: A => Parser[B]): Parser[B]
 
-  /**
-    * 12. Recognizes a regular expression as a Parser
-    */
-  implicit def regex(r: Regex): Parser[String]
 
   /**
     * 13. Sequences two parsers, running p1 and then p2, 
@@ -213,13 +260,7 @@ trait Parsers[Parser[+_]] { self =>
     pb
   }
 
-  def label[A](msg: String)(p: Parser[A]): Parser[A]
 
-  /** scope to support nesting */
-  def scope[A](msg: String)(p: Parser[A]): Parser[A]
-
-  // 9.5.3
-  def attempt[A](p: Parser[A]): Parser[A]
 
   /** Sequences two parsers, ignoring the result of the first.
     * We wrap the ignored half in slice, since we don't care about its result. */

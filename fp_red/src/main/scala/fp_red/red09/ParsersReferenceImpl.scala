@@ -4,6 +4,10 @@ import fp_red.red09.ReferenceTypes._
 
 import scala.util.matching.Regex
 
+/**
+  * case classes
+  * for representation
+  */
 object ReferenceTypes {
 
   /** A parser is a kind of state action that can fail. */
@@ -27,9 +31,13 @@ object ReferenceTypes {
       case Failure(e,_) => Left(e)
       case Success(a,_) => Right(a)
     }
+    def extractLen: Either[ParseError,(A, Int)] = this match {
+      case Failure(e,_) => Left(e)
+      case Success(a, l) => Right((a, l))
+    }
     /* Used by `attempt`. */
     def uncommit: Result[A] = this match {
-      case Failure(e,true) => Failure(e,false)
+      case Failure(e, true) => Failure(e, isCommitted = false)
       case _ => this
     }
     /* Used by `flatMap` */
@@ -47,8 +55,11 @@ object ReferenceTypes {
       case _ => this
     }
   }
-  case class Success[+A](get: A, length: Int) extends Result[A]
-  case class Failure(get: ParseError, isCommitted: Boolean) extends Result[Nothing]
+  case class Success[+A](get: A, pos: Int) extends Result[A]
+  case class Failure(get: ParseError,
+                     // false - error on the 0 char - we can try another
+                     // true - error in the middle - we can't try another
+                     isCommitted: Boolean) extends Result[Nothing]
 
   /** Returns -1 if s1.startsWith(s2), otherwise returns the
     * first index where the two strings differed. If s2 is
@@ -66,68 +77,90 @@ object ReferenceTypes {
 
 object Reference extends Parsers[Parser] {
 
+  // 0.
   def run[A](p: Parser[A])(s: String): Either[ParseError,A] = {
     val s0 = ParseState(Location(s))
     p(s0).extract
   }
 
-  // consume no characters and succeed with the given value
-  def succeed[A](a: A): Parser[A] = 
-    _ => Success(a, 0)
-
-  def fail[A](msg: String): Parser[A] =
-    s => Failure(s.loc.toError(msg), true)
-
-  def or[A](p: Parser[A], p2: => Parser[A]): Parser[A] =
-    s => p(s) match {
-      case Failure(e,false) => p2(s)
-      case r => r // committed failure or success skips running `p2`
-    }
-
-  def flatMap[A,B](f: Parser[A])(g: A => Parser[B]): Parser[B] =
-    s => f(s) match {
-      case Success(a,n) => g(a)(s.advanceBy(n))
-                           .addCommit(n != 0)
-                           .advanceSuccess(n)
-      case f@Failure(_,_) => f
-    }
-
-  def string(w: String): Parser[String] = {
-    val msg = "'" + w + "'"
-    s => {
-      val i = firstNonmatchingIndex(s.loc.input, w, s.loc.offset)
-      if (i == -1) // they matched
-        Success(w, w.length)
-      else
-        Failure(s.loc.advanceBy(i).toError(msg), i != 0)
-    }
+  // 0. debug version
+  def runLen[A](p: Parser[A])(s: String): Either[ParseError, (A, Int)] = {
+    val s0 = ParseState(Location(s))
+    p(s0).extractLen
   }
 
-  /* note, regex matching is 'all-or-nothing':
-   * failures are uncommitted */
-  def regex(r: Regex): Parser[String] = {
-    val msg = "regex " + r
-    s => r.findPrefixOf(s.input) match {
-      case None => Failure(s.loc.toError(msg), false)
-      case Some(m) => Success(m,m.length)
+  // 1.
+  def succeed[A](a: A): Parser[A] = _ => 
+    Success(a, 0)
+
+  // 2.
+  def fail[A](msg: String): Parser[A] = s => 
+    Failure(s.loc.toError(msg), true)
+  
+  // 3.
+  def string(w: String): Parser[String] = s =>
+    firstNonmatchingIndex(s.loc.input, w, s.loc.offset) match {
+      case -1 => Success(w, w.length) // they matched
+      case i  => Failure(s.loc.advanceBy(i).toError(s"'$w'"), i != 0)
     }
-  }
 
-  def scope[A](msg: String)(p: Parser[A]): Parser[A] =
-    s => p(s).mapError(_.push(s.loc,msg))
+  // 4.
+  def or[A](p: Parser[A], p2: => Parser[A]): Parser[A] = s =>
+    p(s) match {
+      case Failure(_, false) => p2(s)
+      // if Failure(_, true) => we don't need to try another parser
+      // if Success          => we don't need to try another parser
+      case r => r
+    }
 
-  def label[A](msg: String)(p: Parser[A]): Parser[A] =
-    s => p(s).mapError(_.label(msg))
+  // 5.
+  def flatMap[A, B](pa: Parser[A])(g: A => Parser[B]): Parser[B] = s =>
+    pa(s) match {
+      case Success(a, pos) =>
+        val pb: Parser[B] = g(a)
+        // try to apply 2nd by providing shifted data
+        val rb1 = pb(s.advanceBy(pos))
+        // fix commit if hasn't fixed
+        val rb2 = rb1.addCommit(pos != 0)
+        val rb3 = rb2.advanceSuccess(pos)
+        rb3
+      // if 1st fail => we don't need to try 2nd
+      case f @ Failure(_,_) => f
+    }
 
+  // 6.
+  // failures are uncommitted
+  def regex(r: Regex): Parser[String] = s =>
+    r.findPrefixOf(s.input) match {
+      case Some(m) => Success(m, m.length)
+      case None    => Failure(s.loc.toError(s"regex $r"), isCommitted = false)
+    }
 
-  def attempt[A](p: Parser[A]): Parser[A] =
-    s => p(s).uncommit
+  // 7
+  def scope[A](msg: String)(p: Parser[A]): Parser[A] = s => 
+    p(s).mapError(_.push(s.loc, msg))
 
-  def slice[A](p: Parser[A]): Parser[String] =
-    s => p(s) match {
+  // 8
+  def label[A](msg: String)(p: Parser[A]): Parser[A] = s => 
+    p(s).mapError(_.label(msg))
+
+  // 9
+  def attempt[A](p: Parser[A]): Parser[A] = s =>
+    p(s).uncommit
+  
+  // 10
+  def slice[A](p: Parser[A]): Parser[String] = s =>
+    p(s) match {
       case Success(_,n) => Success(s.slice(n),n)
-      case f@Failure(_,_) => f
+      case f @ Failure(_,_) => f
     }
+
+
+
+
+
+
+
 
   /* overridden version of `many` that accumulates
    * the list of results using a monolithic loop. This avoids
