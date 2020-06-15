@@ -2,10 +2,13 @@ package hackerrank.d200318_03
 
 import scala.collection.mutable
 
+/**
+  * https://www.hackerrank.com/challenges/ctci-ransom-note/problem
+  */
 object RansomNoteScala extends App {
 
   def checkMagazine(magazine: Array[String], note: Array[String]) {
-    val words: mutable.Map[String, Int] = magazine
+    val words = magazine
       .groupBy(identity)
       .map { case (w, a) => (w, a.length) }
       .to(mutable.Map)

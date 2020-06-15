@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * https://www.hackerrank.com/challenges/ctci-ransom-note/problem
+ */
 public class RansomNote2 {
   static Map<String, Long> toMap(String[] data) {
     return Arrays.stream(data)
