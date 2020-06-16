@@ -118,13 +118,11 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
           Right(("123", 3))
       }
       it("slice:3") {
-        // TODO fix many for string containing only that char 
-        R.runLen(char('a').many.slice.map(_.length))("aaaaa_") shouldBe
+        R.runLen(char('a').many.slice.map(_.length))("aaaaa") shouldBe
           Right((5, 5))
       }
       it("slice:4") {
-        // TODO fix many for string containing only that char 
-        R.runLen(slice(("a" | "b").many))("aaba_") shouldBe
+        R.runLen(slice(("a" | "b").many))("aaba") shouldBe
           Right(("aaba", 4))
       }
     }
@@ -152,18 +150,16 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
         R.runLen(char('^').many)("abc") shouldBe
           Right((List(), 0))
       }
-      // TODO fix many for string containing only that char 
       it("many: 1:1") {
-          R.runLen(char('^').many)("^_")
+          R.runLen(char('^').many)("^")
         Right((List('^'), 1))
       }
       it("many: 1:N") {
           R.runLen(char('^').many)("^abc")
         Right((List('^'), 1))
       }
-      // TODO fix many for string containing only that char 
       it("many: N:N") {
-        R.runLen(char('^').many)("^^^_") shouldBe
+        R.runLen(char('^').many)("^^^") shouldBe
           Right((List('^', '^', '^'), 3))
       }
       it("many: N:>N") {
@@ -173,10 +169,9 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
     }
 
     describe("13. many1") {
-      // TODO: it crashes when reaches the end of the string
       it("many1:0") {
-        R.run("12".many1)("_") shouldBe
-          Left(ParseError(List((Location("_", 0), "'12'"))))
+        R.run("12".many1)("") shouldBe
+          Left(ParseError(List((Location("", 0), "'12'"))))
       }
       it("many1:1") {
         R.run("12".many1)("12_") shouldBe
@@ -283,25 +278,38 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
           R.run(monom)("3x^5") shouldBe Right(NP(3, 5))
         }
         it("nx^p: 4x") {
-          R.run(monom)("4x_") shouldBe Right(NP(4, 1))
+          R.run(monom)("4x") shouldBe Right(NP(4, 1))
         }
         it("nx^p: 6") {
-          R.run(monom)("6_") shouldBe Right(NP(6, 0))
+          R.run(monom)("6") shouldBe Right(NP(6, 0))
         }
         it("nx^p: x^2") {
           R.run(monom)("x^2") shouldBe Right(NP(1, 2))
         }
         it("nx^p: x_") {
-          R.run(monom)("x_") shouldBe Right(NP(1, 1))
+          R.run(monom)("x") shouldBe Right(NP(1, 1))
         }
       }
     }
   }
   
-  describe("reproduce the problem") {
-    val ab = "a" ** "b"
-    pprint.log(
-      R.run(ab)("a_")
-    )
+  describe("reproduce the problem: firstNonmatchingIndex") {
+    val ab: Parser[(String, String)] = "abc" ** "def"
+    it("worked#1") {
+      R.runLen("abc")("abc") shouldBe 
+        Right("abc", 3)
+    }
+    it("worked#2") {
+      R.runLen(ab)("abcdef") shouldBe 
+        Right((("abc", "def"), 6))
+    }
+    it("fixed#1") {
+      R.runLen(ab)("abc") shouldBe
+        Left(ParseError(List((Location("abc", 3), "'def'"))))
+    }
+    it("fixed#2") {
+      R.runLen(ab)("abcde") shouldBe
+        Left(ParseError(List((Location("abcde", 5), "'def'"))))
+    }
   }
 }

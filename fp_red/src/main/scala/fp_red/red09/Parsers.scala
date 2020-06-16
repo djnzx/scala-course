@@ -188,12 +188,6 @@ trait Parsers[Parser[+_]] { self =>
   def many1[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ }
 
   /**
-    * 13A. One or Zero Parsers
-    */
-  def zeroOrOne[A](p: Parser[A]): Parser[Option[A]] =
-    opt(p)
-  
-  /**
     * 14. Recognize repetitions
     * for N times
     */

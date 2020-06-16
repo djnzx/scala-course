@@ -65,14 +65,16 @@ object ReferenceTypes {
   /** Returns -1 if s1.startsWith(s2), otherwise returns the
     * first index where the two strings differed. If s2 is
     * longer than s1, returns s1.length. */
-  def firstNonmatchingIndex(s1: String, s2: String, offset: Int): Int = {
+  def firstNonmatchingIndex(s0: String, pat: String, s0_off: Int): Int = {
+//    println("-------firstNonmatchingIndex---------")
+//    println(s"s0: `$s0`, pat: `$pat`, off:$s0_off")
     var i = 0
-    while (i < s1.length && i < s2.length) {
-      if (s1.charAt(i+offset) != s2.charAt(i)) return i
+    while (s0_off+i < s0.length && i < pat.length) {
+      if (s0.charAt(s0_off+i) != pat.charAt(i)) return i
       i += 1
     }
-    if (s1.length-offset >= s2.length) -1
-    else s1.length-offset
+    if (s0.length-s0_off >= pat.length) -1
+    else s0.length-s0_off
   }
 }
 
@@ -99,11 +101,12 @@ object Reference extends Parsers[Parser] {
     Failure(s.loc.toError(msg), true)
   
   // 3.
-  implicit def string(w: String): Parser[String] = s =>
+  implicit def string(w: String): Parser[String] = s => 
     firstNonmatchingIndex(s.loc.input, w, s.loc.offset) match {
       case -1 => Success(w, w.length) // they matched
-      case i  => Failure(s.loc.advanceBy(i).toError(s"'$w'"), i != 0)
+      case i => Failure(s.loc.advanceBy(i).toError(s"'$w'"), i != 0)
     }
+  
 
   // 4.
   def or[A](p: Parser[A], p2: => Parser[A]): Parser[A] = s =>
