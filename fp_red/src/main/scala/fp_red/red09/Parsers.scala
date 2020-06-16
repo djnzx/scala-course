@@ -188,6 +188,12 @@ trait Parsers[Parser[+_]] { self =>
   def many1[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ }
 
   /**
+    * 13A. One or Zero Parsers
+    */
+  def zeroOrOne[A](p: Parser[A]): Parser[Option[A]] =
+    opt(p)
+  
+  /**
     * 14. Recognize repetitions
     * for N times
     */
@@ -294,10 +300,28 @@ trait Parsers[Parser[+_]] { self =>
     token("[-+]?[0-9]+".r)
 
   /**
+    * 26A. Integer number as String without + or - before
+    */
+  def intStringWoSign: Parser[String] =
+    token("[0-9]+".r)
+
+  /**
     * 27. Integer number as Integer
     */
   def integer: Parser[Int] =
     intString map { _.toInt } label "integer literal"
+
+  /**
+    * 27A. Non Neg Int
+    */
+  def integerWoSign: Parser[Int] =
+    intStringWoSign map { _.toInt } label "integer w/o sign literal"
+  
+  /**
+    * 27A. Long number as Long
+    */
+  def long: Parser[Long] =
+    intString map { _.toLong } label "long literal"
   
   /** 
     * 28. C/Java style floating point literals, e.g .1, -1.0, 1e9, 1E-23, etc.

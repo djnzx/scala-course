@@ -205,29 +205,103 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
   }
 
   describe("Monom") {
-    val xp = char('x') ** (char('^') *> intString).many.map {
-      case Nil => 1
-      case h :: Nil => h.toInt
+    describe("x^p") {
+      val xp = char('x') ** (char('^') *> intString).many.map {
+        case Nil => 1
+        case h :: Nil => h.toInt
+      }
+      it("many: x") {
+        R.run(xp)("x_") shouldBe Right(('x', 1))
+      }
+      it("many: x^1") {
+        R.run(xp)("x^1_") shouldBe Right(('x', 1))
+      }
+      it("many: x^-1") {
+        R.run(xp)("x^-1_") shouldBe Right(('x', -1))
+      }
+      it("many: x^2") {
+        R.run(xp)("x^2_") shouldBe Right(('x', 2))
+      }
+      it("many: x^20") {
+        R.run(xp)("x^20_") shouldBe Right(('x', 20))
+      }
+      it("many: x^-23") {
+        R.run(xp)("x^-23_") shouldBe Right(('x', -23))
+      }
     }
-    it("many: x") {
-      R.run(xp)("x_") shouldBe Right(('x', 1))
+    
+    describe("n*x") {
+      val oi = opt(integer)
+      it("opt:1") {
+        R.run(oi)("x") shouldBe Right(None)
+      }
+      it("opt:2") {
+        R.run(oi)("-x") shouldBe Right(None)
+      }
+      it("opt:3") {
+        R.run(oi)("2x") shouldBe Right(Some(2))
+      }
+      it("opt:4") {
+        R.run(oi)("-3x") shouldBe Right(Some(-3))
+      }
     }
-    it("many: x^1") {
-      R.run(xp)("x^1_") shouldBe Right(('x', 1))
-    }
-    it("many: x^-1") {
-      R.run(xp)("x^-1_") shouldBe Right(('x', -1))
-    }
-    it("many: x^2") {
-      R.run(xp)("x^2_") shouldBe Right(('x', 2))
-    }
-    it("many: x^20") {
-      R.run(xp)("x^20_") shouldBe Right(('x', 20))
-    }
-    it("many: x^-23") {
-      R.run(xp)("x^-23_") shouldBe Right(('x', -23))
-    }
+    
+    describe("nx^p") {
+      case class NP(n: Int, p: Int)
 
+      val n = integerWoSign
+      val x = char('x')
+      val p = char('^') *> integerWoSign
+      
+      val nxp: Parser[NP] = (n <* x) ** p map { case (n, p) => NP(n, p) } label "P1:"
+      val nx1: Parser[NP] = n <* x map { NP(_, 1) } label "P2:"
+      val n_ : Parser[NP] = n map { NP(_, 0) } label "P3:"
+      val xp : Parser[NP] = x *> p map { NP(1, _) } label "P4:"
+      val x_ : Parser[NP] = x *> R.succeed(NP(1, 1)) label "P5:"
+      val monom: Parser[NP] = attempt(nxp) | attempt(nx1) | 
+        attempt(n_) | attempt(xp) | attempt(x_)
+
+      describe("1 by 1 w.o combinations") {
+        it("nx^p: 3x^5") {
+          R.run(nxp)("3x^5") shouldBe Right(NP(3, 5))
+        }
+        it("nx^p: 4x") {
+          R.run(nx1)("4x") shouldBe Right(NP(4, 1))
+        }
+        it("nx^p: 6") {
+          R.run(n_)("6") shouldBe Right(NP(6, 0))
+        }
+        it("nx^p: x^2") {
+          R.run(xp)("x^2") shouldBe Right(NP(1, 2))
+        }
+        it("nx^p: x") {
+          R.run(x_)("x") shouldBe Right(NP(1, 1))
+        }
+      }
+      describe("combinations...") {
+        it("nx^p: 3x^5") {
+          R.run(monom)("3x^5") shouldBe Right(NP(3, 5))
+        }
+        it("nx^p: 4x") {
+          R.run(monom)("4x_") shouldBe Right(NP(4, 1))
+        }
+        it("nx^p: 6") {
+          R.run(monom)("6_") shouldBe Right(NP(6, 0))
+        }
+        it("nx^p: x^2") {
+          R.run(monom)("x^2") shouldBe Right(NP(1, 2))
+        }
+        it("nx^p: x_") {
+          R.run(monom)("x_") shouldBe Right(NP(1, 1))
+        }
+      }
+    }
   }
-
+  
+  describe("reproduce the problem") {
+    val ab = "a" ** "b"
+    pprint.log(
+      R.run(ab)("a_")
+    )
+  }
 }
