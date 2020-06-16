@@ -7,7 +7,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 lazy val commonSettings = Seq(
   scalaVersion := "2.13.2",
   organization := "org.alexr",
-  version      := "20.5.29",
+  version      := "20.06.16",
 
   javacOptions  ++= Seq(
     //  "-source", "1.8",
@@ -34,6 +34,7 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     CompilerPlugins.silencer,
     Libraries.silencerAnnotation,
+    Libraries.scalaTest,
   ),
 )
 
@@ -67,7 +68,6 @@ lazy val scala_plain = (project in file("scala_plain"))
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
 
       Libraries.scalaCheck,
-      Libraries.scalaTest,
       Libraries.scalaTestPlus,
       Libraries.scalactic,
     )
@@ -84,7 +84,6 @@ lazy val fp_red = (project in file("fp_red"))
     libraryDependencies ++= Seq(
       pf.lihaoyi         %% "pprint"       % "0.5.9",
       Libraries.scalaCheck,
-      Libraries.scalaTest,
       Libraries.scalaTestPlus,
       Libraries.scalactic,
     )
@@ -110,7 +109,6 @@ lazy val lihaoyi = (project in file("lihaoyi"))
       pf.lihaoyi         %% "geny"         % "0.6.0",
       pf.lihaoyi         %% "upickle"      % "1.1.0", // http://www.lihaoyi.com/upickle
       pf.lihaoyi         %% "fastparse"    % "2.2.2", // https://www.lihaoyi.com/fastparse/
-      Libraries.scalaTest,
     )
   )
 
@@ -209,7 +207,6 @@ lazy val mix = (project in file("mix"))
       Libraries.jsoup,
 
       Libraries.scalaCheck,
-      Libraries.scalaTest,
       Libraries.scalaTestPlus,
       Libraries.scalactic,
 

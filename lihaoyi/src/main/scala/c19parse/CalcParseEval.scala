@@ -1,8 +1,12 @@
 package c19parse
 
-import fastparse._, NoWhitespace._
+import fastparse._, NoWhitespace._, SingleLineWhitespace._ 
+import MultiLineWhitespace._
+import ScriptWhitespace._
+import JavaWhitespace._ ,ScalaWhitespace._
 
-object ParseCalcApp extends App {
+object CalcParseEval {
+  
   /** do One operation */
   def doOp(op: String, n1: Int, n2: Int): Int = op match {
     case "+" => n1 + n2
@@ -29,11 +33,4 @@ object ParseCalcApp extends App {
   /** root of grammar */
   def expr[_: P]: P[Int]   = P( addSub ~ End )
   
-  Seq(
-    "10+11",
-    "(6+1*2)+3*4",
-    "((4+1*2)+(3*4+3*5))/3",
-  )
-    .map { s => (s, parse(s, expr(_)).get.value) }
-    .foreach { pprint.log(_) }
 }
