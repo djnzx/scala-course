@@ -17,7 +17,7 @@ case class Location(input: String, offset: Int = 0) {
     case -1 => offset + 1
     case lineStart => offset - lineStart
   }
-  
+
   def toError(msg: String): ParseError = ParseError(List((this, msg)))
   def advanceBy(n: Int): Location = copy(offset = offset + n)
   def currentLine: String =
@@ -38,7 +38,7 @@ case class ParseError(stack: List[(Location,String)]) {
   def label[A](s: String): ParseError = ParseError(latestLoc.map { loc => (loc, s) } .toList)
   def latestLoc: Option[Location] = latest map { case (l, _) => l }
   def latest: Option[(Location,String)] = stack.lastOption
-  
+
   override def toString =
     if (stack.isEmpty) "no error messages"
     else {
@@ -46,7 +46,7 @@ case class ParseError(stack: List[(Location,String)]) {
       val context =
         collapsed.lastOption.map("\n\n" + _._1.currentLine).getOrElse("") +
           collapsed.lastOption.map("\n" + _._1.columnCaret).getOrElse("")
-      
+
       collapsed.map { case (loc,msg) => loc.line.toString + "." + loc.col + " " + msg }.mkString("\n") +
         context
     }
@@ -59,7 +59,7 @@ case class ParseError(stack: List[(Location,String)]) {
       .view.mapValues(_.map(_._2).mkString("; ")).
       toList.sortBy(_._1.offset)
 
-  def formatLoc(l: Location): String = s"${l.line}.${l.col}" 
+  def formatLoc(l: Location): String = s"${l.line}.${l.col}"
 }
 
 trait Parsers[Parser[+_]] { self =>
@@ -78,7 +78,7 @@ trait Parsers[Parser[+_]] { self =>
     * ABSTRACT
     */
   def succeed[A](a: A): Parser[A]
-  
+
   /**
     * 2. whatever given -
     * just FAILS with a given message
@@ -111,7 +111,7 @@ trait Parsers[Parser[+_]] { self =>
     * ABSTRACT
     */
   def flatMap[A, B](pa: Parser[A])(g: A => Parser[B]): Parser[B]
-  
+
   /**
     * 6. Recognizes a regular expression as a Parser
     * all-or-nothing
@@ -119,9 +119,9 @@ trait Parsers[Parser[+_]] { self =>
     */
   implicit def regex(r: Regex): Parser[String]
 
-  /** 
+  /**
     * 7. scope to support nesting
-    * result manipulation. 
+    * result manipulation.
     * actually, just a wrapper
     * doesn't do any parsing
     * ABSTRACT
@@ -130,7 +130,7 @@ trait Parsers[Parser[+_]] { self =>
 
   /**
     * 8. label errors
-    * result manipulation. 
+    * result manipulation.
     * actually, just a wrapper
     * doesn't do any parsing
     * ABSTRACT
@@ -139,14 +139,14 @@ trait Parsers[Parser[+_]] { self =>
 
   /**
     * 9. attempt
-    * result manipulation. 
+    * result manipulation.
     * actually, just a wrapper
     * doesn't do any parsing
     * ABSTRACT
     * 9.5.3
     */
   def attempt[A](p: Parser[A]): Parser[A]
-  
+
   /**
     * 10. slice
     * Returns the portion of input inspected by p
@@ -156,12 +156,12 @@ trait Parsers[Parser[+_]] { self =>
   def slice[A](p: Parser[A]): Parser[String]
 
   /**
-    * Attach syntax to the Parser 
+    * Attach syntax to the Parser
     */
   implicit def syntaxForParser[A](p: Parser[A]): ParserOps[A] = ParserOps[A](p)
   /**
     * Attach syntax to everything
-    * what can be lifted to the Parser 
+    * what can be lifted to the Parser
     * it works because of implicit def string(s: String): Parser[String]
     */
   implicit def asStringParser[A](a: A)(implicit f: A => Parser[String]): ParserOps[String] = ParserOps(f(a))
@@ -171,7 +171,7 @@ trait Parsers[Parser[+_]] { self =>
     * and can be expressed via primitives
     * -----------------------------------
     */
-  
+
   /**
     * 11. Recognizes and returns a single Character
     */
@@ -179,7 +179,7 @@ trait Parsers[Parser[+_]] { self =>
 
   /**
     * 12. 0 or more repetition of the parser (parsers combination)
-    */  
+    */
   def many[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ } or succeed(Nil)
 
   /**
@@ -196,7 +196,7 @@ trait Parsers[Parser[+_]] { self =>
     else map2(p, listOfN(n-1, p)) { _ :: _ }
 
   /**
-    * 15. Sequences two parsers, running p1 and then p2, 
+    * 15. Sequences two parsers, running p1 and then p2,
     * and returns the pair of their results if both succeed
     * product via flatMap
     * 2-nd param must be lazy!!!
@@ -228,7 +228,7 @@ trait Parsers[Parser[+_]] { self =>
   }
 
   /**
-    * 17. map via flatMap 
+    * 17. map via flatMap
     * Applies the function f to the result of p, if successful
     * law: map(p)(a => a) == p
     */
@@ -239,13 +239,13 @@ trait Parsers[Parser[+_]] { self =>
     pb
   }
 
-  /** 
+  /**
     * 18. Sequences two parsers, ignoring the result of the first.
     * We wrap the ignored half in slice, since we don't care about its result. */
   def skipL[B](p: Parser[Any], p2: => Parser[B]): Parser[B] =
     map2(slice(p), p2)((_,b) => b)
 
-  /** 
+  /**
     * 19. Sequences two parsers, ignoring the result of the second.
     * We wrap the ignored half in slice, since we don't care about its result. */
   def skipR[A](p: Parser[A], p2: => Parser[Any]): Parser[A] =
@@ -254,21 +254,21 @@ trait Parsers[Parser[+_]] { self =>
   /**
     * 20. if parsed - map to Some(val)
     * else None
-    */  
+    */
   def opt[A](p: Parser[A]): Parser[Option[A]] =
     p.map(Some(_)) or succeed(None)
 
-  /** 
+  /**
     * 21.consumes zero or more whitespace characters.
     */
   def whitespace: Parser[String] = "\\s*".r
 
-  /** 
+  /**
     * 22. consumes 1 or more digits.
     */
   def digits: Parser[String] = "\\d+".r
 
-  /** 
+  /**
     * 23. consumes reluctantly until it encounters the given string.
     */
   def thru(s: String): Parser[String] = (".*?"+Pattern.quote(s)).r
@@ -278,7 +278,7 @@ trait Parsers[Parser[+_]] { self =>
     */
   def quoted: Parser[String] = string("\"") *> thru("\"").map(_.dropRight(1))
 
-  /** 
+  /**
     * 25. Unescaped or escaped string literals, like
     * "An \n important \"Quotation\"" or "bar".
     */
@@ -310,28 +310,28 @@ trait Parsers[Parser[+_]] { self =>
     */
   def integerWoSign: Parser[Int] =
     intStringWoSign map { _.toInt } label "integer w/o sign literal"
-  
+
   /**
     * 27A. Long number as Long
     */
   def long: Parser[Long] =
     intString map { _.toLong } label "long literal"
-  
-  /** 
+
+  /**
     * 28. C/Java style floating point literals, e.g .1, -1.0, 1e9, 1E-23, etc.
     * Result is left as a string to keep full precision
     */
   def doubleString: Parser[String] =
     token("[-+]?([0-9]*\\.)?[0-9]+([eE][-+]?[0-9]+)?".r)
 
-  /** 
+  /**
     * 29. Floating point literals, converted to a `Double`.
     */
   def double: Parser[Double] =
     doubleString map { _.toDouble } label "double literal"
 
-  /** 
-    * 30. Attempts `p` and strips trailing whitespace, 
+  /**
+    * 30. Attempts `p` and strips trailing whitespace,
     * usually used for the tokens of a grammar.
     */
   def token[A](p: Parser[A]): Parser[A] =
@@ -342,11 +342,11 @@ trait Parsers[Parser[+_]] { self =>
     * separated by `p2`,whose results are ignored.
     * `Parser[Any]` since don't care about result type of separator
     */
-  def sep[A](p: Parser[A], p2: Parser[Any]): Parser[List[A]] = 
+  def sep[A](p: Parser[A], p2: Parser[Any]): Parser[List[A]] =
     sep1(p,p2) or succeed(List())
 
-  /** 
-    * 32. One or more repetitions of `p`, 
+  /**
+    * 32. One or more repetitions of `p`,
     * separated by `p2`, whose results are ignored.
     */
   def sep1[A](p: Parser[A], p2: Parser[Any]): Parser[List[A]] =
@@ -359,13 +359,13 @@ trait Parsers[Parser[+_]] { self =>
   def opL[A](p: Parser[A])(op: Parser[(A,A) => A]): Parser[A] =
     map2(p, many(op ** p))((h,t) => t.foldLeft(h)((a,b) => b._1(a,b._2)))
 
-  /** 
+  /**
     * 34. Wraps `p` in start/stop delimiters.
     */
   def surround[A](start: Parser[Any], stop: Parser[Any])(p: => Parser[A]) =
     start *> p <* stop
 
-  /** 
+  /**
     * 35. A parser that succeeds when given empty input.
     */
   def eof: Parser[String] =
@@ -384,12 +384,12 @@ trait Parsers[Parser[+_]] { self =>
   case class ParserOps[A](p: Parser[A]) {
     def | [B>:A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
     def or[B>:A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
-    
+
     def map[B](f: A => B): Parser[B] = self.map(p)(f)
     def many:  Parser[List[A]] = self.many(p)
     def many1: Parser[List[A]] = self.many1(p)
     def slice: Parser[String] = self.slice(p)
-    
+
     def **     [B](pb: => Parser[B]): Parser[(A, B)] = self.product(p, pb)
     def product[B](pb: => Parser[B]): Parser[(A, B)] = self.product(p, pb)
 

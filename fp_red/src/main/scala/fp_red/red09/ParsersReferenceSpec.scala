@@ -1,12 +1,12 @@
 package fp_red.red09
 
-import fp_red.red09.ReferenceTypes.Parser
+import fp_red.red09.ReferenceTypes.{ParseState, Parser}
 import org.scalatest._
 
 class ParsersReferenceSpec extends funspec.AnyFunSpec
   with matchers.should.Matchers {
-  val R = Reference
 
+  val R = Reference
   import R._
 
   describe("Parsers Reference Implementation (primitives)") {
@@ -199,7 +199,14 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
     }
   }
 
+  /**
+    * Monom parser from the task
+    * https://www.hackerrank.com/challenges/simplify-the-algebraic-expressions/problem
+    */
   describe("Monom") {
+    
+    import Algebraic.MonomParser._
+    
     describe("x^p") {
       val xp = char('x') ** (char('^') *> intString).many.map {
         case Nil => 1
@@ -242,20 +249,7 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
     }
     
     describe("nx^p") {
-      case class NP(n: Int, p: Int)
-
-      val n = integerWoSign
-      val x = char('x')
-      val p = char('^') *> integerWoSign
       
-      val nxp: Parser[NP] = (n <* x) ** p map { case (n, p) => NP(n, p) } label "P1:"
-      val nx1: Parser[NP] = n <* x map { NP(_, 1) } label "P2:"
-      val n_ : Parser[NP] = n map { NP(_, 0) } label "P3:"
-      val xp : Parser[NP] = x *> p map { NP(1, _) } label "P4:"
-      val x_ : Parser[NP] = x *> R.succeed(NP(1, 1)) label "P5:"
-      val monom: Parser[NP] = attempt(nxp) | attempt(nx1) | 
-        attempt(n_) | attempt(xp) | attempt(x_)
-
       describe("1 by 1 w.o combinations") {
         it("nx^p: 3x^5") {
           R.run(nxp)("3x^5") shouldBe Right(NP(3, 5))
@@ -291,6 +285,25 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
         }
       }
     }
+
+    describe("nx^p: real cases") {
+      val raw1 = "10x + 2x - (3x + 6)/3"
+      val raw2 = "18*(2x+2) - 5"
+      val raw3 = "((9x + 81)/3 + 27)/3  - 2x"
+      val raw4 = "18x + (12x + 10)*(2x+4)/2 - 5x"
+      val raw5 = "(2x+5) * (x*(9x + 81)/3 + 27)/(1+1+1)  - 2x"
+      val raw6 = "(2x+5) * (x*(9x^3 + 81)/3 + 27)/(1+1+1)  - 2x  "
+      
+      it("10x") {
+        R.runLen(monom)(raw1) shouldBe
+          Right((NP(10, 1), 3))
+      }
+      it("18") {
+        R.runLen(monom)(raw2) shouldBe
+          Right((NP(18, 0), 2))
+      }
+      
+    }
   }
   
   describe("reproduce the problem: firstNonmatchingIndex") {
@@ -311,5 +324,48 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
       R.runLen(ab)("abcde") shouldBe
         Left(ParseError(List((Location("abcde", 5), "'def'"))))
     }
+  }
+  
+  /**
+    * https://en.wikipedia.org/wiki/Shunting-yard_algorithm 
+    */
+  describe("easy math") {
+    import Algebraic.MonomParser._
+
+    sealed trait Expr
+    case class Value(n: Int) extends Expr
+    case class BinOp(op:Char, x: Expr, y: Expr) extends Expr 
+    
+    val raw1 = "1+2"
+    val raw2 = "1-2"
+    val raw3 = "1+2-3"
+    val raw4 = "1+2+3"
+//    val raw5 = "1+2*3"
+    
+//    val m: Parser[NP] = monom
+    val n: Parser[Int] = integerWoSign
+    val op: Parser[Char] = char('+') | char('-') | char('*') | char('/')
+    val l: Parser[Char] = char('(')
+    val r: Parser[Char] = char(')')
+    
+//    def expr[A >: Expr] = l ** parser ** r | n
+//    def parser[A >: Expr] = 
+//      ((expr <* whitespace) ** (op <* whitespace) ** expr)
+////        .map { case ((l, opr), r) =>
+////        BinOp(opr, l, r)
+////      }
+    
+    it("123") {
+      pprint.log(R.run(n)("123fg"))
+      pprint.log(R.run(op)("+fgf"))
+      pprint.log(R.run(op)("*fgf"))
+      pprint.log(R.run(whitespace)("   asd"))
+    }
+    
+    
+    
+//    val expr = n ** opt(op ** expr)
+    val output = List.empty[Expr]
+    val ops = List.empty[Char]
   }
 }

@@ -15,18 +15,23 @@ class JSONParserSpec extends funspec.AnyFunSpec
   describe("JSON") {
     it("object with one number field") {
       val text = """{ "a" : 123 }"""
-
-      parser(text) shouldEqual Right(JObject(Map("a" -> JNumber(123))))
+      parser(text) shouldBe
+        Right(JObject(Map("a" -> JNumber(123))))
+    }
+    
+    it("array") {
+      val text = """[1,2,3]"""
+      parser(text) shouldBe
+        Right(JArray(Vector(JNumber(1.0), JNumber(2.0), JNumber(3.0))))
     }
 
     it("array of integers") {
       val text = """{ "a" : [1,2,3] }"""
-
-      parser(text) shouldEqual Right(JObject(Map("a" -> JArray(IndexedSeq(JNumber(1),JNumber(2),JNumber(3))))))
+      parser(text) shouldBe
+        Right(JObject(Map("a" -> JArray(IndexedSeq(JNumber(1),JNumber(2),JNumber(3))))))
     }
 
     it("complete object") {
-
       val text = """
 {
   "Company name" : "Microsoft Corporation",
@@ -37,13 +42,10 @@ class JSONParserSpec extends funspec.AnyFunSpec
   "Related companies" : [ "HPQ", "IBM", "YHOO", "DELL", "GOOG" ]
 }
 """
-
-      parser(text) shouldEqual
+      parser(text) shouldBe
         Right(
           JObject(Map("Shares outstanding" -> JNumber(8.38E9), "Price" -> JNumber(30.66), "Company name" -> JString("Microsoft Corporation"), "Related companies" -> JArray(Vector(JString("HPQ"), JString("IBM"), JString("YHOO"), JString("DELL"), JString("GOOG"))), "Ticker" -> JString("MSFT"), "Active" -> JBool(true)))
         )
     }
-
   }
-  
 }
