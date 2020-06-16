@@ -348,9 +348,10 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
     val l: Parser[Char] = char('(')
     val r: Parser[Char] = char(')')
     
-//    def expr[A >: Expr] = l ** parser ** r | n
-//    def parser[A >: Expr] = 
-//      ((expr <* whitespace) ** (op <* whitespace) ** expr)
+    
+//    def expr[_: Parser]: Parser[Any] = l ** parser ** r | n
+//    def parser[_: Parser]: Parser[((Any, Char), Any)] = 
+//      (expr <* whitespace) ** (op <* whitespace) ** expr
 ////        .map { case ((l, opr), r) =>
 ////        BinOp(opr, l, r)
 ////      }
@@ -367,5 +368,30 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
 //    val expr = n ** opt(op ** expr)
     val output = List.empty[Expr]
     val ops = List.empty[Char]
+  }
+  
+  describe("recursive parsers experiments") {
+    it("1:") {
+      
+      sealed trait Phrase
+      case class Word(s: String) extends Phrase
+      case class Pair(l: Phrase, r: Phrase) extends Phrase
+
+      val prefix = ("hello" | "goodbye") map Word
+      val suffix = ("world" | "seattle") map Word
+      val ws = whitespace
+      val lp = char('(')
+      val rp = char(')')
+      
+      def parened: Parser[Phrase] = surround(lp, rp)(parser)
+      def parser: Parser[Phrase] = ((parened | prefix) ** ws ** (parened | suffix)) map { case ((l, _), r) =>
+        Pair(l, r)
+      }
+      
+      val raw = "(hello world) ((goodbye seattle) world)"
+      val r = R.run(parser)(raw)
+      pprint.log(r)
+      
+    }
   }
 }

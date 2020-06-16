@@ -343,7 +343,7 @@ trait Parsers[Parser[+_]] { self =>
     * `Parser[Any]` since don't care about result type of separator
     */
   def sep[A](p: Parser[A], p2: Parser[Any]): Parser[List[A]] =
-    sep1(p,p2) or succeed(List())
+    sep1(p, p2) or succeed(List())
 
   /**
     * 32. One or more repetitions of `p`,
