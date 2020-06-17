@@ -1,6 +1,8 @@
 package fp_red.red09
 
+import fp_red.red09.Algebraic.MathOperationMonomParser.Value
 import fp_red.red09.ReferenceTypes.{ParseState, Parser}
+import fp_red.red09.algebra.SimplifyAlgebraicExpressions.Monom
 import org.scalatest._
 
 class ParsersReferenceSpec extends funspec.AnyFunSpec
@@ -206,6 +208,7 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
   describe("Monom") {
     
     import Algebraic.MonomParser._
+    import Algebraic.MathOperationMonomParser.build
     
     describe("x^p") {
       val xp = char('x') ** (char('^') *> intString).many.map {
@@ -288,11 +291,13 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
 
     describe("nx^p: real cases") {
       val raw1 = "10x + 2x - (3x + 6)/3"
-      val raw2 = "18*(2x+2) - 5"
+      val raw2 = "18*(2x+2)-5"
       val raw3 = "((9x + 81)/3 + 27)/3  - 2x"
       val raw4 = "18x + (12x + 10)*(2x+4)/2 - 5x"
       val raw5 = "(2x+5) * (x*(9x + 81)/3 + 27)/(1+1+1)  - 2x"
       val raw6 = "(2x+5) * (x*(9x^3 + 81)/3 + 27)/(1+1+1)  - 2x  "
+      
+      def norm(s: String) = s.replaceAll("\\s", "")
       
       it("10x") {
         R.runLen(monom)(raw1) shouldBe
@@ -301,6 +306,14 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
       it("18") {
         R.runLen(monom)(raw2) shouldBe
           Right((NP(18, 0), 2))
+      }
+      it("18:2") {
+        val r = R.runLen(build)(raw2)
+        pprint.log(r)
+      }
+      it("raw3") {
+        val r = R.runLen(build)(norm(raw3))
+        pprint.log(r)
       }
       
     }
@@ -330,7 +343,7 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
     * https://en.wikipedia.org/wiki/Shunting-yard_algorithm 
     */
   describe("recursive calculator done!") {
-    import Algebraic.CalcParser._
+    import Algebraic.MathOperationNumberParser._
 
     it("123") {
       Seq(

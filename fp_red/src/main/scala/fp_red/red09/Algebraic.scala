@@ -20,10 +20,9 @@ object Algebraic {
     val x_ : Parser[NP] = x *> R.succeed(NP(1, 1)) label "P5:"
     val monom: Parser[NP] = attempt(nxp) | attempt(nx1) |
       attempt(n_) | attempt(xp) | attempt(x_)
-
   }
   
-  object CalcParser {
+  object MathOperationNumberParser {
     sealed trait Expr
     final case class Value(x: Int) extends Expr
     final case class BiOp(op: Char, l: Expr, r: Expr) extends Expr
@@ -43,6 +42,37 @@ object Algebraic {
     /** recursive grammar */
     def parens: Parser[Expr] = surround(char('('), char(')'))(addSub) 
     def factor: Parser[Expr] = number | parens
+
+    def divMul: Parser[Expr] = ( factor ** (mulOrDiv ** factor).many ).map(process)
+    def addSub: Parser[Expr] = ( divMul ** (plusOrMinus ** divMul).many ).map(process)
+
+    /** root of grammar */
+    def build: Parser[Expr] = root(addSub)
+  }
+  
+  object MathOperationMonomParser {
+    import algebra.SimplifyAlgebraicExpressions.{Monom, Polynom}
+    import Algebraic.MonomParser.NP
+
+    sealed trait Expr
+    final case class Value(x: Monom) extends Expr
+    final case class BiOp(op: Char, l: Expr, r: Expr) extends Expr
+    
+    def doOp(op: Char, n1: Expr, n2: Expr): BiOp = BiOp(op, n1, n2)
+
+    def process(t: (Expr, Seq[(Char, Expr)])): Expr = t match {
+      case (n, Nil) => n
+      case (a, l) => l.foldLeft(a) { case (acc, (op, x)) => doOp(op, acc, x) }
+    }
+    
+    val mulOrDiv: Parser[Char] = char('*') | char('/')
+    val plusOrMinus: Parser[Char] = char('+') | char('-')
+
+    def monom: Parser[Value] = Algebraic.MonomParser.monom.map { case NP(n,p) => Value(Monom(n, p)) }
+
+    /** recursive grammar */
+    def parens: Parser[Expr] = surround(char('('), char(')'))(addSub) 
+    def factor: Parser[Expr] = monom | parens
 
     def divMul: Parser[Expr] = ( factor ** (mulOrDiv ** factor).many ).map(process)
     def addSub: Parser[Expr] = ( divMul ** (plusOrMinus ** divMul).many ).map(process)
