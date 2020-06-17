@@ -93,20 +93,19 @@ object Reference extends Parsers[Parser] {
   }
 
   // 1.
-  def succeed[A](a: A): Parser[A] = _ => 
+  def succeed[A](a: A): Parser[A] = _ =>
     Success(a, 0)
 
   // 2.
-  def fail[A](msg: String): Parser[A] = s => 
+  def fail[A](msg: String): Parser[A] = s =>
     Failure(s.loc.toError(msg), true)
-  
+
   // 3.
-  implicit def string(w: String): Parser[String] = s => 
+  implicit def string(w: String): Parser[String] = s =>
     firstNonmatchingIndex(s.loc.input, w, s.loc.offset) match {
       case -1 => Success(w, w.length) // they matched
       case i => Failure(s.loc.advanceBy(i).toError(s"'$w'"), i != 0)
     }
-  
 
   // 4.
   def or[A](p: Parser[A], p2: => Parser[A]): Parser[A] = s =>
@@ -141,17 +140,17 @@ object Reference extends Parsers[Parser] {
     }
 
   // 7
-  def scope[A](msg: String)(p: Parser[A]): Parser[A] = s => 
+  def scope[A](msg: String)(p: Parser[A]): Parser[A] = s =>
     p(s).mapError(_.push(s.loc, msg))
 
   // 8
-  def label[A](msg: String)(p: Parser[A]): Parser[A] = s => 
+  def label[A](msg: String)(p: Parser[A]): Parser[A] = s =>
     p(s).mapError(_.label(msg))
 
   // 9
   def attempt[A](p: Parser[A]): Parser[A] = s =>
     p(s).uncommit
-  
+
   // 10
   def slice[A](p: Parser[A]): Parser[String] = s =>
     p(s) match {
@@ -163,13 +162,13 @@ object Reference extends Parsers[Parser] {
     * overridden version of `many` that accumulates
     * the list of results using a monolithic loop.
     * This avoids stack overflow errors for most grammars.
-    * 
+    *
     */
   override def many[A](p: Parser[A]): Parser[List[A]] =
     s => {
       val buf = new collection.mutable.ListBuffer[A]
 
-      def go(p: Parser[A], offset: Int): Result[List[A]] = 
+      def go(p: Parser[A], offset: Int): Result[List[A]] =
         p(s.advanceBy(offset)) match {
           case Success(a,n)         => buf += a; go(p, offset+n)
           case f @ Failure(_, true) => f

@@ -22,4 +22,32 @@ object Algebraic {
       attempt(n_) | attempt(xp) | attempt(x_)
 
   }
+  
+  object CalcParser {
+    sealed trait Expr
+    final case class Value(x: Int) extends Expr
+    final case class BiOp(op: Char, l: Expr, r: Expr) extends Expr
+    
+    def doOp(op: Char, n1: Expr, n2: Expr): BiOp = BiOp(op, n1, n2)
+
+    def process(t: (Expr, Seq[(Char, Expr)])): Expr = t match {
+      case (n, Nil) => n
+      case (a, l) => l.foldLeft(a) { case (acc, (op, x)) => doOp(op, acc, x) }
+    }
+    
+    val mulOrDiv: Parser[Char] = char('*') | char('/')
+    val plusOrMinus: Parser[Char] = char('+') | char('-')
+
+    def number: Parser[Value] = integerWoSign.map(Value)
+
+    /** recursive grammar */
+    def parens: Parser[Expr] = surround(char('('), char(')'))(addSub) 
+    def factor: Parser[Expr] = number | parens
+
+    def divMul: Parser[Expr] = ( factor ** (mulOrDiv ** factor).many ).map(process)
+    def addSub: Parser[Expr] = ( divMul ** (plusOrMinus ** divMul).many ).map(process)
+
+    /** root of grammar */
+    def build: Parser[Expr] = root(addSub)
+  }
 }

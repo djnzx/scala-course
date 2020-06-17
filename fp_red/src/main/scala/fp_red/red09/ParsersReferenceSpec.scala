@@ -329,45 +329,18 @@ class ParsersReferenceSpec extends funspec.AnyFunSpec
   /**
     * https://en.wikipedia.org/wiki/Shunting-yard_algorithm 
     */
-  describe("easy math") {
-    import Algebraic.MonomParser._
+  describe("recursive calculator done!") {
+    import Algebraic.CalcParser._
 
-    sealed trait Expr
-    case class Value(n: Int) extends Expr
-    case class BinOp(op:Char, x: Expr, y: Expr) extends Expr 
-    
-    val raw1 = "1+2"
-    val raw2 = "1-2"
-    val raw3 = "1+2-3"
-    val raw4 = "1+2+3"
-//    val raw5 = "1+2*3"
-    
-//    val m: Parser[NP] = monom
-    val n: Parser[Int] = integerWoSign
-    val op: Parser[Char] = char('+') | char('-') | char('*') | char('/')
-    val l: Parser[Char] = char('(')
-    val r: Parser[Char] = char(')')
-    
-    
-//    def expr[_: Parser]: Parser[Any] = l ** parser ** r | n
-//    def parser[_: Parser]: Parser[((Any, Char), Any)] = 
-//      (expr <* whitespace) ** (op <* whitespace) ** expr
-////        .map { case ((l, opr), r) =>
-////        BinOp(opr, l, r)
-////      }
-    
     it("123") {
-      pprint.log(R.run(n)("123fg"))
-      pprint.log(R.run(op)("+fgf"))
-      pprint.log(R.run(op)("*fgf"))
-      pprint.log(R.run(whitespace)("   asd"))
+      Seq(
+        "1+2",
+        "1-2",
+        "1-2*3",
+        "(1-2)*3",
+        "((1-2)*(3+4))/5-1",
+      ).foreach { s => pprint.log(R.run(build)(s)) }
     }
-    
-    
-    
-//    val expr = n ** opt(op ** expr)
-    val output = List.empty[Expr]
-    val ops = List.empty[Char]
   }
   
   describe("recursive parsers experiments") {
