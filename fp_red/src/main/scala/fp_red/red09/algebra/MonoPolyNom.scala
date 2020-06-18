@@ -1,11 +1,7 @@
 package fp_red.red09.algebra
 
-object SimplifyAlgebraicExpressions {
-  
-  sealed trait Expression
-  
-  // representation
-  case class Monom(k: Int, p: Int) extends Expression {
+object MonoPolyNom {
+  case class Monom(k: Int, p: Int) {
     def isNeg = k < 0
     def isZero = k == 0
     def unary_- = copy(k = -this.k)
@@ -13,7 +9,7 @@ object SimplifyAlgebraicExpressions {
     def *(m: Monom) = Monom(k*m.k, p+m.p)
     def /(den: Int) = Monom(k/den, p)
     def toPolynom = Polynom.of((k, p))
-    override def toString: String = if (isNeg) mkString else if (!isZero) s"+$mkString" else "" 
+    override def toString: String = if (isNeg) mkString else if (!isZero) s"+$mkString" else ""
     def mkString = {
       // sign
       val ss = if (isNeg) "-" else ""
@@ -34,8 +30,8 @@ object SimplifyAlgebraicExpressions {
     // sort monoms in descending powers
     implicit val ordering: Ordering[Monom] = (x, y) => y.p - x.p
   }
-  
-  case class Polynom(ms: Seq[Monom]) extends Expression {
+
+  case class Polynom(ms: Seq[Monom]) {
     def isZero = ms == Nil
     def unary_- = Polynom(ms map { _.unary_- })
     def sorted = Polynom(ms sorted)
@@ -75,40 +71,4 @@ object SimplifyAlgebraicExpressions {
     def of(mst: (Int, Int)*) = this(mst.map { case (k, p) => Monom(k, p) })
     def empty = of()
   }
-  
-  case class IntVal(x: Int) extends Expression
-
-  sealed trait Op extends Expression
-  case class Add(a: Expression, b: Expression) extends Op
-  case class Sub(a: Expression, b: Expression) extends Op
-  case class Mul(a: Expression, b: Expression) extends Op
-  case class Div(a: Expression, b: Expression) extends Op
-
-  /** core implementation */
-  def process(data: List[String]) = {
-    data
-  }
-
-  def body(line: => String): Unit = {
-    val N = line.toInt
-    val list = (1 to N).map { _ => line }.toList
-    val r = process(list)
-    r.foreach { println }
-  }
-
-  /** main to run from the console */
-  //  def main(p: Array[String]): Unit = body { scala.io.StdIn.readLine }
-  /** main to run from file */
-  def main(p: Array[String]): Unit = processFile("parser1.txt", body)
-  def processFile(name: String, process: (=> String) => Unit): Unit = {
-    val file = new java.io.File(this.getClass.getClassLoader.getResource(name).getFile)
-    scala.util.Using(
-      scala.io.Source.fromFile(file)
-    ) { src =>
-      val it = src.getLines().map(_.trim)
-      try { process(it.next()) }
-      catch { case x: Throwable => x.printStackTrace() }
-    }.fold(_ => ???, identity)
-  }
-
 }

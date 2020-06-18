@@ -1,6 +1,7 @@
-package fp_red.red09
+package fp_red.red09.p1impl
 
-import fp_red.red09.ReferenceTypes._
+import fp_red.red09.p1impl.ReferenceTypes._
+import fp_red.red09.p0trait.{Location, ParseError, Parsers}
 
 import scala.language.implicitConversions
 import scala.util.matching.Regex

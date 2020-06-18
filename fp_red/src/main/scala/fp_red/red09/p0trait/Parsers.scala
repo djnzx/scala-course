@@ -1,11 +1,8 @@
-package fp_red.red09
+package fp_red.red09.p0trait
 
 import java.util.regex.Pattern
-
 import fp_red.c_answers.c08testing._
-
 import scala.language.implicitConversions
-import scala.util.matching.Regex
 
 /** case class to handle input data
   * contains whole input
@@ -62,98 +59,7 @@ case class ParseError(stack: List[(Location,String)]) {
   def formatLoc(l: Location): String = s"${l.line}.${l.col}"
 }
 
-trait Parsers[Parser[+_]] { self =>
-  /**
-    * 0. runner + extractor
-    * the idea - how we want to use it
-    * ABSTRACT
-    */
-  def run[A](p: Parser[A])(input: String): Either[ParseError, A]
-
-  /**
-    * 1. whatever given -
-    * just SUCCEEDS with a given value
-    * w/o moving the pointer
-    * (consume no characters)
-    * ABSTRACT
-    */
-  def succeed[A](a: A): Parser[A]
-
-  /**
-    * 2. whatever given -
-    * just FAILS with a given message
-    * w/o moving the pointer
-    * (consume no characters)
-    * ABSTRACT
-    */
-  def fail[A](msg: String): Parser[A]
-
-  /**
-    * 3. Recognizes and returns a single String
-    * actually, just String.startsWth(s)
-    * + move the pointer to the next location
-    * ABSTRACT
-    */
-  implicit def string(s: String): Parser[String]
-
-  /**
-    * 4. try to apply 1st parser
-    * and if it fails on the Zeroth char
-    * we can try second one
-    * 2-nd param must be lazy, because if 1st OK, we don't need to touch 2nd
-    * ABSTRACT
-    */
-  def or[A](p1: Parser[A], p2: => Parser[A]): Parser[A]
-
-  /**
-    * 5. context-sensitive primitive
-    * chaining, based on previous value
-    * ABSTRACT
-    */
-  def flatMap[A, B](pa: Parser[A])(g: A => Parser[B]): Parser[B]
-
-  /**
-    * 6. Recognizes a regular expression as a Parser
-    * all-or-nothing
-    * ABSTRACT
-    */
-  implicit def regex(r: Regex): Parser[String]
-
-  /**
-    * 7. scope to support nesting
-    * result manipulation.
-    * actually, just a wrapper
-    * doesn't do any parsing
-    * ABSTRACT
-    */
-  def scope[A](msg: String)(p: Parser[A]): Parser[A]
-
-  /**
-    * 8. label errors
-    * result manipulation.
-    * actually, just a wrapper
-    * doesn't do any parsing
-    * ABSTRACT
-    */
-  def label[A](msg: String)(p: Parser[A]): Parser[A]
-
-  /**
-    * 9. attempt
-    * result manipulation.
-    * actually, just a wrapper
-    * doesn't do any parsing
-    * ABSTRACT
-    * 9.5.3
-    */
-  def attempt[A](p: Parser[A]): Parser[A]
-
-  /**
-    * 10. slice
-    * Returns the portion of input inspected by p
-    * if p was successful
-    * ABSTRACT
-    */
-  def slice[A](p: Parser[A]): Parser[String]
+trait Parsers[Parser[+_]] extends ParsersBase[Parser] { self =>
 
   /**
     * Attach syntax to the Parser
@@ -290,32 +196,26 @@ trait Parsers[Parser[+_]] { self =>
   /**
     * 26. Integer number as String with + or - before
     */
-  def intString: Parser[String] =
+  def digitsSigned: Parser[String] =
     token("[-+]?[0-9]+".r)
-
-  /**
-    * 26A. Integer number as String without + or - before
-    */
-  def intStringWoSign: Parser[String] =
-    token("[0-9]+".r)
 
   /**
     * 27. Integer number as Integer
     */
   def integer: Parser[Int] =
-    intString map { _.toInt } label "integer literal"
+    digitsSigned map { _.toInt } label "integer literal"
 
   /**
     * 27A. Non Neg Int
     */
   def integerWoSign: Parser[Int] =
-    intStringWoSign map { _.toInt } label "integer w/o sign literal"
+    digits map { _.toInt } label "integer w/o sign literal"
 
   /**
     * 27A. Long number as Long
     */
   def long: Parser[Long] =
-    intString map { _.toLong } label "long literal"
+    digitsSigned map { _.toLong } label "long literal"
 
   /**
     * 28. C/Java style floating point literals, e.g .1, -1.0, 1e9, 1E-23, etc.

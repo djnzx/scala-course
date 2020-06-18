@@ -1,10 +1,9 @@
-package fp_red.red09
+package fp_red.red09.p2concrete.json
 
-import language.implicitConversions
+import fp_red.red09.p0trait.Parsers
 
-/**
-  * JSON parser implementation
-  */
+import scala.language.implicitConversions
+
 trait JSON
 
 object JSON {
@@ -17,13 +16,14 @@ object JSON {
   case class JObject(get: Map[String, JSON]) extends JSON
 
   // actual implementation
-  def jsonParser[Parser[+_]](P: Parsers[Parser]): Parser[JSON] = {
+  def parser[Parser[+_]](P: Parsers[Parser]): Parser[JSON] = {
     // we'll hide the string implicit conversion and promote strings to tokens instead
     // this is a bit nicer than having to write token everywhere
-    import P.{ string => _, _ }
+    import P.{string => _, _}
     
     implicit def tok(s: String) = token(P.string(s))
 
+    /** basic grammar */
     val jNull = "null".as(JNull)
     val jDouble = double.map(JNumber(_))
     val jString = escapedQuoted.map(JString(_))
@@ -31,6 +31,7 @@ object JSON {
     val bFalse = "false".as(JBool(false))
     val jLiteral = scope("literal") { jNull | jDouble | jString | bTrue | bFalse }
 
+    /** recursive grammar */
     def keyval = escapedQuoted ** (":" *> value)
     
     def value: Parser[JSON] = jLiteral | jObject | jArray

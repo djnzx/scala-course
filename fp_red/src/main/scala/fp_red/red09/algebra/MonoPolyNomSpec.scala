@@ -1,16 +1,13 @@
 package fp_red.red09.algebra
 
-import fp_red.red09.algebra.SimplifyAlgebraicExpressions.{Monom, Polynom}
-import org.scalatest._
+import fp_red.red09.algebra.MonoPolyNom.{Monom, Polynom}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.collection.mutable
 
-class SimplifyAlgebraicSpec extends funspec.AnyFunSpec
-  with matchers.should.Matchers
-  with OptionValues
-  with Inside
-  with Inspectors
-{
+// 28
+class MonoPolyNomSpec extends AnyFunSpec with Matchers {
   describe("Monom") {
 
     describe("Representation") {

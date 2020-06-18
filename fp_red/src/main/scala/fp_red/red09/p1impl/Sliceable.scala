@@ -1,7 +1,7 @@
-package fp_red.red09.instances
+package fp_red.red09.p1impl
 
-import SliceableTypes._
-import fp_red.red09.{Location, ParseError, Parsers}
+import fp_red.red09.p1impl.SliceableTypes._
+import fp_red.red09.p0trait.{Location, ParseError, Parsers}
 
 import scala.util.matching.Regex
 
