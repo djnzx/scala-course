@@ -1,15 +1,17 @@
 package fp_red.red09.algebra
 
 object MonoPolyNom {
+  
   case class Monom(k: Int, p: Int) {
     def isNeg = k < 0
     def isZero = k == 0
-    def unary_- = copy(k = -this.k)
-    def +(m2: Monom) = Polynom(Seq(this, m2)).squash
-    def *(m: Monom) = Monom(k*m.k, p+m.p)
-    def /(den: Int) = Monom(k/den, p)
-    def toPolynom = Polynom.of((k, p))
-    override def toString: String = if (isNeg) mkString else if (!isZero) s"+$mkString" else ""
+    // with + or -
+    override def toString: String = (isNeg, !isZero) match {
+      case (true, _) => mkString
+      case (_, true) => s"+$mkString"
+      case _         => "" 
+    }
+    // with - only
     def mkString = {
       // sign
       val ss = if (isNeg) "-" else ""
@@ -26,7 +28,16 @@ object MonoPolyNom {
       if (!isZero) s"$ss$ks$xs" else ""
     }
   }
+
   object Monom {
+    implicit class MonomOps(m1: Monom) {
+      def unary_-  = m1.copy(k = - m1.k)
+      def +(m2: Monom): Polynom = Polynom(Seq(m1, m2)).squash
+      def *(m2: Monom): Monom = Monom(m1.k * m2.k, m1.p + m2.p)
+      def /(m2: Monom): Monom = Monom(m1.k / m2.k, m1.p - m2.p)
+      def /(den: Int): Monom = / (Monom(den, 0))
+      def toPolynom = Polynom.of((m1.k, m1.p))
+    }
     // sort monoms in descending powers
     implicit val ordering: Ordering[Monom] = (x, y) => y.p - x.p
   }

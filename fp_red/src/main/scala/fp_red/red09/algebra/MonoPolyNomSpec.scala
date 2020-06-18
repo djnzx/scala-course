@@ -45,7 +45,7 @@ class MonoPolyNomSpec extends AnyFunSpec with Matchers {
       }
     }
 
-    describe("Operations") {
+    describe("operations: is") {
       it("isNeg") {
         assert(  Monom(-2, 3).isNeg)
         assert(! Monom( 0, 3).isNeg)
@@ -56,20 +56,14 @@ class MonoPolyNomSpec extends AnyFunSpec with Matchers {
         assert(! Monom(-1, 3).isZero)
         assert(! Monom( 5, 3).isZero)
       }
+    }
+    
+    describe("operations: -, *, /, to...") {
       it("unary -") {
         assert(- Monom(2, 3) == Monom(-2, 3))
         assert(- Monom(0, 3) == Monom( 0, 3))
       }
-      it("+: squash the same power to one item") {
-        assert(Monom(2,3) + Monom(3,3) == Polynom.of((5, 3)))
-      }
-      it("+: the same power and mirrored K should disappear") {
-        assert(Monom(-3,3) + Monom(3,3) == Polynom.of())
-      }
-      it("+: after adding sort in right order") {
-        assert(Monom(5,2) + Monom(3,3) == Polynom.of((3, 3), (5, 2)))
-      }
-      it("*: just multiply K and add P") {
+      it("*: multiply K and add P") {
         assert(Monom(3,3) * Monom(5,2) == Monom(15,5))
         assert(Monom(0,3) * Monom(5,2) == Monom(0,5))
       }
@@ -79,9 +73,30 @@ class MonoPolyNomSpec extends AnyFunSpec with Matchers {
         assert(Monom(1,3) / 2 == Monom(0,3))
       }
       it("toPolynom") {
-        val m = Monom(6,3)
-        assert(m.toPolynom == Polynom(Seq(m)))
+        val m = Monom(6,3) 
+        m.toPolynom shouldBe
+          Polynom(Seq(m))
       }
+    }
+    
+    describe("operations:+") {
+      import MonoPolyNom.Monom.MonomOps
+      
+      it("+: squash the same power to one item") {
+        Monom(2,3) + Monom(3,3) shouldBe
+          Polynom.of((5, 3))
+      }
+      
+      it("+: the same power and mirrored K should disappear") {
+        Monom(-3,3) + Monom(3,3) shouldBe
+          Polynom.of()
+      }
+      
+      it("+: after adding sort in right order") {
+        Monom(5,2) + Monom(3,3) shouldBe
+          Polynom.of((3, 3), (5, 2))
+      }
+      
     }
   }
 
