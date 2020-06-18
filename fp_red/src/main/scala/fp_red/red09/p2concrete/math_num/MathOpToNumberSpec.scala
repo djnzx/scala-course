@@ -10,7 +10,7 @@ class MathOpToNumberSpec extends AnyFunSpec with Matchers {
   
   // https://en.wikipedia.org/wiki/Shunting-yard_algorithm
   describe("recursive calculator done!") {
-    import MathOpToNumberParser.mathToExpr
+    import MathOpToNumberParser.built
     
     it("123") {
       Seq(
@@ -19,7 +19,7 @@ class MathOpToNumberSpec extends AnyFunSpec with Matchers {
         "1-2*3",
         "(1-2)*3",
         "((1-2)*(3+4))/5-1",
-      ).foreach { s => pprint.log(R.run(mathToExpr)(s)) }
+      ).foreach { s => pprint.log(R.run(built)(s)) }
     }
   }
 

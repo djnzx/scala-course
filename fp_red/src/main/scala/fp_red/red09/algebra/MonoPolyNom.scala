@@ -11,7 +11,7 @@ object MonoPolyNom {
       case (_, true) => s"+$mkString"
       case _         => "" 
     }
-    // with - only
+    // with `-` only
     def mkString = {
       // sign
       val ss = if (isNeg) "-" else ""
@@ -37,15 +37,16 @@ object MonoPolyNom {
       def /(m2: Monom): Monom = Monom(m1.k / m2.k, m1.p - m2.p)
       def /(den: Int): Monom = / (Monom(den, 0))
       def toPolynom = Polynom.of((m1.k, m1.p))
+      def isNumber = m1.p == 0
     }
     // sort monoms in descending powers
     implicit val ordering: Ordering[Monom] = (x, y) => y.p - x.p
   }
 
   case class Polynom(ms: Seq[Monom]) {
+    def sorted = Polynom(ms sorted)
     def isZero = ms == Nil
     def unary_- = Polynom(ms map { _.unary_- })
-    def sorted = Polynom(ms sorted)
     /**
       * 1. squash the same powers
       * 2. remove with K=0
@@ -61,11 +62,17 @@ object MonoPolyNom {
         .sorted
     )
     def +(p2: Polynom) = Polynom(ms ++ p2.ms).squash
+    def -(p2: Polynom) = Polynom(ms ++ (-p2).ms).squash
     def *(p2: Polynom) = Polynom(for {
       m1 <- ms
       m2 <- p2.ms
     } yield m1 * m2).squash
-    def /(den: Int) = Polynom(ms.map { _ / den }).squash
+    def /(den: Int): Polynom = Polynom(ms.map { _ / den }).squash
+    def /(m: Monom): Polynom = Polynom(ms.map { _ / m }).squash
+    def /(p2: Polynom): Polynom = p2.isMonom match {
+      case true  => this / p2.toMonom
+      case false => throw new RuntimeException("impossible to divide by polynom (not a monom)")
+    }
     def isMonom = ms.length == 1
     def toMonom = ms.length match {
       case 1 => ms.head

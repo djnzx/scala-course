@@ -4,10 +4,9 @@ import fp_red.red09.p0trait.Parsers
 
 import scala.language.implicitConversions
 
-trait JSON
-
 object JSON {
   // domain model representation
+  trait JSON
   case object JNull extends JSON
   case class JNumber(get: Double) extends JSON
   case class JString(get: String) extends JSON
