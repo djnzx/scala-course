@@ -19,8 +19,8 @@ class MathOpToMonomSpec extends AnyFunSpec with Matchers {
   
   describe("plain (w/o operations)") {
     it("1: x") {
-      val r = R.runLen(built)(" x ".ws)
-      pprint.log(r)
+      R.run(built)(" x ".ws) shouldBe
+        Right(Value(Monom(1, 1)))
     }
     it("2: 5x") {
       R.runLen(built)(" 5x ".ws) shouldBe
