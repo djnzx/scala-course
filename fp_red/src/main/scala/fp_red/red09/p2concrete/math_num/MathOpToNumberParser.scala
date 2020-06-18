@@ -7,5 +7,5 @@ import fp_red.red09.p2concrete.math._
 object MathOpToNumberParser extends AbstractMathParser {
   import R.{integerWoSign, syntaxForParser}
 
-  override def value: Parser[Expr] = integerWoSign.map(x => Value(x))
+  override def value: Parser[Expr[_]] = integerWoSign.map(x => Value(x))
 }

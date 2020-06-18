@@ -10,5 +10,5 @@ import fp_red.red09.p2concrete.monom.MonomParser.NP
 object MathOpToMonomParser extends AbstractMathParser {
   import R.syntaxForParser
   
-  override def value: Parser[Expr] = MonomParser.monom.map { case NP(n,p) => Value(Monom(n, p)) }
+  override def value: Parser[Expr[_]] = MonomParser.monom.map { case NP(n,p) => Value(Monom(n, p)) }
 }
