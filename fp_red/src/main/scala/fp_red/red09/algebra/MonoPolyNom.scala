@@ -44,6 +44,7 @@ object MonoPolyNom {
   }
 
   case class Polynom(ms: Seq[Monom]) {
+    def this(k: Int, p: Int) = this(Seq(Monom(k, p)))
     def sorted = Polynom(ms sorted)
     def isZero = ms == Nil
     def unary_- = Polynom(ms map { _.unary_- })
