@@ -18,9 +18,9 @@ lazy val commonSettings = Seq(
   // http://eed3si9n.com/stricter-scala-with-xlint-xfatal-warnings-and-scalafix
   scalacOptions ++= CompilerOptions.scalac,
 
-  scalacOptions --= Seq(
-    "-Xfatal-warnings",
-  ),
+//  scalacOptions --= Seq(
+//    "-Xfatal-warnings",
+//  ),
 
   resolvers ++= Seq(
     Resolver.mavenLocal,

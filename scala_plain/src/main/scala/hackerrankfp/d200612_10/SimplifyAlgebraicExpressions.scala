@@ -42,7 +42,7 @@ object SimplifyAlgebraicExpressions {
   }
   case class Polynom(ms: Seq[Monom]) {
     def this(k: Int, p: Int) = this(Seq(Monom(k, p)))
-    def sorted = Polynom(ms sorted)
+    def sorted = Polynom(ms.sorted)
     def isZero = ms == Nil
     def unary_- = Polynom(ms.map { _.unary_- })
     def squash = Polynom(
@@ -72,6 +72,12 @@ object SimplifyAlgebraicExpressions {
     override def toString: String = (ms.head.mkString ++ ms.tail.map { _.toString }) mkString ""
     def toStringHR: String = (ms.head.mkString ++ ms.tail.map { m => s" ${m.sign} ${m.mkStringWoSign}" }) mkString ""
   }
+
+  sealed trait Expr[+A]
+  final case class Value[A](x: A) extends Expr[A]
+  final case class BiOp[A](op: Char, l: Expr[A], r: Expr[A]) extends Expr[A]
+
+  case class NP(n: Int, p: Int)
 
   trait ParsersBase[Parser[+_]] {
     import scala.util.matching.Regex
@@ -167,8 +173,6 @@ object SimplifyAlgebraicExpressions {
   }
 
   trait Parsers[Parser[+_]] extends ParsersBase[Parser] { self =>
-    import java.util.regex.Pattern // 23
-
     implicit def syntaxForParser[A](p: Parser[A]): ParserOps[A] = ParserOps[A](p)
     implicit def asStringParser[A](a: A)(implicit f: A => Parser[String]): ParserOps[String] = ParserOps(f(a))
     def char(c: Char): Parser[Char] = string(c.toString) map { _.charAt(0) }
@@ -213,18 +217,12 @@ object SimplifyAlgebraicExpressions {
   }
   
   object Reference extends Parsers[Parser] {
-
     import scala.util.matching.Regex
 
-    def run[A](p: Parser[A])(s: String): Either[ParseError, A] = {
-      val s0 = ParseState(Location(s))
-      p(s0).extract
-    }
+    def run[A](p: Parser[A])(s: String): Either[ParseError, A] = p(ParseState(Location(s))).extract
 
-    def runLen[A](p: Parser[A])(s: String): Either[ParseError, (A, Int)] = {
-      val s0 = ParseState(Location(s))
-      p(s0).extractLen
-    }
+    def runLen[A](p: Parser[A])(s: String): Either[ParseError, (A, Int)] =
+      p(ParseState(Location(s))).extractLen
 
     def succeed[A](a: A): Parser[A] = _ => Success(a, 0)
 
@@ -284,38 +282,35 @@ object SimplifyAlgebraicExpressions {
       }
   }
   
-  sealed trait Expr[+A]
-  final case class Value[A](x: A) extends Expr[A]
-  final case class BiOp[A](op: Char, l: Expr[A], r: Expr[A]) extends Expr[A]
+  object MonomParser {
+    import Reference.{number, char, attempt, succeed, syntaxForParser}
 
+    val n: Parser[Int] = number
+    val x: Parser[Char] = char('x')
+    val p: Parser[Int] = char('^') *> number
+    val nxp: Parser[NP] = (n <* x) ** p map { case (n, p) => NP(n, p) }
+    val nx1: Parser[NP] = n <* x map { NP(_, 1) }
+    val n_ : Parser[NP] = n map { NP(_, 0) }
+    val xp: Parser[NP] = x *> p map { NP(1, _) }
+    val x_ : Parser[NP] = x *> succeed(NP(1, 1))
+    val monom: Parser[NP] = attempt(nxp) | attempt(nx1) | attempt(n_) | attempt(xp) | attempt(x_)
+  }
+  
   object MathOpToPolynomParser {
-    import Reference.syntaxForParser
     import Reference._
     
-    case class NP(n: Int, p: Int)
-    
-    val n = number
-    val x = char('x')
-    val p = char('^') *> number
-    val nxp = (n <* x) ** p map { case (n, p) => NP(n, p) }
-    val nx1 = n <* x map { NP(_, 1) }
-    val n_ = n map { NP(_, 0) }
-    val xp = x *> p map { NP(1, _) }
-    val x_ = x *> succeed(NP(1, 1))
-    val monom = attempt(nxp) | attempt(nx1) | attempt(n_) | attempt(xp) | attempt(x_)
-
     def process(t: (Expr[Polynom], Seq[(Char, Expr[Polynom])])): Expr[Polynom] = t match {
       case (n, Nil) => n
       case (a, l) => l.foldLeft(a) { case (acc, (op, x)) => BiOp(op, acc, x) }
     }
-    val plusOrMinus = char('+') | char('-')
-    val mulOrDiv = char('*') | char('/')
-    def value = monom.map { case NP(n,p) => Value(Monom(n, p).toPolynom) }
-    def parens = surround(char('('), char(')'))(addSub)
-    def factor = value | parens
-    def divMul = ( factor ** (mulOrDiv ** factor).many ).map(process)
+    val plusOrMinus: Parser[Char] = char('+') | char('-')
+    val mulOrDiv: Parser[Char] = char('*') | char('/')
+    def value: Parser[Expr[Polynom]] = MonomParser.monom.map { case NP(n,p) => Value(Monom(n, p).toPolynom) }
+    def parens: Parser[Expr[Polynom]] = surround(char('('), char(')'))(addSub)
+    def factor: Parser[Expr[Polynom]] = value | parens
+    def divMul: Parser[Expr[Polynom]] = ( factor ** (mulOrDiv ** factor).many ).map(process)
     def addSub: Parser[Expr[Polynom]] = ( divMul ** (plusOrMinus ** divMul).many ).map(process)
-    def built = root(addSub)
+    def built: Parser[Expr[Polynom]] = root(addSub)
   }
 
   def evalNode(node: Expr[Polynom]): Polynom = node match {
