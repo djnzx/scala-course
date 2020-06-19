@@ -8,7 +8,7 @@ object BiTree {
     */
   sealed trait Expr[+A]
   final case class Value[A](x: A) extends Expr[A]
-  final case class BiOp[A, B >: Expr[A]](op: Char, l: B, r: B) extends Expr[A]
+  final case class BiOp[A, EA >: Expr[A]](op: Char, l: EA, r: EA) extends Expr[A]
 
-  def mkNode[A, B >: Expr[A]](op: Char, n1: B, n2: B): B = BiOp(op, n1, n2)
+  def mkNode[A, EA >: Expr[A]](op: Char, n1: EA, n2: EA): EA = BiOp(op, n1, n2)
 }
