@@ -5,16 +5,10 @@ object MonoPolyNom {
   case class Monom(k: Int, p: Int) {
     def isNeg = k < 0
     def isZero = k == 0
-    // with + or -
-    override def toString: String = (isNeg, !isZero) match {
-      case (true, _) => mkString
-      case (_, true) => s"+$mkString"
-      case _         => "" 
-    }
-    // with `-` only
-    def mkString = {
-      // sign
-      val ss = if (isNeg) "-" else ""
+    
+    def sign: String = if (isNeg) "-" else "+" 
+    // string representations without any signs
+    def mkStringWoSign: String = {
       // abs(k)
       val absk = math.abs(k)
       // power
@@ -25,7 +19,20 @@ object MonoPolyNom {
       }
       // eliminate k if ==1
       val ks = if (absk != 1) s"$absk" else ""
-      if (!isZero) s"$ss$ks$xs" else ""
+      if (!isZero) s"$ks$xs" else ""
+    }
+
+    // with `-` only
+    def mkString: String = isNeg match {
+      case true  => s"$sign$mkStringWoSign" 
+      case false =>         mkStringWoSign
+    }
+    
+    // with `+` or `-`
+    override def toString: String = (isNeg, !isZero) match {
+      case (true, _) | 
+           (_, true) => s"$sign$mkStringWoSign"
+      case _         => "" 
     }
   }
 
@@ -85,6 +92,7 @@ object MonoPolyNom {
       case _ => throw new RuntimeException("impossible to get number from not a monom")
     }
     override def toString: String = (ms.head.mkString ++ ms.tail.map { _.toString }) mkString ""
+    def toStringHR: String = (ms.head.mkString ++ ms.tail.map { m => s" ${m.sign} ${m.mkStringWoSign}" }) mkString ""
   }
   object Polynom {
     def of(mst: (Int, Int)*) = this(mst.map { case (k, p) => Monom(k, p) })

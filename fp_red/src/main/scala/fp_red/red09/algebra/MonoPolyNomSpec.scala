@@ -102,24 +102,45 @@ class MonoPolyNomSpec extends AnyFunSpec with Matchers {
 
   describe("Polynom") {
     describe("Construction") {
-      it("2-nd constructor test") {
+      it("2-nd constructor test #1: Seq of Monoms") {
         assert(Polynom.of((3,2)) == Polynom(Seq(Monom(3,2))))
       }
-      it("2-nd constructor test: unsorted") {
+      it("2-nd constructor test #2: one Monom") {
+        assert(new Polynom(3,2) == Polynom(Seq(Monom(3,2))))
+      }
+      it("2-nd constructor test #3: Monoms unsorted") {
         assert(Polynom.of((2,2), (3,2)) == Polynom(Seq(Monom(2,2), Monom(3,2))))
       }
-      it("empty constructor") {
+      it("2-nd constructor test #4: empty") {
         assert(Polynom.empty == Polynom.of())
         assert(Polynom.empty == Polynom(Nil))
       }
     }
 
     describe("Representation") {
-      it("should be represented in given order, w/o.sorting") {
-        assert(Polynom.of((-12,3), (4,1), (-3,2), (-5,0)).toString == "-12x^3+4x-3x^2-5")
-        assert(Polynom.of(( 12,3), (4,1), (-3,2), (-5,0)).toString ==  "12x^3+4x-3x^2-5")
-        assert(Polynom.of((-12,3)).toString == "-12x^3")
-        assert(Polynom.of(( 12,3)).toString ==  "12x^3")
+      
+      it("should be represented in given order, w/o.sorting 1") {
+        Polynom.of((-12,3), (4,1), (-3,2), (-5,0)).toString shouldBe 
+          "-12x^3+4x-3x^2-5"
+      }
+      it("should be represented in given order, w/o.sorting 2") {
+        Polynom.of(( 12,3), (4,1), (-3,2), (-5,0)).toString shouldBe
+          "12x^3+4x-3x^2-5"
+      }
+      it("should be represented in given order, w/o.sorting 3") {
+        Polynom.of((-12,3)).toString shouldBe
+          "-12x^3"
+      }
+      it("should be represented in given order, w/o.sorting 4") {
+        Polynom.of(( 12,3)).toString shouldBe
+          "12x^3"
+      }
+      
+      it("representation for Hacker Rank") {
+        assert(Polynom.of((-12,3), (4,1), (-3,2), (-5,0)).toStringHR == "-12x^3 + 4x - 3x^2 - 5")
+        assert(Polynom.of(( 12,3), (4,1), (-3,2), (-5,0)).toStringHR ==  "12x^3 + 4x - 3x^2 - 5")
+        assert(Polynom.of((-12,3)).toStringHR == "-12x^3")
+        assert(Polynom.of(( 12,3)).toStringHR ==  "12x^3")
       }
     }
 

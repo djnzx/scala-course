@@ -45,6 +45,7 @@ class MathPolynomEvalSpec extends AnyFunSpec with Matchers {
       val exp = Polynom.of((11, 1), (-2, 0))
       val sr = "11x - 2"
       R.run(built)(raw.ws).map { eval } shouldBe Right(exp)
+      R.run(built)(raw.ws).map { eval } map { _.toStringHR } fold (_ => ???, identity) shouldBe sr
     }
 
     it("2") {
