@@ -86,7 +86,7 @@ object SimplifyAlgebraicExpressions {
   }
 
   trait ParsersBase[Parser[+_]] {
-    import scala.util.matching.Regex // 6
+    import scala.util.matching.Regex
     def run[A](p: Parser[A])(input: String): Either[ParseError, A]
     def succeed[A](a: A): Parser[A]
     def fail[A](msg: String): Parser[A]
@@ -94,7 +94,6 @@ object SimplifyAlgebraicExpressions {
     def or[A](p1: Parser[A], p2: => Parser[A]): Parser[A]
     def flatMap[A, B](pa: Parser[A])(g: A => Parser[B]): Parser[B]
     implicit def regex(r: Regex): Parser[String]
-    def scope[A](msg: String)(p: Parser[A]): Parser[A]
     def label[A](msg: String)(p: Parser[A]): Parser[A]
     def attempt[A](p: Parser[A]): Parser[A]
     def slice[A](p: Parser[A]): Parser[String]
@@ -164,9 +163,7 @@ object SimplifyAlgebraicExpressions {
   }
 
   case class ParseError(stack: List[(Location,String)]) {
-    // add new message at location
     def push(loc: Location, msg: String): ParseError = copy(stack = (loc, msg) :: stack)
-    // label last error ????
     def label[A](s: String): ParseError = ParseError(latestLoc.map { loc => (loc, s) } .toList)
     def latestLoc: Option[Location] = latest map { case (l, _) => l }
     def latest: Option[(Location,String)] = stack.lastOption
@@ -183,9 +180,6 @@ object SimplifyAlgebraicExpressions {
           context
       }
 
-    /* Builds a collapsed version of the given error stack -
-     * messages at the same location have their messages merged,
-     * separated by semicolons */
     def collapseStack(s: List[(Location,String)]): List[(Location,String)] =
       s.groupBy(_._1)
         .view.mapValues(_.map(_._2).mkString("; ")).
@@ -201,7 +195,6 @@ object SimplifyAlgebraicExpressions {
     implicit def asStringParser[A](a: A)(implicit f: A => Parser[String]): ParserOps[String] = ParserOps(f(a))
     def char(c: Char): Parser[Char] = string(c.toString) map { _.charAt(0) }
     def many[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ } or succeed(Nil)
-    def many1[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ }
     def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]] =
       if (n<=0) succeed(Nil)
       else map2(p, listOfN(n-1, p)) { _ :: _ }
@@ -242,13 +235,11 @@ object SimplifyAlgebraicExpressions {
       def or[B>:A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
       def map[B](f: A => B): Parser[B] = self.map(p)(f)
       def many:  Parser[List[A]] = self.many(p)
-      def many1: Parser[List[A]] = self.many1(p)
       def slice: Parser[String] = self.slice(p)
       def **     [B](pb: => Parser[B]): Parser[(A, B)] = self.product(p, pb)
       def product[B](pb: => Parser[B]): Parser[(A, B)] = self.product(p, pb)
       def flatMap[B](f: A => Parser[B]): Parser[B] = self.flatMap(p)(f)
       def label(msg: String): Parser[A] = self.label(msg)(p)
-      def scope(msg: String): Parser[A] = self.scope(msg)(p)
       def *>[B](p2: => Parser[B])  : Parser[B] = self.skipL(p, p2)
       def <*   (p2: => Parser[Any]): Parser[A] = self.skipR(p, p2)
       def token: Parser[A] = self.token(p)
@@ -260,112 +251,73 @@ object SimplifyAlgebraicExpressions {
   }
   
   object Reference extends Parsers[Parser] {
+
     import scala.util.matching.Regex
-    
-    // 0.
-    def run[A](p: Parser[A])(s: String): Either[ParseError,A] = {
+
+    def run[A](p: Parser[A])(s: String): Either[ParseError, A] = {
       val s0 = ParseState(Location(s))
       p(s0).extract
     }
 
-    // 0. debug version
     def runLen[A](p: Parser[A])(s: String): Either[ParseError, (A, Int)] = {
       val s0 = ParseState(Location(s))
       p(s0).extractLen
     }
 
-    // 1.
-    def succeed[A](a: A): Parser[A] = _ =>
-      Success(a, 0)
+    def succeed[A](a: A): Parser[A] = _ => Success(a, 0)
 
-    // 2.
     def fail[A](msg: String): Parser[A] = s =>
       Failure(s.loc.toError(msg), true)
 
-    // 3.
     implicit def string(w: String): Parser[String] = s =>
       firstNonmatchingIndex(s.loc.input, w, s.loc.offset) match {
         case -1 => Success(w, w.length) // they matched
         case i => Failure(s.loc.advanceBy(i).toError(s"'$w'"), i != 0)
       }
 
-    // 4.
     def or[A](p: Parser[A], p2: => Parser[A]): Parser[A] = s =>
       p(s) match {
         case Failure(_, false) => p2(s)
-        // if Failure(_, true) => we don't need to try another parser
-        // if Success          => we don't need to try another parser
         case r => r
       }
 
-    // 5.
     def flatMap[A, B](pa: Parser[A])(g: A => Parser[B]): Parser[B] = s =>
       pa(s) match {
         case Success(a, pos) =>
           val pb: Parser[B] = g(a)
-          // try to apply 2nd by providing shifted data
           val rb1 = pb(s.advanceBy(pos))
-          // fix commit if hasn't fixed
           val rb2 = rb1.addCommit(pos != 0)
           val rb3 = rb2.advanceSuccess(pos)
           rb3
-        // if 1st fail => we don't need to try 2nd
-        case f @ Failure(_,_) => f
+        case f@Failure(_, _) => f
       }
 
-    // 6.
-    // failures are uncommitted
     def regex(r: Regex): Parser[String] = s =>
       r.findPrefixOf(s.input) match {
         case Some(m) => Success(m, m.length)
-        case None    => Failure(s.loc.toError(s"regex $r"), isCommitted = false)
+        case None => Failure(s.loc.toError(s"regex $r"), isCommitted = false)
       }
 
-    // 7
     def scope[A](msg: String)(p: Parser[A]): Parser[A] = s =>
       p(s).mapError(_.push(s.loc, msg))
 
-    // 8
     def label[A](msg: String)(p: Parser[A]): Parser[A] = s =>
       p(s).mapError(_.label(msg))
 
-    // 9
     def attempt[A](p: Parser[A]): Parser[A] = s =>
       p(s).uncommit
 
     // 10
     def slice[A](p: Parser[A]): Parser[String] = s =>
       p(s) match {
-        case Success(_,n) => Success(s.slice(n),n)
-        case f @ Failure(_,_) => f
-      }
-
-    /**
-      * overridden version of `many` that accumulates
-      * the list of results using a monolithic loop.
-      * This avoids stack overflow errors for most grammars.
-      *
-      */
-    override def many[A](p: Parser[A]): Parser[List[A]] =
-      s => {
-        val buf = new collection.mutable.ListBuffer[A]
-
-        def go(p: Parser[A], offset: Int): Result[List[A]] =
-          p(s.advanceBy(offset)) match {
-            case Success(a,n)         => buf += a; go(p, offset+n)
-            case f @ Failure(_, true) => f
-            case     Failure(_, _)    => Success(buf.toList,offset)
-          }
-
-        go(p, 0)
+        case Success(_, n) => Success(s.slice(n), n)
+        case f@Failure(_, _) => f
       }
   }
-
+  
   sealed trait Expr[+A]
   final case class Value[A](x: A) extends Expr[A]
-  final case class BiOp[A, EA >: Expr[A]](op: Char, l: EA, r: EA) extends Expr[A]
-
-  def mkNode[A, EA >: Expr[A]](op: Char, n1: EA, n2: EA): EA = BiOp(op, n1, n2)
+  final case class BiOp[A](op: Char, l: Expr[A], r: Expr[A]) extends Expr[A]
 
   case class NP(n: Int, p: Int)
 
@@ -385,9 +337,9 @@ object SimplifyAlgebraicExpressions {
 
   trait AbstractMathParser[A] {
     import Reference._
-    def process[EA >: Expr[A]](t: (EA, Seq[(Char, EA)])): EA = t match {
+    def process(t: (Expr[A], Seq[(Char, Expr[A])])): Expr[A] = t match {
       case (n, Nil) => n
-      case (a, l) => l.foldLeft(a) { case (acc, (op, x)) => mkNode(op, acc, x) }
+      case (a, l) => l.foldLeft(a) { case (acc, (op, x)) => BiOp(op, acc, x) }
     }
     val plusOrMinus: Parser[Char] = char('+') | char('-')
     val mulOrDiv: Parser[Char] = char('*') | char('/')
