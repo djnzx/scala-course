@@ -44,6 +44,7 @@
   - [github](https://gist.github.com/aaronlevin/d3911ba50d8f5253c85d2c726c63947b)
 - Juliano Alves
   - [Building the Death Star with ZIO Stream](https://juliano-alves.com/2020/05/04/deathstar-zio-stream/)
+  - [Streaming all the way with ZIO, Doobie, Quill, http4s and fs2](https://juliano-alves.com/2020/06/15/streaming-all-the-way-zio-doobie-quill-http4s-fs2/)
 - Jichao Ouyang's Blog
   - [blog](https://blog.oyanglul.us)
   - [github](https://github.com/jcouyang)
@@ -52,7 +53,19 @@
   - [functional error handling](https://guillaumebogard.dev/posts/functional-error-handling/#the-issues-with-exceptions)
   - [video](https://www.youtube.com/watch?v=6WXgEGbf0iQ&t=387s)
 - kubuszok.com
+  - [blog root](https://kubuszok.com)
   - [blog](https://kubuszok.com/2018/different-ways-to-understand-a-monad/#monad)
+- App Dev Meander
+  - [1](https://appddeevvmeanderings.blogspot.com/2020/06/vertically-scaling-nodejs-dotty-graaljs.html)
+  - [2](https://appddeevvmeanderings.blogspot.com/2020/05/zio-layers-and-framework-integration.html)
+- [Types of Types](https://ktoso.github.io/scala-types-of-types/)
+- [terse systems](https://tersesystems.com/blog/2020/05/26/why-i-wrote-a-logging-library/)
+- contributors.scala-lang.org
+  - [metals](https://contributors.scala-lang.org/t/ammonite-support-in-metals/4306)
+- [scalac blog](https://scalac.io/blog/)
+- [oyanglul](https://blog.oyanglul.us/scala/dotty/en/gadt)
+- [47deg](https://www.47deg.com/blog/tags/scala/)
+  - [scalacheck](https://www.youtube.com/watch?v=l5-5w8A-Ong)
   
 ### BASIC / LEARNING
 - [fpinscala](https://github.com/alexr007/fpinscala.git)
@@ -77,7 +90,11 @@
 - [Underscore. Essential Play](https://books.underscore.io/essential-play/essential-play.html)
 - [Underscore. The Type Astronaut’s Guide to Shapeless](https://books.underscore.io/shapeless-guide/shapeless-guide.html)
 - [Underscore. Creative Scala](https://www.creativescala.org/creative-scala.html)
+- [Lightbend](https://www.lightbend.com/ebooks)
 - [Li Haoyi. Hands-on Scala Programming](https://www.handsonscala.com/chapter-1-hands-on-scala.html)
+- Category Theory for Programmers 
+  - [github](https://github.com/hmemcpy/milewski-ctfp-pdf)
+  - [pdf](https://github.com/hmemcpy/milewski-ctfp-pdf/releases/download/v1.3.0/category-theory-for-programmers.pdf)
 - Sam Halliday. Functional Programming for Mortals
   - [shop](https://leanpub.com/fpmortals)
   - [local copy#1](../../../../../Dropbox/_books/_NEW_BOUGHT_2020/fpmortals.pdf)
@@ -90,13 +107,17 @@
   - [shop](https://livebook.manning.com/book/functional-programming-in-scala)
   - [local copy#1](../../../../../Dropbox/_books/_NEW_BOUGHT_2020/Functional_Programming_in_Scala.pdf)
   - [local copy#2](../../../../Dropbox/_books/_NEW_BOUGHT_2020/Functional_Programming_in_Scala.pdf)
-- [red book - 9](https://livebook.manning.com/book/functional-programming-in-scala/chapter-9/)
 - [red book - 10](https://livebook.manning.com/book/functional-programming-in-scala/chapter-10/)
 - [red book - 11](https://livebook.manning.com/book/functional-programming-in-scala/chapter-11/)
 - [red book - 12](https://livebook.manning.com/book/functional-programming-in-scala/chapter-12/)
 - [red book - 13](https://livebook.manning.com/book/functional-programming-in-scala/chapter-13/)
 - [red book - 14](https://livebook.manning.com/book/functional-programming-in-scala/chapter-14/)
 - [red book - 15](https://livebook.manning.com/book/functional-programming-in-scala/chapter-15/)
+- [FRDM](https://livebook.manning.com/book/functional-and-reactive-domain-modeling)
+- WIX
+  - [async #1](https://medium.com/wix-engineering/writing-async-app-in-scala-part-1-coding-dd09b014d576)
+  - [async #2](https://www.reddit.com/r/scala/comments/gpelev/writing_async_app_in_scala_part_2_exception/)
+  - [async #3](https://medium.com/wix-engineering/writing-async-app-in-scala-part-3-threading-model-ef9e9033bd33)
 
 ### PURE FP
 - [fp-stack-2020-pres](https://github.com/adamw/fp-stack-2020-pres.git)
@@ -127,6 +148,7 @@
 
 ### SQL
 - [essential-slick-code](https://github.com/alexr007/essential-slick-code.git)
+- [slick](https://plippe.github.io/blog/2020/06/01/playing-with-scala-slick.html)
 - [scala-sql-compare](https://github.com/softwaremill/scala-sql-compare.git)
    - [my clone](https://github.com/alexr007/scala-sql-compare.git)
 
@@ -147,13 +169,17 @@
 - [zio-properties](https://adrianfilip.com/2020/05/03/zio-properties-a-zio-alternative-to-spring-properties/)
 - [zioAkkaHttpTemplate.g8](https://github.com/KaizenLab-ScalaFP/zioAkkaHttpTemplate.g8)
 - [ZIO & Cats Effect](https://habr.com/ru/company/oleg-bunin/blog/472386/)
+- [ZIO Stream](https://www.youtube.com/watch?v=OiuKbpMOKsc)
+- [Managing dependencies using ZIO](https://blog.softwaremill.com/managing-dependencies-using-zio-8acc1539e276)
+- [ZIO, the future of Future[A]](https://github.com/gstraymond/csaw-overview-zio/)
 
 ### YOUTUBE
 - [John De Goes](https://www.youtube.com/results?search_query=john+de+goes)
 - [#Scala - Your First Programming Language](https://www.youtube.com/playlist?list=PLJGDHERh23x-YBJ8LmYU_IGBFflvsKfLu)
 - [Recording: SF Scala: Enhancing Spark's Power with ZIO, Qubism and NLP at Scale, Using Nix for Haskell](https://www.youtube.com/watch?v=Ov7WZroBkv0)
-- [data jugging](https://www.youtube.com/watch?v=_BxVIXVoNPE&feature=youtu.be)
-- [circe](https://www.youtube.com/watch?v=0yMoYU-rodw&feature=youtu.be)
+- [dev inside you](https://www.youtube.com/channel/UCSBUwLT9zXhUalKfJrc2q2A)
+- [Idea plugin](https://www.youtube.com/watch?v=IPO-cY_giNA)
+- [Improving the Typelevel ecosystem](https://www.youtube.com/watch?v=SMMgwfhPCzM)
 
 ### FROM REDDIT & MEDIUM
 - [r/scala](https://www.reddit.com/r/scala/)
@@ -170,6 +196,7 @@
 - [How to SBT + crossScalaVersions + Bintray](https://www.acervera.com/blog/2020/04/sbt-crossversion-release-bintray/)
 - [How to SBT + Docker buildX + Multi-Arch](https://www.acervera.com/blog/2020/04/sbt-docker-buildx-multi-arch/index.html)
 - [Functional Tree Traversal In Scala](https://medium.com/@muse.mekuria_89677/functional-algorithms-in-scala-3fbb32fd96af)
+- [Writing functional DSLs for business domains](https://medium.com/bigdatarepublic/writing-functional-dsls-for-business-domains-1bccc5d3f62b)
 
 ### LINKS
 - [Functional Effect #1](https://www.slideshare.net/pjschwarz/functional-effects-part-1)
@@ -178,9 +205,11 @@
 - [One Monad To Rule Them All](https://www.slideshare.net/jdegoes/one-monad-to-rule-them-all)
 - [Transaction Ideas](https://habr.com/ru/post/490612/)
 - [async](https://progi.pro/scala-cats-effects-io-async-shift-kak-eto-rabotaet-8408597)
+- [do tagless algebra needs laws](https://www.reddit.com/r/scala/comments/hdqzbv/do_tagless_algebra_needs_laws/)
 
 ### ScalaJS
 - [ScalaJS manual](http://www.lihaoyi.com/hands-on-scala-js/)
+- [scalajs-react](https://github.com/japgolly/scalajs-react/blob/master/doc/changelog/1.7.1.md)
 
 ### implicits
 - [guardian](https://www.theguardian.com/info/developer-blog/2016/dec/22/parental-advisory-implicit-content)
@@ -195,3 +224,20 @@
 - [Orchestrating startup and shutdown in Scala](https://medium.com/bestmile/orchestrating-startup-and-shutdown-in-scala-f7ad2644835a)
 - [docker monitor](https://github.com/vasilmkd/docker-stats-monitor)
 - [F[_] in Scala](https://medium.com/bigpanda-engineering/understanding-f-in-scala-4bec5996761f)
+- [scala check](https://itnext.io/a-newbie-way-to-play-with-scalacheck-333cbabfc00a)
+- [22.07.2020](https://medium.com/disney-streaming/this-week-in-scala-jun-22-2020-d6f3ab232184)
+- [15.07.2020](https://medium.com/disney-streaming/this-week-in-scala-jun-15-2020-5982b738d1e4)
+- [8.07.2020](https://medium.com/disney-streaming/this-week-in-scala-jun-8-2020-eae85d3e2229)
+- [1.07.2020](https://medium.com/disney-streaming/this-week-in-scala-jun-1-2020-a5819f6198c8)
+- [18.05.2020](https://medium.com/disney-streaming/this-week-in-scala-may-18-2020-2f15fe6dcf0)
+- [buffer-and-slice](https://github.com/arturopala/buffer-and-slice.git)
+- [distage-framework-docker](https://izumi.7mind.io/distage/distage-framework-docker)
+- [Weaver Test](https://disneystreaming.github.io/weaver-test/)
+- [inner product](https://www.inner-product.com/posts/bowling-in-fp/)
+- [Scala 2 => 3](https://github.com/lunatech-labs/lunatech-scala-2-to-scala3-course)
+- [logging](https://www.reddit.com/r/scala/comments/h0og7f/looking_for_the_goto_approach_to_logging_in_scala/)
+- [pattern matching](https://www.reddit.com/r/scala/comments/gyt84e/how_are_case_classes_and_pattern_matching/)
+- [](https://www.reddit.com/r/scala/comments/gxqvtr/addressing_and_manipulating_an_immutable_tree/)
+
+### KAFKA
+- [REPL for Apache Kafka](https://github.com/mmolimar/kukulcan)
