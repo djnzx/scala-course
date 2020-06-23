@@ -14,10 +14,12 @@ class MathOpToNumberSpec extends AnyFunSpec with Matchers {
     
     it("123") {
       Seq(
-        "1+2",
+        "4/-2/2",
+        "3/-1+5",
+        "-1+2",
         "1-2",
         "1-2*3",
-        "(1-2)*3",
+        "(1-2)*-3",
         "((1-2)*(3+4))/5-1",
       ).foreach { s => pprint.log(R.run(built)(s)) }
     }

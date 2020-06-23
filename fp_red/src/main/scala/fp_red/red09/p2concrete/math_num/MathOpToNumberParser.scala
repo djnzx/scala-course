@@ -5,7 +5,7 @@ import fp_red.red09.p2concrete.math.BiTree._
 import fp_red.red09.p2concrete.math._
 
 object MathOpToNumberParser extends AbstractMathParser[Int] {
-  import R.{integerWoSign, syntaxForParser}
+  import R._
 
-  override def value: Parser[Expr[Int]] = integerWoSign.map(x => Value(x))
+  override def value: Parser[Expr[Int]] = integer.map(x => Value(x))
 }

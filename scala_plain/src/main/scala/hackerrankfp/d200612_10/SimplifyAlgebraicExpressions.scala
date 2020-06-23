@@ -1,41 +1,34 @@
 package hackerrankfp.d200612_10
 
+/**
+  * https://www.hackerrank.com/challenges/simplify-the-algebraic-expressions/problem
+  */
 object SimplifyAlgebraicExpressions {
 
   case class Monom(k: Int, p: Int) {
     def isNeg = k < 0
     def isZero = k == 0
-
     def sign: String = if (isNeg) "-" else "+"
-    // string representations without any signs
     def mkStringWoSign: String = {
-      // abs(k)
       val absk = math.abs(k)
-      // power
       val xs = p match {
         case 0 => ""
         case 1 => "x"
         case p => s"x^$p"
       }
-      // eliminate k if ==1
       val ks = if (absk != 1) s"$absk" else ""
       if (!isZero) s"$ks$xs" else ""
     }
-
-    // with `-` only
     def mkString: String = isNeg match {
       case true  => s"$sign$mkStringWoSign"
       case false =>         mkStringWoSign
     }
-
-    // with `+` or `-`
     override def toString: String = (isNeg, !isZero) match {
       case (true, _) |
            (_, true) => s"$sign$mkStringWoSign"
       case _         => ""
     }
   }
-
   object Monom {
     implicit class MonomOps(m1: Monom) {
       def unary_-  = m1.copy(k = - m1.k)
@@ -47,12 +40,11 @@ object SimplifyAlgebraicExpressions {
     }
     implicit val ordering: Ordering[Monom] = (x, y) => y.p - x.p
   }
-
   case class Polynom(ms: Seq[Monom]) {
     def this(k: Int, p: Int) = this(Seq(Monom(k, p)))
-    def sorted = Polynom(ms sorted)
+    def sorted = Polynom(ms.sorted)
     def isZero = ms == Nil
-    def unary_- = Polynom(ms map { _.unary_- })
+    def unary_- = Polynom(ms.map { _.unary_- })
     def squash = Polynom(
       ms.groupMapReduce(_.p)(_.k)(_+_)
         .map { case (p, k) => Monom(k, p) }
@@ -80,10 +72,12 @@ object SimplifyAlgebraicExpressions {
     override def toString: String = (ms.head.mkString ++ ms.tail.map { _.toString }) mkString ""
     def toStringHR: String = (ms.head.mkString ++ ms.tail.map { m => s" ${m.sign} ${m.mkStringWoSign}" }) mkString ""
   }
-  
-  implicit class StrNorm(s: String) {
-    def ws: String = s.replaceAll("\\s", "")
-  }
+
+  sealed trait Expr[+A]
+  final case class Value[A](x: A) extends Expr[A]
+  final case class BiOp[A](op: Char, l: Expr[A], r: Expr[A]) extends Expr[A]
+
+  case class NP(n: Int, p: Int)
 
   trait ParsersBase[Parser[+_]] {
     import scala.util.matching.Regex
@@ -136,16 +130,6 @@ object SimplifyAlgebraicExpressions {
   case class Success[+A](get: A, pos: Int) extends Result[A]
   case class Failure(get: ParseError, isCommitted: Boolean) extends Result[Nothing]
 
-  def firstNonmatchingIndex(s0: String, pat: String, s0_off: Int): Int = {
-    var i = 0
-    while (s0_off+i < s0.length && i < pat.length) {
-      if (s0.charAt(s0_off+i) != pat.charAt(i)) return i
-      i += 1
-    }
-    if (s0.length-s0_off >= pat.length) -1
-    else s0.length-s0_off
-  }
-
   case class Location(input: String, offset: Int = 0) {
     lazy val line: Int = input.slice(0,offset+1).count(_ == '\n') + 1
     lazy val col: Int = input.slice(0,offset+1).lastIndexOf('\n') match {
@@ -189,12 +173,10 @@ object SimplifyAlgebraicExpressions {
   }
 
   trait Parsers[Parser[+_]] extends ParsersBase[Parser] { self =>
-    import java.util.regex.Pattern // 23
-
     implicit def syntaxForParser[A](p: Parser[A]): ParserOps[A] = ParserOps[A](p)
     implicit def asStringParser[A](a: A)(implicit f: A => Parser[String]): ParserOps[String] = ParserOps(f(a))
     def char(c: Char): Parser[Char] = string(c.toString) map { _.charAt(0) }
-    def many[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ } or succeed(Nil)
+    def many[A](p: Parser[A]): Parser[List[A]] = map2(p, many(p)) { _ :: _ } | succeed(Nil)
     def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]] =
       if (n<=0) succeed(Nil)
       else map2(p, listOfN(n-1, p)) { _ :: _ }
@@ -210,29 +192,18 @@ object SimplifyAlgebraicExpressions {
     def map[A,B](pa: Parser[A])(f: A => B): Parser[B] = flatMap(pa) { f andThen succeed }
     def skipL[B](p: Parser[Any], p2: => Parser[B]): Parser[B] = map2(slice(p), p2)((_,b) => b)
     def skipR[A](p: Parser[A], p2: => Parser[Any]): Parser[A] = map2(p, slice(p2))((a,_) => a)
-    def opt[A](p: Parser[A]): Parser[Option[A]] = p.map(Some(_)) or succeed(None)
     def whitespace: Parser[String] = "\\s*".r
     def digits: Parser[String] = "\\d+".r
-    def thru(s: String): Parser[String] = (".*?"+Pattern.quote(s)).r
-    def quoted: Parser[String] = string("\"") *> thru("\"").map(_.dropRight(1))
-    def escapedQuoted: Parser[String] = token(quoted label "string literal")
-    def digitsSigned: Parser[String] = token("[-+]?[0-9]+".r)
-    def integer: Parser[Int] = digitsSigned map { _.toInt } label "integer literal"
-    def integerWoSign: Parser[Int] = digits map { _.toInt } label "integer w/o sign literal"
-    def long: Parser[Long] = digitsSigned map { _.toLong } label "long literal"
+    def number: Parser[Int] = digits map { _.toInt } label "integer w/o sign literal"
     def doubleString: Parser[String] = token("[-+]?([0-9]*\\.)?[0-9]+([eE][-+]?[0-9]+)?".r)
     def double: Parser[Double] = doubleString map { _.toDouble } label "double literal"
     def token[A](p: Parser[A]): Parser[A] = attempt(p) <* whitespace
-    def sep[A](p: Parser[A], p2: Parser[Any]): Parser[List[A]] = sep1(p, p2) or succeed(List())
-    def sep1[A](p: Parser[A], p2: Parser[Any]): Parser[List[A]] = map2(p, many(p2 *> p))(_ :: _)
-    def opL[A](p: Parser[A])(op: Parser[(A,A) => A]): Parser[A] = map2(p, many(op ** p))((h,t) => t.foldLeft(h)((a,b) => b._1(a,b._2)))
     def surround[A](start: Parser[Any], stop: Parser[Any])(p: => Parser[A]) = start *> p <* stop
     def eof: Parser[String] = regex("\\z".r).label("unexpected trailing characters")
     def root[A](p: Parser[A]): Parser[A] = p <* eof
 
     case class ParserOps[A](p: Parser[A]) {
       def | [B>:A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
-      def or[B>:A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
       def map[B](f: A => B): Parser[B] = self.map(p)(f)
       def many:  Parser[List[A]] = self.many(p)
       def slice: Parser[String] = self.slice(p)
@@ -242,32 +213,30 @@ object SimplifyAlgebraicExpressions {
       def label(msg: String): Parser[A] = self.label(msg)(p)
       def *>[B](p2: => Parser[B])  : Parser[B] = self.skipL(p, p2)
       def <*   (p2: => Parser[Any]): Parser[A] = self.skipR(p, p2)
-      def token: Parser[A] = self.token(p)
-      def sep (separator: Parser[Any]): Parser[List[A]] = self.sep (p, separator)
-      def sep1(separator: Parser[Any]): Parser[List[A]] = self.sep1(p, separator)
-      def as[B](b: B): Parser[B] = self.map(self.slice(p))(_ => b)
-      def opL(op: Parser[(A,A) => A]): Parser[A] = self.opL(p)(op)
     }
   }
   
   object Reference extends Parsers[Parser] {
-
     import scala.util.matching.Regex
 
-    def run[A](p: Parser[A])(s: String): Either[ParseError, A] = {
-      val s0 = ParseState(Location(s))
-      p(s0).extract
-    }
+    def run[A](p: Parser[A])(s: String): Either[ParseError, A] = p(ParseState(Location(s))).extract
 
-    def runLen[A](p: Parser[A])(s: String): Either[ParseError, (A, Int)] = {
-      val s0 = ParseState(Location(s))
-      p(s0).extractLen
-    }
+    def runLen[A](p: Parser[A])(s: String): Either[ParseError, (A, Int)] =
+      p(ParseState(Location(s))).extractLen
 
     def succeed[A](a: A): Parser[A] = _ => Success(a, 0)
 
-    def fail[A](msg: String): Parser[A] = s =>
-      Failure(s.loc.toError(msg), true)
+    def fail[A](msg: String): Parser[A] = s => Failure(s.loc.toError(msg), true)
+
+    def firstNonmatchingIndex(s0: String, pat: String, s0_off: Int): Int = {
+      var i = 0
+      while (s0_off+i < s0.length && i < pat.length) {
+        if (s0.charAt(s0_off+i) != pat.charAt(i)) return i
+        i += 1
+      }
+      if (s0.length-s0_off >= pat.length) -1
+      else s0.length-s0_off
+    }
 
     implicit def string(w: String): Parser[String] = s =>
       firstNonmatchingIndex(s.loc.input, w, s.loc.offset) match {
@@ -304,10 +273,8 @@ object SimplifyAlgebraicExpressions {
     def label[A](msg: String)(p: Parser[A]): Parser[A] = s =>
       p(s).mapError(_.label(msg))
 
-    def attempt[A](p: Parser[A]): Parser[A] = s =>
-      p(s).uncommit
+    def attempt[A](p: Parser[A]): Parser[A] = s => p(s).uncommit
 
-    // 10
     def slice[A](p: Parser[A]): Parser[String] = s =>
       p(s) match {
         case Success(_, n) => Success(s.slice(n), n)
@@ -315,72 +282,56 @@ object SimplifyAlgebraicExpressions {
       }
   }
   
-  sealed trait Expr[+A]
-  final case class Value[A](x: A) extends Expr[A]
-  final case class BiOp[A](op: Char, l: Expr[A], r: Expr[A]) extends Expr[A]
-
-  case class NP(n: Int, p: Int)
-
   object MonomParser {
-    import Reference._
+    import Reference.{number, char, attempt, succeed, syntaxForParser}
 
-    val n: Parser[Int] = integerWoSign
+    val n: Parser[Int] = number
     val x: Parser[Char] = char('x')
-    val p: Parser[Int] = char('^') *> integerWoSign
+    val p: Parser[Int] = char('^') *> number
     val nxp: Parser[NP] = (n <* x) ** p map { case (n, p) => NP(n, p) }
     val nx1: Parser[NP] = n <* x map { NP(_, 1) }
     val n_ : Parser[NP] = n map { NP(_, 0) }
-    val xp : Parser[NP] = x *> p map { NP(1, _) }
+    val xp: Parser[NP] = x *> p map { NP(1, _) }
     val x_ : Parser[NP] = x *> succeed(NP(1, 1))
     val monom: Parser[NP] = attempt(nxp) | attempt(nx1) | attempt(n_) | attempt(xp) | attempt(x_)
   }
-
-  trait AbstractMathParser[A] {
+  
+  object MathOpToPolynomParser {
     import Reference._
-    def process(t: (Expr[A], Seq[(Char, Expr[A])])): Expr[A] = t match {
+    
+    def process(t: (Expr[Polynom], Seq[(Char, Expr[Polynom])])): Expr[Polynom] = t match {
       case (n, Nil) => n
       case (a, l) => l.foldLeft(a) { case (acc, (op, x)) => BiOp(op, acc, x) }
     }
     val plusOrMinus: Parser[Char] = char('+') | char('-')
     val mulOrDiv: Parser[Char] = char('*') | char('/')
-    def value: Parser[Expr[A]]
-    def parens = surround(char('('), char(')'))(addSub)
-    def factor = value | parens
-    def divMul = ( factor ** (mulOrDiv ** factor).many ).map(process)
-    def addSub: Parser[Expr[A]] = ( divMul ** (plusOrMinus ** divMul).many ).map(process)
-    def built = root(addSub)
+    def value: Parser[Expr[Polynom]] = MonomParser.monom.map { case NP(n,p) => Value(Monom(n, p).toPolynom) }
+    def parens: Parser[Expr[Polynom]] = surround(char('('), char(')'))(addSub)
+    def factor: Parser[Expr[Polynom]] = value | parens
+    def divMul: Parser[Expr[Polynom]] = ( factor ** (mulOrDiv ** factor).many ).map(process)
+    def addSub: Parser[Expr[Polynom]] = ( divMul ** (plusOrMinus ** divMul).many ).map(process)
+    def built: Parser[Expr[Polynom]] = root(addSub)
   }
 
-  object MathOpToPolynomParser extends AbstractMathParser[Polynom] {
-    import Reference.syntaxForParser
-    
-    override def value: Parser[Expr[Polynom]] = MonomParser.monom.map { case NP(n,p) => Value(Monom(n, p).toPolynom) }
-  }
-
-  def eval(root: Expr[Polynom]): Polynom = {
-    def evalOp(op: Char, l: Expr[Polynom], r: Expr[Polynom]): Polynom = op match {
+  def evalNode(node: Expr[Polynom]): Polynom = node match {
+    case Value(x) => x
+    case BiOp(op, l:Expr[Polynom], r:Expr[Polynom]) => op match {
       case '+' => evalNode(l) + evalNode(r)
       case '-' => evalNode(l) - evalNode(r)
       case '*' => evalNode(l) * evalNode(r)
       case '/' => evalNode(l) / evalNode(r)
     }
-    def evalNode(node: Expr[Polynom]): Polynom = node match {
-      case Value(x) => x
-      case BiOp(op, l:Expr[Polynom], r:Expr[Polynom]) => evalOp(op, l,  r)
-    }
-    evalNode(root)
   }
   
-  def simplify(ex: String) =
-    Reference.run(MathOpToPolynomParser.built)(ex.ws).map { eval } map { _.toStringHR } fold (_ => ???, identity)
-
-  def process(data: List[String]) = data map simplify
+  def simplify(ex: String) = Reference.run(MathOpToPolynomParser.built)(
+    ex.replaceAll("\\s", ""))
+    .map(evalNode)
+    .map(_.toStringHR)
+    .fold(_ => ???, identity)
 
   def body(line: => String): Unit = {
     val N = line.toInt
-    val list = (1 to N).map { _ => line }.toList
-    val r = process(list)
-    r.foreach { println }
+    (1 to N).map(_ => line).map(simplify).foreach(println)
   }
 
   //  def main(p: Array[String]): Unit = body { scala.io.StdIn.readLine }
