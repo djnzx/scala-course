@@ -1,6 +1,5 @@
-package fpinscala.c09parsing
+package fp_red.c_answers.c09parsing
 
-import language.higherKinds
 import language.implicitConversions
 
 trait JSON
@@ -66,8 +65,8 @@ object JSONExample extends App {
 ]
 """
 
-  val P = fpinscala.c09parsing.Reference
-  import fpinscala.c09parsing.ReferenceTypes.Parser
+  import fp_red.c_answers.c09parsing.instances.ReferenceTypes.Parser
+  val P = fp_red.c_answers.c09parsing.instances.Reference
 
   def printResult[E](e: Either[E,JSON]) =
     e.fold(println, println)

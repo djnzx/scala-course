@@ -1,8 +1,7 @@
 package fp_red.c_answers.c10monoids
 
-import fpinscala.c07parallelism.Nonblocking._
-import fpinscala.c07parallelism.Nonblocking.Par.toParOps // infix syntax for `Par.map`, `Par.flatMap`, etc
-import language.higherKinds
+import fp_red.c_answers.c07parallelism.Nonblocking._
+import fp_red.c_answers.c07parallelism.Nonblocking.Par.toParOps // infix syntax for `Par.map`, `Par.flatMap`, etc
 
 trait Monoid[A] {
   def op(a1: A, a2: A): A
@@ -70,7 +69,7 @@ object Monoid {
     val zero = (a: A) => a
   }
 
-  import fpinscala.c08testing._
+  import fp_red.c_answers.c08testing._
   import Prop._
 
   def monoidLaws[A](m: Monoid[A], gen: Gen[A]): Prop =

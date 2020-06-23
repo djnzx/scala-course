@@ -1,7 +1,8 @@
-package fpinscala
-package c09parsing
+package fp_red.c_answers.c09parsing.instances
 
 import SliceableTypes._
+import fp_red.c_answers.c09parsing.{Location, ParseError, Parsers}
+
 import scala.util.matching.Regex
 
 /*

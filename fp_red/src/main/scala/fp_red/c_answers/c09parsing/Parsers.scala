@@ -1,9 +1,9 @@
-package fpinscala.c09parsing
+package fp_red.c_answers.c09parsing
 
 import java.util.regex._
 import scala.util.matching.Regex
-import fpinscala.c08testing._
-import fpinscala.c08testing.Prop._
+import fp_red.c_answers.c08testing._
+import fp_red.c_answers.c08testing.Prop._
 import language.higherKinds
 import language.implicitConversions
 
