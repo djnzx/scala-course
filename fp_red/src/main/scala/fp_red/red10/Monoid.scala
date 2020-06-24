@@ -5,7 +5,7 @@ trait Monoid[A] {
   def zero: A
 }
 
-object Monoid extends App {
+object Monoid {
   
   /**
     * Monoid - category with one object
@@ -23,8 +23,7 @@ object Monoid extends App {
     override def op(a1: String, a2: String): String = s"$a1$a2"
     override def zero: String = ""
   }
-
-  // EX.1
+  
   val intAddition: Monoid[Int] = new Monoid[Int] {
     def op(x: Int, y: Int): Int = x + y
     val zero = 0
@@ -50,20 +49,38 @@ object Monoid extends App {
     override def zero: List[A] = Nil
   }
 
-  // EX.2
-  // Monoid, but order matters
+  // left or right
   def optionMonoid[A]: Monoid[Option[A]] = new Monoid[Option[A]] {
-    def op(x: Option[A], y: Option[A]): Option[A] = x orElse y
-    val zero: Option[A] = None
+    override def op(a1: Option[A], a2: Option[A]): Option[A] = a1 orElse a2
+    override def zero: Option[A] = None
+  }
+  
+  // right or left
+  def optionMonoidR[A]: Monoid[Option[A]] = new Monoid[Option[A]] {
+    override def op(a1: Option[A], a2: Option[A]): Option[A] = a2 orElse a1
+    override def zero: Option[A] = None
+  }
+  
+  // different implementation supposed A is also monoid
+  def optionMonoidBoth[A: Monoid]: Monoid[Option[A]] = new Monoid[Option[A]] {
+    override def op(a1: Option[A], a2: Option[A]): Option[A] = (a1, a2) match {
+      case (None, None) => None
+      case (Some(_), None) => a1
+      case (None, Some(_)) => a2
+      case (Some(a1v), Some(a2v)) => Some(implicitly[Monoid[A]].op(a1v, a2v))
+    }
+    override def zero: Option[A] = None
   }
 
-  // We can get the dual of any monoid just by flipping the `op`.
+  /**
+    * We can get the dual of any monoid just by flipping the `op`.
+    * swap the order 
+    */
   def dual[A](m: Monoid[A]): Monoid[A] = new Monoid[A] {
     def op(x: A, y: A): A = m.op(y, x)
     val zero: A = m.zero
   }
 
-  // EX.3
   def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
     def op(f: A => A, g: A => A): A => A = f compose g
     val zero: A => A = identity
@@ -74,58 +91,126 @@ object Monoid extends App {
     val zero: A => A = identity
   }
 
-  // EX.4
   import fp_red.red08.{Gen, Prop}
   import fp_red.red08.Prop._
   def monoidLaws[A](m: Monoid[A], gen: Gen[A]): Prop = {
+    case class T3(a: A, b: A ,c: A)
 
-    val data = for {
-      x <- gen
-      y <- gen
-      z <- gen
-    } yield (x, y, z)
+    val data: Gen[T3] = for {
+      a <- gen
+      b <- gen
+      c <- gen
+    } yield T3(a,b,c)
 
-    forAll(data) { p: (A, A, A) =>
-      m.op(p._1, m.op(p._2, p._3)) == m.op(m.op(p._1, p._2), p._3)
+    forAll(data) { p: T3 =>
+      import p._
+      m.op(a, m.op(b, c)) == m.op(m.op(a, b), c)
     } &&
       forAll(gen) { a: A =>
         m.op(a, m.zero) == a && m.op(m.zero, a) == a
       }
-
   }
 
   // Now we can have both monoids on hand:
   def firstOptionMonoid[A]: Monoid[Option[A]] = optionMonoid[A]
   def lastOptionMonoid[A]: Monoid[Option[A]] = dual(firstOptionMonoid)
 
-  // EX 5
-  def foldMap[A, B](as: List[A], m: Monoid[B])(f: A => B): B =
-    as.foldLeft(m.zero)((b, a) => m.op(b, f(a)))
+  def trimMonoid(s: String): Monoid[String] = ???
 
-  // EX. 6
-  // The function type `(A, B) => B`, when curried, is `A => (B => B)`.
-  // And of course, `B => B` is a monoid for any `B` (via function composition).
-  // TODO: repeat
-  def foldRight[A, B](as: List[A])(z: B)(f: (A, B) => B): B =
-    foldMap(as, endoMonoid[B])(f.curried)(z)
-
-  // Folding to the left is the same except we flip the arguments to
-  // the function `f` to put the `B` on the correct side.
-  // Then we have to also "flip" the monoid so that it operates from left to right.
-  def foldLeft[A, B](as: List[A])(z: B)(f: (B, A) => B): B =
-    foldMap(as, dual(endoMonoid[B]))(a => b => f(b, a))(z)
-
-  // balanced fold allows parallelism
+  def concatenate[A](as: List[A], m: Monoid[A]): A =
+    as.foldLeft(m.zero) { (acc, a) => m.op(acc, a) }
 
   // it will produce extra list, so 2 passes
   def foldMap1[A, B](as: List[A], m:Monoid[B])(f: A => B): B =
-    as.map(f(_)).foldLeft(m.zero)(m.op)
+    as.map(f(_))
+      .foldLeft(m.zero)(m.op)
 
   // it will fold in one pass
   def foldMap2[A, B](as: List[A], m: Monoid[B])(f: A => B): B =
     as.foldLeft(m.zero)((b, a) => m.op(b, f(a)))
 
-  // EX.7
+  // fold with map in one pass
+  def foldMap[A, B](as: List[A], m: Monoid[B])(f: A => B): B =
+    as.foldLeft(m.zero) { (acc, a) => m.op(acc, f(a)) }
+
+  /** foldRight - native,
+    * 1 pass
+    */
+  def foldRight2[A, B](as: List[A])(z: B)(f: (A, B) => B): B =
+    as.foldRight(z)(f)
+  
+  /** foldRight - via mapping List[A] and f(A,B)=>B to List[B => B],
+    * 2 passes
+    */
+  def foldRight3[A, B](as: List[A])(z: B)(f: (A, B) => B): B = {
+    type BB = B => B
+    val fc: A => BB = f.curried
+    // 1-st pass
+    val lbb: List[BB] = as.map(fc)
+    // 2-nd pass
+    val folded: BB = lbb.foldLeft(identity[B] _) { (f1: BB, f2: BB) => f1 compose f2 }
+    // final result
+    folded(z)
+  }
+
+  /** foldRight - via mapping List[A] and f(A, B) => B to List[B => B],
+    * 1 pass
+    */
+  def foldRight4[A, B](as: List[A])(z: B)(f: (A, B) => B): B = {
+    val fc: A => B => B = f.curried
+    val ebb: Monoid[B => B] = endoMonoid[B]
+    // 1-st pass
+    val folded: B => B = as.foldLeft(ebb.zero) { (fbb, a) => ebb.op(fbb, fc(a)) }
+    // final result
+    folded(z)
+  }
+
+  /** foldRight - via foldMap (mapping List[A] and f(A, B) => B to List[B=>B]),
+    * 1 pass
+    */
+  def foldRight5[A, B](as: List[A])(z: B)(f: (A, B) => B): B = {
+    val fc: A => B => B = f.curried
+    val ebb: Monoid[B => B] = endoMonoid[B]
+    // 1-st pass
+    val folded: B => B = foldMap(as, ebb) { a: A => fc(a) }
+    // final result
+    folded(z)
+  }
+
+  /**
+    * foldRight via foldMap 
+    * endoMonoid:
+    * f: (A, B) => B
+    * curried, will be 
+    * A => (B => B)
+    *
+    * essentially, by having function (A, B) => B
+    * and List[A]
+    * we partially apply our function f(A, B) => B (curried) to each element
+    * and get List[B => B] 
+    *
+    * essentially, we build a function f(f(f(...f(z)...)))
+    */
+  def foldRight[A, B](as: List[A])(z: B)(f: (A, B) => B): B =
+    foldMap(as, endoMonoid[B])(f.curried) (z)
+
+  /**
+    * foldLeft via foldMap
+    * the core idea is to flip the function
+    * f: (B, A) => B
+    * to
+    * f: (A, B) => B
+    * by applying approach: (a: A) => (b: B) => f(b, a)
+    * and converting endoMonoid to dual(endoMonoid)
+    * because we need andThan instead of compose
+    */
+  def foldLeft[A, B](as: List[A])(z: B)(f: (B, A) => B): B =
+    foldMap(as, dual(endoMonoid[B])) { a: A => b: B => f(b, a) } (z)
+
+  /**
+    * balanced fold allows parallelism,
+    * but we need an IndexedSeq
+    */
   def foldMapV[A, B](as: IndexedSeq[A], m: Monoid[B])(f: A => B): B = as.length match {
     case 0 => m.zero
     case 1 => f(as(0))
@@ -139,20 +224,23 @@ object Monoid extends App {
   
   // EX.8
   def isOrdered(ints: IndexedSeq[Int]): Boolean = {
-    val mon = new Monoid[Option[(Int, Int, Boolean)]] {
-      def op(o1: Option[(Int, Int, Boolean)], o2: Option[(Int, Int, Boolean)]) =
+    type IIB = (Int, Int, Boolean)
+    
+    val mon = new Monoid[Option[IIB]] {
+      def op(o1: Option[IIB], o2: Option[IIB]) =
         (o1, o2) match {
           case (Some((lower1, upper1, p)), Some((lower2, upper2, q))) =>
             Some((lower1 min lower2, upper1 max upper2, p && q && upper1 <= lower2))
           case (x, None) => x
           case (None, x) => x
         }
-      val zero: Option[(MaxSize, MaxSize, Boolean)] = None
+      val zero: Option[IIB] = None
     }
     
-    foldMapV(ints, mon) { i=> 
-      Some((i, i, true))
-    }.map(_._3).getOrElse(true)
+    val f: Int => Option[IIB] = (i: Int) => Some((i, i, true))
+    
+    val r: Option[IIB] = foldMapV(ints, mon)(f)
+    r.map(_._3).getOrElse(true)
   }
 
   import fp_red.c_answers.c07parallelism.Nonblocking._
