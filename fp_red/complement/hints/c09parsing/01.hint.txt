@@ -1,1 +1,0 @@
-Try mapping over the result of `product`.

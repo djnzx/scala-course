@@ -11,58 +11,29 @@ trait Monoid[A] {
 
 object Monoid {
 
-  val stringMonoid = new Monoid[String] {
-    def op(a1: String, a2: String) = a1 + a2
-    val zero = ""
+  def foldMapV[A, B](as: IndexedSeq[A], m: Monoid[B])(f: A => B): B = as.length match {
+    case 0 => m.zero
+    case 1 => f(as(0))
+    case _ =>
+      val (l, r) = as.splitAt(as.length / 2)
+      m.op(
+        foldMapV(l, m)(f),
+        foldMapV(r, m)(f)
+      )
   }
-
-  def listMonoid[A] = new Monoid[List[A]] {
-    def op(a1: List[A], a2: List[A]) = a1 ++ a2
-    val zero = Nil
+  
+  /**
+    * is sequence ordered in terms of foldMapV
+    */
+  def isOrdered(ints: IndexedSeq[Int]): Boolean = {
+    type IIB = (Int, Int, Boolean)
+    // we need to define a function from Int => B
+    // and define monoid for it
+    
+    
+    
+    foldMapV(ints, ???) { ??? }
   }
-
-  val intAddition: Monoid[Int] = ???
-
-  val intMultiplication: Monoid[Int] = ???
-
-  val booleanOr: Monoid[Boolean] = ???
-
-  val booleanAnd: Monoid[Boolean] = ???
-
-  def optionMonoid[A]: Monoid[Option[A]] = ???
-
-  def endoMonoid[A]: Monoid[A => A] = ???
-
-  // TODO: Placeholder for `Prop`. Remove once you have implemented the `Prop`
-  // data type from Part 2.
-  trait Prop {}
-
-  // TODO: Placeholder for `Gen`. Remove once you have implemented the `Gen`
-  // data type from Part 2.
-
-//  import fpinscala.testing._
-//  import fp_red.c_answers.c08testing.Prop._
-  def monoidLaws[A](m: Monoid[A], gen: Gen[A]): Prop = ???
-
-  def trimMonoid(s: String): Monoid[String] = ???
-
-  def concatenate[A](as: List[A], m: Monoid[A]): A =
-    ???
-
-  def foldMap[A, B](as: List[A], m: Monoid[B])(f: A => B): B =
-    ???
-
-  def foldRight[A, B](as: List[A])(z: B)(f: (A, B) => B): B =
-    ???
-
-  def foldLeft[A, B](as: List[A])(z: B)(f: (B, A) => B): B =
-    ???
-
-  def foldMapV[A, B](as: IndexedSeq[A], m: Monoid[B])(f: A => B): B =
-    ???
-
-  def ordered(ints: IndexedSeq[Int]): Boolean =
-    ???
 
   sealed trait WC
   case class Stub(chars: String) extends WC
