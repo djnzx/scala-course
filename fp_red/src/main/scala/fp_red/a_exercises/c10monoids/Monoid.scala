@@ -11,44 +11,6 @@ trait Monoid[A] {
 
 object Monoid {
 
-  def foldMapV[A, B](as: IndexedSeq[A], m: Monoid[B])(f: A => B): B = as.length match {
-    case 0 => m.zero
-    case 1 => f(as(0))
-    case _ =>
-      val (l, r) = as.splitAt(as.length / 2)
-      m.op(
-        foldMapV(l, m)(f),
-        foldMapV(r, m)(f)
-      )
-  }
-  
-  /**
-    * is sequence ordered in terms of foldMapV
-    */
-  def isOrdered(ints: IndexedSeq[Int]): Boolean = {
-    type IIB = (Int, Int, Boolean)
-    // we need to define a function from Int => B
-    // and define monoid for it
-    
-    
-    
-    foldMapV(ints, ???) { ??? }
-  }
-
-  sealed trait WC
-  case class Stub(chars: String) extends WC
-  case class Part(lStub: String, words: Int, rStub: String) extends WC
-
-  def par[A](m: Monoid[A]): Monoid[Par[A]] = 
-    ???
-
-  def parFoldMap[A,B](v: IndexedSeq[A], m: Monoid[B])(f: A => B): Par[B] = 
-    ???
-
-  val wcMonoid: Monoid[WC] = ???
-
-  def count(s: String): Int = ???
-
   def productMonoid[A,B](A: Monoid[A], B: Monoid[B]): Monoid[(A, B)] =
     ???
 

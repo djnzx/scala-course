@@ -180,6 +180,15 @@ object Monoid {
       case Part(l, w, r) => unstub(l) + w + unstub(r)
     }
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   def productMonoid[A,B](A: Monoid[A], B: Monoid[B]): Monoid[(A, B)] =
     new Monoid[(A, B)] {

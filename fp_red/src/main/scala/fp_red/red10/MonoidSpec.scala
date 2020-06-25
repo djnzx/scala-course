@@ -10,8 +10,9 @@ class MonoidSpec extends AnyFunSpec with Matchers {
   import fp_red.red08.Gen
   import fp_red.red08.Prop
   import Monoid._
+  import MonoidLaws._
   
-  describe("Monoids tests") {
+  describe("Monoids experiments") {
     it("intAddition:") {
       
       /**
@@ -37,6 +38,45 @@ class MonoidSpec extends AnyFunSpec with Matchers {
         * actual check
         */
       res shouldBe Passed
+    }
+  }
+  
+  describe("isSorted") {
+    it("empty = true") {
+      val seq = IndexedSeq()
+      isOrdered(seq) shouldBe true
+    }
+    it("sorted = true:1") {
+      val seq = IndexedSeq(4)
+      isOrdered(seq) shouldBe true
+    }
+    it("sorted = true:2") {
+      val seq = IndexedSeq(2,3)
+      isOrdered(seq) shouldBe true
+    }
+    it("sorted = true:3") {
+      val seq = IndexedSeq(2,3,4)
+      isOrdered(seq) shouldBe true
+    }
+    it("unsorted = false:1") {
+      val seq = IndexedSeq(1,2,8,4,5,6)
+      isOrdered(seq) shouldBe false
+    }
+    it("unsorted = false:2") {
+      val seq = IndexedSeq(8,1)
+      isOrdered(seq) shouldBe false
+    }
+  }
+  
+  describe("map merge") {
+    it("nested map merge") {
+      val monoid: Monoid[Map[String, Map[String, Int]]] = mapMergeMonoid(mapMergeMonoid(intAddition))
+      val map1 = Map("o1" -> Map("i1" -> 1, "i2" -> 2))
+      val map2 = Map("o1" -> Map("i2" -> 3))
+
+      monoid.op(map1, map2) shouldBe Map(
+        "o1" -> Map("i1" -> 1, "i2" -> 5)
+      )
     }
   }
 
