@@ -109,6 +109,7 @@ lazy val lihaoyi = (project in file("lihaoyi"))
       pf.lihaoyi         %% "geny"         % "0.6.0",
       pf.lihaoyi         %% "upickle"      % "1.1.0", // http://www.lihaoyi.com/upickle
       pf.lihaoyi         %% "fastparse"    % "2.2.2", // https://www.lihaoyi.com/fastparse/
+      "com.atlassian.commonmark" % "commonmark"                % "0.15.0",
     )
   )
 
