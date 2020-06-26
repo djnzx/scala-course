@@ -1,3 +1,6 @@
+package fp_red.red08
+
+// sized generation!
 case class SGen[+A](g: Int => Gen[A]) {
   def apply(n: Int): Gen[A] = g(n)
 
@@ -14,3 +17,4 @@ case class SGen[+A](g: Int => Gen[A]) {
   def **[B](s2: SGen[B]): SGen[(A,B)] =
     SGen(n => apply(n) ** s2(n))
 }
+

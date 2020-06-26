@@ -1,16 +1,15 @@
 package fp_red.red10
 
-import fp_red.c_answers.c06state.{RNG, State}
+import fp_red.c_answers.c06state.RNG
 import fp_red.red08.Prop.Passed
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
 class MonoidSpec extends AnyFunSpec with Matchers {
 
-  import fp_red.red08.Gen
-  import fp_red.red08.Prop
   import Monoid._
   import MonoidLaws._
+  import fp_red.red08.{Gen, Prop}
   
   describe("Monoids experiments") {
     it("intAddition:") {
@@ -79,5 +78,5 @@ class MonoidSpec extends AnyFunSpec with Matchers {
       )
     }
   }
-
+  
 }

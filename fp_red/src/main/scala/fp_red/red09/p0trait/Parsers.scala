@@ -1,7 +1,7 @@
 package fp_red.red09.p0trait
 
 import java.util.regex.Pattern
-import fp_red.c_answers.c08testing._
+import fp_red.red08.{Gen, Prop}
 import scala.language.implicitConversions
 
 /** case class to handle input data
@@ -307,10 +307,7 @@ trait Parsers[Parser[+_]] extends ParsersBase[Parser] { self =>
     def opL(op: Parser[(A,A) => A]): Parser[A] = self.opL(p)(op)
   }
 
-  /**
-    * we will use it during testing phase
-    */
-  object Laws {
+  object ParserLaws {
     def equal[A](p1: Parser[A], p2: Parser[A])(in: Gen[String]): Prop =
       Prop.forAll(in) { s => run(p1)(s) == run(p2)(s) }
     def mapLaw[A](p: Parser[A])(in: Gen[String]): Prop =

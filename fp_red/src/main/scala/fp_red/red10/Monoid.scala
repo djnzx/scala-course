@@ -7,8 +7,8 @@ trait Monoid[A] {
 
 object MonoidLaws {
   
-  import fp_red.red08.{Gen, Prop}
   import fp_red.red08.Prop._
+  import fp_red.red08.{Gen, Prop}
 
   /**
     * Prop is a function which needs to be run
@@ -258,8 +258,8 @@ object Monoid {
     folded.forall(_._3)
   }
   
-  import fp_red.c_answers.c07parallelism.Nonblocking._
   import fp_red.c_answers.c07parallelism.Nonblocking.Par.toParOps
+  import fp_red.c_answers.c07parallelism.Nonblocking._
 
   /**
     * having Monoid[A]
@@ -393,16 +393,45 @@ object Monoid {
 }
 
 trait Foldable[F[_]] {
-  import Monoid._
+  import Monoid.{dual, endoMonoid}
+
+  type ABB[A, B] = (A, B) => B
+  type BAB[A, B] = (B, A) => B
+  type ABBC[A, B] = A => B => B
   
+  def ABBtoABBc[A, B](f_ab_b: ABB[A, B]): ABBC[A, B] = a => b => f_ab_b(a, b) 
+  def BABtoABBc[A, B](f_ba_b: BAB[A, B]): ABBC[A, B] = a => b => f_ba_b(b, a) 
+  
+  /**
+    * foldRight via foldMap
+    */
   def foldRight[A, B](as: F[A])(z: B)(f: (A, B) => B): B =
-    foldMap(as)(f.curried)(endoMonoid[B])(z)
+    foldMap(as)(ABBtoABBc(f))(endoMonoid[B])(z)
+
+  /**
+    * foldLeft via foldMap
+    */
   def foldLeft[A, B](as: F[A])(z: B)(f: (B, A) => B): B =
-    foldMap(as)(a => (b: B) => f(b, a))(dual(endoMonoid[B]))(z)
+    foldMap(as)(BABtoABBc(f))(dual(endoMonoid[B]))(z)
+
+  /**
+    * foldMap via foldRight
+    */
   def foldMap[A, B](as: F[A])(f: A => B)(mb: Monoid[B]): B =
     foldRight(as)(mb.zero)((a, b) => mb.op(f(a), b))
+
+  /**
+    * concatenate via foldLeft
+    */
   def concatenate[A](as: F[A])(m: Monoid[A]): A =
     foldLeft(as)(m.zero)(m.op)
+
+  /**
+    * toList via foldRight 
+    */
+  def toList[A](as: F[A]): List[A] =
+    foldRight(as)(List.empty[A])(_ :: _)
+
 }
 
 object ListFoldable extends Foldable[List] {
@@ -411,7 +440,8 @@ object ListFoldable extends Foldable[List] {
   override def foldLeft[A, B](as: List[A])(z: B)(f: (B, A) => B) =
     as.foldLeft(z)(f)
   override def foldMap[A, B](as: List[A])(f: A => B)(mb: Monoid[B]): B =
-    foldLeft(as)(mb.zero)((b, a) => mb.op(b, f(a)))
+    foldLeft(as)(mb.zero) { (b, a) => mb.op(b, f(a)) }
+  override def toList[A](as: List[A]): List[A] = as
 }
 
 object IndexedSeqFoldable extends Foldable[IndexedSeq] {
@@ -433,11 +463,10 @@ object StreamFoldable extends Foldable[Stream] {
 }
 
 object OptionFoldable extends Foldable[Option] {
-  override def foldMap[A, B](as: Option[A])(f: A => B)(mb: Monoid[B]): B =
-    as match {
-      case None => mb.zero
-      case Some(a) => f(a)
-    }
+  override def foldMap[A, B](as: Option[A])(f: A => B)(mb: Monoid[B]) = as match {
+    case None => mb.zero
+    case Some(a) => f(a)
+  }
   override def foldLeft[A, B](as: Option[A])(z: B)(f: (B, A) => B) = as match {
     case None => z
     case Some(a) => f(z, a)
@@ -452,18 +481,32 @@ sealed trait Tree[+A]
 case class Leaf[A](value: A) extends Tree[A]
 case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
 
+/**
+  * we haven't used `zero` from the `Monoid`
+  * This is because there is no empty tree.
+  * 
+  * actually, we needed semigroup, not a monoid
+  */
 object TreeFoldable extends Foldable[Tree] {
-  override def foldMap[A, B](as: Tree[A])(f: A => B)(mb: Monoid[B]): B = as match {
+  override def foldMap[A, B](as: Tree[A])(f: A => B)(mb: Monoid[B]) = as match {
     case Leaf(a) => f(a)
-    case Branch(l, r) => mb.op(foldMap(l)(f)(mb), foldMap(r)(f)(mb))
+    case Branch(l, r) =>
+      mb.op(
+        foldMap(l)(f)(mb),
+        foldMap(r)(f)(mb)
+      )
   }
   override def foldLeft[A, B](as: Tree[A])(z: B)(f: (B, A) => B) = as match {
     case Leaf(a) => f(z, a)
-    case Branch(l, r) => foldLeft(r)(foldLeft(l)(z)(f))(f)
+    case Branch(l, r) =>
+      val lb = foldLeft(l)(z)(f)
+      foldLeft(r)(lb)(f)
   }
   override def foldRight[A, B](as: Tree[A])(z: B)(f: (A, B) => B) = as match {
     case Leaf(a) => f(a, z)
-    case Branch(l, r) => foldRight(l)(foldRight(r)(z)(f))(f)
+    case Branch(l, r) =>
+      val rb = foldRight(r)(z)(f)
+      foldRight(l)(rb)(f)
   }
 }
 

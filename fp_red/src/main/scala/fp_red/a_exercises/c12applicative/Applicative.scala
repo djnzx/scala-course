@@ -4,7 +4,7 @@ import fp_red.a_exercises.c11monads.Functor
 import fp_red.a_exercises.c06state._
 import State._
 import StateUtil._ // defined at bottom of this file
-import fp_red.a_exercises.c10monoids._
+import fp_red.red10._
 import language.implicitConversions
 
 trait Applicative[F[_]] extends Functor[F] {

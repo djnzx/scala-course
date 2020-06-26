@@ -3,7 +3,7 @@ package fp_red.red08
 import org.scalacheck.{Gen, Prop}
 import org.scalacheck.Prop.forAll
 
-object R08a_scalaheck extends App {
+object ScalaCheckExperiments extends App {
   // this thing ONLY KNOWS how to generate list of int with size<=100
   val intList: Gen[List[Int]] = Gen.listOf(Gen.choose(0,100))
 
