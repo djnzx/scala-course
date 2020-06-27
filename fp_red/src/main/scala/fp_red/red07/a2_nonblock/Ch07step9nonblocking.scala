@@ -3,6 +3,7 @@ package fp_red.red07.a2_nonblock
 import java.util.concurrent.atomic.AtomicReference
 import java.util.concurrent.{Callable, CountDownLatch, ExecutorService, Executors}
 
+import fp_red.red07.Actor
 import fp_red.red07.a2_nonblock.Ch07step9nonblocking.Par
 
 /**

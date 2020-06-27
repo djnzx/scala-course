@@ -1,4 +1,4 @@
-package fp_red.red07.a1_block
+package fp_red.red07.a1_block_steps
 
 import java.util.concurrent._
 
@@ -109,7 +109,7 @@ object Ch07step8 extends App {
 }
 
 object LawsApp extends App {
-  import fp_red.red07.a1_block.Ch07step8.Par
+  import fp_red.red07.a1_block_steps.Ch07step8.Par
 
   def equals[A](e: ExecutorService)(p1: Par[A], p2: Par[A]): Boolean =
     p1(e).get == p2(e).get

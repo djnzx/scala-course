@@ -1,8 +1,9 @@
-package fp_red.red07.mixed
+package fp_red.red07
 
 import java.util.concurrent.atomic.{AtomicInteger, AtomicReference}
-import java.util.concurrent.{Callable,ExecutorService}
-import annotation.tailrec
+import java.util.concurrent.{Callable, ExecutorService}
+
+import scala.annotation.tailrec
 
 /*
  * Implementation is taken from `scalaz` library, with only minor changes. See:
@@ -44,21 +45,21 @@ final class Actor[A](strategy: Strategy)(handler: A => Unit, onError: Throwable 
   private val head = new AtomicReference(tail.get)
 
   /** Alias for `apply` */
-  def !(a: A) {
+  def !(a: A) ={
     val n = new Node(a)
     head.getAndSet(n).lazySet(n)
     trySchedule()
   }
 
   /** Pass the message `a` to the mailbox of this actor */
-  def apply(a: A) {
+  def apply(a: A) = {
     this ! a
   }
 
   def contramap[B](f: B => A): Actor[B] =
     new Actor[B](strategy)((b: B) => (this ! f(b)), onError)
 
-  private def trySchedule() {
+  private def trySchedule() = {
     if (suspended.compareAndSet(1, 0)) schedule()
   }
 
@@ -66,7 +67,7 @@ final class Actor[A](strategy: Strategy)(handler: A => Unit, onError: Throwable 
     strategy(act())
   }
 
-  private def act() {
+  private def act() = {
     val t = tail.get
     val n = batchHandle(t, 1024)
     if (n ne t) {
@@ -135,4 +136,3 @@ object Strategy {
     }
   }
 }
-

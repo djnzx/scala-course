@@ -1,11 +1,8 @@
-package fp_red.red07.a1_block
+package fp_red.red07.a1_block_steps
 
-import java.util.concurrent._
+import java.util.concurrent.{ExecutorService, Executors, Future, TimeUnit}
 
-/**
-  * implement map2, fork
-  */
-object Ch07step7 extends App {
+object Ch07step6 extends App {
 
   type Par[A] = ExecutorService => Future[A]
 
@@ -21,19 +18,9 @@ object Ch07step7 extends App {
     def unit[A](a: A): Par[A] = _ => UnitFuture(a)
     // it will create a UNIT of PARALLELISM based on value LAZILY
     def lazyUnit[A](a: => A): Par[A] = Par.fork(unit(a))
-    // that is actually implementation for `map2`
-    def map2[A,B,C](pa: Par[A], pb: Par[B])(f: (A, B) => C): Par[C] = es => {
-      val l = pa(es).get
-      val r = pb(es).get
-      val sum = f(l, r)
-      UnitFuture(sum)
-    }
-    def fork[A](pa: => Par[A]): Par[A] = es => {
-      println(s"fork...${Thread.currentThread.getName}")
-      es.submit(new Callable[A] {
-        override def call(): A = pa(es).get
-      })
-    }
+
+    def map2[A,B,C](pa: Par[A], pb: Par[B])(f: (A, B) => C): Par[C] = ???
+    def fork[A](a: => Par[A]): Par[A] = ???
 
     // we renamed get into run, because since now, we won't .get anytime
     // we will use .run to run our algorithm built
@@ -56,6 +43,5 @@ object Ch07step7 extends App {
   val representation = sum(data)
   val es = Executors.newFixedThreadPool(10)
   val result: Future[Int] = Par.run(es)(representation)
-  es.shutdown()
   printf(s"sum of `$data` is: ${result.get}")
 }

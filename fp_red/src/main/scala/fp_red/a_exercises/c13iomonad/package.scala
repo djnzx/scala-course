@@ -1,7 +1,7 @@
 package fp_red.a_exercises
 
 package object c13iomonad {
-  import fp_red.c_answers.c07parallelism.Nonblocking._
+  import fp_red.red07.Nonblocking._
 
   type IO[A] = IO3.IO[A]
   def IO[A](a: => A): IO[A] = IO3.IO[A](a)

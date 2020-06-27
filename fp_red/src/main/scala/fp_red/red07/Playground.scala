@@ -1,4 +1,4 @@
-package fp_red.red07.mixed
+package fp_red.red07
 
 object Declaration {
 
@@ -23,8 +23,9 @@ object Declaration {
 
 object ImplementationBlocking {
 
-  import Declaration._
   import java.util.concurrent.{ExecutorService, Future, TimeUnit}
+
+  import Declaration._
 
   case class UnitFuture[A](get: A) extends Future[A] {
     override def cancel(mayInterruptIfRunning: Boolean): Boolean = false
@@ -49,9 +50,10 @@ object ImplementationBlocking {
 
 object ImplementationNonBlocking {
 
-  import Declaration._
-  import java.util.concurrent.{ExecutorService, CountDownLatch, Callable}
   import java.util.concurrent.atomic.AtomicReference
+  import java.util.concurrent.{Callable, CountDownLatch, ExecutorService}
+
+  import Declaration._
 
   // that's no more than pass(register) callback
   trait NBFuture[+A] {
@@ -139,8 +141,9 @@ object ImplementationNonBlocking {
 
 object Code {
 
-  import fp_red.red07.mixed.Declaration._
   import java.util.concurrent.ExecutorService
+
+  import Declaration._
 
   def sumr[M[_]](xs: IndexedSeq[Int])(implicit impl: Parallel[M]): Par[M, Int] = xs.length match {
     case 0 => impl.unit(0)
@@ -162,7 +165,8 @@ object Code {
 }
 
 object Application extends App {
-  import java.util.concurrent.{Executors, ExecutorService}
+  import java.util.concurrent.{ExecutorService, Executors}
+
   import ImplementationNonBlocking._
 //  import ImplementationBlocking._
 

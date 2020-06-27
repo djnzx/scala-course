@@ -1,8 +1,8 @@
 package fp_red.red08
 
 import java.util.concurrent.{ExecutorService, Executors}
-import fp_red.c_answers.c07parallelism.Par
-import fp_red.c_answers.c07parallelism.Par.Par
+import fp_red.red07.Par
+import fp_red.red07.Par.Par
 import Prop._
 import Gen._
 

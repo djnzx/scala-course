@@ -1,8 +1,8 @@
-package fp_red.c_answers.c07parallelism
+package fp_red.red07
 
 import java.util.concurrent._
-import language.implicitConversions
 
+import scala.language.implicitConversions
 
 object Par {
   type Par[A] = ExecutorService => Future[A]
@@ -143,7 +143,6 @@ object Par {
 }
 
 object Examples {
-  import Par._
   def sum(ints: IndexedSeq[Int]): Int = // `IndexedSeq` is a superclass of random-access sequences like `Vector` in the standard library. Unlike lists, these sequences provide an efficient `splitAt` method for dividing them into two parts at a particular index.
     if (ints.size <= 1)
       ints.headOption getOrElse 0 // `headOption` is a method defined on all collections in Scala. We saw this function in chapter 3.

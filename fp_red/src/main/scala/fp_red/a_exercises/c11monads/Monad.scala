@@ -2,9 +2,9 @@ package fp_red.a_exercises.c11monads
 
 import fp_red.red09.p0trait.Parsers
 import fp_red.red08._
-import fp_red.c_answers.c07parallelism._
+import fp_red.red07._
 import fp_red.c_answers.c06state._
-import fp_red.c_answers.c07parallelism.Par._
+import fp_red.red07.Par._
 
 
 trait Functor[F[_]] {

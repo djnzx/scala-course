@@ -1,13 +1,13 @@
-package fp_red.a_exercises.c07parallelism
+package fp_red.red07.a3_exercises
 
 import java.util.concurrent.{Callable, CountDownLatch, ExecutorService}
-import java.util.concurrent.atomic.AtomicReference
-import language.implicitConversions
+
+import fp_red.red07.Actor
 
 object ParNonblocking extends {
 
   trait Future[+A] {
-    private[c07parallelism] def apply(k: A => Unit): Unit
+    def apply(k: A => Unit): Unit
   }
 
   type Par[+A] = ExecutorService => Future[A]

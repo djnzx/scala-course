@@ -1,4 +1,4 @@
-package fp_red.red07.async_basics
+package fp_red.red07.a0_concur_basics
 
 import java.util.concurrent.atomic.AtomicReference
 import java.util.concurrent.{Callable, CountDownLatch, ExecutorService, Executors}

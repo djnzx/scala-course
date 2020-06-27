@@ -258,8 +258,8 @@ object Monoid {
     folded.forall(_._3)
   }
   
-  import fp_red.c_answers.c07parallelism.Nonblocking.Par.toParOps
-  import fp_red.c_answers.c07parallelism.Nonblocking._
+  import fp_red.red07.Nonblocking.Par.toParOps
+  import fp_red.red07.Nonblocking._
 
   /**
     * having Monoid[A]

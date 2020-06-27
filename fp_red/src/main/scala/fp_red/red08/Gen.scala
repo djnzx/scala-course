@@ -4,9 +4,9 @@ import java.util.concurrent.{ExecutorService, Executors}
 
 import fp_red.c_answers.c05laziness.Stream
 import fp_red.c_answers.c06state.{RNG, State}
-import fp_red.c_answers.c07parallelism.Par
+import fp_red.red07.Par
 import Prop.{CountToRun, Falsified, MaxSize, Passed, Proved, Result}
-import fp_red.c_answers.c07parallelism.Par.Par
+import fp_red.red07.Par.Par
 
 case class Gen[+A](sample: State[RNG,A]) {
   def map[B](f: A => B): Gen[B] =

@@ -1,4 +1,4 @@
-package fp_red.red07.a1_block
+package fp_red.red07.a1_block_steps
 
 object Ch07step2 extends App {
 

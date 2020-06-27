@@ -1,11 +1,14 @@
-package fp_red.red07.a1_block
+package fp_red.red07.a1_block_steps
 
-import java.util.concurrent.{ExecutorService, Executors, Future, TimeUnit}
+import java.util.concurrent.{ExecutorService, Future, TimeUnit}
 
-object Ch07step6 extends App {
+object Ch07step5 extends App {
 
   type Par[A] = ExecutorService => Future[A]
 
+  /**
+   * representation
+   */
   case class UnitFuture[A](get: A) extends Future[A] {
     override def cancel(mayInterruptIfRunning: Boolean): Boolean = false
     override def isCancelled: Boolean = false
@@ -14,18 +17,12 @@ object Ch07step6 extends App {
   }
 
   object Par {
-    // it will create a UNIT of PARALLELISM based on value
-    def unit[A](a: A): Par[A] = _ => UnitFuture(a)
-    // it will create a UNIT of PARALLELISM based on value LAZILY
+    def unit[A](a: A): Par[A] = ???
     def lazyUnit[A](a: => A): Par[A] = Par.fork(unit(a))
-
+    //def get[A](pa: Par[A]): A = ???
     def map2[A,B,C](pa: Par[A], pb: Par[B])(f: (A, B) => C): Par[C] = ???
     def fork[A](a: => Par[A]): Par[A] = ???
-
-    // we renamed get into run, because since now, we won't .get anytime
-    // we will use .run to run our algorithm built
-    //def get[A](pa: Par[A]): A = ???
-    def run[A](es: ExecutorService)(pa: Par[A]): Future[A] = pa(es)
+    def run[A](es: ExecutorService)(a: Par[A]): A = ???
   }
 
   def sum(xs: List[Int]): Par[Int] = xs.length match {
@@ -40,8 +37,6 @@ object Ch07step6 extends App {
   }
 
   val data = List(1,2,3,4,5)
-  val representation = sum(data)
-  val es = Executors.newFixedThreadPool(10)
-  val result: Future[Int] = Par.run(es)(representation)
-  printf(s"sum of `$data` is: ${result.get}")
+  val s = sum(data)
+  printf(s"sum of `$data` is: $s")
 }

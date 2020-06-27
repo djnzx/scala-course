@@ -1,6 +1,6 @@
-package fp_red.red07.a1_block
+package fp_red.red07.a1_block_steps
 
-object Ch07step4 extends App {
+object Ch07step3 extends App {
 
   /**
     * this Par - is description
@@ -9,16 +9,13 @@ object Ch07step4 extends App {
   type Par[A]
 
   /**
-   * creating fork and lazy
+   * creating map2
    * combining parallel computations
    */
   object Par {
     def unit[A](a: A): Par[A] = ???
-    def lazyUnit[A](a: => A): Par[A] = Par.fork(unit(a))
     def get[A](pa: Par[A]): A = ???
     def map2[A,B,C](pa: Par[A], pb: Par[B])(f: (A, B) => C): Par[C] = ???
-    def fork[A](a: => Par[A]): Par[A] = ???
-    def run[A](a: Par[A]): A = ???
   }
 
   def sum(xs: List[Int]): Par[Int] = xs.length match {
@@ -28,7 +25,7 @@ object Ch07step4 extends App {
       val (l, r) = xs.splitAt(xs.length/2)
       val sumL: Par[Int] = sum(l)
       val sumR: Par[Int] = sum(r)
-      Par.map2(Par.fork(sumL), Par.fork(sumR))(_ + _)
+      Par.map2(sumL, sumR)(_ + _)
     }
   }
 

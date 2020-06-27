@@ -1,28 +1,24 @@
-package fp_red.red07.a1_block
+package fp_red.red07.a1_block_steps
 
-import java.util.concurrent.{ExecutorService, Future, TimeUnit}
-
-object Ch07step5 extends App {
-
-  type Par[A] = ExecutorService => Future[A]
+object Ch07step4 extends App {
 
   /**
-   * representation
-   */
-  case class UnitFuture[A](get: A) extends Future[A] {
-    override def cancel(mayInterruptIfRunning: Boolean): Boolean = false
-    override def isCancelled: Boolean = false
-    override def isDone: Boolean = true
-    override def get(timeout: Long, unit: TimeUnit): A = get
-  }
+    * this Par - is description
+    * of our computations
+    */
+  type Par[A]
 
+  /**
+   * creating fork and lazy
+   * combining parallel computations
+   */
   object Par {
     def unit[A](a: A): Par[A] = ???
     def lazyUnit[A](a: => A): Par[A] = Par.fork(unit(a))
-    //def get[A](pa: Par[A]): A = ???
+    def get[A](pa: Par[A]): A = ???
     def map2[A,B,C](pa: Par[A], pb: Par[B])(f: (A, B) => C): Par[C] = ???
     def fork[A](a: => Par[A]): Par[A] = ???
-    def run[A](es: ExecutorService)(a: Par[A]): A = ???
+    def run[A](a: Par[A]): A = ???
   }
 
   def sum(xs: List[Int]): Par[Int] = xs.length match {

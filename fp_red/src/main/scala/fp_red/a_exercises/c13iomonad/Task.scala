@@ -1,6 +1,6 @@
 package fp_red.a_exercises.c13iomonad
 
-import fp_red.c_answers.c07parallelism.Nonblocking._
+import fp_red.red07.Nonblocking._
 import java.util.concurrent.ExecutorService
 
 /*

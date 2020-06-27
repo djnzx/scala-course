@@ -1,13 +1,13 @@
-package fp_red.c_answers.c07parallelism
+package fp_red.red07
 
 import java.util.concurrent.{Callable, CountDownLatch, ExecutorService}
-import java.util.concurrent.atomic.AtomicReference
-import language.implicitConversions
+
+import scala.language.implicitConversions
 
 object Nonblocking {
 
   trait Future[+A] {
-    private[c07parallelism] def apply(k: A => Unit): Unit
+    def apply(k: A => Unit): Unit
   }
 
   type Par[+A] = ExecutorService => Future[A]

@@ -2,6 +2,7 @@ package fp_red.red08
 
 // sized generation!
 case class SGen[+A](g: Int => Gen[A]) {
+  
   def apply(n: Int): Gen[A] = g(n)
 
   def map[B](f: A => B): SGen[B] =
