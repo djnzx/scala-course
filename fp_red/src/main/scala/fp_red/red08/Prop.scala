@@ -1,7 +1,7 @@
 package fp_red.red08
 
-import fp_red.c_answers.c05laziness.Stream
-import fp_red.c_answers.c06state.RNG
+import fp_red.red05.Stream
+import fp_red.red06.RNG
 import fp_red.red08.Prop._
 
 case class Prop(run: (MaxSize, CountToRun, RNG) => Result) {

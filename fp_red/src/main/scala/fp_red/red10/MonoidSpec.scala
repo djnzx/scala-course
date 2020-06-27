@@ -1,6 +1,6 @@
 package fp_red.red10
 
-import fp_red.c_answers.c06state.RNG
+import fp_red.red06.RNG
 import fp_red.red08.Prop.Passed
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
