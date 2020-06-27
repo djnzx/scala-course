@@ -3,7 +3,7 @@ package fp_red.red02
 import scala.annotation.tailrec
 
 object Chapter2 {
-  
+
   def abs(n: Int): Int =
     if (n < 0) -n
     else n
@@ -15,9 +15,6 @@ object Chapter2 {
 
   def formatAbs2(x: Int) =
     f"The absolute value of $x is ${abs(x)}"
-
-  def main(args: Array[String]): Unit =
-    println(formatAbs(-42))
 
   // A definition of factorial, using a local, tail recursive function
   def factorial(n: Int): Int = {
@@ -101,7 +98,7 @@ object MonomorphicBinarySearch {
 
 }
 
-object PolymorphicFunctions extends App {
+object PolymorphicFunctions {
 
   def binarySearch[A](as: Array[A], key: A, gt: (A,A) => Boolean): Int = {
     @annotation.tailrec

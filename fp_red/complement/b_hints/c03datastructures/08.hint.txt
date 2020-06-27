@@ -1,1 +1,0 @@
-The first step in the trace is `Cons(1, foldRight(Cons(2, Cons(3, Nil)), Nil:List[Int])(Cons(_,_)))`

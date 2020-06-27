@@ -1,3 +1,0 @@
-What should the function do if the list is empty?
-What if it's not empty?
-Use pattern-matching and recursion.
