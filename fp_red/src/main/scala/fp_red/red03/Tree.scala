@@ -1,31 +1,75 @@
 package fp_red.red03
 
-import fp_red.red03.a.Tree
-
 sealed trait Tree[+A]
 case class Leaf[A](value: A) extends Tree[A]
 case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
+object Tr {
+  def leaf[A](a: A): Tree[A] = Leaf(a)
+  def branch[A](l: Tree[A], r: Tree[A]): Tree[A] = Branch(l, r) 
+}
 
 object Tree {
 
-  def size[A](t: Tree[A]): Int = ???
+  def size[A](t: Tree[A]): Int = t match {
+    case Leaf(_) => 1
+    case Branch(l, r) => size(l) + size(r) + 1 // it depends on req. whether co count leafs only
+  }
 
-  def max(t: Tree[Int]): Int = ???
+  def maximum(t: Tree[Int]): Int = t match {
+    case Leaf(value) => value
+    case Branch(left, right) => maximum(left) max maximum(right)
+  }
   
-  def depth[A](t: Tree[A]): Int = ???
+  def depth[A](t: Tree[A]): Int = t match {
+    case Leaf(_) => 0
+    case Branch(left, right) => 1 + (depth(left) max depth(right))
+  }
   
-  def map[A,B](t: Tree[A])(f: A => B): Tree[B] = ???
+  private def depth2[A](t: Tree[A], d: Int): Int = t match {
+    case Leaf(_) => d
+    case Branch(left, right) => depth2(left, d + 1) max depth2(right, d + 1)
+  }
   
-
-  def fold[A,B](t: Tree[A])(f: A => B)(g: (B,B) => B): B = ???
+  def depth2[A](t: Tree[A]): Int = depth2(t, 1)
   
+  def map[A,B](t: Tree[A])(f: A => B): Tree[B] = t match {
+    case Leaf(a) => Leaf(f(a))
+    case Branch(l, r) => Branch(map(l)(f), map(r)(f))
+  }
 
-  def sizeViaFold[A](t: Tree[A]): Int = ???
+  /**
+    * @param t - tree
+    * @param f - Leaf handler
+    * @param g - Branch handler
+    */
+  def fold[A,B](t: Tree[A])(f: A => B)(g: (B, B) => B): B = t match {
+    case Leaf(value) => f(value)
+    case Branch(left, right) => 
+      g(
+        fold(left)(f)(g), 
+        fold(right)(f)(g)
+      )
+  }
+  
+  def sizeViaFold[A](t: Tree[A]): Int = 
+    fold(t) { _ => 1 } { (ls, rs) => ls + rs + 1 }
 
-  def maxViaFold(t: Tree[Int]): Int = ???
+  def sizeViaFold2[A](t: Tree[A]): Int =
+    fold(t) { _ => 1 } { _ + _ + 1 }
 
-  def depthViaFold[A](t: Tree[A]): Int = ???
+  def sumViaFold(t: Tree[Int]): Int =
+    fold(t) { identity } { _ + _ }
 
-  def mapViaFold[A,B](t: Tree[A])(f: A => B): Tree[B] = ???
+  def maxViaFold(t: Tree[Int]): Int =
+    fold(t) { identity } { _ max _ }
+
+  def depthViaFold[A](t: Tree[A]): Int =
+    fold(t) { _ => 0 } { (d1, d2) => 1 + (d1 max d2)}
+
+  def mapViaFold[A,B](t: Tree[A])(f: A => B): Tree[B] =
+    fold(t) { a => Leaf(f(a)): Tree[B] } { Branch(_, _) }
+
+  def mapViaFold2[A,B](t: Tree[A])(f: A => B): Tree[B] =
+    fold(t) { a => Tr.leaf(f(a)) } { Branch(_, _) }
 
 }
