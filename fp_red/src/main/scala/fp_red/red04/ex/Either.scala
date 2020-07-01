@@ -27,10 +27,10 @@ sealed trait Either[+E,+A] {
       case Left(e)  => Left(e)
   }
   // flatMap syntax
-  def map2fm[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] =
+  def map2_via_flatMap[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] =
     this flatMap(ar => b map { br => f(ar, br) })
   // for comprehension syntax
-  def map2fx[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] =
+  def map2_for_syntax[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] =
     for {
       ar <- this
       br <- b
