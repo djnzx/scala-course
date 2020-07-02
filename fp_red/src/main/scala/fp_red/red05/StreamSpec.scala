@@ -1,12 +1,13 @@
-package fp_red.red05.ex
+package fp_red.red05
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
 class StreamSpec extends AnyFunSpec with Matchers {
   describe("Stream") {
-    import scala.{Stream => _}
     import Stream._
+
+    import scala.{Stream => _}
     
     it("toList") {
       Stream(1,2,3,4,5).toList shouldBe List(1,2,3,4,5)

@@ -1,4 +1,4 @@
-package fp_red.red05.ex
+package fp_red.red05
 
 import scala.annotation.tailrec
 import scala.util.Random
