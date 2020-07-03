@@ -72,7 +72,7 @@ sealed trait Stream[+A] {
     foldRight(false) { (a, b) => if (p(a)) true else b }
 
   // recursive, via foldRight, pure math solution
-  def exist(p: A => Boolean): Boolean =
+  def exists(p: A => Boolean): Boolean =
     foldRight(false) { (a, b) => p(a) || b }
 
   // tail recursive, stack-friendly
@@ -150,8 +150,16 @@ sealed trait Stream[+A] {
       val bb: Stream[B] = t().map(f)
       cons(b, bb)
   }
+  
   // tail recursive
-  def map_TR[B](f: A => B): Stream[B] = ???
+  def map_TR[B](f: A => B): Stream[B] = {
+    @scala.annotation.tailrec
+    def go(tail: Stream[A], acc: List[B]): Stream[B] = tail match {
+      case Empty => Stream( acc: _*)
+      case Cons(h, t) => go(t(), f(h()) :: acc)
+    }
+    go(this, Nil)
+  }
   // via foldRight
   def map_fr[B](f: A => B): Stream[B] =
     foldRight(empty[B]) { (a, b) => cons(f(a), b) }
@@ -207,7 +215,11 @@ sealed trait Stream[+A] {
     }}
 
   // unfold
-  def takeWhileViaUnfold(f: A => Boolean): Stream[A] = ???
+  def takeWhileViaUnfold(f: A => Boolean): Stream[A] =
+    unfold(this) {
+      case Cons(h, t) if f(h()) => Some((h(), t()))
+      case _ => None
+    }
 
   def zipWith_plain[B,C](s2: Stream[B])(f: (A,B) => C): Stream[C] = (this, s2) match {
     case (Cons(ha, ta), Cons(hb, tb)) => cons(f(ha(), hb()), ta().zipWith(tb())(f))
@@ -225,22 +237,92 @@ sealed trait Stream[+A] {
   def zip[B](s2: Stream[B]): Stream[(A,B)] = zipWith(s2)(_ -> _)
 
   // unfold
-  def zipAll[B](s2: Stream[B]): Stream[(Option[A],Option[B])] = ???
+  def zipAll[B](s2: Stream[B]): Stream[(Option[A],Option[B])] =
+    unfold((this, s2)) {
+      case (Cons(ha, ta), Cons(hb, tb)) => Some(((Some(ha()), Some(hb())), (ta(), tb()))) 
+      case (Cons(ha, ta), Empty)        => Some(((Some(ha()), None),       (ta(), empty)))
+      case (Empty, Cons(hb, tb))        => Some(((None, Some(hb())),       (empty, tb())))
+      case (Empty, Empty)               => None
+    }
 
   // unfold
-  def zipWithAll[B, C](s2: Stream[B])(f: (Option[A], Option[B]) => C): Stream[C] = ???
+  def zipWithAll[B, C](s2: Stream[B])(f: (Option[A], Option[B]) => C): Stream[C] =
+    unfold((this, s2)) {
+      case (Cons(ha, ta), Cons(hb, tb)) => Some((f(Some(ha()), Some(hb())), (ta(), tb())))
+      case (Cons(ha, ta), Empty)        => Some((f(Some(ha()), None),       (ta(), empty)))
+      case (Empty, Cons(hb, tb))        => Some((f(None, Some(hb())),       (empty, tb())))
+      case (Empty, Empty)               => None
+    }
   
-  // zipAll
-  def startsWith[B](s: Stream[B]): Boolean = ???
+  // zipAll + takeWhile
+  def startsWith[B >: A](s2: Stream[B]): Boolean =
+    zipAll(s2) takeWhile { _._2.isDefined } forAll {
+      case (oa, ob) => oa == ob
+    }
   
   // unfold
-  def tails: Stream[Stream[A]] = ???
+  def tails: Stream[Stream[A]] =
+    unfold(this) {
+      case Empty => None
+      case s @ Cons(_, t) => Some(s, t())
+    } append Stream(empty)
+
+  def tails_book: Stream[Stream[A]] =
+    unfold(this) {
+      case Empty => None
+      case s => Some((s, s drop 1))
+    } append Stream(empty)
+
+  def hasSubsequence_book[A2 >: A](sub: Stream[A2]): Boolean =
+    tails.exists (_ startsWith sub)
 
   // unfold
-  def hasSubsequence[A2 >: A](s: Stream[A2]): Boolean = ???
+  def hasSubsequence[A2 >: A](sub: Stream[A2]): Boolean =
+    unfold((this, true)) {
+      case (_, false) => None
+      case (Empty, _) => None
+      case (src@Cons(_, t), true) =>
+        if (src.startsWith(sub)) Some((true, (t(), false)))
+        else Some((false, (t(), true)))
+    } match {
+      case Empty => true
+      case s @ Cons(_, _) => s exists(_ == true)
+    }
 
-  // foldRight
-  def scanRight[B](z: B)(f: (A, => B) => B): Stream[B] = ???
+  /**
+    * The function can't be implemented using `unfold`, 
+    * since `unfold` generates elements of the `Stream` from left to right.
+    * It can be implemented using `foldRight` though.
+    *
+    * The implementation is just a `foldRight`
+    * that keeps the accumulated value and the stream of intermediate results,
+    * which we `cons` onto during each iteration.
+    * 
+    * When writing folds, it's common to have more state 
+    * in the fold than is needed to compute the result.
+    * Here, we simply extract the accumulated list once finished. 
+    * 
+  */
+  def scanRight[B](z: B)(f: (A, => B) => B): Stream[B] = {
+    val z0: (B, Stream[B]) = (z, Stream(z))
+    
+    val folded: (B, Stream[B]) = foldRight(z0) { (a, bsb) =>
+      lazy val bsb1: (B, Stream[B]) = bsb
+      val b2: B = f(a, bsb1._1)
+      val r: (B, Stream[B]) = (b2, cons(b2, bsb1._2))
+      r
+    }
+    
+    folded._2
+  }
+  
+  def scanRight2[B](z: B)(f: (A, => B) => B): Stream[B] =
+    foldRight( (z, Stream(z)) ) { (a, bsb) => 
+      // cache it
+      lazy val bsb1: (B, Stream[B]) = bsb
+      val b2: B = f(a, bsb1._1)
+      (b2, cons(b2, bsb1._2))
+    }._2
 
 }
 

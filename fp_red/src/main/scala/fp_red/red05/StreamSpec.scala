@@ -108,6 +108,23 @@ class StreamSpec extends AnyFunSpec with Matchers {
         from(10).take_unfold(4).toList shouldBe List(10,11,12,13)
       }
     }
+    describe("hasSubSeq") {
+      it("1") {
+        Empty.hasSubsequence(Empty) shouldBe true
+      }
+      it("2") {
+        Stream(1,2,3,4,5).hasSubsequence(Empty) shouldBe true
+      }
+      it("3") {
+        Stream(1,2,3,4,5).hasSubsequence(Stream(1,2,3)) shouldBe true
+      }
+      it("4") {
+        Stream(1,2,3,4,5).hasSubsequence(Stream(3,4,5)) shouldBe true
+      }
+      it("5") {
+        Stream(1,2,3,4,5).hasSubsequence(Stream(3,4,5,6)) shouldBe false
+      }
+    }
     
     
     
