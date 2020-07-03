@@ -348,11 +348,24 @@ object Stream {
   // unlimited stream of ints 1
   val ones: Stream[Int] = Stream.cons(1, ones)
 
-  def constant[A](a: A): Stream[A] = ???
+  def constant[A](a: A): Stream[A] = cons(a, constant(a))
+  
+  // This is more efficient than `cons(a, constant(a))` since it's just
+  // one object referencing itself.
+  def constant_efficient[A](a: A): Stream[A] = {
+    lazy val tail: Stream[A] = Cons(() => a, () => tail)
+    tail
+  }
   
   def from(n: Int): Stream[Int] = cons(n, from(n+1))
 
-//  val fibos: Stream[Int] = ???
+  val fibos: Stream[Int] = {
+
+    def tail(f0: Int, f1:Int): Stream[Int] =
+      cons(f0, tail(f1, f1+f0))
+    
+    tail(0,1)
+  }
 
   /**
     * One of the main stream abstractions:
@@ -368,15 +381,24 @@ object Stream {
       case None          => empty
     }
 
+  val fibosViaUnfold: Stream[Int] = unfold((0, 1)) { case (f0, f1) =>
+    Some(f0, (f1, f1+f0))
+  }
+
+  /**
+    * The below two implementations use `fold` and `map` functions
+    * in the Option class to implement unfold,
+    * thereby doing away with the need to manually
+    * pattern match as in the above solution. 
+    */
   def unfoldViaFold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
 
   def unfoldViaMap[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
-
-//  val fibosViaUnfold: Stream[Int] = ???
 
   def fromViaUnfold(n: Int): Stream[Int] = ???
 
   def constantViaUnfold[A](a: A): Stream[A] = ???
 
-//  val onesViaUnfold: Stream[Int] = ???
+  val onesViaUnfold: Stream[Int] =
+    unfold(1) { _ => Some(1, 1) }
 }

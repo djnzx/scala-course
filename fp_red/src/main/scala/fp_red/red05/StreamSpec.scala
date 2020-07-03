@@ -125,6 +125,14 @@ class StreamSpec extends AnyFunSpec with Matchers {
         Stream(1,2,3,4,5).hasSubsequence(Stream(3,4,5,6)) shouldBe false
       }
     }
+    describe("fibos") {
+      it("unfold") {
+        fibosViaUnfold.take(6).toList shouldBe List(0,1,1,2,3,5)
+      }
+      it("normal") {
+        fibos.take(6).toList shouldBe List(0,1,1,2,3,5)
+      }
+    }
     
     
     
