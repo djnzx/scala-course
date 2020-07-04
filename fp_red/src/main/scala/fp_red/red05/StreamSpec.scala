@@ -94,10 +94,25 @@ class StreamSpec extends AnyFunSpec with Matchers {
       it("1") {
         from(5).take(3).toList shouldBe List(5,6,7)
       }
+      it("via unfold") {
+        fromViaUnfold(5).take(3).toList shouldBe List(5,6,7)
+      }
     }
     describe("unfold") {
       it("0") {
-        unfold(6) { i => 
+        unfold(6) { i =>
+          if (i < 10) Some((i, i + 1))
+          else None
+        }.toList shouldBe List(6, 7, 8, 9)
+      }
+      it("1") {
+        unfoldViaFold(6) { i => 
+          if (i<10) Some((i, i+1))
+          else None
+        }.toList shouldBe List(6,7,8,9)
+      }
+      it("2") {
+        unfoldViaMap(6) { i => 
           if (i<10) Some((i, i+1))
           else None
         }.toList shouldBe List(6,7,8,9)
@@ -131,6 +146,17 @@ class StreamSpec extends AnyFunSpec with Matchers {
       }
       it("normal") {
         fibos.take(6).toList shouldBe List(0,1,1,2,3,5)
+      }
+    }
+    describe("constant") {
+      it("normal") {
+        constant(7).take(6).toList shouldBe List(7,7,7,7,7,7)
+      }
+      it("efficient") {
+        constant_efficient(7).take(6).toList shouldBe List(7,7,7,7,7,7)
+      }
+      it("unfold") {
+        constantViaUnfold(7).take(6).toList shouldBe List(7,7,7,7,7,7)
       }
     }
     

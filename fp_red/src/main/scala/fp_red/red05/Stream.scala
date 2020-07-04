@@ -391,13 +391,22 @@ object Stream {
     * thereby doing away with the need to manually
     * pattern match as in the above solution. 
     */
-  def unfoldViaFold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
+  def unfoldViaFold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = {
+    def tail(z0: S): Stream[A] = f(z0).fold(empty[A]) { case (a, s) => cons(a, tail(s)) }
+    tail(z)
+  }
 
-  def unfoldViaMap[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
+  def unfoldViaFold_book[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
+    f(z).fold(empty[A]) { case (a, s) => cons(a, unfoldViaFold_book(s)(f)) }
 
-  def fromViaUnfold(n: Int): Stream[Int] = ???
+  def unfoldViaMap[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = 
+    f(z).map { case (a, s) => cons(a, unfoldViaMap(s)(f)) }.getOrElse(empty[A])
 
-  def constantViaUnfold[A](a: A): Stream[A] = ???
+  def fromViaUnfold(n: Int): Stream[Int] =
+    unfold(n) { n => Some(n -> (n + 1)) }
+
+  def constantViaUnfold[A](a: A): Stream[A] =
+    unfold(a) { _ => Some(a -> a) }
 
   val onesViaUnfold: Stream[Int] =
     unfold(1) { _ => Some(1, 1) }
