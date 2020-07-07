@@ -66,6 +66,7 @@ lazy val scala_plain = (project in file("scala_plain"))
       "com.typesafe.play"          %% "play-json"                  % Versions.play,
       "org.scala-lang.modules"     %% "scala-parallel-collections" % "0.2.0",
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
+      pf.lihaoyi         %% "pprint"       % "0.5.9",
 
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,

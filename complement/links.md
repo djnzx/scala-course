@@ -120,6 +120,7 @@
   - [async #3](https://medium.com/wix-engineering/writing-async-app-in-scala-part-3-threading-model-ef9e9033bd33)
 
 ### PURE FP
+- [todo-http4s-doobie](https://github.com/jaspervz/todo-http4s-doobie.git) 
 - [fp-stack-2020-pres](https://github.com/adamw/fp-stack-2020-pres.git)
 - [bootzooka](https://github.com/alexr007/bootzooka.git)
 - [http4s-ddd-example](https://github.com/alexr007/http4s-ddd-example.git)
