@@ -119,6 +119,26 @@
   - [async #2](https://www.reddit.com/r/scala/comments/gpelev/writing_async_app_in_scala_part_2_exception/)
   - [async #3](https://medium.com/wix-engineering/writing-async-app-in-scala-part-3-threading-model-ef9e9033bd33)
 
+### LIGHTBEND
+- [ebooks](https://www.lightbend.com/ebooks)
+  - [1. build stateful applications](https://www.lightbend.com/ebooks/build-stateful-applications)
+  - [2. ](https://www.lightbend.com/ebooks/akka-10-year-anniversary-magazine)
+  - [3. ](https://www.lightbend.com/ebooks/fast-data-architectures-for-streaming-applications-oreilly-2nd-edition)
+  - [4. Java and reactive - A match made in heaven]()
+  - [5. ](https://www.lightbend.com/ebooks/machine-learning-guide-architecture-stream-processing-frameworks-oreilly)
+  - [6. ](https://info.lightbend.com/ebook-learning-spark-streaming-register.html?utm_source=website&utm_medium=learn-ebook-page&utm_campaign=EBK-2017-Learning-Spark-Streaming&utm_term=none&utm_content=none&_ga=2.220162140.472299519.1594491409-1164362308.1593764653)
+  - [7. ](https://info.lightbend.com/ebook-domain-driven-design-distilled-register.html?utm_source=website&utm_medium=learn-ebook-page&utm_campaign=EBK-20XX-Domain-Driven-Design-Distilled&utm_term=none&utm_content=none&_ga=2.17844220.472299519.1594491409-1164362308.1593764653)
+  - [8. ](https://info.lightbend.com/ebook-reactive-microservices-journey-pack-bundle-register.html?utm_source=website&utm_medium=learn-ebook-page&utm_campaign=COLL-2017-Reactive-Microservices-Journey-Pack&utm_term=none&utm_content=none&_ga=2.17844220.472299519.1594491409-1164362308.1593764653)
+  - [9. ](https://www.lightbend.com/ebooks/designing-reactive-systems-role-of-actor-model)
+  - [10 ](https://www.lightbend.com/ebooks/develop-reactive-microservices-java-enterprise-implementation-oreilly)
+  - [11.](https://info.lightbend.com/ebook-reactive-machine-learning-systems-register.html?utm_source=website&utm_medium=learn-ebook-page&utm_campaign=EBK-20XX-Reactive-Machine-Learning-Systems&utm_term=none&utm_content=none&_ga=2.143541360.472299519.1594491409-1164362308.1593764653)
+  - [12.](https://info.lightbend.com/ebook-reactive-web-applications-with-play-register.html?utm_source=website&utm_medium=learn-ebook-page&utm_campaign=EBK-20XX-Reactive-Web-Applications-with-Play&utm_term=none&utm_content=none&_ga=2.256903502.472299519.1594491409-1164362308.1593764653)
+  - [13.](https://info.lightbend.com/EBK-20XX-Reactive-Application-Development_RES-LP.html?utm_source=website&utm_medium=learn-ebook-page&utm_campaign=EBK-20XX-Reactive-Application-Development&utm_term=none&utm_content=none&_ga=2.143541360.472299519.1594491409-1164362308.1593764653)
+  - [14.](https://info.lightbend.com/ebook-akka-in-action-register.html?utm_source=website&utm_medium=learn-ebook-page&utm_campaign=EBK-20XX-Akka-in-Action&utm_term=none&utm_content=none&_ga=2.256903502.472299519.1594491409-1164362308.1593764653)
+  - [15.](https://info.lightbend.com/ebook-reactive-design-patterns-register.html?utm_source=website&utm_medium=learn-ebook-page&utm_campaign=EBK-20XX-Reactive-Design-Patterns&utm_term=none&utm_content=none&_ga=2.190660718.472299519.1594491409-1164362308.1593764653)
+  - [16.](https://www.lightbend.com/ebooks/reactive-microsystems-evolution-of-microservices-scalability-oreilly)
+  - [17.](https://www.lightbend.com/ebooks/reactive-microservices-architecture-design-principles-for-distributed-systems-oreilly)
+
 ### PURE FP
 - [todo-http4s-doobie](https://github.com/jaspervz/todo-http4s-doobie.git) 
 - [fp-stack-2020-pres](https://github.com/adamw/fp-stack-2020-pres.git)
