@@ -259,6 +259,7 @@
 - [logging](https://www.reddit.com/r/scala/comments/h0og7f/looking_for_the_goto_approach_to_logging_in_scala/)
 - [pattern matching](https://www.reddit.com/r/scala/comments/gyt84e/how_are_case_classes_and_pattern_matching/)
 - [](https://www.reddit.com/r/scala/comments/gxqvtr/addressing_and_manipulating_an_immutable_tree/)
+- [](https://www.innoq.com/en/blog/functional-service-in-scala/)
 
 ### KAFKA
 - [REPL for Apache Kafka](https://github.com/mmolimar/kukulcan)
