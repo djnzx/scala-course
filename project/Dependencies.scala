@@ -72,6 +72,7 @@ object Dependencies {
     val shapeless     = "com.chuusai"      %% "shapeless"     % Versions.shapeless
     val jsoup         = "org.jsoup"        %  "jsoup"         % Versions.jsoup
     val cats          = pf.typelevel       %% "cats-core"     % Versions.cats         withSources()  withJavadoc()
+    val catsLaws      = pf.typelevel       %% "cats-laws"     % Versions.cats         withSources()  withJavadoc()
     val catsMtlCore   = pf.typelevel       %% "cats-mtl-core" % Versions.catsMtlCore  withSources()  withJavadoc()
     val catsEffect    = pf.typelevel       %% "cats-effect"   % Versions.catsEffect   withSources()  withJavadoc()
     val squants       = pf.typelevel       %% "squants"       % Versions.squants
