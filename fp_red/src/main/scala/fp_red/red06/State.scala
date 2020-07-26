@@ -17,6 +17,7 @@ case class State[S, +A](run: S => (A, S)) {
 object State {
   type Rand[A] = State[RNG, A]
 
+  // doesn't touch the state, just produce a value
   def unit[S, A](a: A): State[S, A] =
     State(s => (a, s))
 
