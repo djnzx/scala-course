@@ -10,7 +10,7 @@ class FunctorLawSpec extends AnyFunSpec with Matchers {
   describe("functor laws") {
     it("0 how to use Gen/SGen") {
       /**
-        * function is aware of generation ONE Int value from 0 to  100
+        * function is aware of generation ONE Int value from 0 to 100
         */
       val gen1: Gen[Int] = Gen.choose(0, 100)
 
@@ -49,14 +49,38 @@ class FunctorLawSpec extends AnyFunSpec with Matchers {
       pprint.log(outcome)
     }
     
-    it("identity for List") {
+    describe("list") {
+      val lf: Functor[List] = Functor.listFunctor
+      val dataset: SGen[List[Int]] = Gen.listOf(Gen.smallInt)
+      val f = (n: Int) => n + 5
+      val g = (n: Int) => n * 2
       
-      val lf: FunctorInstances[List] = FunctorInstances.listFunctor
-      val prop: Prop = FunctorLaws.identityLaw(lf)(Gen.listOf(Gen.smallInt))
+      it("identity") {
+        FunctorLaws.identityLaw(lf)(dataset)
+          .run(100, 10, RNG.Simple(1)) shouldBe Passed
+      }
+      it("left assoc") {
+        FunctorLaws.leftAssocLaw(lf)(f)(dataset)
+          .run(100, 10, RNG.Simple(1)) shouldBe Passed
+      }
+      it("right assoc") {
+        FunctorLaws.rightAssocLaw(lf)(f)(dataset)
+          .run(100, 10, RNG.Simple(1)) shouldBe Passed
+      }
+      it("composition") {
+        FunctorLaws.compositionLaw(lf)(f, g)(dataset)
+          .run(100, 10, RNG.Simple(1)) shouldBe Passed
+      }
+      
+    }
+    
+    
+    it("identity for Optional") {
+      val of: Functor[Option] = Functor.optFunctor
+      val opt: Gen[Option[Int]] = Gen.opt(Gen.choose(-10, 10))
+      val prop: Prop = FunctorLaws.identityLaw(of)(opt)
       val r: Prop.Result = prop.run(100, 10, RNG.Simple(1))
-      
       r shouldBe Passed
-      
     }
   }
 }

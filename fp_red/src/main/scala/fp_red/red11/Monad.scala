@@ -12,7 +12,7 @@ import fp_red.red06._
 // streams
 import fp_red.red05._
 
-trait FunctorInstances[F[_]] {
+trait Functor[F[_]] {
   def map[A, B](fa: F[A])(f: A => B): F[B]
 
   // unzip
@@ -28,25 +28,50 @@ trait FunctorInstances[F[_]] {
 // TODO: !
 object FunctorLaws {
 
-  def identityLaw[F[_], A](functor: FunctorInstances[F])(in: SGen[F[A]]): Prop =
+  def identityLaw[F[_], A](functor: Functor[F])(in: SGen[F[A]]): Prop =
     Prop.forAll(in) { fa: F[A] =>
       functor.map(fa)(identity) == fa
     }
-  
+
+  def compositionLaw[F[_], A, B, C](functor: Functor[F])(f: A => B, g: B => C)(in: SGen[F[A]]): Prop =
+    Prop.forAll(in) { fa: F[A] =>
+      val aToC: A => C = f andThen g
+      val fc1: F[C] = functor.map(fa)(aToC)
+      
+      val fb: F[B] = functor.map(fa)(f)
+      val fc2: F[C] = functor.map(fb)(g)
+      
+      fc1 == fc2
+    }
+
+  def leftAssocLaw[F[_], A, B](functor: Functor[F])(f: A => B)(in: SGen[F[A]]): Prop =
+    Prop.forAll(in) { fa: F[A] =>
+      functor.map(fa)(f andThen identity[B]) == functor.map(fa)(f)
+    }
+
+  def rightAssocLaw[F[_], A, B](functor: Functor[F])(f: A => B)(in: SGen[F[A]]): Prop =
+    Prop.forAll(in) { fa: F[A] =>
+      functor.map(fa)(identity[A] _ andThen f) == functor.map(fa)(f)
+    }
+
 }
 
-object FunctorInstances {
+object Functor {
   
-  val listFunctor: FunctorInstances[List] = new FunctorInstances[List] {
-    override def map[A, B](fa: List[A])(f: A => B) = fa.map(f)
+  val listFunctor: Functor[List] = new Functor[List] {
+    override def map[A, B](fa: List[A])(f: A => B) = fa map f
   }
+  
+  val optFunctor: Functor[Option] = new Functor[Option] {
+    override def map[A, B](fa: Option[A])(f: A => B): Option[B] = fa map f
+  } 
   
 }
 
 /**
   * F can be Option, Either, Par, Parser, Gen, ...
   */
-trait Monad[F[_]] extends FunctorInstances[F] {
+trait Monad[F[_]] extends Functor[F] {
   def unit[A](a: => A): F[A]
   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
 
