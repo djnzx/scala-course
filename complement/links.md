@@ -14,6 +14,7 @@
     - [tapir](https://blog.softwaremill.com/three-easy-endpoints-a6cbd52b0a6e)
     - [scala from zero](https://softwaremill.com/scala/)
     - [scala 3 macros](https://blog.softwaremill.com/starting-with-scala-3-macros-a-short-tutorial-88e9d2b2584c)
+    - [cats-effects](https://blog.softwaremill.com/cats-concurrency-basics-with-ref-and-deferred-399e0335630)
   - [github](https://github.com/adamw)
 - Riccardo Cardin
   - [blog](http://rcardin.github.io)
@@ -31,6 +32,7 @@
   - [blog](http://www.lihaoyi.com)
   - [book](https://github.com/handsonscala/handsonscala)
   - [ammonite](https://www.lihaoyi.com/post/WorkingwithDatabasesusingScalaandQuill.html#ammonite)
+  - [Getting Work Done in the Scala REPL](https://vimeo.com/438762977)
 - Daniel Ciocîrlan (Rock The JVM)
   - [blog](https://rockthejvm.com/blog/)
     - [string interpolator](https://rockthejvm.com/blog/208610/custom-interpolator)
@@ -66,6 +68,7 @@
 - [oyanglul](https://blog.oyanglul.us/scala/dotty/en/gadt)
 - [47deg](https://www.47deg.com/blog/tags/scala/)
   - [scalacheck](https://www.youtube.com/watch?v=l5-5w8A-Ong)
+- [Jakub Kozłowski](https://www.youtube.com/channel/UCBSRCuGz9laxVv0rAnn2O9Q/videos)
   
 ### BASIC / LEARNING
 - [fpinscala](https://github.com/alexr007/fpinscala.git)
@@ -107,8 +110,6 @@
   - [shop](https://livebook.manning.com/book/functional-programming-in-scala)
   - [local copy#1](../../../../../Dropbox/_books/_NEW_BOUGHT_2020/Functional_Programming_in_Scala.pdf)
   - [local copy#2](../../../../Dropbox/_books/_NEW_BOUGHT_2020/Functional_Programming_in_Scala.pdf)
-- [red book - 10](https://livebook.manning.com/book/functional-programming-in-scala/chapter-10/)
-- [red book - 11](https://livebook.manning.com/book/functional-programming-in-scala/chapter-11/)
 - [red book - 12](https://livebook.manning.com/book/functional-programming-in-scala/chapter-12/)
 - [red book - 13](https://livebook.manning.com/book/functional-programming-in-scala/chapter-13/)
 - [red book - 14](https://livebook.manning.com/book/functional-programming-in-scala/chapter-14/)
@@ -193,6 +194,8 @@
 - [ZIO Stream](https://www.youtube.com/watch?v=OiuKbpMOKsc)
 - [Managing dependencies using ZIO](https://blog.softwaremill.com/managing-dependencies-using-zio-8acc1539e276)
 - [ZIO, the future of Future[A]](https://github.com/gstraymond/csaw-overview-zio/)
+- [Background processing in functional Scala #1](https://www.youtube.com/watch?v=y-rmSgCkBvg)
+- [FP to the min](https://www.youtube.com/watch?v=mrHphQT4RpU)
 
 ### YOUTUBE
 - [John De Goes](https://www.youtube.com/results?search_query=john+de+goes)
@@ -201,6 +204,7 @@
 - [dev inside you](https://www.youtube.com/channel/UCSBUwLT9zXhUalKfJrc2q2A)
 - [Idea plugin](https://www.youtube.com/watch?v=IPO-cY_giNA)
 - [Improving the Typelevel ecosystem](https://www.youtube.com/watch?v=SMMgwfhPCzM)
+- [DevInsideYou](https://www.youtube.com/c/DevInsideYou/videos)
 
 ### FROM REDDIT & MEDIUM
 - [r/scala](https://www.reddit.com/r/scala/)
@@ -228,10 +232,6 @@
 - [async](https://progi.pro/scala-cats-effects-io-async-shift-kak-eto-rabotaet-8408597)
 - [do tagless algebra needs laws](https://www.reddit.com/r/scala/comments/hdqzbv/do_tagless_algebra_needs_laws/)
 
-### ScalaJS
-- [ScalaJS manual](http://www.lihaoyi.com/hands-on-scala-js/)
-- [scalajs-react](https://github.com/japgolly/scalajs-react/blob/master/doc/changelog/1.7.1.md)
-
 ### implicits
 - [guardian](https://www.theguardian.com/info/developer-blog/2016/dec/22/parental-advisory-implicit-content)
 - [habr](https://habr.com/ru/post/354028/)
@@ -246,11 +246,6 @@
 - [docker monitor](https://github.com/vasilmkd/docker-stats-monitor)
 - [F[_] in Scala](https://medium.com/bigpanda-engineering/understanding-f-in-scala-4bec5996761f)
 - [scala check](https://itnext.io/a-newbie-way-to-play-with-scalacheck-333cbabfc00a)
-- [22.07.2020](https://medium.com/disney-streaming/this-week-in-scala-jun-22-2020-d6f3ab232184)
-- [15.07.2020](https://medium.com/disney-streaming/this-week-in-scala-jun-15-2020-5982b738d1e4)
-- [8.07.2020](https://medium.com/disney-streaming/this-week-in-scala-jun-8-2020-eae85d3e2229)
-- [1.07.2020](https://medium.com/disney-streaming/this-week-in-scala-jun-1-2020-a5819f6198c8)
-- [18.05.2020](https://medium.com/disney-streaming/this-week-in-scala-may-18-2020-2f15fe6dcf0)
 - [buffer-and-slice](https://github.com/arturopala/buffer-and-slice.git)
 - [distage-framework-docker](https://izumi.7mind.io/distage/distage-framework-docker)
 - [Weaver Test](https://disneystreaming.github.io/weaver-test/)
@@ -260,6 +255,14 @@
 - [pattern matching](https://www.reddit.com/r/scala/comments/gyt84e/how_are_case_classes_and_pattern_matching/)
 - [](https://www.reddit.com/r/scala/comments/gxqvtr/addressing_and_manipulating_an_immutable_tree/)
 - [](https://www.innoq.com/en/blog/functional-service-in-scala/)
+- [](https://www.inner-product.com/posts/what-is-an-effect/)
+- [Life with fatal warnings](https://timushev.com/posts/2020/07/25/life-with-fatal-warnings/)
+- [AWS for Scala](https://github.com/fs2-blobstore/fs2-blobstore)
+- [Scala and VIM](https://chris-kipp.io/blog/scala-and-vim-part-1)
+- [akka-stream-alpakka-file](https://medium.com/wbaa/akka-streams-by-example-processing-files-21c824dd817)
 
 ### KAFKA
 - [REPL for Apache Kafka](https://github.com/mmolimar/kukulcan)
+
+### NLP
+- [John Snow Labs Spark-NLP 2.5.4](https://www.reddit.com/r/scala/comments/humsuq/john_snow_labs_sparknlp_254_supporting_apache/)

@@ -12,7 +12,7 @@ import fp_red.red06._
 // streams
 import fp_red.red05._
 
-trait Functor[F[_]] {
+trait FunctorInstances[F[_]] {
   def map[A, B](fa: F[A])(f: A => B): F[B]
 
   // unzip
@@ -28,17 +28,16 @@ trait Functor[F[_]] {
 // TODO: !
 object FunctorLaws {
 
-  def identityLaw[F[_]: Functor, A](fa: F[A])(in: Gen[A]): Prop =
-    Prop.forAll(in) { a: A =>
-//      fa.map(fa)(identity) == fa
-      a == a
+  def identityLaw[F[_], A](functor: FunctorInstances[F])(in: SGen[F[A]]): Prop =
+    Prop.forAll(in) { fa: F[A] =>
+      functor.map(fa)(identity) == fa
     }
   
 }
 
-object Functor {
+object FunctorInstances {
   
-  val listFunctor = new Functor[List] {
+  val listFunctor: FunctorInstances[List] = new FunctorInstances[List] {
     override def map[A, B](fa: List[A])(f: A => B) = fa.map(f)
   }
   
@@ -47,7 +46,7 @@ object Functor {
 /**
   * F can be Option, Either, Par, Parser, Gen, ...
   */
-trait Monad[F[_]] extends Functor[F] {
+trait Monad[F[_]] extends FunctorInstances[F] {
   def unit[A](a: => A): F[A]
   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
 

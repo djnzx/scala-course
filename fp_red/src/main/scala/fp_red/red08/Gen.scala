@@ -1,12 +1,7 @@
 package fp_red.red08
 
-import java.util.concurrent.{ExecutorService, Executors}
-
-import fp_red.red06.RNG
-import fp_red.red07.Par
-import Prop.{CountToRun, Falsified, MaxSize, Passed, Proved, Result}
-import fp_red.red05.Stream
 import fp_red.red06.{RNG, State}
+import fp_red.red07.Par
 import fp_red.red07.Par.Par
 
 case class Gen[+A](sample: State[RNG,A]) {
@@ -98,6 +93,7 @@ object Gen {
   implicit def unsized[A](g: Gen[A]): SGen[A] = SGen(_ => g)
 
   val smallInt = Gen.choose(-10,10)
+  
   val maxProp = Prop.forAll(listOf(smallInt)) { l =>
     val max = l.max
     !l.exists(_ > max) // No value greater than `max` should exist in `l`
