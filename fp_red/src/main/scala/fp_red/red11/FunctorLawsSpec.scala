@@ -6,7 +6,7 @@ import fp_red.red08.{Gen, Prop, SGen}
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
-class FunctorLawSpec extends AnyFunSpec with Matchers {
+class FunctorLawsSpec extends AnyFunSpec with Matchers {
   describe("functor laws") {
     it("0 how to use Gen/SGen") {
       /**
@@ -73,7 +73,6 @@ class FunctorLawSpec extends AnyFunSpec with Matchers {
       }
       
     }
-    
     
     it("identity for Optional") {
       val of: Functor[Option] = Functor.optFunctor

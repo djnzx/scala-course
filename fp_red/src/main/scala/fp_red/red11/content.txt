@@ -1,0 +1,6 @@
+- Functor + Laws
+- Monad + Laws
+  - Id
+  - Reader
+- type lambda
+

@@ -12,62 +12,6 @@ import fp_red.red06._
 // streams
 import fp_red.red05._
 
-trait Functor[F[_]] {
-  def map[A, B](fa: F[A])(f: A => B): F[B]
-
-  // unzip
-  def distribute[A,B](fab: F[(A, B)]): (F[A], F[B]) =
-    (map(fab)(_._1), map(fab)(_._2)) 
-  
-  def codistribute[A, B](e: Either[F[A], F[B]]): F[Either[A, B]] = e match {
-    case Left(fa) => map(fa)(Left(_))
-    case Right(fb) => map(fb)(Right(_))
-  }
-}
-
-// TODO: !
-object FunctorLaws {
-
-  def identityLaw[F[_], A](functor: Functor[F])(in: SGen[F[A]]): Prop =
-    Prop.forAll(in) { fa: F[A] =>
-      functor.map(fa)(identity) == fa
-    }
-
-  def compositionLaw[F[_], A, B, C](functor: Functor[F])(f: A => B, g: B => C)(in: SGen[F[A]]): Prop =
-    Prop.forAll(in) { fa: F[A] =>
-      val aToC: A => C = f andThen g
-      val fc1: F[C] = functor.map(fa)(aToC)
-      
-      val fb: F[B] = functor.map(fa)(f)
-      val fc2: F[C] = functor.map(fb)(g)
-      
-      fc1 == fc2
-    }
-
-  def leftAssocLaw[F[_], A, B](functor: Functor[F])(f: A => B)(in: SGen[F[A]]): Prop =
-    Prop.forAll(in) { fa: F[A] =>
-      functor.map(fa)(f andThen identity[B]) == functor.map(fa)(f)
-    }
-
-  def rightAssocLaw[F[_], A, B](functor: Functor[F])(f: A => B)(in: SGen[F[A]]): Prop =
-    Prop.forAll(in) { fa: F[A] =>
-      functor.map(fa)(identity[A] _ andThen f) == functor.map(fa)(f)
-    }
-
-}
-
-object Functor {
-  
-  val listFunctor: Functor[List] = new Functor[List] {
-    override def map[A, B](fa: List[A])(f: A => B) = fa map f
-  }
-  
-  val optFunctor: Functor[Option] = new Functor[Option] {
-    override def map[A, B](fa: Option[A])(f: A => B): Option[B] = fa map f
-  } 
-  
-}
-
 /**
   * F can be Option, Either, Par, Parser, Gen, ...
   */
@@ -162,6 +106,13 @@ case class Reader[R, A](run: R => A)
 
 case class Id[A](value: A)
 
+/**
+  * so, three minimal possible sets to implement:
+  * unit + flatMap
+  * unit + compose
+  * unit + map + join
+  * So - monad - is a creature which is defined by its operations and laws
+  */
 object Monad {
   /**
     * we implemented unit and flatMap
@@ -290,55 +241,4 @@ object Monad {
 
 object Reader {
   def ask[R]: Reader[R, R] = Reader(r => r)
-}
-
-
-object MonadExperiments {
-  case class Order(item: Item, quantity: Int)
-  case class Item(name: String, price: Double)
-
-  val genOrder: Gen[Order] = for {
-    name     <- Gen.stringN(3)
-    price    <- Gen.uniform.map(_ * 10)
-    quantity <- Gen.choose(1,100)
-  } yield Order(Item(name, price), quantity)
-
-  //or
-
-  val genItem: Gen[Item] = for {
-    name  <- Gen.stringN(3)
-    price <- Gen.uniform.map(_ * 10)
-  } yield Item(name, price)
-
-  val genOrder2: Gen[Order] = for {
-    item     <- genItem
-    quantity <- Gen.choose(1,100)
-  } yield Order(item, quantity)
-  
-}
-
-/**
-  * Monad Laws:
-  * associativity:
-  * x.flatMap(f).flatMap(g) == x.flatMap(a => f(a).flatMap(g))
-  * compose(compose(f, g), h) == compose(f, compose(g, h))
-  *
-  * left and right identity:
-  * compose(f, unit) == f
-  * compose(unit, f) == f
-  * or:
-  * flatMap(x)(unit) == x
-  * flatMap(unit(y))(f) == f(y)
-  *
-  * so, three minimal sets to implement:
-  * unit + flatMap
-  * unit + compose
-  * unit + map + join
-  *
-  * So - monad - is a creature which is defined by its operations and laws
-  * 
-  * TODO: !
-  */
-object MonadLaws {
-  
 }
