@@ -91,7 +91,7 @@ trait Monad[F[_]] extends Functor[F] {
   /**
     * flatMat via flatten
     */
-  def flatMap_join[A,B] (a: F[A])(f: A => F[B]) =
+  def flatMap_via_join[A,B] (a: F[A])(f: A => F[B]) =
     join(map(a)(f))
 
   /**
@@ -108,9 +108,9 @@ case class Id[A](value: A)
 
 /**
   * so, three minimal possible sets to implement:
-  * unit + flatMap
-  * unit + compose
-  * unit + map + join
+  * - unit + flatMap
+  * - unit + compose
+  * - unit + map + join
   * So - monad - is a creature which is defined by its operations and laws
   */
 object Monad {
