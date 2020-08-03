@@ -94,11 +94,15 @@ object State {
 
   /**
     * gets current state
+    * 
+    * State.get.run(s) -> (s, s)
     */
   def get[S]: State[S, S] = State(s => (s, s))
 
   /**
-    * sets (overrides) the current state 
+    * sets (overrides) the current state
+    * 
+    * State.set(s2).run(state_whatever) => ((), s2)
     */
   def set[S](s: S): State[S, Unit] = State(_ => ((), s))
   

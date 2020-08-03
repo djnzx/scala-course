@@ -1,1 +1,0 @@
-To implement `map2` in terms of `apply`, try using `f.curried` and following the types.

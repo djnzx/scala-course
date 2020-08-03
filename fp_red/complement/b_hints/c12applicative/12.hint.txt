@@ -1,1 +1,0 @@
-The standard library lets you treat a `Map` as essentially a list of pairs.
