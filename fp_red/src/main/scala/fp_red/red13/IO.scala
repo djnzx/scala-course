@@ -240,41 +240,44 @@ object IO2bTests {
 
   val f: Int => TailRec[Int] = (i: Int) => Return(i)
 
+  val list: List[Int => TailRec[Int]] = List.fill(10000)(f)
+  /**
+    * we fold list of functions to one nested function
+    * for further usage
+    */
   val g: Int => TailRec[Int] =
-    List.fill(10000)(f).foldLeft(f){
-      (a: Function1[Int, TailRec[Int]],
-        b: Function1[Int, TailRec[Int]]) => {
-        (x: Int) => TailRec.suspend(a(x).flatMap(b))
-      }
+    list.foldLeft(f) {
+       //   accumulator        ,      list element
+      (acc: Int => TailRec[Int], fn: Int => TailRec[Int]) =>
+        (x: Int) => TailRec.suspend(acc(x).flatMap(fn))
     }
 
   def main(args: Array[String]): Unit = {
-    val gFortyTwo = g(42)
-    println("g(42) = " + gFortyTwo)
-    println("run(g(42)) = " + run(gFortyTwo))
+    // we pass the value 42 through the combination of 10k functions
+    val g42: TailRec[Int] = g(42)
+    val r: Int = run(g42)
+    println(s"g(42): Function = $g42")
+    println(s"run(g(42)): Value = $r")
   }
 }
 
-
+/**
+  * 13.4.
+  *
+  * We've solved our first problem of ensuring stack safety, but we're still
+  * being very inexplicit about what sort of effects can occur, and we also
+  * haven't found a way of describing asynchronous computations. Our `Suspend
+  * thunks will just block the current thread when run by the interpreter.
+  * We could fix that by changing the signature of `Suspend` to take a `Par`.
+  * We'll call this new type `Async`.
+  */
 object IO2c {
 
-//  import fpinscala.parallelism.Nonblocking._
   import fp_red.red07.Nonblocking._
 
-  /*
-   * We've solved our first problem of ensuring stack safety, but we're still
-   * being very inexplicit about what sort of effects can occur, and we also
-   * haven't found a way of describing asynchronous computations. Our `Suspend`
-   * thunks will just block the current thread when run by the interpreter.
-   * We could fix that by changing the signature of `Suspend` to take a `Par`.
-   * We'll call this new type `Async`.
-   */
-
   sealed trait Async[A] { // will rename this type to `Async`
-    def flatMap[B](f: A => Async[B]): Async[B] =
-      FlatMap(this, f)
-    def map[B](f: A => B): Async[B] =
-      flatMap(f andThen (Return(_)))
+    def flatMap[B](f: A => Async[B]): Async[B] = FlatMap(this, f)
+    def map[B](f: A => B): Async[B] = flatMap(f andThen (Return(_)))
   }
   case class Return[A](a: A) extends Async[A]
   case class Suspend[A](resume: Par[A]) extends Async[A] // notice this is a `Par`
@@ -286,7 +289,8 @@ object IO2c {
   }
 
   // return either a `Suspend`, a `Return`, or a right-associated `FlatMap`
-  @annotation.tailrec def step[A](async: Async[A]): Async[A] = async match {
+  @tailrec
+  def step[A](async: Async[A]): Async[A] = async match {
     case FlatMap(FlatMap(x, f), g) => step(x flatMap (a => f(a) flatMap g))
     case FlatMap(Return(x), f) => step(f(x))
     case _ => async
@@ -300,18 +304,19 @@ object IO2c {
       case _ => sys.error("Impossible, since `step` eliminates these cases")
     }
   }
-  // The fact that `run` only uses the `unit` and `flatMap` functions of
-  // `Par` is a clue that choosing `Par` was too specific of a choice,
-  // this interpreter could be generalized to work with any monad.
+
+  /**
+    * The fact that `run` only uses the `unit` and `flatMap` functions of
+    * `Par` is a clue that choosing `Par` was too specific of a choice,
+    * this interpreter could be generalized to work with any monad.
+    */
 }
 
-
-object IO3 {
-
-  /*
-  We can generalize `TailRec` and `Async` to the type `Free`, which is
-  a `Monad` for any choice of `F`.
+/**
+  * We can generalize `TailRec` and `Async` to the type `Free`, which is
+  * a `Monad` for any choice of `F`.
   */
+object IO3 {
 
   sealed trait Free[F[_],A] {
     def flatMap[B](f: A => Free[F,B]): Free[F,B] =
