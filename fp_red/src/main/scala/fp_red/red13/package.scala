@@ -1,6 +1,6 @@
-package fp_red.a_exercises
+package fp_red
 
-package object c13iomonad {
+package object red13 {
   import fp_red.red07.Nonblocking._
 
   type IO[A] = IO3.IO[A]
@@ -30,6 +30,8 @@ package object c13iomonad {
   // reflects that is is unsafe, i.e. that it has side effects,
   // and that it _performs_ the actual I/O.
   import java.util.concurrent.ExecutorService
+
   def unsafePerformIO[A](io: IO[A])(implicit E: ExecutorService): A =
     Par.run(E) { IO3.run(io)(IO3.parMonad) }
+
 }

@@ -1,16 +1,15 @@
-package fp_red.a_exercises.c13iomonad
+package fp_red.red13
 
-import language.postfixOps
-import scala.io.StdIn.readLine
+import scala.annotation.tailrec
+import scala.io.StdIn
+import scala.language.postfixOps
 
+/**
+  * minimal version of IO which is able to represent output and composability.
+  *
+  * It's a Monoid. it has `empty` and `++` operation.
+  */
 object IO0 {
-                            /*
-
-  Our first attempt at data type for representing computations that
-  may perform I/O. Has a simple 'interpreter' baked in--the `run`
-  function, which just returns `Unit`.
-
-                             */
   trait IO { self =>
     def run: Unit
     def ++(io: IO): IO = new IO {
@@ -21,42 +20,30 @@ object IO0 {
     def empty: IO = new IO { def run = () }
   }
 
-                            /*
+  def fahrenheitToCelsius(f: Double): Double = (f - 32) * 5.0/9.0
 
-  The API of this `IO` type isn't very useful.  Not many operations
-  (it is only a monoid), and not many laws to help with reasoning. It
-  is completely _opaque_. Also cannot represent _input_ effects, like
-  reading from console, for instance:
-
-                             */
-
-  def fahrenheitToCelsius(f: Double): Double =
-    (f - 32) * 5.0/9.0
-
-  // Ordinary code with side effects
+  /**
+    * but, we still can't represent input
+    */
   def converter: Unit = {
     println("Enter a temperature in degrees Fahrenheit: ")
-    val d = readLine.toDouble
+    val d = StdIn.readLine.toDouble
     println(fahrenheitToCelsius(d))
   }
-
-  // A pure version is not possible!
-  /*
-  def converter: IO = {
-    val prompt: IO = PrintLine("Enter a temperature in degrees fahrenheit: ")
-    // now what ???
-  }
-  */
 }
 
+/**
+  * next version of IO which can represent user's input,
+  * and can be composed via flatMap/map.
+  *
+  * now it has form a Monad
+  *
+  * It still has a problems:
+  *
+  * - StackOverflow;
+  * - A value of type IO[A] is completely opaque (it’s too general)
+  */
 object IO1 {
-                            /*
-
-  We need a way for our `IO` actions to yield a result of some
-  meaningful type. We do this by adding a type parameter to `IO`,
-  which now forms a `Monad`.
-                             */
-
   sealed trait IO[A] { self =>
     def run: A
     def map[B](f: A => B): IO[B] =
@@ -71,6 +58,8 @@ object IO1 {
     def apply[A](a: => A): IO[A] = unit(a) // syntax for IO { .. }
 
     def ref[A](a: A): IO[IORef[A]] = IO { new IORef(a) }
+
+    /** mutable state management, already wrapped into IO */
     sealed class IORef[A](var value: A) {
       def set(a: A): IO[A] = IO { value = a; a }
       def get: IO[A] = IO { value }
@@ -78,56 +67,32 @@ object IO1 {
     }
   }
 
-  // We can now express the example
-
-  def ReadLine: IO[String] = IO { readLine }
-  def PrintLine(msg: String): IO[Unit] = IO { println(msg) }
+  def readLine: IO[String] = IO { StdIn.readLine }
+  def printLine(msg: String): IO[Unit] = IO { println(msg) }
   import IO0.fahrenheitToCelsius
 
   def converter: IO[Unit] = for {
-    _ <- PrintLine("Enter a temperature in degrees Fahrenheit: ")
-    d <- ReadLine.map(_.toDouble)
-    _ <- PrintLine(fahrenheitToCelsius(d).toString)
+    _ <- printLine("Enter a temperature in degrees Fahrenheit: ")
+    d <- readLine.map(_.toDouble)
+    c = fahrenheitToCelsius(d)
+    s = c.toString
+    _ <- printLine(s)
   } yield ()
+  /** to run this: */
+  //converter.run
 
-  /*                         Some other examples                      */
+  import IO._
 
-  import IO._ // import all the `IO` combinators that come from `Monad`
-
-  // An `IO[Unit]` that reads a line from the console and echoes it back.
-  val echo = ReadLine.flatMap(PrintLine)
-
-  // Parses an `Int` by reading a line from the console.
-  val readInt: IO[Int] = ReadLine.map(_.toInt)
-
-  // Parses an `(Int,Int)` by reading two lines from the console.
+  val echo: IO[Unit] = readLine.flatMap(printLine)
+  val readInt: IO[Int] = readLine.map(_.toInt)
   val readInts: IO[(Int,Int)] = readInt ** readInt
+  val fivePrompts: IO[Unit] = replicateM_(5)(converter)
+  val lines: IO[List[String]] = replicateM(10)(readLine)
 
-  // Repeat `converter` 5 times, discarding the results (which are
-  // just `Unit`). We can replace `converter` here with any `IO`
-  // action we wished to repeat 5 times (ex: `echo` or `readInts`).
-  val prompts: IO[Unit] = replicateM_(5)(converter)
-
-  // An `IO[List[String]]` that will read 10 lines from the console and
-  // return the list of results.
-  val lines: IO[List[String]] = replicateM(10)(ReadLine)
-
-                            /*
-
-  Larger example using various monadic combinators. Sample run:
-
-     The Amazing Factorial REPL, v2.0
-     q - quit
-     <number> - compute the factorial of the given number
-     <anything else> - bomb with horrible error
-     3
-     factorial: 6
-     7
-     factorial: 5040
-     q
-
-                             */
-  val helpstring = """
+  /**
+    * Larger example using various monadic combinators
+    */
+  val helpString = """
   | The Amazing Factorial REPL, v2.0
   | q - quit
   | <number> - compute the factorial of the given number
@@ -136,129 +101,115 @@ object IO1 {
 
   def factorial(n: Int): IO[Int] = for {
     acc <- ref(1)
-    _ <- foreachM (1 to n toStream) (i => acc.modify(_ * i).skip)
-    result <- acc.get
-  } yield result
+    //               stream 1,2,...n  f: A => IO[Unit]
+    _   <- foreachM (1 to n toStream) (i => acc.modify(x => x * i).skip)
+    res <- acc.get
+  } yield res
 
-  val factorialREPL: IO[Unit] = sequence_(
-    IO { println(helpstring) },
-    doWhile { IO { readLine } } { line =>
-      val ok = line != "q"
-      when (ok) { for {
-        n <- factorial(line.toInt)
-        _ <- IO { println("factorial: " + n) }
+  val factorialREPL: IO[Unit] =
+    printLine(helpString) *>
+    doWhile { readLine } { line =>
+      when (line != "q") { for {
+        i <- IO { line.toInt }
+        n <- factorial(i)
+        m = s"factorial of $i is equal to $n"
+        _ <- printLine(m)
       } yield () }
     }
-  )
 }
 
-
+/**
+  * fixing stack overflow problem
+  */
 object IO2a {
 
-  /*
-  The previous IO representation overflows the stack for some programs.
-  The problem is that `run` call itself recursively, which means that
-  an infinite or long running IO computation will have a chain of regular
-  calls to `run`, eventually overflowing the stack.
-
-  The general solution is to make the `IO` type into a data type that we
-  interpret using a tail recursive loop, using pattern matching.
-  */
-
   sealed trait IO[A] {
-    def flatMap[B](f: A => IO[B]): IO[B] =
-      FlatMap(this, f) // we do not interpret the `flatMap` here, just return it as a value
-    def map[B](f: A => B): IO[B] =
-      flatMap(f andThen (Return(_)))
+    /**
+      * - here we build new description of operation
+      * - we do not interpret the `flatMap` here, just return it as a value
+      * - we will do this later
+      */
+    def flatMap[B](f: A => IO[B]): IO[B] = FlatMap(this, f)
+    def map[B](f: A => B): IO[B] = flatMap(f andThen (Return(_)))
   }
+  /** will be used for non-recursive calls */
   case class Return[A](a: A) extends IO[A]
+  /** will be used for lazy initialization */
   case class Suspend[A](resume: () => A) extends IO[A]
+  /** will be used for recursive calls */
   case class FlatMap[A,B](sub: IO[A], k: A => IO[B]) extends IO[B]
 
   object IO extends Monad[IO] { // Notice that none of these operations DO anything
-    def unit[A](a: => A): IO[A] = Return(a)
+    def unit   [A](a: => A)                 : IO[A] = Return(a)
+    def suspend[A](a: => IO[A])             : IO[A] = Suspend(() => ()).flatMap { _ => a }
     def flatMap[A,B](a: IO[A])(f: A => IO[B]): IO[B] = a flatMap f
-    def suspend[A](a: => IO[A]) =
-      Suspend(() => ()).flatMap { _ => a }
   }
 
-  def printLine(s: String): IO[Unit] =
-    Suspend(() => Return(println(s)))
+  def printLine(s: String): IO[Unit] = Suspend(() => Return(println(s)))
 
   val p = IO.forever(printLine("Still going..."))
 
-  val actions: Stream[IO[Unit]] =
-    Stream.fill(100000)(printLine("Still going..."))
-  val composite: IO[Unit] =
-    actions.foldLeft(IO.unit(())) { (acc, a) => acc flatMap { _ => a } }
+  val actions: Stream[IO[Unit]] = Stream.fill(100000)(printLine("Still going..."))
+  val composite: IO[Unit] = actions.foldLeft(IO.unit(())) { (acc, a) => acc flatMap { _ => a } }
 
   // There is only one sensible way to implement this as a
   // tail-recursive function, the one tricky case is left-nested
   // flatMaps, as in `((a flatMap f) flatMap g)`, which we
   // reassociate to the right as `a flatMap (ar => f(a) flatMap g)`
-  @annotation.tailrec def run[A](io: IO[A]): A = io match {
-    case Return(a) => a
-    case Suspend(r) => r()
-    case FlatMap(x, f) => x match {
-      case Return(a) => run(f(a))
-      case Suspend(r) => run(f(r()))
-      case FlatMap(y, g) => run(y flatMap (a => g(a) flatMap f))
-    }
+  @tailrec
+  def run[A](io: IO[A]): A = io match {
+    case Return(a) => a     // A
+    case Suspend(r) => r()  // A
+    case FlatMap(x, f) =>
+      val step = x match {
+        case Return(a) => f(a)
+        case Suspend(r) => f(r())
+        case FlatMap(y, g) => y.flatMap(a => g(a).flatMap(f))
+      }
+      run(step)
   }
 }
 
 object IO2aTests {
-  import IO2a._
+  import IO2a.IO
+  import IO2a.run
 
-  /*
-  Pg 240: REPL session has a typo, should be:
+  type IO[A] = IO2a.IO[A]
+  val f: Int => IO[Int] = (i: Int) => IO2a.Return(i)
 
-  val g = List.fill(100000)(f).foldLeft(f) {
-    (a, b) => x => Suspend(() => ()).flatMap { _ => a(x).flatMap(b)}
-  }
-
-  Note: we could write a little helper function to make this nicer:
-
-  def suspend[A](a: => IO[A]) = Suspend(() => ()).flatMap { _ => a }
-
-  val g = List.fill(100000)(f).foldLeft(f) {
-    (a, b) => x => suspend { a(x).flatMap(b) }
-  }
-   */
-
-  val f: Int => IO[Int] = (i: Int) => Return(i)
-
+  val list: List[Int => IO[Int]] = List.fill(10000)(f)
+  /**
+    * we fold list of functions to one nested function
+    * for further usage
+    */
   val g: Int => IO[Int] =
-    List.fill(10000)(f).foldLeft(f){
-      (a: Function1[Int, IO[Int]],
-        b: Function1[Int, IO[Int]]) => {
-        (x: Int) => IO.suspend(a(x).flatMap(b))
-      }
+    list.foldLeft(f) {
+      //   accumulator  ,   list element
+      (acc: Int => IO[Int], fn: Int => IO[Int]) =>
+        (x: Int) => IO.suspend(acc(x).flatMap(fn))
     }
 
   def main(args: Array[String]): Unit = {
-    val gFortyTwo = g(42)
-    println("g(42) = " + gFortyTwo)
-    println("run(g(42)) = " + run(gFortyTwo))
+    // we pass the value 42 through the combination of 10k functions
+    val g42: IO[Int] = g(42)
+    val r: Int = run(g42)
+    println(s"g(42): Function = $g42")
+    println(s"run(g(42)): Value = $r")
   }
 }
 
-
+/**
+  * As it turns out, there's nothing about this data type that is specific
+  * to I/O, it's just a general purpose data type for optimizing tail calls.
+  * Here it is, renamed to `TailRec`. This type is also sometimes called
+  * `Trampoline`, because of the way interpreting it bounces back and forth
+  * between the main `run` loop and the functions contained in the `TailRec`.
+  */
 object IO2b {
 
-  /*
-   * As it turns out, there's nothing about this data type that is specific
-   * to I/O, it's just a general purpose data type for optimizing tail calls.
-   * Here it is, renamed to `TailRec`. This type is also sometimes called
-   * `Trampoline`, because of the way interpreting it bounces back and forth
-   * between the main `run` loop and the functions contained in the `TailRec`.
-   */
-
   sealed trait TailRec[A] {
-    def flatMap[B](f: A => TailRec[B]): TailRec[B] =
-      FlatMap(this, f)
-    def map[B](f: A => B): TailRec[B] =
-      flatMap(f andThen (Return(_)))
+    def flatMap[B](f: A => TailRec[B]): TailRec[B] = FlatMap(this, f)
+    def map[B](f: A => B): TailRec[B] = flatMap(f andThen { x: B => Return(x) })
   }
   case class Return[A](a: A) extends TailRec[A]
   case class Suspend[A](resume: () => A) extends TailRec[A]
@@ -266,20 +217,21 @@ object IO2b {
 
   object TailRec extends Monad[TailRec] {
     def unit[A](a: => A): TailRec[A] = Return(a)
-    def flatMap[A,B](a: TailRec[A])(f: A => TailRec[B]): TailRec[B] =
-      a flatMap f
-    def suspend[A](a: => TailRec[A]) =
-      Suspend(() => ()).flatMap { _ => a }
+    def flatMap[A,B](a: TailRec[A])(f: A => TailRec[B]): TailRec[B] = a flatMap f
+    def suspend[A](a: => TailRec[A]): TailRec[A] = Suspend(() => ()).flatMap { _ => a }
   }
 
-  @annotation.tailrec def run[A](t: TailRec[A]): A = t match {
+  @tailrec
+  def run[A](t: TailRec[A]): A = t match {
     case Return(a) => a
     case Suspend(r) => r()
-    case FlatMap(x, f) => x match {
-      case Return(a) => run(f(a))
-      case Suspend(r) => run(f(r()))
-      case FlatMap(y, g) => run(y flatMap (a => g(a) flatMap f))
-    }
+    case FlatMap(x, f) =>
+      val step = x match {
+        case Return(a) => f(a)
+        case Suspend(r) => f(r())
+        case FlatMap(y, g) => y.flatMap(a => g(a).flatMap(f))
+      }
+      run(step)
   }
 }
 
@@ -302,6 +254,7 @@ object IO2bTests {
     println("run(g(42)) = " + run(gFortyTwo))
   }
 }
+
 
 object IO2c {
 
@@ -408,7 +361,7 @@ object IO3 {
     def toThunk = () => run
 
     def run: Option[String] =
-      try Some(readLine())
+      try Some(StdIn.readLine())
       catch { case e: Exception => None }
 
     def toState = ConsoleState { bufs =>
@@ -568,7 +521,6 @@ object IO3 {
    * which supports asynchronous reads.
    */
 
-  import java.nio._
   import java.nio.channels._
 
   def read(file: AsynchronousFileChannel,

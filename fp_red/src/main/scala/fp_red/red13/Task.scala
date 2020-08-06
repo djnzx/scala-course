@@ -1,7 +1,9 @@
-package fp_red.a_exercises.c13iomonad
+package fp_red.red13
+
+import java.util.concurrent.ExecutorService
 
 import fp_red.red07.Nonblocking._
-import java.util.concurrent.ExecutorService
+import fp_red.red13
 
 /*
  * `Task[A]` is a wrapper around `Free[Par, Either[Throwable, A]]`, with some
@@ -18,11 +20,13 @@ case class Task[A](get: IO[Either[Throwable, A]]) {
   def map[B](f: A => B): Task[B] = flatMap(f andThen (Task.now))
 
   /* 'Catches' exceptions in the given task and returns them as values. */
-  def attempt: Task[Either[Throwable,A]] =
-    Task(get map {
+  def attempt: Task[Either[Throwable, A]] = {
+    val att: IO[Either[Throwable, Either[Throwable, A]]] = get.map {
       case Left(e) => Right(Left(e))
       case Right(a) => Right(Right(a))
-    })
+    }
+    Task(att)
+  }
 
   def handle[B>:A](f: PartialFunction[Throwable,B]): Task[B] =
     attempt flatMap {
