@@ -226,7 +226,7 @@ object IO2b {
     case Return(a) => a
     case Suspend(r) => r()
     case FlatMap(x, f) =>
-      val step = x match {
+      val step: TailRec[A] = x match {
         case Return(a) => f(a)
         case Suspend(r) => f(r())
         case FlatMap(y, g) => y.flatMap(a => g(a).flatMap(f))
@@ -277,9 +277,10 @@ object IO2c {
 
   sealed trait Async[A] { // will rename this type to `Async`
     def flatMap[B](f: A => Async[B]): Async[B] = FlatMap(this, f)
-    def map[B](f: A => B): Async[B] = flatMap(f andThen (Return(_)))
+    def map[B](f: A => B): Async[B] = flatMap(f andThen ((b: B) => Return(b)))
   }
   case class Return[A](a: A) extends Async[A]
+  /** we changed `() => A` to `(es) => Future[A]` */
   case class Suspend[A](resume: Par[A]) extends Async[A] // notice this is a `Par`
   case class FlatMap[A,B](sub: Async[A], k: A => Async[B]) extends Async[B]
 
@@ -319,22 +320,35 @@ object IO2c {
 object IO3 {
 
   sealed trait Free[F[_],A] {
-    def flatMap[B](f: A => Free[F,B]): Free[F,B] =
-      FlatMap(this, f)
-    def map[B](f: A => B): Free[F,B] =
-      flatMap(f andThen (Return(_)))
+    def flatMap[B](f: A => Free[F,B]): Free[F,B] = FlatMap(this, f)
+    def map[B](f: A => B): Free[F,B] = flatMap(f andThen (Return(_)))
   }
   case class Return[F[_],A](a: A) extends Free[F, A]
   case class Suspend[F[_],A](s: F[A]) extends Free[F, A]
-  case class FlatMap[F[_],A,B](s: Free[F, A],
-                               f: A => Free[F, B]) extends Free[F, B]
+  case class FlatMap[F[_],A,B](s: Free[F, A], f: A => Free[F, B]) extends Free[F, B]
 
-  // Exercise 1: Implement the free monad
-  def freeMonad[F[_]]: Monad[({type f[a] = Free[F,a]})#f] = ???
-
+  def freeMonad[F[_]]: Monad[({type f[a] = Free[F,a]})#f] =
+    new Monad[({type f[a] = Free[F,a]})#f] {
+      override def unit[A](a: => A): Free[F, A] = Return(a)
+      override def flatMap[A, B](fa: Free[F, A])(f: A => Free[F, B]): Free[F, B] = fa flatMap f
+    }
+    
   // Exercise 2: Implement a specialized `Function0` interpreter.
-  // @annotation.tailrec
-  def runTrampoline[A](a: Free[Function0,A]): A = ???
+  @tailrec
+  def runTrampoline[A](a: Free[Function0, A]): A = a match {
+    case Return(a) => a
+    case Suspend(s) => s()
+    case FlatMap(s, f) =>
+      val ff = f.asInstanceOf[A => Free[Function0, A]]
+      val step: Free[Function0, A] = s match {
+        case Return(a) => ff(a.asInstanceOf[A])
+        case Suspend(s) => ff(s().asInstanceOf[A])
+        case FlatMap(y, g) =>
+          val gg = g.asInstanceOf[A => Free[Function0, A]]
+          y.asInstanceOf[Free[Function0, A]].flatMap { a => gg(a).flatMap(ff) }
+      }
+      runTrampoline(step)
+  }
 
   // Exercise 3: Implement a `Free` interpreter which works for any `Monad`
   def run[F[_],A](a: Free[F,A])(implicit F: Monad[F]): F[A] = ???
@@ -350,7 +364,6 @@ object IO3 {
   */
 
   import fp_red.red07.Nonblocking.Par
-//  import fpinscala.parallelism.Nonblocking.Par
 
   sealed trait Console[A] {
     def toPar: Par[A]

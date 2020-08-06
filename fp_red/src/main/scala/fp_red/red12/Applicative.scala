@@ -48,15 +48,15 @@ trait Applicative[F[_]] extends Functor[F] { self =>
         )(fa)
       )(fb)
     )(fc)
-  
+
   /** `traverse` via `map2` and `unit` */
   def traverse[A,B](as: List[A])(f: A => F[B]): F[List[B]] =
     as.foldRight(unit(List.empty[B])) { (a: A, flb: F[List[B]]) =>
       map2(f(a), flb)(_ :: _)
     }
-    
+
   /** `sequence` via `traverse` */
-  def sequence[A](fas: List[F[A]]): F[List[A]] = 
+  def sequence[A](fas: List[F[A]]): F[List[A]] =
     traverse(fas) { fa: F[A] => fa }
 
   /** `replicateM` via `sequence` */
@@ -69,10 +69,10 @@ trait Applicative[F[_]] extends Functor[F] { self =>
 
   def product[G[_]](G: Applicative[G]): Applicative[({type f[x] = (F[x], G[x])})#f] =
     new Applicative[({type f[x] = (F[x], G[x])})#f] {
-      override def unit[A](a: => A): (F[A], G[A]) = 
+      override def unit[A](a: => A): (F[A], G[A]) =
         (self.unit(a), G.unit(a))
 
-      override def apply[A, B](fab: (F[A => B], G[A => B]))(fa: (F[A], G[A])): (F[B], G[B]) = { 
+      override def apply[A, B](fab: (F[A => B], G[A => B]))(fa: (F[A], G[A])): (F[B], G[B]) = {
         (fab, fa) match {
           case ((fab, gab), (fa, ga)) => (self.apply(fab)(fa), G.apply(gab)(ga))
         }
@@ -89,7 +89,7 @@ trait Applicative[F[_]] extends Functor[F] { self =>
         // strip the F layer
         self.map2(fga, fgb) { (ga: G[A], gb: G[B]) =>
           // strip the G layer
-          G.map2(ga, gb) { (a: A, b: B) => 
+          G.map2(ga, gb) { (a: A, b: B) =>
             // apply the function
             f(a, b)
           }
@@ -97,7 +97,7 @@ trait Applicative[F[_]] extends Functor[F] { self =>
       }
     }
 
-  def sequenceMap[K, V](ofa: Map[K, F[V]]): F[Map[K, V]] = 
+  def sequenceMap[K, V](ofa: Map[K, F[V]]): F[Map[K, V]] =
     ofa.foldLeft(unit(Map.empty[K, V])) { case (fmkv, (k, fv)) =>
       map2(fmkv, fv) { case (mkv, v) => mkv + (k -> v) }
     }
@@ -113,7 +113,7 @@ object Applicative {
 
   /**
     * Infinite Stream.
-    * 
+    *
     * no way to implement flatMap to operate with infinite stream
     */
   val streamApplicative: Applicative[Stream] = new Applicative[Stream] {
@@ -141,14 +141,14 @@ object Applicative {
     }
 
   /**
-    * turning Monoid into Applicative 
+    * turning Monoid into Applicative
     */
   type Const[M, B] = M
   /**
     * `map2[A, B, C](fa: Const[M, A], fb: Const[M, B])(f: (A, B) => C): Const[M, C]`
-    * 
-    * becomes 
-    * 
+    *
+    * becomes
+    *
     * `map2[A, B, C](fa: M, fb: M)(f: (A, B) => C): M`
     */
   implicit def monoidApplicative[M](M: Monoid[M]) =
