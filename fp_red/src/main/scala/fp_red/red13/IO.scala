@@ -1,5 +1,7 @@
 package fp_red.red13
 
+import fp_red.red07.Nonblocking.Par
+
 import scala.annotation.tailrec
 import scala.io.StdIn
 import scala.language.postfixOps
@@ -327,6 +329,9 @@ object IO3 {
   case class Suspend[F[_],A](s: F[A]) extends Free[F, A]
   case class FlatMap[F[_],A,B](s: Free[F, A], f: A => Free[F, B]) extends Free[F, B]
 
+  type TailRec[A] = Free[Function0, A]
+  type Async[A] = Free[Par, A]
+  
   def freeMonad[F[_]]: Monad[({type f[a] = Free[F,a]})#f] =
     new Monad[({type f[a] = Free[F,a]})#f] {
       override def unit[A](a: => A): Free[F, A] = Return(a)
@@ -351,12 +356,24 @@ object IO3 {
   }
 
   // Exercise 3: Implement a `Free` interpreter which works for any `Monad`
-  def run[F[_],A](a: Free[F,A])(implicit F: Monad[F]): F[A] = ???
+  def run[F[_],A](fa: Free[F,A])(implicit F: Monad[F]): F[A] = step(fa) match {
+    case Return(a) => F.unit(a)
+    case Suspend(s) => s
+    case FlatMap(Suspend(s), f) => F.flatMap(s)(a => run(f(a)))
+    case _ => sys.error("Impossible, since `step` eliminates these cases")
+  }
 
   // return either a `Suspend`, a `Return`, or a right-associated `FlatMap`
-  // @annotation.tailrec
-  def step[F[_],A](a: Free[F,A]): Free[F,A] = ???
+  @tailrec
+  def step[F[_],A](fa: Free[F,A]): Free[F,A] = fa match {
+    case FlatMap(FlatMap(x, f), g) => step(x.flatMap(a => f(a).flatMap(g)))
+    case FlatMap(Return(a), f) => step(f(a))
+    case _ => fa
+  }
 
+  
+  
+  
   /*
   The type constructor `F` lets us control the set of external requests our
   program is allowed to make. For instance, here is a type that allows for
