@@ -19,7 +19,7 @@ case class Task[A](get: IO[Either[Throwable, A]]) {
 
   def map[B](f: A => B): Task[B] = flatMap(f andThen (Task.now))
 
-  /* 'Catches' exceptions in the given task and returns them as values. */
+  /** 'Catches' exceptions in the given task and returns them as values. */
   def attempt: Task[Either[Throwable, A]] = {
     val att: IO[Either[Throwable, Either[Throwable, A]]] = get.map {
       case Left(e) => Right(Left(e))
@@ -52,8 +52,7 @@ case class Task[A](get: IO[Either[Throwable, A]]) {
 object Task extends Monad[Task] {
   def unit[A](a: => A) = Task(IO(Try(a)))
 
-  def flatMap[A,B](a: Task[A])(f: A => Task[B]): Task[B] =
-    a flatMap f
+  def flatMap[A,B](a: Task[A])(f: A => Task[B]): Task[B] = a flatMap f
 
   def fail[A](e: Throwable): Task[A] = Task(IO(Left(e)))
   def now[A](a: A): Task[A] = Task(Return(Right(a)))
@@ -61,10 +60,8 @@ object Task extends Monad[Task] {
   def more[A](a: => Task[A]): Task[A] = Task.now(()) flatMap (_ => a)
 
   def delay[A](a: => A): Task[A] = more(now(a))
-  def fork[A](a: => Task[A]): Task[A] =
-    Task { par { Par.lazyUnit(()) } flatMap (_ => a.get) }
+  def fork[A](a: => Task[A]): Task[A] = Task { par { Par.lazyUnit(()) } flatMap (_ => a.get) }
   def forkUnit[A](a: => A): Task[A] = fork(now(a))
 
-  def Try[A](a: => A): Either[Throwable,A] =
-    try Right(a) catch { case e: Throwable => Left(e) }
+  def Try[A](a: => A): Either[Throwable,A] = try Right(a) catch { case e: Throwable => Left(e) }
 }

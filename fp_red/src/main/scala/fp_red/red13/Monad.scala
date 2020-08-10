@@ -29,7 +29,7 @@ trait Monad[F[_]] extends Functor[F] {
   def replicateM[A](n: Int)(f: F[A]): F[List[A]] = Stream.fill(n)(f).foldRight(unit(List.empty[A]))(map2(_,_)(_ :: _))
   def replicateM_[A](n: Int)(f: F[A]): F[Unit] = foreachM(Stream.fill(n)(f))(skip)
 
-  /** actually lift `Boolean` to `F[Boolean]` */
+  /** actually does the job and returns Boolean lifted to to `F[Boolean]` */
   def when[A](b: Boolean)(fa: => F[A]): F[Boolean] = if (b) as(fa)(true) else unit(false)
 
   def forever[A,B](a: F[A]): F[B] = {

@@ -8,7 +8,7 @@ object TransformApp extends App {
   
   type ~>[F[_], G[_]] = Transform[F, G]
   
-  implicit val oToL: Option ~> List = new (Option ~> List) {
+  implicit val optionToList: Option ~> List = new (Option ~> List) {
     override def apply[A](fa: Option[A]): List[A] = fa.map(a => List(a)).getOrElse(List.empty)
   }
   
@@ -20,7 +20,7 @@ object TransformApp extends App {
   }
 
   pprint.pprintln(oi)
-  pprint.pprintln(oToL(oi))
+  pprint.pprintln(optionToList(oi))
   pprint.pprintln(method(oi))
   
 }
