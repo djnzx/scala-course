@@ -1,0 +1,22 @@
+docker run -it redis
+docker.com + signup
+
+docker version
+docker run hello-world
+docker run <image> <alternate command>
+docker run                // creating and running
+
+docker run busybox echo hi there
+docker run busybox ls -la // files inside of image
+
+docker ps                 // list of currently running containers
+docker ps --all           // list all ever created
+
+docker run = docker create + docker start
+
+docker create hello-world
+
+docker start    ####_long_id_#### // just run a container
+docker start -a ####_long_id_#### // run a container and attach output to my console
+
+docker system prune      // remove containers, dangling, cache
