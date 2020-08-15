@@ -110,8 +110,6 @@
   - [shop](https://livebook.manning.com/book/functional-programming-in-scala)
   - [local copy#1](../../../../../Dropbox/_books/_NEW_BOUGHT_2020/Functional_Programming_in_Scala.pdf)
   - [local copy#2](../../../../Dropbox/_books/_NEW_BOUGHT_2020/Functional_Programming_in_Scala.pdf)
-- [red book - 12](https://livebook.manning.com/book/functional-programming-in-scala/chapter-12/)
-- [red book - 13](https://livebook.manning.com/book/functional-programming-in-scala/chapter-13/)
 - [red book - 14](https://livebook.manning.com/book/functional-programming-in-scala/chapter-14/)
 - [red book - 15](https://livebook.manning.com/book/functional-programming-in-scala/chapter-15/)
 - [FRDM](https://livebook.manning.com/book/functional-and-reactive-domain-modeling)
