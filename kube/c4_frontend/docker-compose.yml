@@ -1,0 +1,23 @@
+version: '3'
+services:
+  react-app:        # this name will be exposed in the network as the host name
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+#    restart: on-failure # 'no'(no===false), always, on-failure, unless-stopped
+    ports:
+      - "80:3000"
+    volumes:
+      # docker path
+      - /app/node_modules
+      # local path : docker path
+      - .:/app
+    stdin_open: true
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]

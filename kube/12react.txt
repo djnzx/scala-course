@@ -1,0 +1,14 @@
+npx create-react-app frontend
+
+https://github.com/facebook/create-react-app/issues/8688
+https://stackoverflow.com/questions/60790696/react-scripts-start-exiting-in-docker-foreground-cmd
+
+Add stdin_open property to your docker-compose.yml file
+
+  web:
+    stdin_open: true
+
+docker-compose down && docker-compose up --build
+
+docker run     46826df31203 npm run test
+docker run -it f29f931c21bb npm run test

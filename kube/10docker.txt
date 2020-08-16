@@ -47,6 +47,9 @@ docker run 0b4855bca66e
 # tag my image to "alexr/a-redis:latest"
 docker build -t alexr/a-redis:latest .
 #               dockerid / project : version
+
+docker build -f Dockerfile.dev
+
 docker run alexr/a-redis:latest
 # or
 docker create + docker start
@@ -59,3 +62,13 @@ docker create
 docker commit -c 'CMD ["redis-server"]' <container_id>
 
 docker run -d <image> // run in detached mode
+
+//-------------
+
+docker run -it -p 3000:3000 4c13619d9af1
+docker run -it -p 3000:3000 -v $(pwd):/app 4c13619d9af1
+docker run -it -p 3000:3000 -v /app/node_modules -v $(pwd):/app 4c13619d9af1
+// take `/app/node_modules` from docker image
+// take current work dir to `/app` inside container
+
+docker attach 3cb792aca4a7
