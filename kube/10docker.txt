@@ -58,3 +58,4 @@ docker create
 # run container
 docker commit -c 'CMD ["redis-server"]' <container_id>
 
+docker run -d <image> // run in detached mode

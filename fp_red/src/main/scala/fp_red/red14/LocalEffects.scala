@@ -104,11 +104,10 @@ sealed abstract class STArray[S,A](implicit manifest: Manifest[A]) {
   /** Turn the array into an immutable list */
   def freeze: ST[S, List[A]] = ST(value.toList)
 
-  def fill(xs: Map[Int, A]): ST[S, Unit] = for {
-    _  <- xs.foldLeft(ST[S, Unit](())) { case (acc, (k, v)) => 
-            acc flatMap (_ => write(k, v)) 
-          }
-  } yield freeze
+  def fill(xs: Map[Int, A]): ST[S, Unit] =
+    xs.foldLeft(ST[S, Unit](())) { case (acc, (k, v)) =>
+      acc flatMap (_ => write(k, v))
+    }
 
   def swap(i: Int, j: Int): ST[S, Unit] = for {
     x <- read(i)
@@ -129,5 +128,38 @@ object STArray {
     ST(new STArray[S,A] {
       lazy val value = xs.toArray
     })
+}
+
+import scala.collection.mutable
+
+sealed trait STMap[S,K,V] {
+  protected def table: mutable.HashMap[K,V]
+
+  def size: ST[S, Int] = ST(table.size)
+
+  // Get the value under a key
+  def apply(k: K): ST[S,V] = ST(table(k))
+
+  // Get the value under a key, or None if the key does not exist
+  def get(k: K): ST[S, Option[V]] = ST(table.get(k))
+
+  // Add a value under a key
+  def +=(kv: (K, V)): ST[S,Unit] = ST(table += kv)
+
+  // Remove a key
+  def -=(k: K): ST[S,Unit] = ST(table -= k)
+}
+
+object STMap {
+  def empty[S, K, V]: ST[S, STMap[S,K,V]] = ST(new STMap[S, K, V] {
+    override protected def table: mutable.HashMap[K, V] =
+      mutable.HashMap.empty
+  })
+
+  def fromMap[S, K, V](m: Map[K,V]): ST[S, STMap[S, K, V]] =
+  ST(new STMap[S, K, V] {
+    override protected def table: mutable.HashMap[K, V] = 
+      (mutable.HashMap.newBuilder ++=m).result
+  })
 }
 
