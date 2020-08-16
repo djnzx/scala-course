@@ -1,0 +1,2 @@
+AWS Deployment through the TravisCI in the repo
+https://github.com/alexr007/docker-react.git
