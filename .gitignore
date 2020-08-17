@@ -7,3 +7,6 @@ target/
 *.iml
 
 /node_modules/
+
+/kube/c4_frontend/build
+/kube/c5_complex/client/build
