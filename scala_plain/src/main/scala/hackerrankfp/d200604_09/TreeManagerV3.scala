@@ -9,7 +9,7 @@ package hackerrankfp.d200604_09
 object TreeManagerV3 {
   import scala.collection.mutable.ArrayBuffer
   import scala.util.Try
-  // command representation 
+  // command representation
   sealed trait Command
   final case class CmdChangeValue(x: Int) extends Command // change current value
   final case object CmdPrint extends Command              // print

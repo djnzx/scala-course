@@ -5,9 +5,9 @@ import sbt.Keys._
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val commonSettings = Seq(
-  scalaVersion := "2.13.2",
+  scalaVersion := "2.13.3",
   organization := "org.alexr",
-  version      := "20.06.25",
+  version      := "20.08.18",
 
   javacOptions  ++= Seq(
     //  "-source", "1.8",
@@ -32,8 +32,8 @@ lazy val commonSettings = Seq(
   ),
 
   libraryDependencies ++= Seq(
-    CompilerPlugins.silencer,
-    Libraries.silencerAnnotation,
+//    CompilerPlugins.silencer,
+//    Libraries.silencerAnnotation,
     Libraries.scalaTest,
   ),
 )
@@ -67,6 +67,7 @@ lazy val scala_plain = (project in file("scala_plain"))
       "org.scala-lang.modules"     %% "scala-parallel-collections" % "0.2.0",
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
       pf.lihaoyi         %% "pprint"       % "0.5.9",
+      "org.scala-lang" % "scala-reflect" % "2.13.3",
 
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,

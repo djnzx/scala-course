@@ -1,0 +1,2 @@
+- [Type-Level Programming in Scala, Part 1](https://www.youtube.com/watch?v=qwUYqv6lKtQ)
+- [Type-Level Programming in Scala, Part 2](https://www.youtube.com/watch?v=EGAJJpGODHg)
