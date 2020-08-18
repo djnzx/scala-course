@@ -41,7 +41,8 @@ object Dependencies {
     val contextApplied   = "0.1.4"
 
     // typesafe stack
-    val akka             = "2.6.5"
+    val akka             = "2.6.8"
+    val akkaHttp         = "10.2.0"
     val play             = "2.8.1"
     val slick            = "3.3.2"
     val tsconfig          = "1.4.0"
@@ -57,17 +58,19 @@ object Dependencies {
   }
 
   object Libraries {
-    def circe(artifact: String):  ModuleID = "io.circe"              %% artifact % Versions.circe
-    def ciris(artifact: String):  ModuleID = "is.cir"                %% artifact % Versions.ciris
-    def http4s(artifact: String): ModuleID = "org.http4s"            %% artifact % Versions.http4s
-    def zio(artifact: String):    ModuleID = "dev.zio"               %% artifact % Versions.zio
-    def scalaz(artifact: String): ModuleID = "org.scalaz"            %% artifact % Versions.scalaz
-    def fs2(artifact: String):    ModuleID = "co.fs2"                %% artifact % Versions.fs2
-
-    def slick(artifact: String):  ModuleID = s"${pf.typesafe}.slick" %% artifact % Versions.slick
-    def akka(artifact: String):   ModuleID = s"${pf.typesafe}.akka"  %% artifact % Versions.akka
-    def slf4j(artifact: String):  ModuleID = pf.slf4j                %  artifact % Versions.slf4j17
-    val tsconfig:                  ModuleID = pf.typesafe             %  "config"  % Versions.tsconfig
+    def circe(artifact: String):             ModuleID = "io.circe"              %% artifact    % Versions.circe
+    def ciris(artifact: String):             ModuleID = "is.cir"                %% artifact    % Versions.ciris
+    def http4s(artifact: String):            ModuleID = "org.http4s"            %% artifact    % Versions.http4s
+    def zio(artifact: String):               ModuleID = "dev.zio"               %% artifact    % Versions.zio
+    def scalaz(artifact: String):            ModuleID = "org.scalaz"            %% artifact    % Versions.scalaz
+    def fs2(artifact: String):               ModuleID = "co.fs2"                %% artifact    % Versions.fs2
+              
+    def slick(artifact: String):             ModuleID = s"${pf.typesafe}.slick" %% artifact    % Versions.slick
+    def akka(artifact: String, v: String):   ModuleID = s"${pf.typesafe}.akka"  %% artifact    % v
+    def akka(artifact: String):              ModuleID = akka(artifact, Versions.akka) 
+    def akkaHttp(artifact: String):          ModuleID = akka(artifact, Versions.akkaHttp) 
+    def slf4j(artifact: String):             ModuleID = pf.slf4j                %  artifact    % Versions.slf4j17
+    val tsconfig:                             ModuleID = pf.typesafe             %  "config"     % Versions.tsconfig
 
     val shapeless     = "com.chuusai"      %% "shapeless"     % Versions.shapeless
     val jsoup         = "org.jsoup"        %  "jsoup"         % Versions.jsoup

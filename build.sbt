@@ -127,6 +127,13 @@ lazy val typesafe = (project in file("typesafe"))
       Libraries.akka("akka-actor"),
       // typed - current version
       Libraries.akka("akka-actor-typed"),
+      // streams
+      Libraries.akka("akka-stream"),
+      // http
+      Libraries.akkaHttp("akka-http"),
+      // json
+      Libraries.akkaHttp("akka-http-spray-json"),
+      
       Libraries.slf4j("slf4j-simple"),
       // Slick
       Libraries.slickCore,
