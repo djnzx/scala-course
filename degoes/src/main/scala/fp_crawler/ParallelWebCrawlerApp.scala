@@ -1,4 +1,4 @@
-package degoes.fp_crawler
+package fp_crawler
 
 import zio.console._
 
@@ -30,7 +30,7 @@ object ParallelWebCrawlerApp extends App {
                                                   // List[E] - list of Errors which we return if we need
 
     def loop(seeds: Set[URL], ref: Ref[CrawlState[E]]): ZIO[Blocking, Nothing, Unit] = {
-      val zf1: ZIO[Blocking, Nothing, List[Set[URL]]] = ZIO.foreachParN(100)(seeds) { seed => {
+      val zf1: ZIO[Blocking, Nothing, List[Set[URL]]] = ZIO.foreachParN(100)(seeds.toList) { seed => {
           val f = for {
             html    <- getURL(seed)                                 // ZIO[Blocking, Exception, String]
             scraped = extractURLs(seed, html).toSet.flatMap(router)  // Set[URL]
@@ -130,13 +130,18 @@ object ParallelWebCrawlerApp extends App {
       (url, html) => IO.succeed(List(url -> html))
   }
 
-    def run(args: List[String]): ZIO[Console, Nothing, Int] = {
-
-      val app: ZIO[Console, Nothing, Unit] = for {
-        _ <- putStrLn("Hello World!")
-      } yield ()
-
-      app.fold(_ => 1, _ => 0)(CanFail)
-    }
-
+//    def run(args: List[String]): ZIO[Console, Nothing, Int] = {
+//
+//      val app: ZIO[Console, Nothing, Unit] = for {
+//        _ <- putStrLn("Hello World!")
+//      } yield ()
+//
+//      app.fold(_ => 1, _ => 0)(CanFail)
+//    }
+  override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = {
+    val app: ZIO[Console, Nothing, Unit] = for {
+      _ <- putStrLn("Hello World")
+    } yield ()
+    app.fold(_ => ExitCode.failure, _ => ExitCode.success)(CanFail)
+  }
 }

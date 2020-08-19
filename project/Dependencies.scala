@@ -22,7 +22,7 @@ object Dependencies {
     val doobie           = "0.9.0"
     val squants          = "1.6.0"
     val logback          = "1.2.3"
-    val zio              = "1.0.0-RC18-2" // RC20
+    val zio              = "1.0.0"
     val sqlPg            = "42.2.10"
     val sqlH2            = "1.4.200"
     val scalaz           = "7.2.30"
@@ -61,14 +61,14 @@ object Dependencies {
     def circe(artifact: String):             ModuleID = "io.circe"              %% artifact    % Versions.circe
     def ciris(artifact: String):             ModuleID = "is.cir"                %% artifact    % Versions.ciris
     def http4s(artifact: String):            ModuleID = "org.http4s"            %% artifact    % Versions.http4s
-    def zio(artifact: String):               ModuleID = "dev.zio"               %% artifact    % Versions.zio
+    def zio(artifact: String):               ModuleID = "dev.zio"               %% artifact    % Versions.zio     withSources()  withJavadoc()
     def scalaz(artifact: String):            ModuleID = "org.scalaz"            %% artifact    % Versions.scalaz
     def fs2(artifact: String):               ModuleID = "co.fs2"                %% artifact    % Versions.fs2
-              
+
     def slick(artifact: String):             ModuleID = s"${pf.typesafe}.slick" %% artifact    % Versions.slick
     def akka(artifact: String, v: String):   ModuleID = s"${pf.typesafe}.akka"  %% artifact    % v
-    def akka(artifact: String):              ModuleID = akka(artifact, Versions.akka) 
-    def akkaHttp(artifact: String):          ModuleID = akka(artifact, Versions.akkaHttp) 
+    def akka(artifact: String):              ModuleID = akka(artifact, Versions.akka)
+    def akkaHttp(artifact: String):          ModuleID = akka(artifact, Versions.akkaHttp)
     def slf4j(artifact: String):             ModuleID = pf.slf4j                %  artifact    % Versions.slf4j17
     val tsconfig:                             ModuleID = pf.typesafe             %  "config"     % Versions.tsconfig
 
@@ -100,9 +100,6 @@ object Dependencies {
     val http4sDsl     = http4s("http4s-dsl")
     val http4sClient  = http4s("http4s-blaze-client")
     val http4sCirce   = http4s("http4s-circe")
-
-    val zioCore       = zio("zio")
-    val zioStreams    = zio("zio-streams")
 
     val slickCore     = slick("slick")
     val slickHikari   = slick("slick-hikaricp")

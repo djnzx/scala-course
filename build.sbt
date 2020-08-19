@@ -229,7 +229,7 @@ lazy val mix = (project in file("mix"))
   )
 
 /**
-  * John A. De Goes Ideas: ZIO
+  * John A. De Goes Project ZIO
   * https://zio.dev
   * https://ziverge.com
   */
@@ -239,13 +239,15 @@ lazy val degoes = (project in file("degoes"))
     libraryDependencies ++= Seq(
       "io.lemonlabs"           %% "scala-uri"                  % "1.5.1",
       // ZIO
-      Libraries.zioCore,
-      Libraries.zioStreams,
-
+      Libraries.zio("zio"),
+      Libraries.zio("zio-test"),
+      Libraries.zio("zio-test-sbt"),
+      Libraries.zio("zio-test-magnolia"),
+      Libraries.zio("zio-streams"),
       Libraries.doobieCore,
-    )
+    ),
+    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
   )
-
 
 lazy val dotty = (project in file("dotty"))
   .settings(
