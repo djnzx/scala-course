@@ -35,6 +35,7 @@ lazy val commonSettings = Seq(
 //    CompilerPlugins.silencer,
 //    Libraries.silencerAnnotation,
     Libraries.scalaTest,
+    Libraries.lprint,
   ),
 )
 
@@ -66,7 +67,6 @@ lazy val scala_plain = (project in file("scala_plain"))
       "com.typesafe.play"          %% "play-json"                  % Versions.play,
       "org.scala-lang.modules"     %% "scala-parallel-collections" % "0.2.0",
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
-      pf.lihaoyi         %% "pprint"       % "0.5.9",
       "org.scala-lang" % "scala-reflect" % "2.13.3",
 
       Libraries.scalaCheck,
@@ -84,7 +84,6 @@ lazy val fp_red = (project in file("fp_red"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      pf.lihaoyi         %% "pprint"       % "0.5.9",
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
       Libraries.scalactic,
@@ -106,7 +105,6 @@ lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(
     libraryDependencies ++= Seq(
       pf.lihaoyi         %% "os-lib"       % "0.7.0", // https://github.com/lihaoyi/os-lib
-      pf.lihaoyi         %% "pprint"       % "0.5.9",
       pf.lihaoyi         %% "scalatags"    % "0.9.1",
       pf.lihaoyi         %% "geny"         % "0.6.0",
       pf.lihaoyi         %% "upickle"      % "1.1.0", // http://www.lihaoyi.com/upickle
