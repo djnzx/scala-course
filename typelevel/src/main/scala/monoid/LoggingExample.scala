@@ -19,7 +19,7 @@ object LoggingExample extends App {
     val log = s"$a + 1 = $a1"
     (a1, log)
   }
-  
+
   def appendLog[ACC, A](left: ACC, right: A)(implicit ma: Monoid[ACC], f: A => ACC): ACC =
     ma.combine(left, f(right))
   def appendLog[ACC](left: ACC, right: ACC)(implicit ma: Monoid[ACC]): ACC =
@@ -42,20 +42,20 @@ object LoggingExample extends App {
 
   /** collect to list */
   val r2: (Int, List[String]) = collectTo(data)(List(_))
-  
+
   /** collect to vector */
   val r3: (Int, Vector[String]) = collectTo(data)(Vector(_))
-  
-  
+
+
   val intSumMonoid: Monoid[Int] = Monoid[Int]
   val stringCSMonoid: Monoid[String] = new Monoid[String] {
     override def empty: String = ""
     override def combine(x: String, y: String): String = if (x.isEmpty) y else s"$x, $y"
   }
-  
+
   /** string, comma separated */
   val r4: (Int, String) = collectTo(data)(identity)(intSumMonoid, stringCSMonoid)
-  
+
   pprint.log(r1)
   pprint.log(r2)
   pprint.log(r3)

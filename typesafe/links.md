@@ -17,4 +17,25 @@
 - [Message Driven Architecture](https://developer.lightbend.com/microservices/communication.html?_ga=2.216706134.1967734196.1597074533-1943272040.1597074533)
 
 
+- [](https://developer.lightbend.com/blog/2017-08-10-atotm-akka-messaging-part-1/index.html?_ga=2.68858193.1551641808.1598022021-659099003.1598022021)
+- [](https://doc.akka.io/docs/akka/current/general/message-delivery-reliability.html?_ga=2.68858193.1551641808.1598022021-659099003.1598022021)
+- [](https://doc.akka.io/docs/akka/current/persistence.html?_ga=2.68858193.1551641808.1598022021-659099003.1598022021#at-least-once-delivery)
+- [](https://www.lagomframework.com/documentation/current/java/MessageBrokerApi.html?_ga=2.68858193.1551641808.1598022021-659099003.1598022021#Subscribe-to-a-topic)
+
+
+- [](https://doc.akka.io/docs/akka/current/distributed-pub-sub.html?_ga=2.237008832.1551641808.1598022021-659099003.1598022021)
+- [](https://www.lagomframework.com/documentation/current/java/PubSub.html?_ga=2.237008832.1551641808.1598022021-659099003.1598022021)
+- [](https://www.lagomframework.com/documentation/current/java/MessageBrokerApi.html?_ga=2.237008832.1551641808.1598022021-659099003.1598022021)
+
+
+- [](https://info.lightbend.com/ebook-reactive-microservices-journey-pack-bundle-register.html?utm_source=ibm&utm_medium=cta-page-ad&utm_campaign=PL-2018-IBM-Cognitive-Class-LRA&utm_term=none&utm_content=none&_ga=2.68842833.1551641808.1598022021-659099003.1598022021)
+- [](https://www.lagomframework.com/documentation/current/java/PersistentEntity.html?_ga=2.68842833.1551641808.1598022021-659099003.1598022021)
+- [](https://doc.akka.io/docs/akka/current/persistence.html?_ga=2.68842833.1551641808.1598022021-659099003.1598022021)
+
+
+- [](https://info.lightbend.com/ebook-reactive-microservices-journey-pack-bundle-register.html?utm_source=ibm&utm_medium=cta-page-ad&utm_campaign=PL-2018-IBM-Cognitive-Class-LRA&utm_term=none&utm_content=none&_ga=2.34871009.1551641808.1598022021-659099003.1598022021)
+- [](https://www.lagomframework.com/documentation/current/java/ReadSide.html?_ga=2.34871009.1551641808.1598022021-659099003.1598022021)
+- [](https://doc.akka.io/docs/akka/current/persistence-query.html?_ga=2.34871009.1551641808.1598022021-659099003.1598022021)
+
+
 - []()
