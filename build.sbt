@@ -95,7 +95,7 @@ lazy val fp_red = (project in file("fp_red"))
   * https://www.lihaoyi.com
   * https://www.handsonscala.com
   * https://github.com/lihaoyi
-  * 
+  *
   * +request
   * +ujson: upickle vs ujson
   * +api_macros
@@ -131,7 +131,7 @@ lazy val typesafe = (project in file("typesafe"))
       Libraries.akkaHttp("akka-http"),
       // json
       Libraries.akkaHttp("akka-http-spray-json"),
-      
+
       Libraries.slf4j("slf4j-simple"),
       // Slick
       Libraries.slickCore,
