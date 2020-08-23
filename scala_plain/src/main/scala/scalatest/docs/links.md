@@ -1,0 +1,5 @@
+- [scalatest](https://www.scalatest.org/release_notes/3.2.0)
+- [scalactic](https://www.scalactic.org)
+- [scalatestplus](https://www.scalatest.org/plus):
+  - Play Framework `"org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0"` 
+  - ScalaCheck 1.14 `"org.scalatestplus" %%% "scalacheck-1-14" % "3.2.2.0"`

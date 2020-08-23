@@ -1,9 +1,10 @@
 package scalacheck
 
-import org.scalacheck.{Gen, Prop, Properties}
-import scalacheck.Idea.Operation.Operation
+import org.scalacheck.{Gen, Prop}
 
-object Idea extends App {
+object GenGuide extends App {
+  import Operation.Operation
+
   object Operation extends Enumeration {
     type Operation = Value
     val ADD, SUB, MUL, DIV = Value
@@ -23,13 +24,21 @@ object Idea extends App {
   
   /** generators know, HOW generate the values */
   val gInt:    Gen[Int]       = Gen.choose(-100, 100)
+  val poInt:   Gen[Int]      =  Gen.posNum[Int] // negNum
   val gLong:   Gen[Long]      = Gen.choose(0L, 1000L)
-  val gString: Gen[String]    = Gen.choose(0, 10).map(_.toString)
   val gBigDec: Gen[BigDecimal]= Gen.choose(0, 10).map(BigDecimal(_))
+
   val gList:   Gen[List[Int]] = Gen.choose(1,5).map(n => List(n, n*10, n*100))
-  val gCh:     Gen[String]    = Gen.alphaLowerStr
   val gList1:  Gen[List[Int]] = Gen.listOf(Gen.choose(-100, 100))
   val gList2:  Gen[List[Int]] = Gen.listOfN(5, Gen.choose(-100, 100))
+
+  val gC1:     Gen[Char]      = Gen.alphaChar // alphaUpperChar, alphaLowerChar
+
+  val gS1:     Gen[String]    = Gen.alphaStr // alphaLowerStr, alphaUpperStr
+  val gS4:     Gen[String]    = Gen.alphaNumStr
+  val gString: Gen[String]    = Gen.choose(0, 10).map(_.toString)
+  val s1:      Gen[String]    = Gen.oneOf("Jim", "Jeremy", "Jacky")
+  val s2:      Gen[String]    = Gen.oneOf(Seq("Marta", "Kerry", "Jacky"))
   /**  can write my own construction to create generator */
   val gMy: Gen[String] = for {
     a <- Gen.choose(0, 100)
@@ -57,22 +66,9 @@ object Idea extends App {
   
   val s: Option[Calculator] = gCalc.sample
   pprint.log(s)
-}
 
-object AddProperty extends Properties("calc.add.prop") {
-  property("add") = Prop.forAll { (a: Int, b: Int) =>
-    a + b == b + a
-  }
-}
-
-/**
-  * inputs 
-  * - are random 
-  * - run in parallel
-  */
-object AddAssocProperty extends Properties("calc.add.assoc.prop") {
-  property("add") = Prop.forAll { (a: Int, b: Int, c: Int) =>
+  val pp: Prop = Prop.forAll { (a: Int, b: Int, c: Int) =>
     (a + b) + c == a + (b + c)
   }
+  
 }
-
