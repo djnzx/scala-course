@@ -4,14 +4,11 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen.posNum
 import org.scalacheck.Prop.{forAll, forAllNoShrink, passed, propBoolean}
 
-object TipsGuide {
+object Guide6Tips {
   /**
     * 1. prefer generators over ==> 
-    * 
-    * 
-    * 
-    * will fail
     */
+  
   forAll { (i1: Int, i2: Int, i3: Int) => 
     (i1 > 0 && i2 > 0 && i3 > 0) ==> {
       passed
@@ -27,6 +24,7 @@ object TipsGuide {
     m.contains(i)
   }
   
+  /** mark output */
   forAll(
     "Index"     |: arbitrary[Int], 
     "Lookup DB" |: arbitrary[Map[Int, String]]) { (i, m) =>

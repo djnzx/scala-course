@@ -49,6 +49,7 @@ object Dependencies {
     val slf4j17          = "1.7.30"
   }
 
+  // prefixes
   object pf {
     val typelevel = "org.typelevel"
     val typesafe  = "com.typesafe"

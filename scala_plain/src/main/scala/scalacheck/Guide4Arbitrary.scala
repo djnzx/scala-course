@@ -5,7 +5,7 @@ import org.scalacheck.{Arbitrary, Gen}
 import org.scalacheck.Gen._
 import org.scalacheck.Prop.forAll
 
-object ArbitraryGuide extends App {
+object Guide4Arbitrary extends App {
   
   val i1: Gen[Int] = arbitrary[Int]
   val pn: Option[Int] = Gen.posNum[Int].sample
@@ -26,6 +26,5 @@ object ArbitraryGuide extends App {
   } check
   
   val rec1: Option[Record] = arbitrary[Record].sample
-  
-  
+  pprint.log(rec1)
 }

@@ -4,7 +4,7 @@ import org.scalacheck.Gen.{chooseNum, oneOf}
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalacheck.Prop.{AnyOperators, forAll, propBoolean}
 
-object DesignGuide {
+object Guide5Design {
 
   case class Dice(x: Int)
   case class Hand(p1: Dice, p2: Dice, p3: Dice, p4: Dice, p5: Dice)

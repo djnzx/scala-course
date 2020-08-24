@@ -203,6 +203,7 @@
 - [Idea plugin](https://www.youtube.com/watch?v=IPO-cY_giNA)
 - [Improving the Typelevel ecosystem](https://www.youtube.com/watch?v=SMMgwfhPCzM)
 - [DevInsideYou](https://www.youtube.com/c/DevInsideYou/videos)
+- [FunctionalTV](https://www.youtube.com/user/FunctionalTV/post%2F97738967579)
 
 ### FROM REDDIT & MEDIUM
 - [r/scala](https://www.reddit.com/r/scala/)

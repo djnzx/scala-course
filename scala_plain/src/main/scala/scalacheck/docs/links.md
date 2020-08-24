@@ -4,6 +4,7 @@
 - Dependency `"org.scalacheck" %% "scalacheck" % "1.14.3"`
 - has no external deps
 - Developed by Artima Company
+
 - [User Guide](https://github.com/typelevel/scalacheck/blob/master/doc/UserGuide.md)
 - [scalacheck-shapeless](https://github.com/alexarchambault/scalacheck-shapeless)
 - [scalacheck-datetime](https://www.scala-exercises.org/scalacheck/scalacheck-toolbox-datetime)
@@ -11,6 +12,6 @@
 
 - [practical property-based testing](https://yow.eventer.com/yow-lambda-jam-2015-1305/practical-property-based-testing-by-charles-o-farrell-1884)
 - [](https://www.youtube.com/watch?v=shngiiBfD80)
-- [](https://www.youtube.com/user/FunctionalTV/post%2F97738967579)
 - [](http://www.infoq.com/presentations/testing-techniques-case-study)
-- [](https://blog.charleso.org)
+- [](https://blog.charleso.org/blog.html)
+- midwest.io
