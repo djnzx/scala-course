@@ -20,7 +20,7 @@ object RTask2 extends App {
         
       case Refresh(tk, time) => 
         map._1.contains(tk) match {
-        case false => map
+        case false => (map._1, time)
         case true  =>
           if (time <= map._1(tk)) (map._1 + (tk -> (time + exLim)), time)
           else                    (map._1 - tk,                     time)
