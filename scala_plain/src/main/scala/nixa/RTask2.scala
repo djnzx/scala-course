@@ -15,24 +15,24 @@ object RTask2 extends App {
     val parsed: Array[Command] = commands.map(parse)
 
     type ST = immutable.Map[Int, Int]
-    def process(map: (ST, Int), cmd: Command): (ST, Int) = cmd match {
-      case Create(tk, time) => (map._1 + (tk -> (time + exLim)), time)
-        
-      case Refresh(tk, time) => 
-        map._1.contains(tk) match {
-        case false => map
-        case true  =>
-          if (time <= map._1(tk)) (map._1 + (tk -> (time + exLim)), time)
-          else                    (map._1 - tk,                     time)
-      }
+
+    def process(map: (ST, Int), cmd: Command): (ST, Int) = (map, cmd) match {
+      case (     (map, _), Create(tk, time))  => (map + (tk -> (time + exLim)), time)
+      case (mm @ (map, _), Refresh(tk, time)) =>
+        map.get(tk) match {
+          case Some(exp) =>
+            if (time <= exp) (map + (tk -> (time + exLim)), time)
+            else             (map - tk,                     time)
+          case _ => mm
+        }
     }
-    
+
     parsed.foldLeft((immutable.Map.empty[Int, Int], 0))(process) match {
       case (map, exp) => map.count { case (_, tm) => tm >= exp }
     }
-    
-    
-    
+
+
+
   }
 
 }
