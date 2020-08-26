@@ -12,25 +12,30 @@ object RTask2 extends App {
       case Array(0, tk, tm) => Create(tk, tm)
       case Array(1, tk, tm) => Refresh(tk, tm)
     }
-
-    type ST = (immutable.Map[Int, Int], Int)
-    val zero: ST = (immutable.Map.empty[Int, Int], 0)
+    
+    case class ST(map: immutable.Map[Int, Int], max: Int) {
+      def upd(tk: Int, time: Int): ST = ST(map + (tk -> (time + exLim)), time)
+      def max(         time: Int): ST = copy(                      max = time)
+      def del(tk: Int, time: Int): ST = ST(map - tk,                     time) 
+    }
+    
+    val zero = ST(immutable.Map.empty, 0)
     
     def process(mm: ST, cmd: Command): ST = (mm, cmd) match {
-      case ((map, _), Create (tk, time)) =>
-                           (map + (tk -> (time + exLim)), time)
-      case ((map, _), Refresh(tk, time)) => map.get(tk) match {
+      case (ST(map, _), Create (tk, time)) =>
+                           mm.upd(tk, time)
+      case (ST(map, _), Refresh(tk, time)) => map.get(tk) match {
         case Some(exp) =>
-          if (time <= exp) (map + (tk -> (time + exLim)), time)
-          else             (map - tk,                     time)
-        case _ =>          (map,                          time)
+          if (time <= exp) mm.upd(tk, time)
+          else             mm.del(tk, time)
+        case _ =>          mm.max(time)                   
       }
     }
 
     commands
       .map(parse)
       .foldLeft(zero)(process) match {
-      case (map, last) => map.count { case (_, exp) => exp >= last }
+      case ST(map, last) => map.count { case (_, exp) => exp >= last }
     }
     
   }
