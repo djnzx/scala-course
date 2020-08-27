@@ -36,7 +36,7 @@ object TaskR1 extends App {
       case (2, 1) => items.sortBy(_.price)(Ordering.Int.reverse)
     })
     .slice(
-      itemsPerPage * pageNumber - 1, 
+      itemsPerPage * pageNumber - 1,
       itemsPerPage * pageNumber - 1 + itemsPerPage
     )
     .map(_.name)
