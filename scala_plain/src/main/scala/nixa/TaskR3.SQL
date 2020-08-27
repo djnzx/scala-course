@@ -28,7 +28,7 @@ select
     CASE when cnt IS NULL THEN 0 ELSE cnt END cnt0
 from
     department d
-        left outer join
+left outer join
     (select count(*) as cnt, dept_id from employee group by 2) CNTG on (d.id = CNTG.dept_id)
 order by
     cnt0 desc, d.name

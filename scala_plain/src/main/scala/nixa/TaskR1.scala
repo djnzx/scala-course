@@ -1,6 +1,6 @@
 package nixa
 
-object RTask1 extends App {
+object TaskR1 extends App {
 
   /*
    * Complete the 'fetchItemsToDisplay' function below.
