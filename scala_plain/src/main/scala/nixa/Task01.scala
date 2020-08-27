@@ -1,6 +1,6 @@
 package nixa
 
-object Task1 {
+object Task01 {
 
   /*
    * Complete the 'findNumber' function below.

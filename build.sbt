@@ -104,11 +104,13 @@ lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      pf.lihaoyi         %% "os-lib"       % "0.7.0", // https://github.com/lihaoyi/os-lib
+      pf.lihaoyi         %% "upickle"      % "1.2.0", // http://www.lihaoyi.com/upickle
+      pf.lihaoyi         %% "ujson"        % "1.2.0",
+      pf.lihaoyi         %% "os-lib"       % "0.7.1", // https://github.com/lihaoyi/os-lib
       pf.lihaoyi         %% "scalatags"    % "0.9.1",
-      pf.lihaoyi         %% "geny"         % "0.6.0",
-      pf.lihaoyi         %% "upickle"      % "1.1.0", // http://www.lihaoyi.com/upickle
-      pf.lihaoyi         %% "fastparse"    % "2.2.2", // https://www.lihaoyi.com/fastparse/
+      pf.lihaoyi         %% "requests"     % "0.6.5",
+      pf.lihaoyi         %% "geny"         % "0.6.2",
+      pf.lihaoyi         %% "fastparse"    % "2.3.0", // https://www.lihaoyi.com/fastparse/
       "com.atlassian.commonmark" % "commonmark"                % "0.15.0",
     )
   )
