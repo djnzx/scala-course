@@ -1,11 +1,10 @@
 package request
 
+import request.Endpoints.{urlAuthReg, urlLogin}
 import request.dto.{LoginRq, RegRq}
 import requests.Response
 
 object ActApi extends App {
-  val urlBase    = "http://aacctt.ddns.net:19901"
-  val urlAuth    = s"$urlBase/auth-service"
   val headers = Seq(
     "Content-Type"->"application/json",
     //    "Accept"->"*/*",
@@ -16,7 +15,6 @@ object ActApi extends App {
   val password = "abc123DEF"
   
   def registerNewUser = {
-    val urlAuthReg = s"$urlAuth/ss/account/register"
     val regRq = RegRq(email, "alexr1", "r", "123-45-67", "M", "iOS13", "121212", "A", "B", password)
     val json: String = upickle.default.write(regRq)
     val r: Response = requests.post(urlAuthReg, headers = headers, data = json)
@@ -30,7 +28,6 @@ object ActApi extends App {
   }
   
   def login = {
-    val urlLogin   = s"$urlAuth/ss/account/login"
     val loginRq = LoginRq(email, password)
     val json = upickle.default.write(loginRq)
     val r: Response = requests.post(urlLogin, headers = headers, data = json)
