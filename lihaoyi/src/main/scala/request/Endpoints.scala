@@ -9,15 +9,18 @@ object Method {
 
 object Endpoints {
   /** BASE URL */
-  val urlBase     = "http://aacctt.ddns.net:19901"
+  val urlBase      = "http://aacctt.ddns.net"     
+  val urlBaseDev   = s"$urlBase:19901"
+  val urlBaseProd  = s"$urlBase:29901"
+  val urlBaseStage = s"$urlBase:39901"
   /**
     * MICROSERVICE-BASED URLS.
     * 30.08.2020 - 4 pcs
     */
-  val urlAuth     = s"$urlBase/auth-service"
-  val urlOptimize = s"$urlBase/optimisation-service"
-  val urlProdComp = s"$urlBase/product-composite-service"
-  val urlShopList = s"$urlBase/shopping-list-service"
+  val urlAuth     = s"$urlBaseDev/auth-service"
+  val urlOptimize = s"$urlBaseDev/optimisation-service"
+  val urlProdComp = s"$urlBaseDev/product-composite-service"
+  val urlShopList = s"$urlBaseDev/shopping-list-service"
 
   /**
     * concrete urls by microservice
@@ -39,5 +42,4 @@ object Endpoints {
   val urlShopListDel  = s"$urlShopList/ss/delete/order/{id}"                         // DELETE
   val urlShopListUpd  = s"$urlShopList/ss/update/shoppingList"                       // PUT
   val urlShopListGet  = s"$urlShopList/ss/all/shoppingLists"                         // GET /{id}
-  
 }

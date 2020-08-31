@@ -22,14 +22,14 @@ import scala.util.{Failure, Success, Try}
 
 class ActApiSpec extends AnyFunSpec with Matchers {
   def readJson(r: Response): Value = ujson.read(r.data.toString)
-  
+
   def login() = {
     val r = requests.post(urlLogin, headers = headers, data = ser(UserLoginRq(email, password)))
     des[TokenPairRs](r.data.toString)
   }
   lazy val logged: TokenPairRs = login()
   lazy val headersa = headersAuth(logged.act_token)
-  
+
   implicit class ResponseMatchers(r: Response) {
     def hasHttpCode(code: Int) = r.statusCode shouldEqual code
     def hasObjKey(name: String) = hasObjKeys(Seq(name))
@@ -44,7 +44,7 @@ class ActApiSpec extends AnyFunSpec with Matchers {
     }
     def hasText(text: String) = r.data.toString should include (text)
   }
-  
+
   describe("0 syntax") {
     it("success") {
       "Password has been changed successfully".toLowerCase should include ("success")
@@ -53,7 +53,7 @@ class ActApiSpec extends AnyFunSpec with Matchers {
       "User 123 UNKNOWN".toLowerCase should include ("unknown")
     }
   }
-  
+
   describe("headers") {
     it("base configuration") {
       headers shouldEqual List("Content-Type"->"application/json")
@@ -68,7 +68,7 @@ class ActApiSpec extends AnyFunSpec with Matchers {
 
   describe("ms: auth") {
     val tokenPairKeys = Seq("act_token", "user_Id", "ep_enabled", "refresh_token")
-    
+
     /**
       * [[dto.auth.rq.UserRegRq]] => [[dto.auth.rs.TokenPairRs]]
       */
@@ -100,7 +100,7 @@ class ActApiSpec extends AnyFunSpec with Matchers {
     }
 
     /**
-      * [[dto.auth.rq.ForgotPasswordRq]] => 
+      * [[dto.auth.rq.ForgotPasswordRq]] =>
       * after this test user will have changed password in Db
       * so, we need to use dummy user for testing purposes !!!
       */
@@ -284,7 +284,7 @@ class ActApiSpec extends AnyFunSpec with Matchers {
     it("urlShopListGet") {
       val r = requests.get(s"$urlShopListGet/fa4f6832-cfd0-4c61-bcea-d769331cb974", headers = headersa)
       r hasHttpCode 200
-      val resp = readJson(r) 
+      val resp = readJson(r)
       resp.arrOpt should not be None
       val keys = resp(0).obj.keySet
       val must = Set(
@@ -304,5 +304,5 @@ class ActApiSpec extends AnyFunSpec with Matchers {
       println(r)
     }
   }
-  
+
 }
