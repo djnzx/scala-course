@@ -1,0 +1,5451 @@
+{
+  "actFullCatalogInfo": [
+    {
+      "categoryId": 27,
+      "categoryName": "Butter And Margarine/Oil, Blends",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 73,
+          "productName": "SMØR EKTE 250G BORDPK",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1w6W_Iw6ywY6rqLIYK0R_tAAkcZ99cy1M",
+          "barCode": "7038010010347",
+          "sellerProduct": [
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.68
+              },
+              "productMetadata": {
+                "id": 74,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.68
+              },
+              "productMetadata": {
+                "id": 74,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.68
+              },
+              "productMetadata": {
+                "id": 74,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.68
+              },
+              "productMetadata": {
+                "id": 74,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.68
+              },
+              "productMetadata": {
+                "id": 74,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.68
+              },
+              "productMetadata": {
+                "id": 74,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.68
+              },
+              "productMetadata": {
+                "id": 74,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.68
+              },
+              "productMetadata": {
+                "id": 74,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.68
+              },
+              "productMetadata": {
+                "id": 74,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 3,
+            "name": "Tine"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "L",
+            "cl",
+            "pc"
+          ],
+          "weight": {
+            "id": 3,
+            "unit": "g",
+            "value": 250.0
+          }
+        },
+        {
+          "productId": 133,
+          "productName": "SMØR NORMAL 500G TINE",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1aSexnwjnkSGIwLlCOGr8ochM3orSVfT4",
+          "barCode": "7038010010187",
+          "sellerProduct": [
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.50
+              },
+              "productMetadata": {
+                "id": 134,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.50
+              },
+              "productMetadata": {
+                "id": 134,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.50
+              },
+              "productMetadata": {
+                "id": 134,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.50
+              },
+              "productMetadata": {
+                "id": 134,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.50
+              },
+              "productMetadata": {
+                "id": 134,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.50
+              },
+              "productMetadata": {
+                "id": 134,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.50
+              },
+              "productMetadata": {
+                "id": 134,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.50
+              },
+              "productMetadata": {
+                "id": 134,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 10,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.50
+              },
+              "productMetadata": {
+                "id": 134,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.50
+              },
+              "productMetadata": {
+                "id": 134,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 3,
+            "name": "Tine"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "L",
+            "cl",
+            "pc"
+          ],
+          "weight": {
+            "id": 23,
+            "unit": "g",
+            "value": 500.0
+          }
+        }
+      ],
+      "parentId": 51,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 42,
+      "categoryName": "Salami, Sausage",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 118,
+          "productName": "SALAMI ITALIENSK MILANO 250G",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=14E82_u2_nlmll4iVfAZlXAD-0TOKlrPG",
+          "barCode": "8028257006530",
+          "sellerProduct": [
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 82.08
+              },
+              "productMetadata": {
+                "id": 119,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 82.08
+              },
+              "productMetadata": {
+                "id": 119,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 82.08
+              },
+              "productMetadata": {
+                "id": 119,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 82.08
+              },
+              "productMetadata": {
+                "id": 119,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 82.08
+              },
+              "productMetadata": {
+                "id": 119,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 6,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 82.08
+              },
+              "productMetadata": {
+                "id": 119,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 82.08
+              },
+              "productMetadata": {
+                "id": 119,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 82.08
+              },
+              "productMetadata": {
+                "id": 119,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 82.08
+              },
+              "productMetadata": {
+                "id": 119,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 82.08
+              },
+              "productMetadata": {
+                "id": 119,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 17,
+            "name": "Negroni"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 18,
+            "unit": "g",
+            "value": 250.0
+          }
+        }
+      ],
+      "parentId": 63,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 30,
+      "categoryName": "Spreads, Chocolate & Hazelnut",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 82,
+          "productName": "NUGATTI MELKESJOKO 450G",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1-12h9ypP52fHAAYd12awhacwBpFCNlmJ",
+          "barCode": "7039010074087",
+          "sellerProduct": [
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 29.06
+              },
+              "productMetadata": {
+                "id": 83,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 29.06
+              },
+              "productMetadata": {
+                "id": 83,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 29.06
+              },
+              "productMetadata": {
+                "id": 83,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 29.06
+              },
+              "productMetadata": {
+                "id": 83,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 29.06
+              },
+              "productMetadata": {
+                "id": 83,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 29.06
+              },
+              "productMetadata": {
+                "id": 83,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 29.06
+              },
+              "productMetadata": {
+                "id": 83,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 29.06
+              },
+              "productMetadata": {
+                "id": 83,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 29.06
+              },
+              "productMetadata": {
+                "id": 83,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 6,
+            "name": "Nugatti"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "gr",
+            "pcs"
+          ],
+          "weight": {
+            "id": 6,
+            "unit": "g",
+            "value": 450.0
+          }
+        }
+      ],
+      "parentId": 53,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 43,
+      "categoryName": "Sweet And Sour, Chicken",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 121,
+          "productName": "KYLLING SWEET&SOUR 460G FJORDL",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1w5-igPth2GEAeKCmg5WR2dGQnURc2PIJ",
+          "barCode": "7033330085570",
+          "sellerProduct": [
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.55
+              },
+              "productMetadata": {
+                "id": 122,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.55
+              },
+              "productMetadata": {
+                "id": 122,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.55
+              },
+              "productMetadata": {
+                "id": 122,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 7,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.55
+              },
+              "productMetadata": {
+                "id": 122,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.55
+              },
+              "productMetadata": {
+                "id": 122,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.55
+              },
+              "productMetadata": {
+                "id": 122,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.55
+              },
+              "productMetadata": {
+                "id": 122,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.55
+              },
+              "productMetadata": {
+                "id": 122,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.55
+              },
+              "productMetadata": {
+                "id": 122,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.55
+              },
+              "productMetadata": {
+                "id": 122,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 18,
+            "name": "Fjordland"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 19,
+            "unit": "g",
+            "value": 460.0
+          }
+        }
+      ],
+      "parentId": 62,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 44,
+      "categoryName": "Flour, White Wheat, Pizza",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 124,
+          "productName": "PIZZAMEL TIPO-0 1KG MØLLERENS",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1Bv0okFxh9H1i5jYkntyU6NBg4qg5NhyD",
+          "barCode": "7020655050024",
+          "sellerProduct": [
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 24.70
+              },
+              "productMetadata": {
+                "id": 125,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 7,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 24.70
+              },
+              "productMetadata": {
+                "id": 125,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 24.70
+              },
+              "productMetadata": {
+                "id": 125,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 24.70
+              },
+              "productMetadata": {
+                "id": 125,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 24.70
+              },
+              "productMetadata": {
+                "id": 125,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 24.70
+              },
+              "productMetadata": {
+                "id": 125,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 24.70
+              },
+              "productMetadata": {
+                "id": 125,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 24.70
+              },
+              "productMetadata": {
+                "id": 125,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 24.70
+              },
+              "productMetadata": {
+                "id": 125,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 24.70
+              },
+              "productMetadata": {
+                "id": 125,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 19,
+            "name": "Moellerens"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 20,
+            "unit": "kg",
+            "value": 1.0
+          }
+        }
+      ],
+      "parentId": 53,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 25,
+      "categoryName": "Bacon Rashers, Back, Smoked",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 130,
+          "productName": "STJERNEBACON SKIVET 140G GIL",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1s25O1bTMidiiaftvAadP1aJGow1mk666",
+          "barCode": "7037204303258",
+          "sellerProduct": [
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.05
+              },
+              "productMetadata": {
+                "id": 131,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.05
+              },
+              "productMetadata": {
+                "id": 131,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.05
+              },
+              "productMetadata": {
+                "id": 131,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.05
+              },
+              "productMetadata": {
+                "id": 131,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 9,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.05
+              },
+              "productMetadata": {
+                "id": 131,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.05
+              },
+              "productMetadata": {
+                "id": 131,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.05
+              },
+              "productMetadata": {
+                "id": 131,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.05
+              },
+              "productMetadata": {
+                "id": 131,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.05
+              },
+              "productMetadata": {
+                "id": 131,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.05
+              },
+              "productMetadata": {
+                "id": 131,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 10,
+            "name": "Gilde"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 22,
+            "unit": "g",
+            "value": 140.0
+          }
+        },
+        {
+          "productId": 67,
+          "productName": "BACON SKIVET 130G FOLKETS",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1DwNqZN8GVaCvAWcGHla1fR9kOwF58Gvd",
+          "barCode": "7035620014338",
+          "sellerProduct": [
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.71
+              },
+              "productMetadata": {
+                "id": 68,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.71
+              },
+              "productMetadata": {
+                "id": 68,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.71
+              },
+              "productMetadata": {
+                "id": 68,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.71
+              },
+              "productMetadata": {
+                "id": 68,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.71
+              },
+              "productMetadata": {
+                "id": 68,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.71
+              },
+              "productMetadata": {
+                "id": 68,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.71
+              },
+              "productMetadata": {
+                "id": 68,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.71
+              },
+              "productMetadata": {
+                "id": 68,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 18.71
+              },
+              "productMetadata": {
+                "id": 68,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 1,
+            "name": "Folkets"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "gr",
+            "pcs"
+          ],
+          "weight": {
+            "id": 1,
+            "unit": "g",
+            "value": 130.0
+          }
+        }
+      ],
+      "parentId": 65,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 28,
+      "categoryName": "Cheese, Cheddar",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 139,
+          "productName": "TOASTOST CHEDDAR SKIVET 200G L",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=12NBtnsz2oC4_Pt3SSSRpJX-OJ8hOne_f",
+          "barCode": "3073780450461",
+          "sellerProduct": [
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 26.37
+              },
+              "productMetadata": {
+                "id": 140,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 26.37
+              },
+              "productMetadata": {
+                "id": 140,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 26.37
+              },
+              "productMetadata": {
+                "id": 140,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 26.37
+              },
+              "productMetadata": {
+                "id": 140,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 26.37
+              },
+              "productMetadata": {
+                "id": 140,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 26.37
+              },
+              "productMetadata": {
+                "id": 140,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 26.37
+              },
+              "productMetadata": {
+                "id": 140,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 26.37
+              },
+              "productMetadata": {
+                "id": 140,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 26.37
+              },
+              "productMetadata": {
+                "id": 140,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 11,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 26.37
+              },
+              "productMetadata": {
+                "id": 140,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 21,
+            "name": "Packers Brand"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 25,
+            "unit": "g",
+            "value": 200.0
+          }
+        },
+        {
+          "productId": 136,
+          "productName": "CHEDDAR 17MND 200G CASTELLO",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1tRzgWiNdDrLqzKKUegCXaCGSb0hu4XP6",
+          "barCode": "5000246726240",
+          "sellerProduct": [
+            {
+              "sellerId": 10,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.67
+              },
+              "productMetadata": {
+                "id": 137,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.67
+              },
+              "productMetadata": {
+                "id": 137,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.67
+              },
+              "productMetadata": {
+                "id": 137,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.67
+              },
+              "productMetadata": {
+                "id": 137,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.67
+              },
+              "productMetadata": {
+                "id": 137,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.67
+              },
+              "productMetadata": {
+                "id": 137,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.67
+              },
+              "productMetadata": {
+                "id": 137,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.67
+              },
+              "productMetadata": {
+                "id": 137,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.67
+              },
+              "productMetadata": {
+                "id": 137,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 28.67
+              },
+              "productMetadata": {
+                "id": 137,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 20,
+            "name": "Castello"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 24,
+            "unit": "g",
+            "value": 200.0
+          }
+        },
+        {
+          "productId": 76,
+          "productName": "CHEDDAR 14MND 200G CATHED",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1TeuEDM-ad8d1CIXvuglbc5JlS60P7AEFF",
+          "barCode": "5000295080836",
+          "sellerProduct": [
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 27.96
+              },
+              "productMetadata": {
+                "id": 77,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 27.96
+              },
+              "productMetadata": {
+                "id": 77,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 27.96
+              },
+              "productMetadata": {
+                "id": 77,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 27.96
+              },
+              "productMetadata": {
+                "id": 77,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 27.96
+              },
+              "productMetadata": {
+                "id": 77,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 27.96
+              },
+              "productMetadata": {
+                "id": 77,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 27.96
+              },
+              "productMetadata": {
+                "id": 77,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 27.96
+              },
+              "productMetadata": {
+                "id": 77,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 27.96
+              },
+              "productMetadata": {
+                "id": 77,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 4,
+            "name": "Cathedral City"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "gr",
+            "pcs"
+          ],
+          "weight": {
+            "id": 4,
+            "unit": "g",
+            "value": 200.0
+          }
+        }
+      ],
+      "parentId": 52,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 40,
+      "categoryName": "Meat Salad, Prepared",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 112,
+          "productName": "ITALIENSK SALAT M/KJØTT 350G",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=14COghNKoGHjvE1SwLGlPtvi-KQtznNGD",
+          "barCode": "7036110006895",
+          "sellerProduct": [
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 34.00
+              },
+              "productMetadata": {
+                "id": 113,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 34.00
+              },
+              "productMetadata": {
+                "id": 113,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 34.00
+              },
+              "productMetadata": {
+                "id": 113,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 34.00
+              },
+              "productMetadata": {
+                "id": 113,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 34.00
+              },
+              "productMetadata": {
+                "id": 113,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 34.00
+              },
+              "productMetadata": {
+                "id": 113,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 34.00
+              },
+              "productMetadata": {
+                "id": 113,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 6,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 34.00
+              },
+              "productMetadata": {
+                "id": 113,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 34.00
+              },
+              "productMetadata": {
+                "id": 113,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 34.00
+              },
+              "productMetadata": {
+                "id": 113,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 15,
+            "name": "Delikat"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 16,
+            "unit": "g",
+            "value": 350.0
+          }
+        }
+      ],
+      "parentId": 62,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 38,
+      "categoryName": "Peanuts",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 106,
+          "productName": "PEANØTTER 80G POLLY",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1y2OAzU-XUn7qN-R8yh-YrxcSfVaK07I4",
+          "barCode": "7039317004848",
+          "sellerProduct": [
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.46
+              },
+              "productMetadata": {
+                "id": 107,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.46
+              },
+              "productMetadata": {
+                "id": 107,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.46
+              },
+              "productMetadata": {
+                "id": 107,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.46
+              },
+              "productMetadata": {
+                "id": 107,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.46
+              },
+              "productMetadata": {
+                "id": 107,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.46
+              },
+              "productMetadata": {
+                "id": 107,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 6,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.46
+              },
+              "productMetadata": {
+                "id": 107,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.46
+              },
+              "productMetadata": {
+                "id": 107,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.46
+              },
+              "productMetadata": {
+                "id": 107,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.46
+              },
+              "productMetadata": {
+                "id": 107,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 13,
+            "name": "Polly"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 14,
+            "unit": "g",
+            "value": 80.0
+          }
+        }
+      ],
+      "parentId": 61,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 34,
+      "categoryName": "Strawberries, Frozen",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 142,
+          "productName": "JORDBÆR 1KG FINDUS",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1L8INmSMav4ZXCJHiBAMDtm7zhncaKsvC",
+          "barCode": "7310500127408",
+          "sellerProduct": [
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 47.28
+              },
+              "productMetadata": {
+                "id": 143,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 47.28
+              },
+              "productMetadata": {
+                "id": 143,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 47.28
+              },
+              "productMetadata": {
+                "id": 143,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 47.28
+              },
+              "productMetadata": {
+                "id": 143,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 47.28
+              },
+              "productMetadata": {
+                "id": 143,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 47.28
+              },
+              "productMetadata": {
+                "id": 143,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 47.28
+              },
+              "productMetadata": {
+                "id": 143,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 11,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 47.28
+              },
+              "productMetadata": {
+                "id": 143,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 47.28
+              },
+              "productMetadata": {
+                "id": 143,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 47.28
+              },
+              "productMetadata": {
+                "id": 143,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 8,
+            "name": "Findus"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 26,
+            "unit": "kg",
+            "value": 1.0
+          }
+        },
+        {
+          "productId": 94,
+          "productName": "JORDBÆR 2KG ELDORADO",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1iPzEQZgrKJzMYZxs3OmjlFj0MYN6QLih",
+          "barCode": "7035620042300",
+          "sellerProduct": [
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 87.51
+              },
+              "productMetadata": {
+                "id": 95,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 87.51
+              },
+              "productMetadata": {
+                "id": 95,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 87.51
+              },
+              "productMetadata": {
+                "id": 95,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 87.51
+              },
+              "productMetadata": {
+                "id": 95,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 87.51
+              },
+              "productMetadata": {
+                "id": 95,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 87.51
+              },
+              "productMetadata": {
+                "id": 95,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 87.51
+              },
+              "productMetadata": {
+                "id": 95,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 87.51
+              },
+              "productMetadata": {
+                "id": 95,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 87.51
+              },
+              "productMetadata": {
+                "id": 95,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 9,
+            "name": "Eldorado"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "gr",
+            "pcs"
+          ],
+          "weight": {
+            "id": 10,
+            "unit": "kg",
+            "value": 2.0
+          }
+        }
+      ],
+      "parentId": 57,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 33,
+      "categoryName": "Rice, Basmati, Dried",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 91,
+          "productName": "BASMATIRIS 2KG ELDORADO",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=16bC8D1laDxcNeealsRclEnKg2_dGejMw",
+          "barCode": "7311041005026",
+          "sellerProduct": [
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 55.82
+              },
+              "productMetadata": {
+                "id": 92,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 55.82
+              },
+              "productMetadata": {
+                "id": 92,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 55.82
+              },
+              "productMetadata": {
+                "id": 92,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 55.82
+              },
+              "productMetadata": {
+                "id": 92,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 55.82
+              },
+              "productMetadata": {
+                "id": 92,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 55.82
+              },
+              "productMetadata": {
+                "id": 92,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 55.82
+              },
+              "productMetadata": {
+                "id": 92,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 55.82
+              },
+              "productMetadata": {
+                "id": 92,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 55.82
+              },
+              "productMetadata": {
+                "id": 92,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 9,
+            "name": "Eldorado"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "gr",
+            "pcs"
+          ],
+          "weight": {
+            "id": 9,
+            "unit": "kg",
+            "value": 2.0
+          }
+        }
+      ],
+      "parentId": 56,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 37,
+      "categoryName": "Pain Au Chocolat, Frozen",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 103,
+          "productName": "PAIN AU CHOCOLAT 250G FINDUS",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1o0PcxHNLCT5gtF8TMLankLBRNaMwqRcS",
+          "barCode": "7310500116075",
+          "sellerProduct": [
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 30.51
+              },
+              "productMetadata": {
+                "id": 104,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 30.51
+              },
+              "productMetadata": {
+                "id": 104,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 30.51
+              },
+              "productMetadata": {
+                "id": 104,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 30.51
+              },
+              "productMetadata": {
+                "id": 104,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 30.51
+              },
+              "productMetadata": {
+                "id": 104,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 30.51
+              },
+              "productMetadata": {
+                "id": 104,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 30.51
+              },
+              "productMetadata": {
+                "id": 104,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 30.51
+              },
+              "productMetadata": {
+                "id": 104,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 30.51
+              },
+              "productMetadata": {
+                "id": 104,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 8,
+            "name": "Findus"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 13,
+            "unit": "g",
+            "value": 250.0
+          }
+        }
+      ],
+      "parentId": 60,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 31,
+      "categoryName": "Cakes, Chocolate",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 85,
+          "productName": "SJOKOLADEKAKE 1200G BAKEVER",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1HgOm_Bb_mqjZ3zMHtv4vtzscL2cbDJzb",
+          "barCode": "7037421006246",
+          "sellerProduct": [
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 138.32
+              },
+              "productMetadata": {
+                "id": 86,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 138.32
+              },
+              "productMetadata": {
+                "id": 86,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 138.32
+              },
+              "productMetadata": {
+                "id": 86,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 138.32
+              },
+              "productMetadata": {
+                "id": 86,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 138.32
+              },
+              "productMetadata": {
+                "id": 86,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 138.32
+              },
+              "productMetadata": {
+                "id": 86,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 138.32
+              },
+              "productMetadata": {
+                "id": 86,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 138.32
+              },
+              "productMetadata": {
+                "id": 86,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 138.32
+              },
+              "productMetadata": {
+                "id": 86,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 7,
+            "name": "Bakeverket"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "gr",
+            "pcs"
+          ],
+          "weight": {
+            "id": 7,
+            "unit": "g",
+            "value": 1200.0
+          }
+        }
+      ],
+      "parentId": 54,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 39,
+      "categoryName": "Pasta, Penne",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 148,
+          "productName": "FUSILLI 500G BARILLA",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=12E974mOerDTmH7jiIOLkpwK81D7evq1V",
+          "barCode": "8076802085981",
+          "sellerProduct": [
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.11
+              },
+              "productMetadata": {
+                "id": 149,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.11
+              },
+              "productMetadata": {
+                "id": 149,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.11
+              },
+              "productMetadata": {
+                "id": 149,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.11
+              },
+              "productMetadata": {
+                "id": 149,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.11
+              },
+              "productMetadata": {
+                "id": 149,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 8,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.11
+              },
+              "productMetadata": {
+                "id": 149,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.11
+              },
+              "productMetadata": {
+                "id": 149,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.11
+              },
+              "productMetadata": {
+                "id": 149,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.11
+              },
+              "productMetadata": {
+                "id": 149,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 10.11
+              },
+              "productMetadata": {
+                "id": 149,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 24,
+            "name": "Barilla"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 28,
+            "unit": "g",
+            "value": 500.0
+          }
+        },
+        {
+          "productId": 109,
+          "productName": "PENNE PASTA GLUTENFRI 500G SCH",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1L8TRWZ-Z7cckryun6IfqL_6W_VJQRKB7",
+          "barCode": "8008698005880",
+          "sellerProduct": [
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 32.29
+              },
+              "productMetadata": {
+                "id": 110,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 32.29
+              },
+              "productMetadata": {
+                "id": 110,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 32.29
+              },
+              "productMetadata": {
+                "id": 110,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 6,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 32.29
+              },
+              "productMetadata": {
+                "id": 110,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 32.29
+              },
+              "productMetadata": {
+                "id": 110,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 32.29
+              },
+              "productMetadata": {
+                "id": 110,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 32.29
+              },
+              "productMetadata": {
+                "id": 110,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 32.29
+              },
+              "productMetadata": {
+                "id": 110,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 32.29
+              },
+              "productMetadata": {
+                "id": 110,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 32.29
+              },
+              "productMetadata": {
+                "id": 110,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 14,
+            "name": "Schär"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 15,
+            "unit": "g",
+            "value": 500.0
+          }
+        },
+        {
+          "productId": 151,
+          "productName": "FARFALLE TRICOLORE 500G ELDORA",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1J4Oy2qvMvKGWjOkiYO8u2jZQnmov3bsQ",
+          "barCode": "7035620016479",
+          "sellerProduct": [
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.59
+              },
+              "productMetadata": {
+                "id": 152,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.59
+              },
+              "productMetadata": {
+                "id": 152,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.59
+              },
+              "productMetadata": {
+                "id": 152,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.59
+              },
+              "productMetadata": {
+                "id": 152,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.59
+              },
+              "productMetadata": {
+                "id": 152,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.59
+              },
+              "productMetadata": {
+                "id": 152,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 8,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.59
+              },
+              "productMetadata": {
+                "id": 152,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.59
+              },
+              "productMetadata": {
+                "id": 152,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.59
+              },
+              "productMetadata": {
+                "id": 152,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.59
+              },
+              "productMetadata": {
+                "id": 152,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 9,
+            "name": "Eldorado"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 29,
+            "unit": "g",
+            "value": 500.0
+          }
+        }
+      ],
+      "parentId": 66,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 29,
+      "categoryName": "Tomatoes, Cherry",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 79,
+          "productName": "DULCITA TOMATER 200G BAMA",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1B9G8pA7CvUW7v52QW8wsdJgfKtMZcugp",
+          "barCode": "7040515003373",
+          "sellerProduct": [
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.80
+              },
+              "productMetadata": {
+                "id": 80,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.80
+              },
+              "productMetadata": {
+                "id": 80,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.80
+              },
+              "productMetadata": {
+                "id": 80,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.80
+              },
+              "productMetadata": {
+                "id": 80,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.80
+              },
+              "productMetadata": {
+                "id": 80,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.80
+              },
+              "productMetadata": {
+                "id": 80,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.80
+              },
+              "productMetadata": {
+                "id": 80,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.80
+              },
+              "productMetadata": {
+                "id": 80,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 25.80
+              },
+              "productMetadata": {
+                "id": 80,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 5,
+            "name": "Bama"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "gr",
+            "pcs"
+          ],
+          "weight": {
+            "id": 5,
+            "unit": "g",
+            "value": 200.0
+          }
+        },
+        {
+          "productId": 127,
+          "productName": "CHERRY TOMAT RØD 250G",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1o-ctznM3Ip5sOXlU1f5fuKGf_LHhrbNr",
+          "barCode": "7040515003229",
+          "sellerProduct": [
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.90
+              },
+              "productMetadata": {
+                "id": 128,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.90
+              },
+              "productMetadata": {
+                "id": 128,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.90
+              },
+              "productMetadata": {
+                "id": 128,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 8,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.90
+              },
+              "productMetadata": {
+                "id": 128,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.90
+              },
+              "productMetadata": {
+                "id": 128,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.90
+              },
+              "productMetadata": {
+                "id": 128,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.90
+              },
+              "productMetadata": {
+                "id": 128,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.90
+              },
+              "productMetadata": {
+                "id": 128,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.90
+              },
+              "productMetadata": {
+                "id": 128,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 9.90
+              },
+              "productMetadata": {
+                "id": 128,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 5,
+            "name": "Bama"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 21,
+            "unit": "kg",
+            "value": 1.5
+          }
+        }
+      ],
+      "parentId": 64,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 36,
+      "categoryName": "Juice, Orange",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 145,
+          "productName": "APPELSINSAFT U/SUKKER 0,9L LER",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1KlodejeSHiYnrJACexARxTuorE4-Y0y4",
+          "barCode": "7070841001057",
+          "sellerProduct": [
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.11
+              },
+              "productMetadata": {
+                "id": 146,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 11,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.11
+              },
+              "productMetadata": {
+                "id": 146,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.11
+              },
+              "productMetadata": {
+                "id": 146,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.11
+              },
+              "productMetadata": {
+                "id": 146,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.11
+              },
+              "productMetadata": {
+                "id": 146,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.11
+              },
+              "productMetadata": {
+                "id": 146,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.11
+              },
+              "productMetadata": {
+                "id": 146,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.11
+              },
+              "productMetadata": {
+                "id": 146,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.11
+              },
+              "productMetadata": {
+                "id": 146,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.11
+              },
+              "productMetadata": {
+                "id": 146,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 23,
+            "name": "Lerum"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "L",
+            "cl",
+            "pc"
+          ],
+          "weight": {
+            "id": 27,
+            "unit": "kg",
+            "value": 0.9
+          }
+        },
+        {
+          "productId": 100,
+          "productName": "APPELSINSAFT 1,5L LERUM",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1Su1CkclAIfFos4YNcpOajYzcvsFz25RL",
+          "barCode": "7070841000814",
+          "sellerProduct": [
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 40.90
+              },
+              "productMetadata": {
+                "id": 101,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 40.90
+              },
+              "productMetadata": {
+                "id": 101,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 40.90
+              },
+              "productMetadata": {
+                "id": 101,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 40.90
+              },
+              "productMetadata": {
+                "id": 101,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 40.90
+              },
+              "productMetadata": {
+                "id": 101,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 40.90
+              },
+              "productMetadata": {
+                "id": 101,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 40.90
+              },
+              "productMetadata": {
+                "id": 101,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 40.90
+              },
+              "productMetadata": {
+                "id": 101,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 40.90
+              },
+              "productMetadata": {
+                "id": 101,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 11,
+            "name": "Lerum AS"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "L",
+            "cl",
+            "pc"
+          ],
+          "weight": {
+            "id": 12,
+            "unit": "kg",
+            "value": 1.5
+          }
+        }
+      ],
+      "parentId": 59,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 35,
+      "categoryName": "Beef, Ground/Minced",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 97,
+          "productName": "KJØTTDEIG 14% 400G GILDE",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1ilErjitfStDGUWHqSyIwn2ST1SeLICP9",
+          "barCode": "7037204612527",
+          "sellerProduct": [
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.28
+              },
+              "productMetadata": {
+                "id": 98,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.28
+              },
+              "productMetadata": {
+                "id": 98,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.28
+              },
+              "productMetadata": {
+                "id": 98,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.28
+              },
+              "productMetadata": {
+                "id": 98,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.28
+              },
+              "productMetadata": {
+                "id": 98,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.28
+              },
+              "productMetadata": {
+                "id": 98,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.28
+              },
+              "productMetadata": {
+                "id": 98,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.28
+              },
+              "productMetadata": {
+                "id": 98,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 35.28
+              },
+              "productMetadata": {
+                "id": 98,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 10,
+            "name": "Gilde"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "gr",
+            "pcs"
+          ],
+          "weight": {
+            "id": 11,
+            "unit": "g",
+            "value": 400.0
+          }
+        }
+      ],
+      "parentId": 58,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 41,
+      "categoryName": "Cereal-Based Meal, Ready To Eat",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 115,
+          "productName": "HAVREGRØT BANAN&BRINGEBÆR 6MND",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1MImdOWh_jEmDGvKdRQLYB97ee17BxKbe",
+          "barCode": "7613033524899",
+          "sellerProduct": [
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 52.15
+              },
+              "productMetadata": {
+                "id": 116,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 52.15
+              },
+              "productMetadata": {
+                "id": 116,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 52.15
+              },
+              "productMetadata": {
+                "id": 116,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 52.15
+              },
+              "productMetadata": {
+                "id": 116,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 6,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 52.15
+              },
+              "productMetadata": {
+                "id": 116,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 52.15
+              },
+              "productMetadata": {
+                "id": 116,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 52.15
+              },
+              "productMetadata": {
+                "id": 116,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 52.15
+              },
+              "productMetadata": {
+                "id": 116,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 52.15
+              },
+              "productMetadata": {
+                "id": 116,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 52.15
+              },
+              "productMetadata": {
+                "id": 116,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 16,
+            "name": "Nestle"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "g",
+            "pcs"
+          ],
+          "weight": {
+            "id": 17,
+            "unit": "g",
+            "value": 450.0
+          }
+        }
+      ],
+      "parentId": 60,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 32,
+      "categoryName": "Cod",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 88,
+          "productName": "TORSKEFILET GOURMET 420G FINDU",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=11mG7tGQSDk_X3tBf485Fqoyz23xNa3DW",
+          "barCode": "7310500113142",
+          "sellerProduct": [
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 54.66
+              },
+              "productMetadata": {
+                "id": 89,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 54.66
+              },
+              "productMetadata": {
+                "id": 89,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 54.66
+              },
+              "productMetadata": {
+                "id": 89,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 54.66
+              },
+              "productMetadata": {
+                "id": 89,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 54.66
+              },
+              "productMetadata": {
+                "id": 89,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 54.66
+              },
+              "productMetadata": {
+                "id": 89,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 54.66
+              },
+              "productMetadata": {
+                "id": 89,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 54.66
+              },
+              "productMetadata": {
+                "id": 89,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 54.66
+              },
+              "productMetadata": {
+                "id": 89,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 8,
+            "name": "Findus"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "gr",
+            "pcs"
+          ],
+          "weight": {
+            "id": 8,
+            "unit": "g",
+            "value": 420.0
+          }
+        }
+      ],
+      "parentId": 55,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    },
+    {
+      "categoryId": 26,
+      "categoryName": "Breakfast Cereal, Wheat Biscuits, Weetabix Type",
+      "picture": "string",
+      "metadata": {
+        "id": null,
+        "creationDate": "2019-09-14T00:43:58.188+0000",
+        "lastUpdatedDate": "2019-09-14T00:43:58.188+0000"
+      },
+      "fullProductInfo": [
+        {
+          "productId": 70,
+          "productName": "WEETABIX ORIGINAL 430G",
+          "scientificRating": null,
+          "starRating": null,
+          "productImageUrl": "https://drive.google.com/uc?export=download&id=1J63hyWGy5sEv2AM-ubHxDm4QXg6aOLGC",
+          "barCode": "5010029000696",
+          "sellerProduct": [
+            {
+              "sellerId": 19,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 19.26
+              },
+              "productMetadata": {
+                "id": 71,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 17,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 19.26
+              },
+              "productMetadata": {
+                "id": 71,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 20,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 19.26
+              },
+              "productMetadata": {
+                "id": 71,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 15,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 19.26
+              },
+              "productMetadata": {
+                "id": 71,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 13,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 19.26
+              },
+              "productMetadata": {
+                "id": 71,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 21,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 19.26
+              },
+              "productMetadata": {
+                "id": 71,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 16,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 19.26
+              },
+              "productMetadata": {
+                "id": 71,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 18,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 19.26
+              },
+              "productMetadata": {
+                "id": 71,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            },
+            {
+              "sellerId": 14,
+              "sellerPrice": {
+                "currency": "NOK",
+                "value": 19.26
+              },
+              "productMetadata": {
+                "id": 71,
+                "creationDate": "2019-09-14T02:43:58.274+0000",
+                "lastUpdatedDate": "2019-09-14T02:43:58.274+0000"
+              }
+            }
+          ],
+          "brand": {
+            "id": 2,
+            "name": "Weetabix"
+          },
+          "ingredientId": null,
+          "unitTypes": [
+            "Kg",
+            "gr",
+            "pcs"
+          ],
+          "weight": {
+            "id": 2,
+            "unit": "g",
+            "value": 430.0
+          }
+        }
+      ],
+      "parentId": 50,
+      "unitType": [
+        "Kg",
+        "gr",
+        "pcs"
+      ]
+    }
+  ],
+  "shoppingLists": {
+    "shoppingList": [
+      {
+        "id": 252,
+        "imageName": null,
+        "description": null,
+        "shoppingListDate": "2020-08-29T14:11:11.421+0000",
+        "shoppingListUpdatedDate": "2020-08-29T14:11:11.421+0000",
+        "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+        "shoppingListCustomName": "test",
+        "shoppingListIsActive": true,
+        "listOrder": null,
+        "shoppingListProducts": [],
+        "shoppingListCategories": []
+      },
+      {
+        "id": 225,
+        "imageName": null,
+        "description": null,
+        "shoppingListDate": "2020-06-05T12:14:54.461+0000",
+        "shoppingListUpdatedDate": "2020-06-05T12:14:54.461+0000",
+        "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+        "shoppingListCustomName": "trst",
+        "shoppingListIsActive": true,
+        "listOrder": null,
+        "shoppingListProducts": [],
+        "shoppingListCategories": [
+          {
+            "id": 17571,
+            "categoryId": 42,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 42,
+              "state": null,
+              "weight": {
+                "id": 12189,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 17572,
+            "categoryId": 36,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 36,
+              "state": null,
+              "weight": {
+                "id": 13255,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 17573,
+            "categoryId": 28,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 28,
+              "state": null,
+              "weight": {
+                "id": 13252,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          }
+        ]
+      },
+      {
+        "id": 224,
+        "imageName": null,
+        "description": null,
+        "shoppingListDate": "2020-06-05T12:13:22.665+0000",
+        "shoppingListUpdatedDate": "2020-06-05T12:13:22.665+0000",
+        "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+        "shoppingListCustomName": "test",
+        "shoppingListIsActive": true,
+        "listOrder": null,
+        "shoppingListProducts": [],
+        "shoppingListCategories": [
+          {
+            "id": 17567,
+            "categoryId": 29,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 29,
+              "state": null,
+              "weight": {
+                "id": 13310,
+                "unit": "pcs",
+                "value": 9.0
+              },
+              "brand": null
+            }
+          }
+        ]
+      },
+      {
+        "id": 122,
+        "imageName": null,
+        "description": null,
+        "shoppingListDate": "2019-10-16T06:33:00.000+0000",
+        "shoppingListUpdatedDate": "2020-04-06T15:25:51.076+0000",
+        "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+        "shoppingListCustomName": "test2",
+        "shoppingListIsActive": true,
+        "listOrder": null,
+        "shoppingListProducts": [
+          {
+            "id": 6289,
+            "productId": 124,
+            "sellerId": 21,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 124,
+              "state": null,
+              "weight": {
+                "id": 20,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": "Moellerens"
+            }
+          }
+        ],
+        "shoppingListCategories": [
+          {
+            "id": 14562,
+            "categoryId": 44,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 44,
+              "state": null,
+              "weight": {
+                "id": 13262,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          }
+        ]
+      },
+      {
+        "id": 223,
+        "imageName": null,
+        "description": null,
+        "shoppingListDate": "2020-06-05T12:12:12.866+0000",
+        "shoppingListUpdatedDate": "2020-06-05T12:12:12.866+0000",
+        "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+        "shoppingListCustomName": "friday dinner",
+        "shoppingListIsActive": true,
+        "listOrder": null,
+        "shoppingListProducts": [
+          {
+            "id": 13329,
+            "productId": 88,
+            "sellerId": 16,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 88,
+              "state": null,
+              "weight": {
+                "id": 8,
+                "unit": "pcs",
+                "value": 16.0
+              },
+              "brand": "Findus"
+            }
+          }
+        ],
+        "shoppingListCategories": [
+          {
+            "id": 21826,
+            "categoryId": 35,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 35,
+              "state": null,
+              "weight": {
+                "id": 13254,
+                "unit": "pcs",
+                "value": 2.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 21827,
+            "categoryId": 34,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 34,
+              "state": null,
+              "weight": {
+                "id": 13309,
+                "unit": "Kg",
+                "value": 2.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 21828,
+            "categoryId": 30,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 7191,
+              "state": null,
+              "weight": {
+                "id": 10046,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 21829,
+            "categoryId": 27,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 27,
+              "state": null,
+              "weight": {
+                "id": 13265,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          }
+        ]
+      },
+      {
+        "id": 253,
+        "imageName": null,
+        "description": null,
+        "shoppingListDate": "2020-08-29T14:50:26.930+0000",
+        "shoppingListUpdatedDate": "2020-08-29T14:50:26.930+0000",
+        "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+        "shoppingListCustomName": "test5",
+        "shoppingListIsActive": true,
+        "listOrder": null,
+        "shoppingListProducts": [],
+        "shoppingListCategories": []
+      },
+      {
+        "id": 200,
+        "imageName": null,
+        "description": null,
+        "shoppingListDate": "2020-05-06T15:57:32.221+0000",
+        "shoppingListUpdatedDate": "2020-05-06T15:57:32.221+0000",
+        "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+        "shoppingListCustomName": "crocky",
+        "shoppingListIsActive": true,
+        "listOrder": null,
+        "shoppingListProducts": [],
+        "shoppingListCategories": []
+      },
+      {
+        "id": 1,
+        "imageName": null,
+        "description": null,
+        "shoppingListDate": "2019-09-15T19:01:33.647+0000",
+        "shoppingListUpdatedDate": "2020-03-30T11:46:36.591+0000",
+        "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+        "shoppingListCustomName": "Marie Birthday",
+        "shoppingListIsActive": true,
+        "listOrder": null,
+        "shoppingListProducts": [],
+        "shoppingListCategories": [
+          {
+            "id": 21149,
+            "categoryId": 29,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 29,
+              "state": null,
+              "weight": {
+                "id": 13310,
+                "unit": "pcs",
+                "value": 9.0
+              },
+              "brand": null
+            }
+          }
+        ]
+      },
+      {
+        "id": 38,
+        "imageName": null,
+        "description": null,
+        "shoppingListDate": "2019-10-16T06:33:00.000+0000",
+        "shoppingListUpdatedDate": "2020-04-06T15:25:51.076+0000",
+        "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+        "shoppingListCustomName": "newname",
+        "shoppingListIsActive": true,
+        "listOrder": null,
+        "shoppingListProducts": [
+          {
+            "id": 9566,
+            "productId": 127,
+            "sellerId": 16,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 127,
+              "state": null,
+              "weight": {
+                "id": 21,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": "Bama"
+            }
+          },
+          {
+            "id": 9567,
+            "productId": 103,
+            "sellerId": 17,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 103,
+              "state": null,
+              "weight": {
+                "id": 13,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": "Findus"
+            }
+          },
+          {
+            "id": 9568,
+            "productId": 88,
+            "sellerId": 18,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 88,
+              "state": null,
+              "weight": {
+                "id": 8,
+                "unit": "pcs",
+                "value": 16.0
+              },
+              "brand": "Findus"
+            }
+          }
+        ],
+        "shoppingListCategories": [
+          {
+            "id": 18013,
+            "categoryId": 32,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 32,
+              "state": null,
+              "weight": {
+                "id": 13264,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          }
+        ]
+      },
+      {
+        "id": 217,
+        "imageName": null,
+        "description": null,
+        "shoppingListDate": "2020-05-22T10:27:45.440+0000",
+        "shoppingListUpdatedDate": "2020-05-22T10:27:45.440+0000",
+        "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+        "shoppingListCustomName": "a test ",
+        "shoppingListIsActive": true,
+        "listOrder": null,
+        "shoppingListProducts": [
+          {
+            "id": 14820,
+            "productId": 100,
+            "sellerId": 20,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 100,
+              "state": null,
+              "weight": {
+                "id": 12,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": "Lerum AS"
+            }
+          },
+          {
+            "id": 14821,
+            "productId": 106,
+            "sellerId": 17,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 106,
+              "state": null,
+              "weight": {
+                "id": 14,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": "Polly"
+            }
+          },
+          {
+            "id": 14822,
+            "productId": 121,
+            "sellerId": 15,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 121,
+              "state": null,
+              "weight": {
+                "id": 19,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": "Fjordland"
+            }
+          },
+          {
+            "id": 14823,
+            "productId": 115,
+            "sellerId": 18,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 115,
+              "state": null,
+              "weight": {
+                "id": 17,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": "Nestle"
+            }
+          },
+          {
+            "id": 14824,
+            "productId": 94,
+            "sellerId": 17,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 94,
+              "state": null,
+              "weight": {
+                "id": 10,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": "Eldorado"
+            }
+          },
+          {
+            "id": 14825,
+            "productId": 151,
+            "sellerId": 13,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 151,
+              "state": null,
+              "weight": {
+                "id": 29,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": "Eldorado"
+            }
+          },
+          {
+            "id": 14826,
+            "productId": 76,
+            "sellerId": null,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 76,
+              "state": null,
+              "weight": {
+                "id": 4,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": "Cathedral City"
+            }
+          },
+          {
+            "id": 14827,
+            "productId": 97,
+            "sellerId": 18,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 97,
+              "state": null,
+              "weight": {
+                "id": 11,
+                "unit": "pcs",
+                "value": 2.0
+              },
+              "brand": "Gilde"
+            }
+          }
+        ],
+        "shoppingListCategories": [
+          {
+            "id": 23000,
+            "categoryId": 25,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 25,
+              "state": null,
+              "weight": {
+                "id": 13251,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23001,
+            "categoryId": 28,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 28,
+              "state": null,
+              "weight": {
+                "id": 13252,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23002,
+            "categoryId": 36,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 36,
+              "state": null,
+              "weight": {
+                "id": 13255,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23003,
+            "categoryId": 40,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 40,
+              "state": null,
+              "weight": {
+                "id": 13256,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23004,
+            "categoryId": 37,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 37,
+              "state": null,
+              "weight": {
+                "id": 13257,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23005,
+            "categoryId": 39,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 39,
+              "state": null,
+              "weight": {
+                "id": 13258,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23006,
+            "categoryId": 30,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 7237,
+              "state": null,
+              "weight": {
+                "id": 10046,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23007,
+            "categoryId": 33,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 33,
+              "state": null,
+              "weight": {
+                "id": 13261,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23008,
+            "categoryId": 44,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 44,
+              "state": null,
+              "weight": {
+                "id": 13262,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23009,
+            "categoryId": 34,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 34,
+              "state": null,
+              "weight": {
+                "id": 13309,
+                "unit": "Kg",
+                "value": 2.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23010,
+            "categoryId": 32,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 32,
+              "state": null,
+              "weight": {
+                "id": 13264,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23011,
+            "categoryId": 27,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 27,
+              "state": null,
+              "weight": {
+                "id": 13265,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23012,
+            "categoryId": 26,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 26,
+              "state": null,
+              "weight": {
+                "id": 13266,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 23013,
+            "categoryId": 38,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 38,
+              "state": null,
+              "weight": {
+                "id": 13268,
+                "unit": "pcs",
+                "value": 6.0
+              },
+              "brand": null
+            }
+          }
+        ]
+      },
+      {
+        "id": 222,
+        "imageName": null,
+        "description": null,
+        "shoppingListDate": "2020-06-05T12:04:26.466+0000",
+        "shoppingListUpdatedDate": "2020-06-05T12:04:26.466+0000",
+        "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+        "shoppingListCustomName": "new list :) ",
+        "shoppingListIsActive": true,
+        "listOrder": null,
+        "shoppingListProducts": [
+          {
+            "id": 10127,
+            "productId": 82,
+            "sellerId": 16,
+            "quantity": 1,
+            "pinned": false,
+            "crossedOff": false,
+            "metadata": {
+              "id": 82,
+              "state": null,
+              "weight": {
+                "id": 6,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": "Nugatti"
+            }
+          }
+        ],
+        "shoppingListCategories": [
+          {
+            "id": 18939,
+            "categoryId": 32,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 32,
+              "state": null,
+              "weight": {
+                "id": 13264,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 18940,
+            "categoryId": 43,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 43,
+              "state": null,
+              "weight": {
+                "id": 11948,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 18941,
+            "categoryId": 30,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 6944,
+              "state": null,
+              "weight": {
+                "id": 10046,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 18942,
+            "categoryId": 34,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 34,
+              "state": null,
+              "weight": {
+                "id": 13309,
+                "unit": "Kg",
+                "value": 2.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 18943,
+            "categoryId": 29,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 29,
+              "state": null,
+              "weight": {
+                "id": 13310,
+                "unit": "pcs",
+                "value": 9.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 18944,
+            "categoryId": 25,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 25,
+              "state": null,
+              "weight": {
+                "id": 13251,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          },
+          {
+            "id": 18945,
+            "categoryId": 41,
+            "quantity": 0,
+            "pinned": false,
+            "metadata": {
+              "id": 41,
+              "state": null,
+              "weight": {
+                "id": 11956,
+                "unit": "pcs",
+                "value": 1.0
+              },
+              "brand": null
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "sellers": [
+    {
+      "id": 6,
+      "shopName": "Mr Price",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 7,
+      "shopName": "Spar",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 8,
+      "shopName": "WoolWorths",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 9,
+      "shopName": "Checkers",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 10,
+      "shopName": "Pick n Pay",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 11,
+      "shopName": "Shoprite",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 12,
+      "shopName": "Makro",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 13,
+      "shopName": "MatBox",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 14,
+      "shopName": "PAKKO",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 15,
+      "shopName": "Rema 1000",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 16,
+      "shopName": "Metro Group",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 17,
+      "shopName": "Edeka Group",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 18,
+      "shopName": "7 Elleven",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 19,
+      "shopName": "Coop Mega",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 20,
+      "shopName": "Coop Prix",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    },
+    {
+      "id": 21,
+      "shopName": "Reitan Group",
+      "active": true,
+      "picture": "string",
+      "shopLocation": null
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+http://aacctt.ddns.net:19901/product-composite-service/es/get/categories/products/shops/by/location

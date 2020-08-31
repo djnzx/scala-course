@@ -1,0 +1,13 @@
+{
+  "longitude": 5.285696,
+  "latitude": 59.392900,
+  "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+  "city": "",
+  "town": "string",
+  "country": "",
+  "sellerName": "",
+  "locationType": "COORDINATES",
+  "shoppingListId": 1,
+  "co2Weight": 0.7,
+  "priceWeight": 0.5
+}

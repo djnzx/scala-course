@@ -31,13 +31,13 @@ object Endpoints {
   val urlAccUpdate    = s"$urlAuth/ss/account/update"                                // PUT
   val urlAccDetails   = s"$urlAuth/ss/account"                                       // GET
   
-  val urlOptimizeList = s"$urlOptimize/cp/optimize/shoppinglist"                     // PUT
+  val urlOptimizeList = s"$urlOptimize/cp/optimize/shoppinglist"                     // POST
   
-  val urlProdCompByLoc= s"$urlProdComp/es/get/categories/products/shops/by/location" // GET
+  val urlProdCompByLoc= s"$urlProdComp/es/get/categories/products/shops/by/location" // POST
   
   val urlShopListAdd  = s"$urlShopList/ss/add/shoppingList"                          // POST
   val urlShopListDel  = s"$urlShopList/ss/delete/order/{id}"                         // DELETE
   val urlShopListUpd  = s"$urlShopList/ss/update/shoppingList"                       // PUT
-  val urlShopListGet  = s"$urlShopList/ss/all/shoppingLists/{id}"                    // GET
+  val urlShopListGet  = s"$urlShopList/ss/all/shoppingLists"                         // GET /{id}
   
 }

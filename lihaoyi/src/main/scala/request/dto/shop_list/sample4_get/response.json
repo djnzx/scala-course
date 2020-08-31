@@ -1,0 +1,956 @@
+[
+  {
+    "id": 1,
+    "shoppingListDate": "2019-09-15T19:01:33.647+0000",
+    "shoppingListUpdatedDate": "2020-03-30T11:46:36.591+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "Marie Birthday",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [],
+    "shoppingListCategories": [
+      {
+        "id": 21149,
+        "categoryId": 29,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 29,
+          "state": null,
+          "weight": {
+            "id": 11954,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      }
+    ],
+    "listOrder": null
+  },
+  {
+    "id": 122,
+    "shoppingListDate": "2019-10-16T06:33:00.000+0000",
+    "shoppingListUpdatedDate": "2020-04-06T15:25:51.076+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "test2",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [
+      {
+        "id": 6289,
+        "productId": 124,
+        "sellerId": 21,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 124,
+          "state": null,
+          "weight": {
+            "id": 20,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": "Moellerens"
+        }
+      }
+    ],
+    "shoppingListCategories": [
+      {
+        "id": 14562,
+        "categoryId": 44,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 44,
+          "state": null,
+          "weight": {
+            "id": 13262,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      }
+    ],
+    "listOrder": null
+  },
+  {
+    "id": 217,
+    "shoppingListDate": "2020-05-22T10:27:45.440+0000",
+    "shoppingListUpdatedDate": "2020-05-22T10:27:45.440+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "a test ",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [
+      {
+        "id": 14820,
+        "productId": 100,
+        "sellerId": 20,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 100,
+          "state": null,
+          "weight": {
+            "id": 12,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": "Lerum AS"
+        }
+      },
+      {
+        "id": 14821,
+        "productId": 106,
+        "sellerId": 17,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 106,
+          "state": null,
+          "weight": {
+            "id": 14,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": "Polly"
+        }
+      },
+      {
+        "id": 14822,
+        "productId": 121,
+        "sellerId": 15,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 121,
+          "state": null,
+          "weight": {
+            "id": 19,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": "Fjordland"
+        }
+      },
+      {
+        "id": 14823,
+        "productId": 115,
+        "sellerId": 18,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 115,
+          "state": null,
+          "weight": {
+            "id": 17,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": "Nestle"
+        }
+      },
+      {
+        "id": 14824,
+        "productId": 94,
+        "sellerId": 17,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 94,
+          "state": null,
+          "weight": {
+            "id": 10,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": "Eldorado"
+        }
+      },
+      {
+        "id": 14825,
+        "productId": 151,
+        "sellerId": 13,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 151,
+          "state": null,
+          "weight": {
+            "id": 29,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": "Eldorado"
+        }
+      },
+      {
+        "id": 14826,
+        "productId": 76,
+        "sellerId": null,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 76,
+          "state": null,
+          "weight": {
+            "id": 4,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": "Cathedral City"
+        }
+      },
+      {
+        "id": 14827,
+        "productId": 97,
+        "sellerId": 18,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 97,
+          "state": null,
+          "weight": {
+            "id": 11,
+            "unit": "pcs",
+            "value": 2.0
+          },
+          "brand": "Gilde"
+        }
+      }
+    ],
+    "shoppingListCategories": [
+      {
+        "id": 23000,
+        "categoryId": 25,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 25,
+          "state": null,
+          "weight": {
+            "id": 13251,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23001,
+        "categoryId": 28,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 28,
+          "state": null,
+          "weight": {
+            "id": 13252,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23002,
+        "categoryId": 36,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 36,
+          "state": null,
+          "weight": {
+            "id": 13255,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23003,
+        "categoryId": 40,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 40,
+          "state": null,
+          "weight": {
+            "id": 13256,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23004,
+        "categoryId": 37,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 37,
+          "state": null,
+          "weight": {
+            "id": 13257,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23005,
+        "categoryId": 39,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 39,
+          "state": null,
+          "weight": {
+            "id": 13258,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23006,
+        "categoryId": 30,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 7237,
+          "state": null,
+          "weight": {
+            "id": 10046,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23007,
+        "categoryId": 33,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 33,
+          "state": null,
+          "weight": {
+            "id": 13261,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23008,
+        "categoryId": 44,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 44,
+          "state": null,
+          "weight": {
+            "id": 13262,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23009,
+        "categoryId": 34,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 34,
+          "state": null,
+          "weight": {
+            "id": 13309,
+            "unit": "Kg",
+            "value": 2.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23010,
+        "categoryId": 32,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 32,
+          "state": null,
+          "weight": {
+            "id": 13264,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23011,
+        "categoryId": 27,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 27,
+          "state": null,
+          "weight": {
+            "id": 13265,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23012,
+        "categoryId": 26,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 26,
+          "state": null,
+          "weight": {
+            "id": 13266,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 23013,
+        "categoryId": 38,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 38,
+          "state": null,
+          "weight": {
+            "id": 13268,
+            "unit": "pcs",
+            "value": 6.0
+          },
+          "brand": null
+        }
+      }
+    ],
+    "listOrder": null
+  },
+  {
+    "id": 38,
+    "shoppingListDate": "2019-10-16T06:33:00.000+0000",
+    "shoppingListUpdatedDate": "2020-04-06T15:25:51.076+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "newname",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [
+      {
+        "id": 9566,
+        "productId": 127,
+        "sellerId": 16,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 127,
+          "state": null,
+          "weight": {
+            "id": 21,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": "Bama"
+        }
+      },
+      {
+        "id": 9567,
+        "productId": 103,
+        "sellerId": 17,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 103,
+          "state": null,
+          "weight": {
+            "id": 13,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": "Findus"
+        }
+      },
+      {
+        "id": 9568,
+        "productId": 88,
+        "sellerId": 18,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 88,
+          "state": null,
+          "weight": {
+            "id": 8,
+            "unit": "pcs",
+            "value": 16.0
+          },
+          "brand": "Findus"
+        }
+      }
+    ],
+    "shoppingListCategories": [
+      {
+        "id": 18013,
+        "categoryId": 32,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 32,
+          "state": null,
+          "weight": {
+            "id": 13264,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      }
+    ],
+    "listOrder": null
+  },
+  {
+    "id": 200,
+    "shoppingListDate": "2019-09-15T19:01:33.647+0000",
+    "shoppingListUpdatedDate": "2020-03-30T11:46:36.591+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "Crocky",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [
+      {
+        "id": 14900,
+        "productId": 127,
+        "sellerId": 20,
+        "quantity": 0,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 29,
+          "state": null,
+          "weight": {
+            "id": 11954,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      }
+    ],
+    "shoppingListCategories": [],
+    "listOrder": null
+  },
+  {
+    "id": 222,
+    "shoppingListDate": "2020-06-05T12:04:26.466+0000",
+    "shoppingListUpdatedDate": "2020-06-05T12:04:26.466+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "new list :) ",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [
+      {
+        "id": 10127,
+        "productId": 82,
+        "sellerId": 16,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 82,
+          "state": null,
+          "weight": {
+            "id": 6,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": "Nugatti"
+        }
+      }
+    ],
+    "shoppingListCategories": [
+      {
+        "id": 18939,
+        "categoryId": 32,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 32,
+          "state": null,
+          "weight": {
+            "id": 13264,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 18940,
+        "categoryId": 43,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 43,
+          "state": null,
+          "weight": {
+            "id": 11948,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 18941,
+        "categoryId": 30,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 6944,
+          "state": null,
+          "weight": {
+            "id": 10046,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 18942,
+        "categoryId": 34,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 34,
+          "state": null,
+          "weight": {
+            "id": 13309,
+            "unit": "Kg",
+            "value": 2.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 18943,
+        "categoryId": 29,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 29,
+          "state": null,
+          "weight": {
+            "id": 11954,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 18944,
+        "categoryId": 25,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 25,
+          "state": null,
+          "weight": {
+            "id": 13251,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 18945,
+        "categoryId": 41,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 41,
+          "state": null,
+          "weight": {
+            "id": 11956,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      }
+    ],
+    "listOrder": null
+  },
+  {
+    "id": 223,
+    "shoppingListDate": "2020-06-05T12:12:12.866+0000",
+    "shoppingListUpdatedDate": "2020-06-05T12:12:12.866+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "friday dinner",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [
+      {
+        "id": 13329,
+        "productId": 88,
+        "sellerId": 16,
+        "quantity": 1,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 88,
+          "state": null,
+          "weight": {
+            "id": 8,
+            "unit": "pcs",
+            "value": 16.0
+          },
+          "brand": "Findus"
+        }
+      }
+    ],
+    "shoppingListCategories": [
+      {
+        "id": 21826,
+        "categoryId": 35,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 35,
+          "state": null,
+          "weight": {
+            "id": 13254,
+            "unit": "pcs",
+            "value": 2.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 21827,
+        "categoryId": 34,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 34,
+          "state": null,
+          "weight": {
+            "id": 13309,
+            "unit": "Kg",
+            "value": 2.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 21828,
+        "categoryId": 30,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 7191,
+          "state": null,
+          "weight": {
+            "id": 10046,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 21829,
+        "categoryId": 27,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 27,
+          "state": null,
+          "weight": {
+            "id": 13265,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      }
+    ],
+    "listOrder": null
+  },
+  {
+    "id": 224,
+    "shoppingListDate": "2020-06-05T12:13:22.665+0000",
+    "shoppingListUpdatedDate": "2020-06-05T12:13:22.665+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "test",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [],
+    "shoppingListCategories": [
+      {
+        "id": 17567,
+        "categoryId": 29,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 29,
+          "state": null,
+          "weight": {
+            "id": 11954,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      }
+    ],
+    "listOrder": null
+  },
+  {
+    "id": 225,
+    "shoppingListDate": "2020-06-05T12:14:54.461+0000",
+    "shoppingListUpdatedDate": "2020-06-05T12:14:54.461+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "trst",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [],
+    "shoppingListCategories": [
+      {
+        "id": 17571,
+        "categoryId": 42,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 42,
+          "state": null,
+          "weight": {
+            "id": 12189,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 17572,
+        "categoryId": 36,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 36,
+          "state": null,
+          "weight": {
+            "id": 13255,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      },
+      {
+        "id": 17573,
+        "categoryId": 28,
+        "quantity": 0,
+        "pinned": false,
+        "metadata": {
+          "id": 28,
+          "state": null,
+          "weight": {
+            "id": 13252,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      }
+    ],
+    "listOrder": null
+  },
+  {
+    "id": 252,
+    "shoppingListDate": "2020-08-29T14:11:11.421+0000",
+    "shoppingListUpdatedDate": "2020-08-29T14:11:11.421+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "test",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [],
+    "shoppingListCategories": [],
+    "listOrder": null
+  },
+  {
+    "id": 253,
+    "shoppingListDate": "2020-08-29T14:50:26.930+0000",
+    "shoppingListUpdatedDate": "2020-08-29T14:50:26.930+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "test5",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [],
+    "shoppingListCategories": [],
+    "listOrder": null
+  },
+  {
+    "id": 257,
+    "shoppingListDate": "2019-11-27T04:14:40.832+0000",
+    "shoppingListUpdatedDate": "2019-11-27T04:14:40.832+0000",
+    "customerId": "fa4f6832-cfd0-4c61-bcea-d769331cb974",
+    "shoppingListCustomName": "new list",
+    "imageName": null,
+    "description": null,
+    "shoppingListIsActive": true,
+    "shoppingListProducts": [],
+    "shoppingListCategories": [],
+    "listOrder": [
+      0
+    ]
+  }
+]

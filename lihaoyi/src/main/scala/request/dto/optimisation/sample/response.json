@@ -1,0 +1,25 @@
+[
+  {
+    "shoppingListCategories": [],
+    "shoppingListProducts": [
+      {
+        "id": 0,
+        "productId": 127,
+        "sellerId": 20,
+        "quantity": 0,
+        "pinned": false,
+        "crossedOff": false,
+        "metadata": {
+          "id": 29,
+          "state": null,
+          "weight": {
+            "id": 11954,
+            "unit": "pcs",
+            "value": 1.0
+          },
+          "brand": null
+        }
+      }
+    ]
+  }
+]
