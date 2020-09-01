@@ -116,7 +116,15 @@ lazy val lihaoyi = (project in file("lihaoyi"))
   )
 
 /**
-  * Lightbend (Typesafe) Stack: Akka, Play, Slick, Lagom
+  * Lightbend (Typesafe) Stack:
+  * 
+  * Akka,
+  * Akka-Streams,
+  * Akka-Http
+  * Play,
+  * Lagom,
+  * Slick
+  * 
   * https://www.lightbend.com
   */
 lazy val typesafe = (project in file("typesafe"))
@@ -144,18 +152,50 @@ lazy val typesafe = (project in file("typesafe"))
   )
 
 /**
-  * Typelevel (FP) stack: Cats, Http4s, Ciris, Shapeless, Doobie, Fs2, Scalacheck, PureConfig
+  * Typelevel (FP) stack: 
+  * 
+  * Cats, Cats Effects
+  * Fs2, Http4s,
+  * Circe, Ciris,
+  * Shapeless,
+  * Doobie,
+  * Scalacheck,
+  * PureConfig
+  * 
   * https://typelevel.org
   */
 lazy val typelevel = (project in file("typelevel"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
+      CompilerPlugins.betterMonadicFor,
+      CompilerPlugins.contextApplied,
+      CompilerPlugins.kindProjector,
+
       // CATS
       Libraries.cats,
       Libraries.catsLaws,
       Libraries.catsEffect,
       Libraries.catsMtlCore,
+      "dev.profunktor"         %% "console4cats"               % "0.8.1",
+      // FS2
+      Libraries.fs2core,
+      Libraries.fs2reactive,
+      // HTTP
+      Libraries.http4sServer,
+      Libraries.http4sDsl,
+      Libraries.http4sClient,
+      Libraries.http4sCirce,
+      Libraries.http4sJwtAuth,
+      // Serialization
+      Libraries.circeCore,
+      Libraries.circeGeneric,
+      Libraries.circeParser,
+      Libraries.circeRefined,
+      // @newtype annotation
+      Libraries.newtype,
+      // refined types
+      Libraries.refinedCore,
     )
   )
 
@@ -170,17 +210,13 @@ lazy val mix = (project in file("mix"))
     mainClass in (Compile, run) := Some("degoes.fp_to_the_max.steps.StepG3"),
 
     libraryDependencies ++= Seq(
-      CompilerPlugins.betterMonadicFor,
-      CompilerPlugins.contextApplied,
-      CompilerPlugins.kindProjector,
-
       "ch.qos.logback"         % "logback-classic"             % "1.2.3",
       "io.lemonlabs"           %% "scala-uri"                  % "1.5.1",
       "io.getquill"            %% "quill-jdbc"                 % "3.5.1",
       "org.flywaydb"            %  "flyway-core"                 % "6.4.2",
-      "dev.profunktor"         %% "console4cats"               % "0.8.1",
-      // markdown parsing
-      "com.atlassian.commonmark" % "commonmark"                % "0.15.0",
+      "com.atlassian.commonmark" % "commonmark"                % "0.15.0", // markdown parsing
+
+      Libraries.http4sServer,
 
       Libraries.doobieCore,
       Libraries.doobiePg,
@@ -193,38 +229,16 @@ lazy val mix = (project in file("mix"))
       Libraries.scalazCore,
       Libraries.scalazEffect,
 
-      // FS2
-      Libraries.fs2core,
-      Libraries.fs2reactive,
-
       // CATS
       Libraries.cats,
       Libraries.catsEffect,
       Libraries.catsMtlCore,
-
-      // Serialization
-      Libraries.circeCore,
-      Libraries.circeGeneric,
-      Libraries.circeParser,
-      Libraries.circeRefined,
-
-      // HTTP
-      Libraries.http4sServer,
-      Libraries.http4sDsl,
-      Libraries.http4sClient,
-      Libraries.http4sCirce,
-      Libraries.http4sJwtAuth,
 
       Libraries.jsoup,
 
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
       Libraries.scalactic,
-
-      // @newtype annotation
-      Libraries.newtype,
-      // refined types
-      Libraries.refinedCore
     ),
   )
 
