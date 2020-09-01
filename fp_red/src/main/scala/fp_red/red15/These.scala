@@ -1,6 +1,6 @@
-package fp_red.a_exercises.c15streamingio
+package fp_red.red15
 
-import language.postfixOps
+import scala.language.postfixOps
 
 /* Data type representing either A, B, or both A and B. */
 trait These[+A,+B] {

@@ -1,8 +1,6 @@
-package fp_red.a_exercises.c15streamingio
+package fp_red.red15
 
-import fp_red.a_exercises.c13iomonad._
-
-import language.higherKinds
+import fp_red.red13.{Monad, Task}
 
 /*
  * A context in which exceptions can be caught and
