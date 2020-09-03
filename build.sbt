@@ -207,38 +207,12 @@ lazy val mix = (project in file("mix"))
   .settings(commonSettings)
   .settings(
     // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
-    mainClass in (Compile, run) := Some("degoes.fp_to_the_max.steps.StepG3"),
-
     libraryDependencies ++= Seq(
-      "ch.qos.logback"         % "logback-classic"             % "1.2.3",
-      "io.lemonlabs"           %% "scala-uri"                  % "1.5.1",
       "io.getquill"            %% "quill-jdbc"                 % "3.5.1",
       "org.flywaydb"            %  "flyway-core"                 % "6.4.2",
-      "com.atlassian.commonmark" % "commonmark"                % "0.15.0", // markdown parsing
-
-      Libraries.http4sServer,
-
-      Libraries.doobieCore,
-      Libraries.doobiePg,
-
-      Libraries.shapeless,
+      Libraries.http4sServer, // URI
       Libraries.sqlPg,
-      Libraries.sqlH2,
-
-      // scalaZ
-      Libraries.scalazCore,
-      Libraries.scalazEffect,
-
-      // CATS
-      Libraries.cats,
-      Libraries.catsEffect,
-      Libraries.catsMtlCore,
-
       Libraries.jsoup,
-
-      Libraries.scalaCheck,
-      Libraries.scalaTestPlus,
-      Libraries.scalactic,
     ),
   )
 

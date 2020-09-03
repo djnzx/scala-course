@@ -133,13 +133,17 @@ object CopyApp extends IOApp {
     case _                     => "Need TWO file names as a params".asLeft
   }
 
+  def behavior(validated: Either[String, (File, File)]) = validated match {
+    case Left(errMsg) => IO(printErr(errMsg))
+    case Right((fsrc, fdst)) =>
+      for {
+        cnt <- copy[IO](fsrc, fdst)
+        msg = printOk(cnt, fsrc.getPath, fdst.getPath)
+      } yield msg
+  }
+  
   override def run(args: List[String]): IO[ExitCode] = for {
-    _  <- validate(args) match {
-      case Left(errMsg) => IO(printErr(errMsg))
-      case Right((fsrc, fdst)) => for {
-                                    cnt <- copy[IO](fsrc, fdst)
-                                    msg = printOk(cnt, fsrc.getPath, fdst.getPath)
-                                  } yield msg
-    }
+    ei  <- IO(validate(args))
+    _   <- behavior(ei)
   } yield ExitCode.Success
 }
