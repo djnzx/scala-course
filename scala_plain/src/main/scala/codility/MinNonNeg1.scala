@@ -1,6 +1,6 @@
 package codility
 
-object Codility {
+object MinNonNeg1 {
   
   def minNonNeg(a: Array[Int]): Int = {
     val as: Array[Int] = a.filter { _ > 0 }.sorted

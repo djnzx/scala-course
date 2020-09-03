@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers
 
 class MinNonNegSpec extends AnyFunSpec with Matchers {
   describe("minNonNeg") {
-    import  Codility.minNonNeg
+    import  MinNonNeg1.minNonNeg
 
     it("1") {
       minNonNeg(Array()) shouldEqual 1 
