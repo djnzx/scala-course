@@ -8,10 +8,10 @@ object CompilerOptions {
     unchecked,
     postfix,
     higherKindedTypes,
+    macroAnnotations,       // 2.13+, used by newtype
     "-Xfatal-warnings",     // treat warning as fatal
     //"-Ypartial-unification", // by default since 2.13
     "-language:existentials",
-    "-Ymacro-annotations",   // used by newtype
     "-Ywarn-numeric-widen",
     "-Ywarn-value-discard",
     "-Ywarn-dead-code",

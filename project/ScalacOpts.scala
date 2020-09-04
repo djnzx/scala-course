@@ -29,4 +29,5 @@ object ScalacOpts {
     */
   val higherKindedTypes = "-language:higherKinds"
 
+  val macroAnnotations = "-Ymacro-annotations"
 }

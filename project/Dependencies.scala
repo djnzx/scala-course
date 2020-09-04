@@ -126,6 +126,7 @@ object Dependencies {
     val skunkCirce    = pf.tpolecat           %% "skunk-circe"     % Versions.skunk
 
     object CompilerPlugins {
+      val macrosParadise   = compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
       val betterMonadicFor = compilerPlugin("com.olegpy"     %% "better-monadic-for" % Versions.betterMonadicFor)
       val contextApplied   = compilerPlugin("org.augustjune" %% "context-applied"    % Versions.contextApplied)
       val kindProjector    = compilerPlugin(pf.typelevel                 %% "kind-projector"     % Versions.kindProjector cross CrossVersion.full)

@@ -7,7 +7,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 lazy val commonSettings = Seq(
   scalaVersion := "2.13.3",
   organization := "org.alexr",
-  version      := "20.08.18",
+  version      := "20.09.04",
 
   javacOptions  ++= Seq(
     //  "-source", "1.8",
@@ -208,14 +208,19 @@ lazy val mix = (project in file("mix"))
   .settings(
     // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
     libraryDependencies ++= Seq(
+      CompilerPlugins.kindProjector,
+      CompilerPlugins.betterMonadicFor,
+      
       "io.getquill"            %% "quill-jdbc"                 % "3.5.1",
       "org.flywaydb"            %  "flyway-core"                 % "6.4.2",
       Libraries.http4sServer, // URI
       Libraries.sqlPg,
       Libraries.jsoup,
+      "com.github.mpilquist" %% "simulacrum"  % "0.19.0", 
+      "org.scalaz"           %% "scalaz-core" %  "7.3.2",
     ),
   )
-
+//       CompilerPlugins.macrosParadise,
 /**
   * John A. De Goes Project ZIO
   * https://zio.dev
