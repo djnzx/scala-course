@@ -1,6 +1,6 @@
 package ex_handling
 
-object ExceptionHandlingIdea extends App {
+object Idea1 extends App {
   
   def wrapped[A, B, E](f: A => B, h: E => B): A => B =
     (a: A) => 
