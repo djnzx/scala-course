@@ -3,8 +3,8 @@ package monad_trans
 import cats.data.OptionT
 
 object Transformer2App extends App {
-  val io1 = Right(Option(123))
-  val io2 = Right(Option(234))
+  val io1: Either[Nothing, Option[Int]] = Right(Option(123))
+  val io2: Either[Nothing, Option[Int]] = Right(Option(234))
   /**
     * plain:
     */
@@ -18,7 +18,7 @@ object Transformer2App extends App {
   /**
     * Monad transformers
     */
-  val r2: Right[Nothing, Option[Int]] = (for {
+  val r2: Either[Nothing, Option[Int]] = (for {
     i1 <- OptionT(io1)
     i2 <- OptionT(io2)
   } yield i1 + i2).value
