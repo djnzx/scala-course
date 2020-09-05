@@ -16,7 +16,8 @@ class TaskBScala {
   def neighbours(p: Pt) = DELTAS.map(move(p, _)).filter(isOnBoard)
   def neighboursUnvisitedMy(pts: Set[Pt], cnt: Int) = 
     pts.flatMap(neighbours).filter(isUnvisited).filter(p => isCountry(p, cnt))
-  def flood(p: Pt) = {
+  /** flood: iterative implementation */
+  def floodi(p: Pt) = {
     val country = board(p.y)(p.x)
     var step = Set(p)
     while (step.nonEmpty) {
@@ -24,7 +25,17 @@ class TaskBScala {
       step = neighboursUnvisitedMy(step, country)
     }
   }
-
+  /** flood: tail recursive implementation */
+  def floodtr(p: Pt) = {
+    val country = board(p.y)(p.x)
+    def floodOne(step: Set[Pt]): Unit =
+      if (step.nonEmpty) {
+        markVisited(step)
+        floodOne(neighboursUnvisitedMy(step, country))
+      }
+    floodOne(Set(p))
+  }
+  val flood = floodtr _
   def solution(a: Array[Array[Int]]): Int =
     { board = a; a }.indices.flatMap(y => a(0).indices.map(x => Pt(x, y))) withFilter isUnvisited map flood length
 }
