@@ -30,4 +30,6 @@ object ScalacOpts {
   val higherKindedTypes = "-language:higherKinds"
 
   val macroAnnotations = "-Ymacro-annotations"
+  /** treat warning as fatal */
+  val warningsAsFatals = "-Xfatal-warnings"
 }

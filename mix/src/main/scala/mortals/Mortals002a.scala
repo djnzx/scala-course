@@ -2,6 +2,7 @@ package mortals
 
 import scalaz._
 import Scalaz._
+
 import pprint.{pprintln => println}
 
 object Mortals002a extends App {
@@ -51,8 +52,8 @@ object Mortals002a extends App {
   val f2 = Future { 234 } 
   val f3: Future[Int] = for {i <- f1; j <- f2 } yield i + j
 
-  val io1 = Right(Option(123))
-  val io2 = Right(Option(234))
+  val io1: Either[Nothing, Option[Int]] = Right(Option(123))
+  val io2: Either[Nothing, Option[Int]] = Right(Option(234))
   /**
     * plain:
     */
@@ -66,7 +67,7 @@ object Mortals002a extends App {
   /**
     * Monad transformers
     */
-  val r2: Right[Nothing, Option[Int]] = (for {
+  val r2: Either[Nothing, Option[Int]] = (for {
     i1 <- OptionT(io1)
     i2 <- OptionT(io2)
   } yield i1 + i2).run
