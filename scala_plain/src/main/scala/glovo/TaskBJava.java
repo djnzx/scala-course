@@ -106,6 +106,10 @@ public class TaskBJava {
     }
   }
 
+  /**
+   * this implementation 
+   * DOES MUTATE the original array !
+   */
   public int solution(int[][] a) {
     board = a;
     HEIGHT = a.length;

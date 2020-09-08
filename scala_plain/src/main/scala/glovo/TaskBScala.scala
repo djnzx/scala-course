@@ -36,6 +36,11 @@ class TaskBScala {
     floodOne(Set(p))
   }
   val flood = floodtr _
+
+  /**
+    * this implementation 
+    * DOES MUTATE the original array !
+    */
   def solution(a: Array[Array[Int]]): Int =
     { board = a; a }.indices.flatMap(y => a(0).indices.map(x => Pt(x, y))) withFilter isUnvisited map flood length
 }
