@@ -9,7 +9,7 @@ object CompilerOptions {
     postfix,
     higherKindedTypes,
     macroAnnotations,       // 2.13+, used by newtype
-    "-Xfatal-warnings",     // treat warning as fatal
+    warningsAsFatals,  // ??? doesn't work as expected
     //"-Ypartial-unification", // by default since 2.13
     "-language:existentials",
     "-Ywarn-numeric-widen",
