@@ -4,9 +4,9 @@ import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
 class Task1Spec extends AnyFunSpec with Matchers {
+  import Task1._
 
   describe("mkIntervals") {
-    import Task1._
 
     it("empty") {
       val DATA     = Seq()
@@ -55,6 +55,29 @@ class Task1Spec extends AnyFunSpec with Matchers {
       val EXPECTED = Seq(Interval(1, 10), Interval(10, 20), Interval(20, 30), Interval(30, 100), Interval(100, 900))
       
       mkIntervals(DATA) shouldEqual EXPECTED
+    }
+  }
+  
+  describe("process") {
+    it("a") {
+      val DATA = Seq(
+        Input(Interval(1,7), "Jim"),
+        Input(Interval(5,6), "Jeremy"),
+        Input(Interval(5,10), "Alice"),
+        Input(Interval(7,20), "Xen"),
+        Input(Interval(30,40), "Serge"),
+      )
+      val EXPECTED = Seq(
+        Output(Interval(1, 5),  Seq("Jim")),
+        Output(Interval(5, 6),  Seq("Jim", "Jeremy", "Alice")),
+        Output(Interval(6, 7),  Seq("Jim", "Alice")),
+        Output(Interval(7, 10), Seq("Alice", "Xen")),
+        Output(Interval(10,20), Seq("Xen")),
+        Output(Interval(30,40), Seq("Serge")),
+      )
+      
+      process(DATA) should contain theSameElementsInOrderAs EXPECTED
+      process(DATA).map(_.int.min) shouldBe sorted
     }
   }
   

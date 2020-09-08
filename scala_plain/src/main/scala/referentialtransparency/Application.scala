@@ -1,19 +1,22 @@
 package referentialtransparency
+import pprint.{pprintln => println}
 
 object external {
-  def func(x: Int): Int = {
+  def times2(x: Int): Int = {
     println(s"x=$x")
-    x
+    x * 2
   }
 }
 
 object App1 extends App {
-  val r: (Int, Int) = (external.func(1), external.func(1))
-  pprint.log(r)
+  val r: (Int, Int) = (external.times2(1), external.times2(1))
+  
+  println(r)
 }
 
 object App2 extends App {
-  val x: Int = external.func(1)
+  val x: Int = external.times2(1)
   val r: (Int, Int) = (x, x)
-  pprint.log(r)
+  
+  println(r)
 }
