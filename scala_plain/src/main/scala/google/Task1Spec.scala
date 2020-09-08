@@ -42,6 +42,20 @@ class Task1Spec extends AnyFunSpec with Matchers {
       
       mkIntervals(DATA) shouldEqual EXPECTED
     }
+
+    it("non crossing") {
+      val DATA     = Seq(Interval(20, 30), Interval(1, 10), Interval(100, 900))
+      val EXPECTED = Seq(Interval(1, 10), Interval(10, 20), Interval(20, 30), Interval(30, 100), Interval(100, 900))
+      
+      mkIntervals(DATA) shouldEqual EXPECTED
+    }
+
+    it("non sotred") {
+      val DATA     = Seq(Interval(100, 900), Interval(20, 30), Interval(1, 10))
+      val EXPECTED = Seq(Interval(1, 10), Interval(10, 20), Interval(20, 30), Interval(30, 100), Interval(100, 900))
+      
+      mkIntervals(DATA) shouldEqual EXPECTED
+    }
   }
   
 }

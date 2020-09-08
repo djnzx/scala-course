@@ -1,5 +1,7 @@
 package google
 
+import scala.collection.immutable.TreeSet
+
 object Task1 extends App {
   case class Interval(min: Int, max: Int) {
     def contains(sub: Interval): Boolean = min >= sub.min && max <= sub.max
@@ -9,9 +11,8 @@ object Task1 extends App {
   
   def mkIntervals(input: Seq[Interval]): Seq[Interval] = {
     val points: Vector[Int] = input
-      .foldLeft(Set.empty[Int]) { case (set, Interval(mn, mx)) => set ++ Set(mn, mx) }
+      .foldLeft(TreeSet.empty[Int]) { case (set, Interval(mn, mx)) => set ++ Set(mn, mx) }
       .toVector
-      .sorted
     (0 to points.length-2).map(idx => Interval(points(idx), points(idx+1)))
   }
   
