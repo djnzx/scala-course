@@ -216,6 +216,7 @@ lazy val mix = (project in file("mix"))
       Libraries.http4sServer, // URI
       Libraries.sqlPg,
       Libraries.jsoup,
+//      "org.typelevel" %% "simulacrum" % "1.0.0",
       "com.github.mpilquist" %% "simulacrum"  % "0.19.0", 
       "org.scalaz"           %% "scalaz-core" %  "7.3.2",
       "com.propensive"       %% "contextual"  % "1.2.1",
