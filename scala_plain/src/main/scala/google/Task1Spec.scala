@@ -5,11 +5,42 @@ import org.scalatest.matchers.should.Matchers
 
 class Task1Spec extends AnyFunSpec with Matchers {
 
-  describe("task1") {
+  describe("mkIntervals") {
     import Task1._
+
+    it("empty") {
+      val DATA     = Seq()
+      val EXPECTED = Seq()
+      
+      mkIntervals(DATA) shouldEqual EXPECTED
+    }
     
-    it("a") {
-      add(1, 10) shouldEqual 11
+    it("one element") {
+      val DATA     = Seq(Interval(1, 100))
+      val EXPECTED = Seq(Interval(1, 100))
+      
+      mkIntervals(DATA) shouldEqual EXPECTED
+    }
+    
+    it("non-empty sorted") {
+      val DATA     = Seq(Interval(1, 100), Interval(10, 70), Interval(20, 90))
+      val EXPECTED = Seq(Interval(1, 10), Interval(10, 20), Interval(20, 70), Interval(70, 90), Interval(90, 100))
+      
+      mkIntervals(DATA) shouldEqual EXPECTED
+    }
+
+    it("non-empty unsorted") {
+      val DATA     = Seq(Interval(1, 100), Interval(20, 90), Interval(10, 70))
+      val EXPECTED = Seq(Interval(1, 10), Interval(10, 20), Interval(20, 70), Interval(70, 90), Interval(90, 100))
+      
+      mkIntervals(DATA) shouldEqual EXPECTED
+    }
+
+    it("non-empty unsorted nested") {
+      val DATA     = Seq(Interval(1, 100), Interval(20, 70), Interval(10, 90))
+      val EXPECTED = Seq(Interval(1, 10), Interval(10, 20), Interval(20, 70), Interval(70, 90), Interval(90, 100))
+      
+      mkIntervals(DATA) shouldEqual EXPECTED
     }
   }
   
