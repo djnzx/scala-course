@@ -117,14 +117,14 @@ lazy val lihaoyi = (project in file("lihaoyi"))
 
 /**
   * Lightbend (Typesafe) Stack:
-  * 
+  *
   * Akka,
   * Akka-Streams,
   * Akka-Http
   * Play,
   * Lagom,
   * Slick
-  * 
+  *
   * https://www.lightbend.com
   */
 lazy val typesafe = (project in file("typesafe"))
@@ -152,8 +152,8 @@ lazy val typesafe = (project in file("typesafe"))
   )
 
 /**
-  * Typelevel (FP) stack: 
-  * 
+  * Typelevel (FP) stack:
+  *
   * Cats, Cats Effects
   * Fs2, Http4s,
   * Circe, Ciris,
@@ -161,7 +161,7 @@ lazy val typesafe = (project in file("typesafe"))
   * Doobie,
   * Scalacheck,
   * PureConfig
-  * 
+  *
   * https://typelevel.org
   */
 lazy val typelevel = (project in file("typelevel"))
@@ -210,19 +210,19 @@ lazy val mix = (project in file("mix"))
     libraryDependencies ++= Seq(
       CompilerPlugins.kindProjector,
       CompilerPlugins.betterMonadicFor,
-      
+
       "io.getquill"            %% "quill-jdbc"                 % "3.5.1",
       "org.flywaydb"            %  "flyway-core"                 % "6.4.2",
       Libraries.http4sServer, // URI
       Libraries.sqlPg,
       Libraries.jsoup,
 //      "org.typelevel" %% "simulacrum" % "1.0.0",
-      "com.github.mpilquist" %% "simulacrum"  % "0.19.0", 
+      "com.github.mpilquist" %% "simulacrum"  % "0.19.0",
       "org.scalaz"           %% "scalaz-core" %  "7.3.2",
       "com.propensive"       %% "contextual"  % "1.2.1",
       Libraries.refinedCore,
       Libraries.refinedScalaz,
-      
+
     ),
   )
 //       CompilerPlugins.macrosParadise,
