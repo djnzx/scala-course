@@ -1,20 +1,25 @@
-package catsx.kleisli_valid
+package catsx.kleisli
 
 import cats.Semigroup
 import cats.data.Validated.{Invalid, Valid}
 import cats.data.{Kleisli, NonEmptyList, Validated}
-import cats.syntax.apply._
-import cats.syntax.semigroup._
-import cats.syntax.validated._
+//import cats.syntax.semigroup._
+import cats.implicits.catsSyntaxSemigroup
+import cats.implicits.catsSyntaxTuple2Semigroupal
+//import cats.syntax.validated._
+import cats.implicits.catsSyntaxValidatedId
+//import cats.syntax.apply._
+import pprint.{pprintln => println}
 
-object KleisliValidated extends App {
+object ValidatorExample extends App {
   // that type will handle our errors
   type Errors = NonEmptyList[String]
 
   sealed trait Predicate[E, A] {
+
     import Predicate._
 
-    def run(implicit ev: Semigroup[E]): A => Either[E, A] = (a: A) => this(a).toEither
+    def run(implicit ev: Semigroup[E]): A => Either[E, A] = (a: A) => this (a).toEither
 
     def apply(a: A)(implicit ev: Semigroup[E]): Validated[E, A] = this match {
       case Pure(f) => f(a)
@@ -26,14 +31,19 @@ object KleisliValidated extends App {
     }
 
     def and(that: Predicate[E, A]): Predicate[E, A] = And(this, that)
+
     def or(that: Predicate[E, A]): Predicate[E, A] = Or(this, that)
   }
 
   object Predicate {
     def apply[E, A](f: A => Validated[E, A]): Predicate[E, A] = Pure(f)
+
     final case class Pure[E, A](f: A => Validated[E, A]) extends Predicate[E, A]
+
     final case class And[E, A](left: Predicate[E, A], right: Predicate[E, A]) extends Predicate[E, A]
+
     final case class Or[E, A](left: Predicate[E, A], right: Predicate[E, A]) extends Predicate[E, A]
+
     def lift[E, A](err: E, p: A => Boolean): Predicate[E, A] =
       Pure { a: A => if (p(a)) a.valid else err.invalid }
   }
@@ -45,17 +55,23 @@ object KleisliValidated extends App {
     */
   type VResult[A] = Either[Errors, A]
   type Check[A, B] = Kleisli[VResult, A, B]
+
   /**
     * create a Check from a function
     */
-  def funcToCheck[A, B](f: A => VResult[B]): Check[A, B] = Kleisli { f }
+  def funcToCheck[A, B](f: A => VResult[B]): Check[A, B] = Kleisli {
+    f
+  }
+
   /**
     * create a Check from a predicate
     */
-  def predToCheck[A](p: Predicate[Errors, A]): Check[A, A] = Kleisli { p.run }
+  def predToCheck[A](p: Predicate[Errors, A]): Check[A, A] = Kleisli {
+    p.run
+  }
 
-  import cats.instances.either._
-  import cats.syntax.apply._
+//  import cats.instances.either._
+  import cats.implicits.catsStdInstancesForEither
 
   /**
     * usecase
@@ -88,10 +104,12 @@ object KleisliValidated extends App {
   }
   val tupleValidator: Predicate[Errors, (String, String)] = Predicate { case (address, domain) =>
     (longerThan(0)(address),
-      (longerThan(3) and contains('.'))(domain)
+      (longerThan(3) and contains('.')) (domain)
       ).mapN((_, _))
   }
-  val tupleCombine: ((String, String)) => String = { case (addr, dom) => s"$addr@$dom" }
+  val tupleCombine: ((String, String)) => String = {
+    case (addr, dom) => s"$addr@$dom"
+  }
 
   case class User(name: String, email: String)
 
@@ -101,7 +119,7 @@ object KleisliValidated extends App {
   val nameValidator: Check[String, String] = predToCheck(longerThan(3) and isAlphanumeric)
 
   def validate(name: String, email: String): Either[Errors, User] =
-    ( nameValidator(name),
+    (nameValidator(name),
       emailValidator(email)
       ).mapN(User.apply)
 
@@ -111,9 +129,9 @@ object KleisliValidated extends App {
     * because Validated isn't
     */
 
-  println(validate("alex","alexr@gmail.com"))
-  println(validate("ale","alexr@gmail.com")) // Left(NonEmptyList(must be longer that 3 character))
-  println(validate("alex","@gmail.com"))     // Left(NonEmptyList(must be longer that 0 character))
-  println(validate("alex","@gma"))           // Left(NonEmptyList(must be longer that 0 character, must be longer that 3 character, Must contain at least one `.` char))
+  println(validate("alex", "alexr@gmail.com"))
+  println(validate("ale", "alexr@gmail.com")) // Left(NonEmptyList(must be longer that 3 character))
+  println(validate("alex", "@gmail.com")) // Left(NonEmptyList(must be longer that 0 character))
+  println(validate("alex", "@gma")) // Left(NonEmptyList(must be longer that 0 character, must be longer that 3 character, Must contain at least one `.` char))
 
 }
