@@ -1,6 +1,7 @@
 package hackerrank.d200316_01;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 /**
@@ -127,9 +128,29 @@ public class NewYearChaosApp {
     }
     System.out.println(too ? "Too chaotic" : number);
   }
-
+  
+  public static Optional<Integer> doCalc(int[] a) {
+    int perm = 0;
+    for (int idx = a.length-1; idx >= 0 ; idx--) {
+      int shouldBe = idx + 1; // at index `i` we expect to see `i+1` 
+      int actual = a[idx];
+      if (actual - shouldBe > 2) return Optional.empty(); // req. more than two perm.
+      
+      for (int j = Math.max(0, actual - 2); j < idx; j++) {
+        if (a[j] > actual) perm+=1;
+      }
+    }
+    return Optional.of(perm);
+  }
+  
+  public static void minBribes(int[] a) {
+    System.out.println(doCalc(a).map(String::valueOf).orElse("Too chaotic"));
+  }
+  
   public static void main(String[] args) {
+    //   index   0 1 2 3 4 5 6 7
     int[] src = {1,2,5,3,7,8,6,4};
-    minimumBribes(src);
+    //   should  1 2 3 4 5 6 7 8
+    minBribes(src);
   }
 }

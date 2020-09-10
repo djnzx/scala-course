@@ -249,7 +249,7 @@ lazy val degoes = (project in file("degoes"))
 
 lazy val dotty = (project in file("dotty"))
   .settings(
-    scalaVersion := "0.26.0-RC1"
+    scalaVersion := "0.27.0-RC1"
   )
   .settings(
     libraryDependencies ++= Seq(
