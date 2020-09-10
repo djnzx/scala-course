@@ -154,12 +154,17 @@ object ReaderRepoExample extends App {
 
   /**
     * for syntax - way more readable
+    * 
+    * What we do - we pass automatically parameter to ALL readers
     */
   def investInCheapestStockV6b(amount: Double): Reader[StockRepo, Double] =
     for {
       stocks   <- StocksV6.findAll()
+      stocksT: Map[String, Double] = stocks
       name     <- Reader[StockRepo, String](_ => stocks.minBy(_._2)._1) // just a value lifted to context
+      nameT: String = name
       spent    <- StocksV6.buy(name, amount)
+      spentT: Double = spent
     } yield spent
 
   val repo: StockRepo = ???
