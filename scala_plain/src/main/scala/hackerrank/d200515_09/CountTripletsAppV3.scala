@@ -11,6 +11,8 @@ import pprint.{pprintln => println}
   */
 object CountTripletsAppV3 extends App {
 
+  def combinations(n: Int) = n.toLong*(n-1)*(n-2)/6 
+  
   def countFrom3(poss: Array[Int], from: Int) =
     poss.search[Int](from) match {
       case Searching.Found(idx) => poss.length - idx 
@@ -18,7 +20,6 @@ object CountTripletsAppV3 extends App {
       case _ => 0
     }
 
-  // IK that item exists, but IDK in which poss   
   def findFirstFrom2(poss: Array[Int], from: Int) = 
     poss.search[Int](from) match {
       case Searching.Found(idx) => Some(idx) 
@@ -30,19 +31,26 @@ object CountTripletsAppV3 extends App {
     var count = 0L
     val map: Map[Long, Array[Int]] = a.zipWithIndex.groupMap(_._1)(_._2)
       .map { case (k, v) => (k, v.sorted) }
+    
+    if (r==1) {
+      map.withFilter { case (_, v) => v.length >= 3 }
+        .foreach { case (_, v) => count += combinations(v.length) }
+      return count
+    }
+    
     (0 until a.length-2).foreach { i1 =>
       val x1 = a(i1)
       val x2 = x1 * r
       val x3 = x2 * r
       if (map.contains(x2) && map.contains(x3)) {
-        val x2indices = map(x2) // all x2 indices
-        val x3indices = map(x3) // all x3 indices
-        /** first index for the second pass */
-        val x2io: Option[Int] = findFirstFrom2(x2indices, i1+1)
-        x2io.foreach { x2first: Int =>
-          (x2first until x2indices.length).foreach { x2i => 
-            count += countFrom3(x3indices, x2i + 1)
-          }
+        val x2indices: Array[Int] = map(x2) // all x2 indices
+        val x3indices: Array[Int] = map(x3) // all x3 indices
+        
+        findFirstFrom2(x2indices, i1 + 1)
+          .foreach { x2first: Int =>
+            (x2first until x2indices.length).foreach { x2i =>
+              count += countFrom3(x3indices, x2i + 1)
+            }
         }
       }
     }
