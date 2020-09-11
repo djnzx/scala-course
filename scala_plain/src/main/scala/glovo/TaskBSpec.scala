@@ -12,8 +12,13 @@ class TaskBSpec extends AnyFunSpec with Matchers {
       app.solution(INPUT.map(_.clone)) shouldEqual EXPECTED
     }
     
-    it("Scala Implementation") {
-      val app = new TaskBScala
+    it("Scala Iterative Implementation") {
+      val app = new TaskBScalaIterative
+      app.solution(INPUT.map(_.clone)) shouldEqual EXPECTED
+    }
+    
+    it("Scala Tail Recursive Implementation") {
+      val app = new TaskBScalaITailRec
       app.solution(INPUT.map(_.clone)) shouldEqual EXPECTED
     }
     

@@ -1,6 +1,6 @@
 package glovo
 
-class TaskBScala {
+class TaskBScalaIterative {
   val VISITED = Int.MaxValue
   case class Pt(x: Int, y: Int) 
   val DELTAS = Set(Pt(0, 1), Pt(0,-1), Pt( 1,0), Pt(-1,0))
@@ -16,8 +16,7 @@ class TaskBScala {
   def neighbours(p: Pt) = DELTAS.map(move(p, _)).filter(isOnBoard)
   def neighboursUnvisitedMy(pts: Set[Pt], cnt: Int) = 
     pts.flatMap(neighbours).filter(isUnvisited).filter(p => isCountry(p, cnt))
-  /** flood: iterative implementation */
-  def floodi(p: Pt) = {
+  def flood(p: Pt) = {
     val country = board(p.y)(p.x)
     var step = Set(p)
     while (step.nonEmpty) {
@@ -25,18 +24,6 @@ class TaskBScala {
       step = neighboursUnvisitedMy(step, country)
     }
   }
-  /** flood: tail recursive implementation */
-  def floodtr(p: Pt) = {
-    val country = board(p.y)(p.x)
-    def floodOne(step: Set[Pt]): Unit =
-      if (step.nonEmpty) {
-        markVisited(step)
-        floodOne(neighboursUnvisitedMy(step, country))
-      }
-    floodOne(Set(p))
-  }
-  val flood = floodtr _
-
   /**
     * this implementation 
     * DOES MUTATE the original array !
