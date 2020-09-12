@@ -63,11 +63,9 @@ lazy val scala_plain = (project in file("scala_plain"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      Libraries.shapeless,
-      "com.typesafe.play"          %% "play-json"                  % Versions.play,
       "org.scala-lang.modules"     %% "scala-parallel-collections" % "0.2.0",
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
-      "org.scala-lang" % "scala-reflect" % "2.13.3",
+      "org.scala-lang"             %  "scala-reflect"               % "2.13.3",
 
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
@@ -141,13 +139,15 @@ lazy val typesafe = (project in file("typesafe"))
       Libraries.akkaHttp("akka-http"),
       // json
       Libraries.akkaHttp("akka-http-spray-json"),
-
-      Libraries.slf4j("slf4j-simple"),
+      // play JSON
+      s"${pf.typesafe}.play" %% "play-json" % Versions.play,
       // Slick
       Libraries.slickCore,
       Libraries.slickHikari,
       // config
       Libraries.tsconfig,
+      // logger
+      Libraries.slf4j("slf4j-simple"),
     )
   )
 
@@ -196,6 +196,8 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.newtype,
       // refined types
       Libraries.refinedCore,
+      // shapeless
+      Libraries.shapeless,
     )
   )
 
