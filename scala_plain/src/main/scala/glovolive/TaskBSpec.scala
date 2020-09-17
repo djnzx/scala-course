@@ -4,14 +4,32 @@ import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
 class TaskBSpec extends AnyFunSpec with Matchers {
-  describe("task b") {
-    import TaskB._
+  describe("task B") {
+    it("isValid") {
+      import TaskBJava1._
 
-    it("a") {
+      val trueItems = List(
+        "",
+        "()",
+        "[]",
+        "{}",
+        "()[]",
+        "({}){[]}",
+        "([{}])",
+      )
+      val falseItems = List(
+        "(",
+        "][",
+        "[)",
+        "{[}]",
+        "[{[}]()]",
+      )
       
-    }
-    it("b") {
-      
+      (trueItems.map(_ -> true) ++ falseItems.map(_ -> false))
+        .toMap
+        .foreach{ case (s, exp) =>
+        isValid(s) shouldEqual exp
+      }
     }
   }
 }

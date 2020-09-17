@@ -1,5 +1,5 @@
 package glovolive
 
-object TaskB {
+object TaskBScala {
 
 }
