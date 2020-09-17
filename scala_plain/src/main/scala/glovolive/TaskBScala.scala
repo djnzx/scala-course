@@ -1,0 +1,5 @@
+package glovolive
+
+object TaskBScala {
+
+}

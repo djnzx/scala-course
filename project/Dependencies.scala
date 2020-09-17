@@ -22,7 +22,7 @@ object Dependencies {
     val doobie           = "0.9.0"
     val squants          = "1.6.0"
     val logback          = "1.2.3"
-    val zio              = "1.0.0"
+    val zio              = "1.0.1"
     val sqlPg            = "42.2.10"
     val sqlH2            = "1.4.200"
     val scalaz           = "7.2.30"
@@ -56,13 +56,14 @@ object Dependencies {
     val slf4j     = "org.slf4j"
     val tpolecat  = "org.tpolecat"
     val lihaoyi   = "com.lihaoyi"
+    val zio       = "dev.zio"
   }
 
   object Libraries {
     def circe(artifact: String):             ModuleID = "io.circe"              %% artifact    % Versions.circe
     def ciris(artifact: String):             ModuleID = "is.cir"                %% artifact    % Versions.ciris
     def http4s(artifact: String):            ModuleID = "org.http4s"            %% artifact    % Versions.http4s
-    def zio(artifact: String):               ModuleID = "dev.zio"               %% artifact    % Versions.zio     withSources()  withJavadoc()
+    def zio(artifact: String):               ModuleID = pf.zio                  %% artifact    % Versions.zio     withSources()  withJavadoc()
     def scalaz(artifact: String):            ModuleID = "org.scalaz"            %% artifact    % Versions.scalaz
     def fs2(artifact: String):               ModuleID = "co.fs2"                %% artifact    % Versions.fs2
 
