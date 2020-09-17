@@ -37,5 +37,4 @@ public class TaskBJava1 {
     return stack.isEmpty();
   }
   
-  
 }

@@ -4,7 +4,7 @@ import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
 class TaskCSpec extends AnyFunSpec with Matchers {
-  describe("task C") {
+  describe("Task C") {
     import 
 //    TaskCBruteForce._
 //    TaskCDynamic._

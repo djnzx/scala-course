@@ -29,5 +29,4 @@ public class TaskBJava2 {
     return stack.isEmpty();
   }
   
-  
 }

@@ -2,8 +2,10 @@ package glovolive
 
 import pprint.{pprintln => println}
 
-object TaskA 
-extends App
-{
+/**
+  * deep rabbit hole
+  * two pointers to detect loops in the linked list
+  */
+object TaskA {
   
 }
