@@ -224,6 +224,7 @@ lazy val mix = (project in file("mix"))
       "com.propensive"       %% "contextual"  % "1.2.1",
       Libraries.refinedCore,
       Libraries.refinedScalaz,
+      "org.scalaz" %% "scalaz-deriving-jsonformat" % "2.0.0-M5",
 
     ),
   )
