@@ -1,5 +1,9 @@
 import ScalacOpts._
 
+/**
+  * https://docs.scala-lang.org/overviews/compiler-options/index.html
+  * https://blog.ssanj.net/posts/2019-06-14-scalac-2.13-options-and-flags.html
+  */
 object CompilerOptions {
   val scalac = Seq(
     encoding, UTF8,

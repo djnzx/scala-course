@@ -259,6 +259,8 @@
 - [AWS for Scala](https://github.com/fs2-blobstore/fs2-blobstore)
 - [Scala and VIM](https://chris-kipp.io/blog/scala-and-vim-part-1)
 - [akka-stream-alpakka-file](https://medium.com/wbaa/akka-streams-by-example-processing-files-21c824dd817)
+- [Writing native CLI applications in Scala with GraalVM](https://msitko.pl/blog/2020/03/10/writing-native-cli-applications-in-scala-with-graalvm.html)
+- [cli + graalVM](https://www.reddit.com/r/scala/comments/iqth3v/i_built_a_scala_cli_app_to_organize_my_local/)
 
 ### KAFKA
 - [REPL for Apache Kafka](https://github.com/mmolimar/kukulcan)

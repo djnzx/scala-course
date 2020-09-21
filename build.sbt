@@ -1,5 +1,6 @@
 import Dependencies.{Libraries, Versions, pf}
 import Dependencies.Libraries.CompilerPlugins
+import sbt.Def.spaceDelimited
 import sbt.Keys._
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
@@ -32,8 +33,6 @@ lazy val commonSettings = Seq(
   ),
 
   libraryDependencies ++= Seq(
-//    CompilerPlugins.silencer,
-//    Libraries.silencerAnnotation,
     Libraries.scalaTest,
     Libraries.lprint,
   ),
@@ -51,6 +50,7 @@ lazy val whole = (project in file("."))
     typesafe,
     typelevel,
     mix,
+    ninetynine,
     degoes,
     dotty
   )
@@ -227,7 +227,17 @@ lazy val mix = (project in file("mix"))
 
     ),
   )
-//       CompilerPlugins.macrosParadise,
+
+/**
+  * http://aperiodic.net/phil/scala/s-99/
+  */
+lazy val ninetynine = (project in file("ninetynine"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+    ),
+  )
+
 /**
   * John A. De Goes Project ZIO
   * https://zio.dev
@@ -250,6 +260,9 @@ lazy val degoes = (project in file("degoes"))
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
   )
 
+/**
+  * Dotty experiments
+  */
 lazy val dotty = (project in file("dotty"))
   .settings(
     scalaVersion := "0.27.0-RC1"
@@ -262,3 +275,11 @@ lazy val dotty = (project in file("dotty"))
 //addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
 //addCommandAlias("check", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
+
+lazy val ping = inputKey[Unit]("Will ping the server")
+ping := {
+  println("pinging ACT backend server...")
+  val x = spaceDelimited("<arg>").parsed
+  println(x)
+  (Test / test).toTask.value
+}

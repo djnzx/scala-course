@@ -31,7 +31,7 @@ object Dependencies {
 
     // testing
     val scalaCheck       = "1.14.3"
-    val scalaTest        = "3.1.2"
+    val scalaTest        = "3.2.2"
     val scalaTestPlus    = "3.1.1.1"
 
     // compiler plugins

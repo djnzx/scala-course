@@ -1,5 +1,0 @@
-package scalatest
-
-class Idea {
-
-}
