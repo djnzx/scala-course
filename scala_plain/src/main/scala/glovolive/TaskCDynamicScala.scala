@@ -2,6 +2,10 @@ package glovolive
 
 object TaskCDynamicScala {
   
+  def if_func[A](cond: Boolean, t: => A, f: => A) = if (cond) t else f
+  
+  def bToI2(b: Boolean) = if_func(b, 1, 0)
+  
   def bToI(b: Boolean) = if (b) 1 else 0
   
   def hasSubArrayWithSum(xs: Array[Int], k: Int): Int =
