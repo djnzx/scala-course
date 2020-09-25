@@ -8,11 +8,13 @@ import scala.annotation.tailrec
 object P05A {
   
   def reverseAndLen[A](as: List[A]): (List[A], Int) = {
+    
     @tailrec
     def reverse(as: List[A], acc: (List[A], Int)): (List[A], Int) = (as, acc) match {
       case (Nil, _)                => acc;
       case (h :: t, (list, count)) => reverse(t, (h :: list, count + 1))
     }
+    
     reverse(as, (Nil, 0))
   }
   

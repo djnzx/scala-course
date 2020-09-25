@@ -2,7 +2,13 @@ package ninetynine
 
 import scala.annotation.tailrec
 
-class P07TROneLevel {
+/**
+  * Flatten a nested list structure
+  * 
+  * tail recursive implementation
+  * flatten only one level
+  */
+object P07TROneLevel {
   
   def flatten(xsa: List[Any]): List[Any] = {
     @tailrec
@@ -13,14 +19,18 @@ class P07TROneLevel {
         case l: List[Any] => flatten(t, acc ++ l)
       }
     }
+    
     flatten(xsa, Nil)
   }
 
-  def test(): Unit = {
-    val data: List[Any] = List(List(1, 1), 2, List(3, List(5, 8)))
-    val r = flatten(data)
-    println(data)
-    println(r)
-  }
+}
 
+class P07TROneLevelSpec extends NNSpec {
+  import P07TROneLevel._
+  
+  it("1") {
+    val data: List[Any] = List(List(1, 1), 2, List(3, List(5, 8)))
+    flatten(data) shouldEqual List(1, 1, 2, 3, List(5, 8))
+  }
+  
 }

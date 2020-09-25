@@ -54,6 +54,11 @@ lazy val whole = (project in file("."))
     degoes,
     dotty
   )
+//  .enablePlugins(BuildInfoPlugin)
+//  .settings(
+//    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
+//    buildInfoPackage := "learn"
+//  )
 
 /**
   * plain Scala

@@ -2,19 +2,32 @@ package ninetynine
 
 import scala.annotation.tailrec
 
+/**
+  * Duplicate the elements of a list
+  */
 object P14TR {
   
   @tailrec
-  def duplicate(xs: List[Symbol], acc: List[Symbol]): List[Symbol] = xs match {
+  private def duplicate(xs: List[Char], acc: List[Char]): List[Char] = xs match {
     case Nil    => acc
-    case h :: t => duplicate(t, h::h::acc)
+    case h :: t => duplicate(t, h :: h :: acc)
   }
 
-  def test(): Unit = {
-    val source = List('x, 'a, 'b, 'c, 'a, 'd, 'e)
-    println(s"Source: $source")
-    val actual = duplicate(source, Nil).reverse
-    println(s"Actual: $actual")
+  def duplicate(xs: List[Char]): List[Char] = duplicate(xs, Nil) reverse
+
+}
+
+class P14TRSpec extends NNSpec {
+  import P14TR._
+
+  it("1") {
+    Vector(
+      "" -> "",
+      "A" -> "AA",
+      "AB" -> "AABB",
+    )
+      .foreach { case (in, out) =>
+        duplicate(in.toList).mkString shouldEqual out
+      }
   }
-  
 }

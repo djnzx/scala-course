@@ -8,11 +8,13 @@ import scala.annotation.tailrec
 object P04 {
   
   def length[A](as: List[A]): Int = {
+    
     @tailrec
     def len(as: List[A], acc: Int): Int = as match {
       case Nil  => acc
       case _::t => len(t, acc + 1)
     }
+    
     len(as, 0)
   }
 

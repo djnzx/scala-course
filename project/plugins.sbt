@@ -11,3 +11,6 @@ addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
 
 // compile Scala 3
 addSbtPlugin("ch.epfl.lamp" % "sbt-dotty" % "0.4.1")
+
+// https://github.com/sbt/sbt-buildinfo
+//addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.10.0")

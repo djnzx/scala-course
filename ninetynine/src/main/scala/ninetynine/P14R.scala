@@ -1,17 +1,28 @@
 package ninetynine
 
+/**
+  * Duplicate the elements of a list
+  */
 object P14R {
   
-  def duplicate(xs: List[Symbol]): List[Symbol] = xs match {
+  def duplicate(xs: List[Char]): List[Char] = xs match {
     case Nil    => Nil
     case h :: t => h :: h :: duplicate(t)
   }
 
-  def test(): Unit = {
-    val source = List('x, 'a, 'b, 'c, 'a, 'd, 'e)
-    println(s"Source: $source")
-    val actual = duplicate(source)
-    println(s"Actual: $actual")
-  }
+}
+
+class P14RSpec extends NNSpec {
+  import P14R._
   
+  it("1") {
+    Vector(
+      "" -> "",
+      "A" -> "AA",
+      "AB" -> "AABB",
+    )
+      .foreach { case (in, out) =>
+        duplicate(in.toList).mkString shouldEqual out
+      }
+  }
 }

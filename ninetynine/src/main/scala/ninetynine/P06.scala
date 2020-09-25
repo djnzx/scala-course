@@ -11,10 +11,12 @@ object P06 {
     import P05A.reverseAndLen
     
     @tailrec
-    def check(n: Int, a: List[A], b: List[A]): Boolean = (n,a,b) match {
-      case (0, _, _) => true
-      case (_, ah::at, bh::bt) => if (ah == bh) check(n-1, at, bt) else false
+    def check(n: Int, a: List[A], b: List[A]): Boolean = (n, a, b) match {
+      case (0, _, _)                       => true
+      case (_, ah::at, bh::bt) if ah == bh => check(n - 1, at, bt)
+      case _                               => false
     }
+    
     val (asr, len) = reverseAndLen(as)
     check(len / 2, as, asr)
   }
@@ -29,18 +31,17 @@ class P06Spec extends NNSpec {
       List(1, 2, 3, 3, 2, 1),
       List(1, 2, 5, 2, 1),
       List(1),
-      List.empty[Int],
-    )
+      List.empty,
+    ).map(_->true).toMap
 
     val f = List(
       List(1, 1, 2, 3, 5, 8),
       List(1, 2, 5, 6, 2, 1)
-    )
+    ).map(_->false).toMap
 
-    (t.map(_->true).toMap ++ f.map(_->false).toMap)
-      .forall { case (data, res) =>
-        isPalindrome(data) == res
-      } shouldEqual true
+    (t ++ f).foreach { case (in, out) =>
+      isPalindrome(in) shouldEqual out
+    }
   }
   
 }

@@ -2,23 +2,40 @@ package ninetynine
 
 import scala.annotation.tailrec
 
+/**
+  * Eliminate consecutive duplicates of list elements
+  */
 object P08 {
   
-  def compress(xs: List[Symbol]): List[Symbol] = {
+  def compress(xs: List[Char]): List[Char] = {
+    
     @tailrec
-    def compress(xs: List[Symbol], prev: Symbol, acc: List[Symbol]): List[Symbol] = (xs, prev) match {
-      case (Nil, _)  => acc
-      case (h::t, p) => if (h == p) compress(t, p, acc) else compress(t, h, acc :+ h)
+    def compress(xs: List[Char], buf: List[Char], acc: List[Char]): List[Char] = (xs, buf) match {
+      case (Nil, Nil)             => Nil                          // first step,     empty list
+      case (h::t, Nil)            => compress(t, List(h), acc)    // first step, NON-empty list
+      case (Nil, c::_)            => c::acc                       // last iteration, just add the buffer
+      case (h::t, c::_) if c == h => compress(t, List(h), acc)    // non-last, skip the same char
+      case (h::t, c::_) if c != h => compress(t, List(h), c::acc) // non-last, different, collect char
     }
-    val h::t = xs
-    compress(t, h, List(h))
+    
+    compress(xs, List.empty, List.empty) reverse
   }
 
-  def test(): Unit = {
-    val data = List('x, 'a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
-    println(data)
-    val r = compress(data)
-    println(r)
-  }
+}
+
+class P08Spec extends NNSpec {
+  import P08._
   
+  it("1") {
+    Map(
+      "" ->"",
+      "a" -> "a",
+      "aa" -> "a",
+      "aab" -> "ab",
+      "aabb" -> "ab",
+      "aabba" -> "aba",
+    ).foreach { case (data, exp) =>
+      compress(data.toList) shouldEqual exp.toList
+    }
+  }
 }

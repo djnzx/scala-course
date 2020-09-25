@@ -2,21 +2,38 @@ package ninetynine
 
 import scala.annotation.tailrec
 
+/**
+  * Duplicate the elements of a list a given number of times
+  */
 object P15TR {
-  
-  def nTimes(n: Int, sym: Symbol): Seq[Symbol] = 1 to n map { _ => sym } toList
+
+  def timesN(n: Int, c: Char): List[Char] = List.fill(n)(c)
 
   @tailrec
-  def duplicate(n: Int, xs: List[Symbol], acc: List[Symbol]): List[Symbol] = xs match {
+  def duplicateN(n: Int, xs: List[Char], acc: List[Char] = Nil): List[Char] = xs match {
     case Nil    => acc
-    case h :: t => duplicate(n, t, acc ++ nTimes(n, h))
+    case h :: t => duplicateN(n, t, acc ++ timesN(n, h))
   }
 
-  def test(): Unit = {
-    val source = List('x, 'a, 'b, 'c, 'a, 'd, 'e)
-    println(s"Source: $source")
-    val actual = duplicate(3, source, Nil)
-    println(s"Actual: $actual")
+}
+
+class P15TRSpec extends NNSpec {
+  import P15TR._
+
+  it("1") {
+    Vector(
+      (1, "") -> "",
+      (1, "A") -> "A",
+      (1, "AB") -> "AB",
+      (2, "") -> "",
+      (2, "A") -> "AA",
+      (2, "AB") -> "AABB",
+      (3, "") -> "",
+      (3, "A") -> "AAA",
+      (3, "AB") -> "AAABBB",
+    )
+      .foreach { case ((n, in), out) =>
+        duplicateN(n, in.toList).mkString shouldEqual out
+      }
   }
-  
 }

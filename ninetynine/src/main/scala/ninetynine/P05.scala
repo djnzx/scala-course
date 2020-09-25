@@ -8,11 +8,13 @@ import scala.annotation.tailrec
 object P05 {
   
   def reverse[A](as: List[A]): List[A] = {
+    
     @tailrec
     def reverse(as: List[A], acc: List[A]): List[A] = as match {
       case Nil  => acc;
       case h::t => reverse(t, h :: acc)
     }
+    
     reverse(as, Nil)
   }
 
