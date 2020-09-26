@@ -37,7 +37,7 @@ class P10Spec extends NNSpec {
     
     for {
       (in, out) <- data
-    } yield pack(in.toList) shouldEqual out
+    } pack(in.toList) shouldEqual out
     
   }
 }

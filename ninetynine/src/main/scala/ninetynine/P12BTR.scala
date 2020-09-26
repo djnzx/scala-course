@@ -10,9 +10,9 @@ object P12BTR {
 
   @tailrec
   private def unpack(xs: List[Any], acc: List[Char]): List[Char] = xs match {
-    case Nil                    => acc
     case (c: Char) :: t         => unpack(t, unpackOne(c, 1) ::: acc)
     case (n: Int, c: Char) :: t => unpack(t, unpackOne(c, n) ::: acc)
+    case _                      => acc
   }
 
   def unpack(xs: List[Any]): List[Char] = unpack(xs, Nil) reverse

@@ -2,22 +2,48 @@ package ninetynine
 
 import scala.annotation.tailrec
 
+/**
+  * Remove the Kth element from a list.
+  */
 object P20 {
-  def deleteAt(n: Int, xs: List[Symbol]): (List[Symbol], Symbol) = {
+  def extractAt[A](n: Int, xs: List[A]) = {
 
     @tailrec
-    def go(cnt: Int, xs: List[Symbol], acc: List[Symbol]): (List[Symbol], Symbol) = xs match {
-      case h::t => if (cnt < n) go(cnt + 1, t, h::acc) else (acc.reverse ++ t, h)
-      case Nil => ???
+    def doIt(cnt: Int, xs: List[A], acc: List[A]): (List[A], A) = xs match {
+      case h :: t if cnt < n => doIt(cnt + 1, t, h :: acc)
+      case h :: t            => (acc.reverse ::: t, h)
+      case Nil => throw new NoSuchElementException
     }
 
-    go(0, xs, Nil)
+    doIt(0, xs, Nil)
   }
 
-  def test(): Unit = {
-    val source = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
-    println(s"Source: $source")
-    val actual = deleteAt(3, source)
-    println(s"Actual1: $actual")
+}
+
+class P20Spec extends NNSpec {
+  import P20._
+  
+  it("1") {
+    val data = Seq(
+      (0, "AB") -> ("B", 'A'),
+      (1, "AB") -> ("A", 'B'),
+      (1, "ABCDE") -> ("ACDE", 'B'),
+      (4, "ABCDE") -> ("ABCD", 'E'),
+    )
+    val ex = Seq(
+      (0, ""),
+      (5, "abcd"),
+    )
+    
+    for {
+      ((n, in), (out1, out2)) <- data
+    } extractAt(n, in.toList) shouldEqual (out1.toList, out2)
+
+    for {
+      (n, in) <- ex
+    } an[NoSuchElementException] should be thrownBy extractAt(n, in.toList)
+    
+    
   }
+  
 }

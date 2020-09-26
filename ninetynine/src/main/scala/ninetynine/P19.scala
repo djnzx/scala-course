@@ -1,21 +1,44 @@
 package ninetynine
 
+/**
+  * Rotate a list N places to the left
+  * n > 0 - rotate right
+  * n < 0 - rotate left
+  * n == 0 - do not rotate
+  */
 object P19 {
-  import P17TR.splitAt
+  import P17.splitAt
 
-  // n > 0 - rotate left
-  def rotate(n: Int, xs: List[Symbol]): List[Symbol] =
-    if (n > 0) splitAt(n, xs) match { case (l, r) => r ++ l }
-    else if (n < 0) splitAt(xs.length + n, xs) match { case (l, r) => r ++ l }
-    else xs
+  def rotate(n: Int, xs: List[Char]): List[Char] = n match {
+    case 0 => xs
+    case _ =>
+      val l = xs.length
+      val nl = n % l
+      //            right             left
+      val at = if (nl > 0) l - nl else -nl
+      val (lp, rp) = splitAt(at, xs)
+      rp ::: lp
+  }
 
-  def test(): Unit = {
-    val source = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
-    println(s"Source: $source")
-    val actual1 = rotate(3, source)  // List('d, 'e, 'f, 'g, 'h, 'i, 'j, 'k, 'a, 'b, 'c) <--
-    val actual2 = rotate(-3, source) // List('i, 'j, 'k, 'a, 'b, 'c, 'd, 'e, 'f, 'g, 'h) -->
-    println(s"Actual1: $actual1")
-    println(s"Actual2: $actual2")
+}
+
+class P19Spec extends NNSpec {
+  import P19._
+  
+  it("1") {
+    val data = Seq(
+      ( 0, "abc") -> "abc",
+      ( 1, "abc") -> "cab",
+      (-1, "abc") -> "bca",
+      ( 4, "abc") -> "cab",
+      ( 1000000000, "abc") -> "cab",
+      (-4, "abc") -> "bca",
+      ( 3, "abcdefghi") -> "ghiabcdef",
+      (-3, "abcdefghi") -> "defghiabc",
+    )
+    for {
+      ((n, in), out) <- data
+    } rotate(n, in.toList).mkString shouldEqual out
   }
   
 }

@@ -5,8 +5,17 @@ import scala.annotation.tailrec
 /**
   * Duplicate the elements of a list
   */
-object P14TR {
+object P14R {
   
+  def duplicate(xs: List[Char]): List[Char] = xs match {
+    case Nil    => Nil
+    case h :: t => h :: h :: duplicate(t)
+  }
+
+}
+
+object P14TR {
+
   @tailrec
   private def duplicate(xs: List[Char], acc: List[Char]): List[Char] = xs match {
     case Nil    => acc
@@ -17,17 +26,24 @@ object P14TR {
 
 }
 
-class P14TRSpec extends NNSpec {
-  import P14TR._
+class P14Spec extends NNSpec {
 
   it("1") {
-    Vector(
+    val impls = Vector(
+      P14R.duplicate _,
+      P14TR.duplicate _,
+    )
+
+    val data = Vector(
       "" -> "",
       "A" -> "AA",
       "AB" -> "AABB",
     )
-      .foreach { case (in, out) =>
-        duplicate(in.toList).mkString shouldEqual out
-      }
+
+    for {
+      impl <- impls
+      (in, out) <- data
+    } impl(in.toList).mkString shouldEqual out
+
   }
 }

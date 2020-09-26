@@ -8,9 +8,9 @@ object P12BR {
   def unpackOne(c: Char, n: Int): List[Char] = List.fill(n)(c)
 
   def unpack(xs: List[Any]): List[Char] = xs match {
-    case Nil                    => Nil
     case (c: Char) :: t         => c :: unpack(t)
     case (n: Int, c: Char) :: t => unpackOne(c, n) ::: unpack(t)
+    case _                      => Nil
   }
 
 }

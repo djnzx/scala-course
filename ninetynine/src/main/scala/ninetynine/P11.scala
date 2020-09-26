@@ -39,7 +39,7 @@ class P11Spec extends NNSpec {
     
     for {
       (in, out) <- data
-    } yield rle(in.toList) shouldEqual out
+    } rle(in.toList) shouldEqual out
     
   }
 }

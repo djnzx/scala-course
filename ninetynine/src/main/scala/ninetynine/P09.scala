@@ -38,6 +38,6 @@ class P09Spec extends NNSpec {
     
     for {
       (in, out) <- data
-    } yield pack(in.toList) shouldEqual out
+    } pack(in.toList) shouldEqual out
   }
 }

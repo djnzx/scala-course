@@ -1,35 +1,53 @@
 package ninetynine
 
+/**
+  * Generate the combinations of K distinct objects chosen from the N elements of a list
+  * 
+  *     n!
+  * -----------    
+  * k! * (n-k)!
+  * 
+  * 3 of 4 = 4 
+  * 3 of 5 = 10
+  * 
+  *     5!
+  * ----------- = 10
+  * 3! * (5-3)!
+  * 
+  */
 object P26 {
-  /**
-    * a ++ b  === concatenation for any iterables
-    * a ::: b === concatenation for lists especially
-    *
-    * that's variance of flatMap
-    * which joins results f(list) and flatMapTail(list.tail)(f)
-    *
-    * if we provide identity function as a parameter
-    * flatMapTail(List('a, 'b, 'c, 'd))(l => l) will produce:
-    *
-    * List('a, 'b, 'c, 'd,   'b, 'c, 'd,   'c, 'd,   'd)
-    */
-  def tail[A, B](la: List[A])(f: List[A] => List[B]): List[B] = la match {
+  type L[A] = List[A]
+  type LL[A] = List[List[A]]
+  
+  def tails[A](la: List[A])(f: L[A] => LL[A]): LL[A] = la match {
     case Nil => Nil
-    case _ :: t => f(la) ::: tail(t) {
-      f
+    case _ :: t => f(la) ::: tails(t)(f) 
+  }
+  
+  def combinations[A](n: Int, la: L[A]): LL[A] = n match {
+    case 0 => List(Nil)
+    case _ => tails(la) { case h :: t => 
+      combinations(n - 1, t) map(h :: _)
     }
   }
+}
 
-  def combinations[A](n: Int, la: List[A]): List[List[A]] = n match {
-    case 0 => List(Nil)
-    case _ => tail(la) { case h :: t => combinations(n - 1, t) map { x => h :: x } }
-  }
+class P26Spec extends NNSpec {
+  import P26._
+  
+  it("1") {
+    val data = Seq(
+      (1,"abc") -> Seq("a", "b", "c"),
+      (2,"abc") -> Seq("ab", "ac", "bc"),
+      (3,"abc") -> Seq("abc"),
+      (3,"abcd") -> Seq("abc","abd","acd","bcd"),
+      (4,"abcde") -> Seq("abcd","abce","abde","acde","bcde"),
+      (3,"abcde") -> Seq("abc","abd","abe","acd","ace","ade","bcd","bce","bde","cde"),
+    )
 
-  def test(): Unit = {
-    val data: List[Symbol] = List('a, 'b, 'c, 'd, 'e)
-    println(data)
-    val r = combinations(3, data) // List(List('a, 'b, 'c), List('a, 'b, 'd), List('a, 'c, 'd), List('b, 'c, 'd))
-    println(r)
+    for {
+      ((n, in), out) <- data
+    } combinations(n, in.toList) shouldEqual out.map(_.toList)
   }
   
 }

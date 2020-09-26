@@ -1,5 +1,12 @@
 package glovo
 
+/**
+  * Binomial coefficient
+  * 
+  *               N !         N (N - 1) ... (K + 1)
+  * C(N, K) = ------------- = ---------------------
+  *           (N - K)! * K!           (N - K) !
+  */
 object TaskA {
 
   type BD = java.math.BigDecimal
