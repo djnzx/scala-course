@@ -1,5 +1,8 @@
 package ninetynine
 
+/**
+  * Calculate Euler's totient function phi(m).
+  */
 object P34 {
   import P33.areCoPrime
   
