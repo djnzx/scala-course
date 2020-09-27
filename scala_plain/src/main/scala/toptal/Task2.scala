@@ -1,38 +1,21 @@
 package toptal
 
-object Task2 {
+import scala.annotation.tailrec
 
-  def stringToTuples(s: String): List[(Char, Int)] = {
-   
-    def pack(xs: List[Char], buf: (Char, Int), acc: List[(Char, Int)]): List[(Char, Int)] = (xs, buf) match {
-      case (Nil, _)  => acc :+ buf
-      case (xh::xt, (ch, cnt)) =>
-        if (xh == ch) pack(xt, (ch, cnt + 1), acc)
-        else          pack(xt, (xh, 1)      , acc :+ buf)
+object Task2 {
+  
+  def pack[A](xs: List[A]): List[(A, Int)] = {
+
+    @tailrec
+    def packIt(xs: List[A], tmp: Option[(A, Int)], acc: List[(A, Int)]): List[(A, Int)] = (xs, tmp) match {
+      case (Nil,    None)                      => acc
+      case (Nil,    Some(t @ _))               => t :: acc
+      case (xh::xt, None)                      => packIt(xt, Some(xh, 1), acc)
+      case (xh::xt, Some((c, cnt))) if xh == c => packIt(xt, Some(c, cnt + 1), acc)      // the same letter, keep counting
+      case (xh::xt, Some(t @ _))               => packIt(xt, Some(xh, 1)     , t :: acc) // the letter is different, start counting from 1
     }
-    
-    s match {
-      case "" => Nil
-      case _ =>
-        val h::t = s.toList
-        pack(t, (h, 1), Nil)
-    }
+
+    packIt(xs, None, Nil) reverse
   }
 
-  def squashK(data: List[(Char, Int)], k:Int): List[(Char, Int)] = ???
-  
-  def squashDup(data: List[(Char, Int)]): List[(Char, Int)] = ???
-  
-  def lenT(t: (Char, Int)): Int =
-    t._2.toString.length + 1
-  
-  def len(data: List[(Char, Int)]): Int =
-    data.foldLeft(0) { (acc, t) => acc + lenT(t)}
-  
-  def solution(s: String, k: Int): Int = {
-    val sq1 = stringToTuples(s)
-    val sq2 = squashK(sq1, k)
-    val sq3 = squashDup(sq2)
-    len(sq3)
-  }  
 }

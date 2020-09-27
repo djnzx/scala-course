@@ -1,6 +1,6 @@
-package nixa
+package nixa.a
 
-object TaskR1 extends App {
+object Task1 extends App {
 
   /*
    * Complete the 'fetchItemsToDisplay' function below.
@@ -15,11 +15,11 @@ object TaskR1 extends App {
    */
 
   def fetchItemsToDisplay(
-                           items0: Array[Array[String]],
-                           sortParameter: Int,
-                           sortOrder: Int,
-                           itemsPerPage: Int,
-                           pageNumber: Int): Array[String] = {
+    items0: Array[Array[String]],
+    sortParameter: Int,
+    sortOrder: Int,
+    itemsPerPage: Int,
+    pageNumber: Int): Array[String] = {
     case class Item(name: String, rel: Int, price: Int)
     object Item {
       def from(line: Array[String]) = line match {
@@ -35,11 +35,12 @@ object TaskR1 extends App {
       case (2, 0) => items.sortBy(_.price)
       case (2, 1) => items.sortBy(_.price)(Ordering.Int.reverse)
     })
-    .slice(
-      itemsPerPage * pageNumber - 1,
-      itemsPerPage * pageNumber - 1 + itemsPerPage
-    )
-    .map(_.name)
+      .slice(
+        itemsPerPage * pageNumber - 1,
+        itemsPerPage * pageNumber - 1 + itemsPerPage
+      )
+      .map(_.name)
   }
 
 }
+

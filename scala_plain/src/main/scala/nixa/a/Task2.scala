@@ -1,9 +1,8 @@
-package nixa
+package nixa.a
 
 import scala.collection.immutable
 
-object TaskR2 extends App {
-
+object Task2 {
   def numberOfTokens(expLim: Int, commands: Array[Array[Int]]): Int = {
     /** Domain representation */
     sealed trait Command
