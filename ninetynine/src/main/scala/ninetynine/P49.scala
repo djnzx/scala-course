@@ -20,13 +20,18 @@ object P49 {
 }
 
 object P49Strings {
-  val variants = List("0","1")
+  val variants = List("0", "1")
   
   def gray(n: Int): List[String] = n match {
     case 0 => List("")
     case n =>
       val prev = gray(n - 1)
       variants.flatMap { d => prev.map(d + _) }
+  }
+  
+  def gray2(n: Int): List[String] = n match {
+    case 0 => List("")
+    case n => gray(n - 1).flatMap { d => variants.map(d + _) }
   }
   
 }
@@ -95,6 +100,7 @@ class P49Spec extends NNSpec {
 
       data.foreach { case (in, out) =>
         gray(in).shouldEqual(out)
+        gray2(in).shouldEqual(out)
       }
     }
   }
