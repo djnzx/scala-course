@@ -12,6 +12,11 @@ object P49 {
       variants.flatMap { d => prev.map(d :: _) }
   }
   
+  def gray2(n: Int): List[List[Int]] = n match {
+    case 0 => List(Nil)
+    case n => gray(n - 1).flatMap { l => variants.map(l :+ _) }
+  }
+  
 }
 
 object P49Strings {
@@ -81,6 +86,7 @@ class P49Spec extends NNSpec {
 
       data.foreach { case (in, out) =>
         gray(in).map(_.mkString).shouldEqual(out)
+        gray2(in).map(_.mkString).shouldEqual(out)
       }
     }
 
