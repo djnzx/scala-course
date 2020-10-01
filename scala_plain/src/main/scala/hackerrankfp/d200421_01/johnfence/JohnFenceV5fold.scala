@@ -18,22 +18,24 @@ object JohnFenceV5fold {
   def calcFence(fence: Vector[Int]) = {
 
     @tailrec
-    def process1(xx: XState): XState = xx match {
-      case XState(idx, stack, maxArea) =>
-        if (idx < fence.length) process1(
-          if (stack.isEmpty || fence(stack.head) < fence(idx))
-            XState(idx+1, idx::stack, maxArea) else
-            XState(idx,   stack.tail, calcAndMaxArea(maxArea, idx, stack.tail, fence(stack.head))))
-        else xx
-    }
+    def process1(i: Int, s: List[Int], ma: Int): (Int, List[Int], Int) =
+      if (i < fence.length)
+        s match {
+          case Nil                         => process1(i+1, i::s, ma)
+          case h::_ if fence(h) < fence(i) => process1(i+1, i::s, ma)
+          case h::t  =>
+            val ma2 = calcAndMaxArea(ma, i, t, fence(h))
+            process1(i,   t,    ma2)
+        }
+      else (i, s, ma)
 
     val s0 = XState(0, List.empty, 0)
 
     // count max correctly if we finish with descending
-    val s1 = process1(s0)
-    
+    val s1: (Int, List[Int], Int) = process1(s0.idx, s0.stack, s0.maxArea)
+
     // find max if we only climb
-    val s2 = s1.stack.foldLeft(s1) { case (XState(idx, h :: t, maxArea), _) =>
+    val s2 = s1._2.foldLeft(XState.tupled(s1)) { case (XState(idx, h :: t, maxArea), _) =>
       XState(idx, t, calcAndMaxArea(maxArea, idx, t, fence(h)))
     }
 
@@ -53,7 +55,7 @@ object JohnFenceV5fold {
     println(max)
   }
 
-  def main_test2(args: Array[String]) {
+  def main_test2(args: Array[String]) = {
       val src = scala.io.Source.fromFile(new java.io.File("scala_plain/src/main/scala/hackerrankfp/d200421_01/test2big"))
       val _ = src.getLines().take(1).next()
       val fence = src.getLines().map(_.trim).next().split(" ").map(_.toInt).toVector
