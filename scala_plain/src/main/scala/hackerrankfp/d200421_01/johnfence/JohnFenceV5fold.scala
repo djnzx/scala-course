@@ -9,7 +9,7 @@ object JohnFenceV5fold {
     val width = s match {
       case Nil    => idx
       case h :: _ => idx - 1 - h
-    } 
+    }
     prevMaxArea max width * topHeight
   }
 
@@ -18,21 +18,25 @@ object JohnFenceV5fold {
   def calcFence(fence: Vector[Int]) = {
 
     @tailrec
-    def process1(x: XState): XState =
-      if (x.idx < fence.length) process1(
-        if (x.stack.isEmpty || fence(x.stack.head) < fence(x.idx))
-          XState(x.idx+1, x.idx::x.stack, x.maxArea) else
-          XState(x.idx,   x.stack.tail,   calcAndMaxArea(x.maxArea, x.idx, x.stack.tail, fence(x.stack.head))))
-      else x
+    def process1(xx: XState): XState = xx match {
+      case XState(idx, stack, maxArea) =>
+        if (idx < fence.length) process1(
+          if (stack.isEmpty || fence(stack.head) < fence(idx))
+            XState(idx+1, idx::stack, maxArea) else
+            XState(idx,   stack.tail, calcAndMaxArea(maxArea, idx, stack.tail, fence(stack.head))))
+        else xx
+    }
 
     val s0 = XState(0, List.empty, 0)
-    
-    val s1 = process1(s0)
 
+    // count max correctly if we finish with descending
+    val s1 = process1(s0)
+    
+    // find max if we only climb
     val s2 = s1.stack.foldLeft(s1) { case (XState(idx, h :: t, maxArea), _) =>
       XState(idx, t, calcAndMaxArea(maxArea, idx, t, fence(h)))
     }
-    
+
     s2.maxArea
   }
 
