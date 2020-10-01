@@ -261,6 +261,7 @@
 - [akka-stream-alpakka-file](https://medium.com/wbaa/akka-streams-by-example-processing-files-21c824dd817)
 - [Writing native CLI applications in Scala with GraalVM](https://msitko.pl/blog/2020/03/10/writing-native-cli-applications-in-scala-with-graalvm.html)
 - [cli + graalVM](https://www.reddit.com/r/scala/comments/iqth3v/i_built_a_scala_cli_app_to_organize_my_local/)
+- [scalatest](https://sergeyolontsev.com/2019/04/scalatest-sbt-run-specific-tests/)
 
 ### KAFKA
 - [REPL for Apache Kafka](https://github.com/mmolimar/kukulcan)
