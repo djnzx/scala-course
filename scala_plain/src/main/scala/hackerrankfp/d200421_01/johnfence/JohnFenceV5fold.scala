@@ -2,44 +2,34 @@ package hackerrankfp.d200421_01.johnfence
 
 
 object JohnFenceV5fold {
-  import scala.annotation.tailrec
   def readLine = scala.io.StdIn.readLine()
 
-  def calcAndMaxArea(prevMaxArea: Int, idx: Int, s: List[Int], topHeight: Int): Int = {
-    val width = s match {
-      case Nil    => idx
-      case h :: _ => idx - 1 - h
-    }
-    prevMaxArea max width * topHeight
-  }
-
-  case class XState(idx: Int, stack: List[Int], maxArea: Int)
-
+  def width(idx: Int, s: List[Int]) = s match {
+    case Nil    => idx
+    case h :: _ => idx - 1 - h
+  } 
+  
   def calcFence(fence: Vector[Int]) = {
 
-    @tailrec
-    def process1(i: Int, s: List[Int], ma: Int): (Int, List[Int], Int) =
+    def step1(i: Int, s: List[Int], prev: Int): (Int, List[Int], Int) =
       if (i < fence.length)
         s match {
-          case Nil                         => process1(i+1, i::s, ma)
-          case h::_ if fence(h) < fence(i) => process1(i+1, i::s, ma)
+          case Nil                         => step1(i+1, i::s, prev)
+          case h::_ if fence(h) < fence(i) => step1(i+1, i::s, prev)
           case h::t  =>
-            val ma2 = calcAndMaxArea(ma, i, t, fence(h))
-            process1(i,   t,    ma2)
+            val ma2 = prev max fence(h) * width(i, t)
+            step1(i, t, ma2)
         }
-      else (i, s, ma)
+      else (i, s, prev)
 
-    val s0 = XState(0, List.empty, 0)
+    val (i, s, ma) = step1(0, List.empty, 0)
 
-    // count max correctly if we finish with descending
-    val s1: (Int, List[Int], Int) = process1(s0.idx, s0.stack, s0.maxArea)
-
-    // find max if we only climb
-    val s2 = s1._2.foldLeft(XState.tupled(s1)) { case (XState(idx, h :: t, maxArea), _) =>
-      XState(idx, t, calcAndMaxArea(maxArea, idx, t, fence(h)))
+    val (_, _, ma3) = s.foldLeft((i, s, ma)) { case ((idx, l @ h :: t, prev), _) =>
+      val ma2 = prev max fence(h) * width(idx, l)
+      (idx, t, ma2)
     }
-
-    s2.maxArea
+    
+    ma3
   }
 
   def main(args: Array[String]) = {
