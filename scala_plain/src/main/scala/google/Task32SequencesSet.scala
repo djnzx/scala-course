@@ -3,10 +3,10 @@ package google
 import pprint.{pprintln => println}
 
 /**
-  * longest sequence of 
+  * longest sequence of
   */
-object Task32Sequences extends App {
-  
+object Task32SequencesSet extends App {
+
   import Task31Levenstein.distance
 
   val dict = Set(
@@ -14,7 +14,7 @@ object Task32Sequences extends App {
     "like", "ike", "ide", "id", "king", "idea", "ikea",
     "a", "ab", "abc", "ink", "kin", "king", "kind"
   )
-  
+
   def nextWordsTo(word: String) =
     dict
       .filter(w => (w.length == word.length + 1) && distance(word, w) == 1)
@@ -29,6 +29,6 @@ object Task32Sequences extends App {
     allSeq()
       .map(_.length)
       .max
-      
+
   println(allSeq())
 }
