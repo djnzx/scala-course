@@ -3,8 +3,8 @@ package google
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
-class Task1Spec extends AnyFunSpec with Matchers {
-  import Task1._
+class Task0Spec extends AnyFunSpec with Matchers {
+  import Task0._
 
   describe("mkIntervals") {
 
