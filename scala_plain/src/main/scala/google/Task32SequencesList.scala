@@ -5,8 +5,15 @@ import pprint.{pprintln => println}
 import scala.collection.mutable
 
 /**
-  * longest sequence of the words
-  * you can construct from the given set
+  * longest sequence of the words from the given dictionary:
+  * 
+  * dict = Set(
+  *   "i", "in", "ik", "sin", "sing", "sting", "string",
+  *   "like", "ike", "ide", "id", "king", "idea", "ikea",
+  *   "a", "ab", "abc", "ink", "kin", "king", "kind"
+  * )
+  * 
+  * you can construct from the given set:
   * 
   * List(
   *   List("a", "ab", "abc"),
