@@ -27,7 +27,7 @@ import scala.collection.mutable
   *   List("i", "ik", "ink")
   * )
   */
-object Task32SequencesList extends App {
+object Task32SequencesListOptimizedDictByLen extends App {
 
   import Task31Levenstein.distance
 

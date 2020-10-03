@@ -9,12 +9,14 @@ object Task0 {
   case class Input(int: Interval, name: String)
   case class Output(int: Interval, names: Seq[String])
   
-  def mkIntervals(input: Seq[Interval]): Seq[Interval] = {
-    val points: Vector[Int] = input
-      .foldLeft(TreeSet.empty[Int]) { case (set, Interval(mn, mx)) => set ++ Set(mn, mx) }
-      .toVector
-    (0 to points.length-2).map(idx => Interval(points(idx), points(idx+1)))
-  }
+  def mkIntervals(input: Seq[Interval]) =
+    input
+      .foldLeft(TreeSet.empty[Int]) { case (set, Interval(mn, mx)) => 
+        set ++ Set(mn, mx)
+      }
+      .toVector match {
+      case pts => (0 to pts.length-2).map(i => Interval(pts(i), pts(i+1)))
+    }
 
   /**
     * with empty sub-list implementation
@@ -26,17 +28,15 @@ object Task0 {
   /**
     * without empty sub-list implementation
     */
-  def process(input: Seq[Input]): Seq[Output] =
+  def process(input: Seq[Input]) =
     mkIntervals(input.map(_.int))
       .flatMap { subInt =>
-        input.view
-          .filter(_.int.contains(subInt))
+        input
+          .withFilter(_.int.contains(subInt))
           .map(_.name)
-          .toSeq
         match {
-          case seq if seq.isEmpty => None
-          case seq @ _            => Some(Output(subInt, seq))
+          case Nil => None
+          case seq => Some(Output(subInt, seq))
         }
       }
-  
 }

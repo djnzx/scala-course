@@ -1,10 +1,7 @@
 package google;
 
-import sun.plugin.javascript.navig.Link;
-
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Task3Java {
   
