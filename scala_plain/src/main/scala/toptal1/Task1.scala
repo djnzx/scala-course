@@ -1,4 +1,4 @@
-package toptal
+package toptal1
 
 object Task1 {
 

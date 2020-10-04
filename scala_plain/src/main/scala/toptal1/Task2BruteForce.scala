@@ -1,4 +1,4 @@
-package toptal
+package toptal1
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers

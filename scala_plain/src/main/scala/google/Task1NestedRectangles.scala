@@ -7,7 +7,7 @@ import scala.language.implicitConversions
 import pprint.{pprintln => pln}
 
 /**
-  * inscribed rectangles
+  * nested rectangles
   * find the longest nested chain
   * from the given set
   * (101, 1), (102, 2), (103, 3),
@@ -16,7 +16,7 @@ import pprint.{pprintln => pln}
   * 
   * List((14, 14), (13, 13), (12, 12), (11, 11))
   */
-object Task1InscribedRectangles {
+object Task1NestedRectangles {
   type R = (Int, Int) // rectangle, width and height
 
   def gt(bg: R, sm: R) = bg._1 > sm._1 && bg._2 > sm._2 
@@ -37,8 +37,8 @@ object Task1InscribedRectangles {
   def longest(rs: List[List[R]]) = rs.maxBy(_.length)
 }
 
-class InscribedRectanglesSpec extends AnyFunSpec with Matchers {
-  import Task1InscribedRectangles._
+class NestedRectanglesSpec extends AnyFunSpec with Matchers {
+  import Task1NestedRectangles._
 
   it("fit") {
     val t = Seq(
