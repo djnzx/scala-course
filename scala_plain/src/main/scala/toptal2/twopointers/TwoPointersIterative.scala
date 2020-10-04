@@ -1,20 +1,10 @@
-package toptal2
+package toptal2.twopointers
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
+import toptal2.Counter
 
-object T2 {
-  /**
-    * minimal length
-    * of subarray, containing
-    * all unique elements
-    * 
-    * * [7, 3, 7, 3, 1, 3, 4, 1] -> 5: [7, 3, 1, 3, 4]
-    * * [2, 1, 1, 3, 2, 1, 1, 3] -> 3: [3, 2, 1]
-    * * [7, 5, 2, 7, 2, 7, 4, 7] -> 6: [5, 2, 7, 2, 7, 4]
-    */
+object TwoPointersIterative {
   def solution(a: Array[Int]): Int = {
-    require(a.length > 0, "array expected to have at least one element")
+    require(a.nonEmpty, "array expected to have at least one element")
     val c = new Counter[Int]
     val N = a.length
     val K = a.distinct.length
