@@ -1,21 +1,24 @@
-package google
+package google.t0
 
 import scala.collection.immutable.TreeSet
 
 object Task0 {
+
   case class Interval(min: Int, max: Int) {
     def contains(sub: Interval): Boolean = sub.min >= min && sub.max <= max
   }
+
   case class Input(int: Interval, name: String)
+
   case class Output(int: Interval, names: Seq[String])
-  
+
   def mkIntervals(input: Seq[Interval]) =
     input
-      .foldLeft(TreeSet.empty[Int]) { case (set, Interval(mn, mx)) => 
+      .foldLeft(TreeSet.empty[Int]) { case (set, Interval(mn, mx)) =>
         set ++ Set(mn, mx)
       }
       .toVector match {
-      case pts => (0 to pts.length-2).map(i => Interval(pts(i), pts(i+1)))
+      case pts => (0 to pts.length - 2).map(i => Interval(pts(i), pts(i + 1)))
     }
 
   /**

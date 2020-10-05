@@ -1,6 +1,4 @@
-package google
-
-import pprint.{pprintln => println}
+package google.t3
 
 /**
   * longest sequence of
@@ -22,7 +20,7 @@ object Task32SequencesSet extends App {
   def allSeq(word: String = ""): Set[List[String]] =
     nextWordsTo(word) match {
       case ws if ws.isEmpty => Set(Nil)
-      case ws => ws.flatMap(w => allSeq(w).map(w::_))
+      case ws => ws.flatMap(w => allSeq(w).map(w :: _))
     }
 
   def longestSeq() =

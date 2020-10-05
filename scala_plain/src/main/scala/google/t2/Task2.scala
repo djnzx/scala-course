@@ -1,4 +1,4 @@
-package google
+package google.t2
 
 /**
   * Gold miner

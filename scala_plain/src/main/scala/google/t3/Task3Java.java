@@ -1,4 +1,4 @@
-package google;
+package google.t3;
 
 import java.util.*;
 import java.util.stream.Collectors;
