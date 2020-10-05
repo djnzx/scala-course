@@ -11,42 +11,42 @@ object P49 {
       val prev = gray(n - 1)
       variants.flatMap { d => prev.map(d :: _) }
   }
-  
+
   def gray2(n: Int): List[List[Int]] = n match {
     case 0 => List(Nil)
     case n => gray(n - 1).flatMap { l => variants.map(l :+ _) }
   }
-  
+
 }
 
 object P49Strings {
   val variants = List("0", "1")
-  
+
   def gray(n: Int): List[String] = n match {
     case 0 => List("")
     case n =>
       val prev = gray(n - 1)
       variants.flatMap { d => prev.map(d + _) }
   }
-  
+
   def gray2(n: Int): List[String] = n match {
     case 0 => List("")
     case n => gray(n - 1).flatMap { d => variants.map(d + _) }
   }
-  
+
 }
 
 object P49TR {
   val variants = List("0", "1")
 
   def gray(num: Int): List[String] = {
-    
+
     @tailrec
     def step(n: Int, list: List[String]): List[String] = n match {
       case `num` => list
       case n     => step(n + 1, variants.flatMap(d => list.map(d + _)))
     }
-    
+
     step(0, List(""))
   }
 }
@@ -104,7 +104,7 @@ class P49Spec extends NNSpec {
       }
     }
   }
-  
+
   describe("tail recursive") {
     it("string implementation") {
       import P49TR._
