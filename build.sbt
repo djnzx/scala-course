@@ -44,6 +44,7 @@ lazy val whole = (project in file("."))
     name := "learn-scala",
   )
   .aggregate(
+    algorithms,
     scala_plain,
     fp_red,
     lihaoyi,
@@ -52,7 +53,7 @@ lazy val whole = (project in file("."))
     mix,
     ninetynine,
     degoes,
-    dotty
+    dotty,
   )
 //  .enablePlugins(BuildInfoPlugin)
 //  .settings(
@@ -72,6 +73,21 @@ lazy val scala_plain = (project in file("scala_plain"))
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
       "org.scala-lang"             %  "scala-reflect"               % "2.13.3",
 
+      Libraries.scalaCheck,
+      Libraries.scalaTestPlus,
+      Libraries.scalactic,
+    )
+  )
+
+/**
+  * some algorithms
+  * implementations
+  */
+lazy val algorithms = (project in file("algorithms"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.scala-lang"             %  "scala-reflect"               % "2.13.3",
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
       Libraries.scalactic,
