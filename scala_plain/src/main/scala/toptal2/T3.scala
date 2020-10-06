@@ -118,6 +118,7 @@ class T3Spec extends AnyFunSpec with Matchers {
       (a(2,2,3,4,1,1),2) -> 4,
       (a(2,2,2,2,2,2),2) -> 21,
       (a(2,2,2,2),2) -> 10,
+      (a(0,4,3,-1),2) -> 2,
     )
     for {
       ((a, s), r) <- data

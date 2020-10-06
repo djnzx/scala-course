@@ -13,13 +13,10 @@ public class T2J {
   static int minRange(int[] a) {
     final int n = a.length;
     final int k = (int) Arrays.stream(a).distinct().count();
-
     int l = 0;
     int r = n;
     int j = -1;
-
     Map<Integer, Integer> map = new HashMap<>();
-
     for(int i = 0; i < n; i++) {
       while (j < n) {
         j++;
@@ -29,9 +26,7 @@ public class T2J {
           r = j;
           break;
         }
-        
       }
-      
       if (map.size() < k) break;
       while (map.size() == k) {
         if (map.getOrDefault(a[i], 0) == 1) map.remove(a[i]);

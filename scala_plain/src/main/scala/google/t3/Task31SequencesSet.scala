@@ -3,15 +3,10 @@ package google.t3
 /**
   * longest sequence of
   */
-object Task32SequencesSet extends App {
+object Task31SequencesSet extends App {
 
-  import Task31Levenstein.distance
-
-  val dict = Set(
-    "i", "in", "ik", "sin", "sing", "sting", "string",
-    "like", "ike", "ide", "id", "king", "idea", "ikea",
-    "a", "ab", "abc", "ink", "kin", "king", "kind"
-  )
+  import Task30Levenstein.distance
+  import Task3Data._
 
   def nextWordsTo(word: String) =
     dict
