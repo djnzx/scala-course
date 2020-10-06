@@ -5,7 +5,6 @@ import toptal2.CounterImmutable
 object TwoPointersRecursiveImmutable extends TwoPointers {
   def find[A](a: IndexedSeq[A], k: Int): Int = {
     if (a.isEmpty) return 0
-    val N = a.length
 
     case class State(i: Int = 0, j: Int = -1, l: Int = 0, r: Int = Int.MaxValue, c: CounterImmutable[A] = new CounterImmutable[A]) {
       private def updateRL = if (j - i < r - l) copy(l = i, r = j) else this
@@ -15,7 +14,7 @@ object TwoPointersRecursiveImmutable extends TwoPointers {
       }
       def pullTail = pull(this).updateRL
       def moveBy1 = copy(j = j + 1, c = c.inc(a(j + 1))).pullTail
-      def done = len == k || j >= N-1
+      def done = len == k || j >= a.length-1
       def tryToRelax = processToEnd(this)
       def len = r - l + 1
     }
