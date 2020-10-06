@@ -15,8 +15,8 @@ object TwoPointersRecursiveImmutable extends TwoPointers {
       }
       def pullTail = pull(this).updateRL
       def moveBy1 = copy(j = j + 1, c = c.inc(a(j + 1))).pullTail
-      def done = r - l + 1 == k || j >= N-1
-      def toTail = processToEnd(this)
+      def done = len == k || j >= N-1
+      def tryToRelax = processToEnd(this)
       def len = r - l + 1
     }
 
@@ -30,6 +30,6 @@ object TwoPointersRecursiveImmutable extends TwoPointers {
       case false => processToEnd(st.moveBy1)
     }
 
-    findFirst().toTail.len
+    findFirst().tryToRelax.len
   }
 }
