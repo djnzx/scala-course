@@ -138,9 +138,11 @@ object Dependencies {
     val logback = "ch.qos.logback" % "logback-classic" % Versions.logback
 
     // Test
-    val scalaCheck    = "org.scalacheck"    %% "scalacheck"      % Versions.scalaCheck
-    val scalaTest     = "org.scalatest"     %% "scalatest"       % Versions.scalaTest
-    val scalactic     = "org.scalactic"     %% "scalactic"       % Versions.scalaTest
+    val scalaCheck       = "org.scalacheck"    %% "scalacheck"               % Versions.scalaCheck
+    val scalactic        = "org.scalactic"     %% "scalactic"                % Versions.scalaTest
+    val scalaTest        = "org.scalatest"     %% "scalatest"                % Versions.scalaTest
+    val scalaTestShould  = "org.scalatest"     %% "scalatest-shouldmatchers" % Versions.scalaTest
+    val scalaTestFunSpec = "org.scalatest"     %% "scalatest-funspec"        % Versions.scalaTest
     /**
       * scalatestplus - is a project by scalatest
       * for integrations
@@ -151,8 +153,8 @@ object Dependencies {
     // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
     val silencerAnnotation = "com.github.ghik" % "silencer-lib" % Versions.silencer % Provided cross CrossVersion.full
 
-    val lprint: ModuleID = pf.lihaoyi         %% "pprint"       % "0.5.9"
-
+    val pprint: ModuleID = pf.lihaoyi         %% "pprint"       % "0.6.0"
+    val fansi: ModuleID  = pf.lihaoyi         %% "fansi"        % "0.2.7"
   }
 
 }

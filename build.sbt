@@ -33,8 +33,11 @@ lazy val commonSettings = Seq(
   ),
 
   libraryDependencies ++= Seq(
-    Libraries.scalaTest,
-    Libraries.lprint,
+//    Libraries.scalaTest,
+    Libraries.scalaTestFunSpec,
+    Libraries.scalaTestShould,
+    Libraries.pprint,
+    Libraries.fansi,
   ),
 )
 
@@ -51,7 +54,6 @@ lazy val whole = (project in file("."))
     typesafe,
     typelevel,
     mix,
-    ninetynine,
     degoes,
     dotty,
   )
@@ -87,9 +89,6 @@ lazy val algorithms = (project in file("algorithms"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "org.scala-lang"             %  "scala-reflect"               % "2.13.3",
-      Libraries.scalaCheck,
-      Libraries.scalaTestPlus,
       Libraries.scalactic,
     )
   )
@@ -247,16 +246,6 @@ lazy val mix = (project in file("mix"))
       Libraries.refinedScalaz,
       "org.scalaz" %% "scalaz-deriving-jsonformat" % "2.0.0-M5",
 
-    ),
-  )
-
-/**
-  * http://aperiodic.net/phil/scala/s-99/
-  */
-lazy val ninetynine = (project in file("ninetynine"))
-  .settings(commonSettings)
-  .settings(
-    libraryDependencies ++= Seq(
     ),
   )
 
