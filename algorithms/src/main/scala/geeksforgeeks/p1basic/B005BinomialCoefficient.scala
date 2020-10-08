@@ -8,6 +8,12 @@ import tools.spec.ASpec
   * https://en.wikipedia.org/wiki/Pascal%27s_triangle
   * n choose k
   * another solution in [[glovo.TaskA.solution]]
+  * 
+   *          P(n, k)
+  * C(n,k) = ---------
+  *           P(k, k)
+  * 
+  * P(n, k) solved [[geeksforgeeks.p1basic.B006PermutationCoefficient]]
   */
 object B005BinomialCoefficient {
   def nCk(n: Int, k: Int): Int = {
