@@ -97,8 +97,11 @@ object B008GoldMineDPFPTraced {
     */
   // TODO ADD INDEX(?) HERE                 List[indices]
   def maxFrom(y: Int, a: Array[Int]) = nextMoves(a, y) match {
-    case Nil  => 0 // no more moves
-    case next => next.map(yi => a(yi)).max
+    case Nil  => (0, None) // no more moves
+    case next => 
+      val mx = next.map(yi => a(yi)).max
+      val idx = a.indexOf(mx)
+      (mx, Some(idx))
   }
 
   // TODO ADD INDEX(?) HERE
@@ -115,11 +118,12 @@ object B008GoldMineDPFPTraced {
     // TODO: this approach works in not all the cases. we need to do back-tracking after finding sum 
     hIndexesInv
       .foldLeft(start) { (prev, xi) => // 2,1 on 3 dim (hor)
-        val prevOnly = prev.map(_._1)
-        val maxes: Array[Int] = colToMax(prevOnly)
-        println(maxes.mkString("Array(", ", ", ")"))
+        val prevOnly: Array[Int] = prev.map(_._1)
         val tracks: Array[List[Int]] = prev.map(_._2)
-        val maxIdx = prevOnly.indexOf(maxes.max)
+        val maxesWithIdx: Array[(Int, Option[Int])] = colToMax(prevOnly)
+        val maxes = maxesWithIdx.map(_._1)
+//        println(maxesWithIdx.mkString("Array(", ", ", ")"))
+        val maxIdx = maxesWithIdx(prevOnly.indexOf(maxes.max))._2.getOrElse(-1)
         val track: List[Int] = tracks(maxIdx)
 
         val va = vIndices.map { yi =>          // 0,1,2 on 3 dim (ver)
