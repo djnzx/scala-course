@@ -70,10 +70,11 @@ object B008GoldMineDPFP {
     a.indices.map(i => maxFrom(i, a)).toArray
 
   def maxChain(aa: Array[Array[Int]]) = {
+    val H = aa.length
     val vIndices = aa.indices
     val W = aa(0).length
-    val hIndexesInv = (1 until W).map { x => W - 1 - x }
-    val last = aa.map(_.last) // last column
+    val hIndexesInv = (0 until W).map { x => W - 1 - x }
+    val last = Array.ofDim[Int](H)
 
     hIndexesInv
       .foldLeft(last) { (prev, xi) => // 2,1 on 3 dim (hor)
@@ -84,6 +85,53 @@ object B008GoldMineDPFP {
       }
       .max
   }
+}
+
+object B008GoldMineDPFPTraced {
+  import B008Common._
+
+  /**
+    * having column (Y)
+    * calculate possible moves y => (y-1, y, y+1)
+    * and extracting the max from them
+    */
+  // TODO ADD INDEX(?) HERE                 List[indices]
+  def maxFrom(y: Int, a: Array[Int]) = nextMoves(a, y) match {
+    case Nil  => 0 // no more moves
+    case next => next.map(yi => a(yi)).max
+  }
+
+  // TODO ADD INDEX(?) HERE
+  def colToMax(a: Array[Int]) =
+    a.indices.map(i => maxFrom(i, a)).toArray
+
+  def maxChainTraced(aa: Array[Array[Int]]): (Int, List[Int]) = {
+    val H = aa.length
+    val vIndices = aa.indices
+    val W = aa(0).length
+    val hIndexesInv = (0 until W).map { x => W - 1 - x }
+    val start = Array.ofDim[Int](H).map(_ -> List.empty[Int])
+    
+    // TODO: this approach works in not all the cases. we need to do back-tracking after finding sum 
+    hIndexesInv
+      .foldLeft(start) { (prev, xi) => // 2,1 on 3 dim (hor)
+        val prevOnly = prev.map(_._1)
+        val maxes: Array[Int] = colToMax(prevOnly)
+        println(maxes.mkString("Array(", ", ", ")"))
+        val tracks: Array[List[Int]] = prev.map(_._2)
+        val maxIdx = prevOnly.indexOf(maxes.max)
+        val track: List[Int] = tracks(maxIdx)
+
+        val va = vIndices.map { yi =>          // 0,1,2 on 3 dim (ver)
+          (aa(yi)(xi) + maxes(yi), aa(yi)(xi)::track)
+        }.toArray
+        va.foreach(x => pprint.pprintln(x))
+        va
+      }
+    .maxBy(_._1)
+  }
+  
+  def maxChain(a: Array[Array[Int]]) = maxChainTraced(a)._1
 }
 
 class B008GoldMineSpec extends ASpec {
@@ -142,8 +190,16 @@ class B008GoldMineSpec extends ASpec {
     val impls = Seq(
       B008GoldMineFP.maxChain _,
       B008GoldMineDPFP.maxChain _,
+      B008GoldMineDPFPTraced.maxChain _,
     )
     runAllSD(data, impls)
+  }
+  it("trace") {
+    import B008GoldMineDPFPTraced._
+//    maxChainTraced(data(0)._1) shouldEqual (data(0)._2, List(7,8,9))
+//    maxChainTraced(data(1)._1) shouldEqual (data(1)._2, List(2, 6, 4))
+    maxChainTraced(data(2)._1) shouldEqual (data(2)._2, List(5,6,2,3))
+//    maxChainTraced(data(3)._1) shouldEqual (data(3)._2, List(22,33,13,15))
   }
 
 }
