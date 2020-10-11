@@ -22,5 +22,6 @@ object ArrayTools {
   implicit class ArrayWithDefault(private val a: Array[Array[Int]]) extends AnyVal {
     def inRange(y: Int)(x: Int) = ptInRange(a)(y)(x)
     def orNone(y: Int)(x: Int) = ptOrNone(a)(x,y)
+    def orZero(y: Int)(x: Int) = ptOrNone(a)(x,y).map { case (x, y) => a(y)(x) }.getOrElse(0)
   }
 }
