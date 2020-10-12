@@ -33,7 +33,10 @@ object B010FriendsPairingCombinations {
     val N = data.size
     if (N == 0) return List(Nil)
 
-    (combinations(1, data) ::: combinations(2, data))     // 1. all combinations by1 and by2 
+    (1 to 2)                                              // 1. all combinations by1 and by2
+      .map { n => combinations(n, data) }
+      .reduce(_:::_)
+//      .foldLeft(List(List.empty[A]))(_:::_)             // I have no idea why foldLeft DOESN'T WORK
       .flatMap { la: L[A] =>                               // 2. take n-th group (1/2 - doesn't matter)
         val a = allComb12(data -- la)                     // 3. calculate the tail without taken group
         val b = a.map { x: LL[A] => la :: x }             // 4. attach the taken group from step2 
