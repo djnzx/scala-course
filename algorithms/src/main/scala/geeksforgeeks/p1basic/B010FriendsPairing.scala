@@ -2,6 +2,13 @@ package geeksforgeeks.p1basic
 
 import tools.spec.ASpec
 
+/**
+  * https://www.geeksforgeeks.org/friends-pairing-problem/
+  */
+/**
+  * recursion
+  * exponential
+  */
 object B010FriendsPairing {
   def nWays(n: Int): Int = {
     if (n == 1) return 1
@@ -9,6 +16,39 @@ object B010FriendsPairing {
 
     nWays(n - 1) +          // N-th is alone 
     (n - 1) * nWays(n - 2)  // N-th is paired with every 
+  }
+}
+
+/**
+  * DP1
+  * time = O(N)
+  * space = O(N)
+  */
+object B010FriendsPairingDP {
+  def nWays(n: Int): Int = {
+    if (n == 1) return 1
+    if (n == 2) return 2
+    val dp = Array.ofDim[Int](n+1)
+    dp(1) = 1
+    dp(2) = 2
+    (3 to n).foreach { n => dp(n) = dp(n-1) + (n-1)*dp(n-2) }
+    dp(n)
+  }
+}
+
+/**
+  * DP2
+  * time = O(N)
+  * space = O(C)
+  */
+object B010FriendsPairingDP2 {
+  def nWays(n: Int): Int = {
+    if (n <= 2) return n
+    (3 to n)
+      .foldLeft((1,2)) { case ((n2, n1), n) => 
+        (n1, n1 + (n - 1) * n2)
+      }
+      ._2
   }
 }
 
@@ -47,16 +87,21 @@ object B010FriendsPairingCombinations {
 
 class B010FriendsPairingSpec extends ASpec {
   it("1") {
-    import B010FriendsPairing._
-    
     val data = Seq(
       1 -> 1,
       2 -> 2,
       3 -> 4,
-      4 -> 10
+      4 -> 10,
+      5 -> 26,
     )
     
-    runAllD(data, nWays)
+    val impls = Seq(
+      B010FriendsPairing.nWays _,
+      B010FriendsPairingDP.nWays _,
+      B010FriendsPairingDP2.nWays _,
+    )
+    
+    runAllSD(data, impls)
   }
   
   it("2") {
