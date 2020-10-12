@@ -15,7 +15,12 @@ object B008Common {
       a.ptOrNone(y+1)(x+1),
     ).flatten
   }
-  /** all possible next moves from particular point in the given array, y-dim version only*/
+  /**
+    * all possible next moves from particular point in the given array,
+    * y-dim version only
+    *
+    * @return - Seq[Int] - indexes
+    */
   def nextMoves(a: Array[Int], y: Int) =
     Seq(
       a.idxOrNone(y-1),
@@ -63,7 +68,7 @@ object B008GoldMineDPFP {
     */
   def maxFrom(y: Int, a: Array[Int]) = nextMoves(a, y) match {
     case Nil  => 0 // no more moves
-    case next => next.map(a(_)).max
+    case idxs => idxs.map(a(_)).max
   }
 
   def colToMax(a: Array[Int]) =
@@ -93,19 +98,15 @@ object B008GoldMineDPFPTraced {
   /**
     * having column (Y)
     * calculate possible moves y => (y-1, y, y+1)
-    * and extracting the max from them
+    * and extracting the max from them (with path)
     */
-  // TODO ADD INDEX(?) HERE                 List[indices]
-  def maxFrom(y: Int, a: Array[Int]) = nextMoves(a, y) match {
-    case Nil  => (0, None) // no more moves
-    case next => 
-      val mx = next.map(yi => a(yi)).max
-      val idx = a.indexOf(mx)
-      (mx, Some(idx))
-  }
+  def maxFrom(y: Int, a: Array[(Int, List[Int])]) =
+    nextMoves(a.map(_._1), y) match {
+      case Nil  => (0, Nil)
+      case idxs => idxs.map(a(_)).maxBy(_._1)
+    }
 
-  // TODO ADD INDEX(?) HERE
-  def colToMax(a: Array[Int]) =
+  def colToMax(a: Array[(Int, List[Int])]) =
     a.indices.map(i => maxFrom(i, a)).toArray
 
   def maxChainTraced(aa: Array[Array[Int]]): (Int, List[Int]) = {
@@ -113,26 +114,19 @@ object B008GoldMineDPFPTraced {
     val vIndices = aa.indices
     val W = aa(0).length
     val hIndexesInv = (0 until W).map { x => W - 1 - x }
-    val start = Array.ofDim[Int](H).map(_ -> List.empty[Int])
-    
-    // TODO: this approach works in not all the cases. we need to do back-tracking after finding sum 
-    hIndexesInv
-      .foldLeft(start) { (prev, xi) => // 2,1 on 3 dim (hor)
-        val prevOnly: Array[Int] = prev.map(_._1)
-        val tracks: Array[List[Int]] = prev.map(_._2)
-        val maxesWithIdx: Array[(Int, Option[Int])] = colToMax(prevOnly)
-        val maxes = maxesWithIdx.map(_._1)
-//        println(maxesWithIdx.mkString("Array(", ", ", ")"))
-        val maxIdx = maxesWithIdx(prevOnly.indexOf(maxes.max))._2.getOrElse(-1)
-        val track: List[Int] = tracks(maxIdx)
+    val initial = Array.ofDim[Int](H).map(_ -> List.empty[Int])
 
-        val va = vIndices.map { yi =>          // 0,1,2 on 3 dim (ver)
-          (aa(yi)(xi) + maxes(yi), aa(yi)(xi)::track)
+    hIndexesInv
+      .foldLeft(initial) { (prev, xi) =>
+        val maxes = colToMax(prev)
+        vIndices.map { yi =>
+          val x = aa(yi)(xi)
+          val (mx, path) = maxes(yi)
+          (x + mx, x :: path)
         }.toArray
-        va.foreach(x => pprint.pprintln(x))
-        va
+        
       }
-    .maxBy(_._1)
+      .maxBy(_._1)
   }
   
   def maxChain(a: Array[Array[Int]]) = maxChainTraced(a)._1
@@ -147,24 +141,24 @@ class B008GoldMineSpec extends ASpec {
       aa(1, 2, 3),
       aa(4, 5, 6),
       aa(7, 8, 9)
-    ) -> {7+8+9},
+    ) -> (24, List(7,8,9)),
     aa(
       aa(1, 3, 3),
       aa(2, 1, 4),
       aa(0, 6, 4)
-    ) -> 12,
+    ) -> (12, List(2, 6, 4)),
     aa(
       aa(1, 3, 1, 5),
       aa(2, 2, 4, 1),
       aa(5, 0, 2, 3),
       aa(0, 6, 1, 2)
-    ) -> 16,
+    ) -> (16, List(5,2,4,5)),
     aa(
       aa(10, 33, 13, 15),
       aa(22, 21, 4, 1),
       aa(5, 0, 2, 3),
       aa(0, 6, 14, 2)
-    ) -> 83,
+    ) -> (83, List(22,33,13,15)),
   )
 
   it("nextMoves on 1D") {
@@ -196,14 +190,12 @@ class B008GoldMineSpec extends ASpec {
       B008GoldMineDPFP.maxChain _,
       B008GoldMineDPFPTraced.maxChain _,
     )
-    runAllSD(data, impls)
+    runAllSD(data.map(x => (x._1, x._2._1)), impls)
   }
-  it("trace") {
+  
+  it("maxChain with trace") {
     import B008GoldMineDPFPTraced._
-//    maxChainTraced(data(0)._1) shouldEqual (data(0)._2, List(7,8,9))
-//    maxChainTraced(data(1)._1) shouldEqual (data(1)._2, List(2, 6, 4))
-    maxChainTraced(data(2)._1) shouldEqual (data(2)._2, List(5,6,2,3))
-//    maxChainTraced(data(3)._1) shouldEqual (data(3)._2, List(22,33,13,15))
+    runAll(data, maxChainTraced)
   }
 
 }
