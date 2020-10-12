@@ -190,7 +190,7 @@ class B008GoldMineSpec extends ASpec {
       B008GoldMineDPFP.maxChain _,
       B008GoldMineDPFPTraced.maxChain _,
     )
-    runAllSD(data.map(x => (x._1, x._2._1)), impls)
+    runAllSD(data.map { case (in, (mx, _)) => (in, mx) }, impls)
   }
   
   it("maxChain with trace") {
