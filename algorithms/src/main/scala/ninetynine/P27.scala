@@ -34,7 +34,7 @@ object P27 {
         combinations(n, la)                    // possible groups of N items
           .flatMap { c: List[A] =>              // c       - current subgroup
             group(ns, la -- c)                 // la -- c - rest of the team, build recursively
-              .map { c :: _ }                  // attash the head
+              .map { c :: _ }                  // attach the head
           }
     }
   }

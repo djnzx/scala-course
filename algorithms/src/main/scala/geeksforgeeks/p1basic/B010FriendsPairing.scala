@@ -13,13 +13,32 @@ object B010FriendsPairing {
 }
 
 object B010FriendsPairingCombinations {
-  def allComb(n: Int): List[List[List[Int]]] = {
-    if (n == 1) return List(List(List(1)))
-    if (n == 2) return List(List(List(1), List(2)), List(List(1,2)))
+  import ninetynine.P26._
+  import ninetynine.P27._
+  
+  def allCombN[A](data: L[A], n: Int): LLL[A] = {
+    val N = data.size
+    if (N == 0) return List(Nil)
+    require(N % n == 0, s"data size ($N) should be divisible by $n!")
 
-    val alone: List[List[List[Int]]] = List(List(List(n))) ::: allComb(n - 1)
-    val paired = allComb(n - 2).map(g => g.map(n :: _))
-    alone ::: paired
+    combinations(n, data)                     // 1. all pairs combinations 
+      .flatMap { la: L[A] =>                   // 2. take n-th pair
+        val a = allCombN(data -- la, n)       // 3. calculate the tail without that pair
+        val b = a.map { x: LL[A] => la :: x } // 4. attach the n-th pair from step2 
+        b
+      }
+  }
+  
+  def allComb12[A](data: L[A]): LLL[A] = {
+    val N = data.size
+    if (N == 0) return List(Nil)
+
+    (combinations(1, data) ::: combinations(2, data))     // 1. all combinations by1 and by2 
+      .flatMap { la: L[A] =>                               // 2. take n-th group (1/2 - doesn't matter)
+        val a = allComb12(data -- la)                     // 3. calculate the tail without taken group
+        val b = a.map { x: LL[A] => la :: x }             // 4. attach the taken group from step2 
+        b
+      }
   }
 }
 
@@ -39,8 +58,19 @@ class B010FriendsPairingSpec extends ASpec {
   
   it("2") {
     import B010FriendsPairingCombinations._
+    allCombN((1 to 6).toList, 3)
+//      .map(_.toSet)
+//      .toSet
+      .foreach(println)
+  }
+  
+  it("3") {
+    import B010FriendsPairingCombinations._
     
-    allComb(3).foreach(println)
+    allComb12((1 to 4).toList)
+      .map(_.toSet)
+      .toSet
+      .foreach(println)
   }
   
   
