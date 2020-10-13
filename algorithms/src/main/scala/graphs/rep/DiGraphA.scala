@@ -1,12 +1,12 @@
 package graphs.rep
 
 class DiGraphA(private val n: Int) extends DiGraph {
-  private val vx = Array.fill[Set[Int]](n)(Set.empty)
+  private val vx = Array.fill[List[Int]](n)(List.empty)
 
-  override def add(v: Int, w: Int): Unit = vx(v) += w
-  override def remove(v: Int, w: Int): Unit = vx(v) -= w
+  override def add(v: Int, w: Int): Unit = vx(v) = w :: vx(v)
+//  override def remove(v: Int, w: Int): Unit = vx(v) = vx(v) - w
   override def v: Int = vx.length
-  override def adjTo(v: Int): Set[Int] = vx(v)
+  override def adjTo(v: Int) = vx(v)
   override def vertices: Range = 0 until v
   override def toString: String = vertices
     .filter(vx(_).nonEmpty)

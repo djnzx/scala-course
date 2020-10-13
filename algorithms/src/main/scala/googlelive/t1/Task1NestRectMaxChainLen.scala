@@ -115,7 +115,7 @@ object Task1NestRectMaxChainLen extends App {
 //  println(s"Length: ${path.length}")
 //  println(s"time:${spent2}ms")
 
-  // 42s - 7x slower
+  // 2.5x faster
   println("DFS length only:")
   val (maxLen3, spent3) = timed(lp.longestLength)
   println(s"Length: $maxLen3")
