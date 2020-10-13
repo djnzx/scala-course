@@ -34,11 +34,11 @@ object B012SubsetSumDPFP {
     val initial = Array.ofDim[Boolean](sum + 1)
     initial(0) = true
 
-    s.foldLeft(initial) { (prev, num) =>
+    s.foldLeft(initial) { (prev, item) =>
       val next = initial.clone()
       
       (1 to sum).foreach { sm =>
-        next(sm) = prev(sm) || num <= sm && prev(sm - num)
+        next(sm) = prev(sm) || item <= sm && prev(sm - item)
       }
       
       next

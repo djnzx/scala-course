@@ -1,5 +1,8 @@
 package googlelive.t1
 
+import graphs.impls.LongestPathImpl
+import graphs.rep.DiGraphA
+
 import scala.collection.mutable
 import scala.util.Random
 
@@ -93,7 +96,7 @@ object Task1NestRectMaxChainLen extends App {
   }
 
   val rects = rndRects(110).toIndexedSeq
-  val ordering = compareToArray(rects)
+  val ordering: Array[List[Int]] = compareToArray(rects)
 
   println(ordering.count(_.nonEmpty))
   println(ordering.map(_.length).sum)
@@ -102,5 +105,14 @@ object Task1NestRectMaxChainLen extends App {
 
   println(s"Max length: $maxLen")
   println(s"time:${spent}ms")
+  
+  val g = DiGraphA.from(ordering)
+  val lp = new LongestPathImpl(g)
+  println("DFS:")
+  val (path, spent2) = timed(lp.longestPath)
+
+  println(s"Path: $path")
+  println(s"Length: ${path.length}")
+  println(s"time:${spent2}ms")
 
 }
