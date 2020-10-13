@@ -23,15 +23,23 @@ class LongestPathImpl(g: DiGraph) extends LongestPath {
   }
   
   def longestLength: Int = {
-    val from = Array.ofDim[Int](g.v)
+    val count = Array.ofDim[Int](g.v)
 
-    def visitNext(vi: Int): Int = g.adjTo(vi) match {
-      case s if s.isEmpty => 1
-      case s              => 1 + s.map(visitNext).max
+    def visitNext(root: Int, p: Int): Unit = {
+      println(s"VN:root=$root, p=$p")
+      println(count.mkString("A(", ", ", ")"))
+      val chi = g.adjTo(p)
+      println(s"chi to $p: $chi")
+      chi.foreach { v =>
+        count(root) += 1
+        println(count.mkString("A(", ", ", ")"))
+        visitNext(root, v)
+      }
     }
     
-    g.vertices.foreach(v => from(v) = visitNext(v))
-    from.max
+    g.vertices.foreach(v => visitNext(v, v))
+    println(count.mkString("A(", ", ", ")"))
+    count.max
   }
   
 }

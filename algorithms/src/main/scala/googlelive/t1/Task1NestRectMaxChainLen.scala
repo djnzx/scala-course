@@ -108,12 +108,12 @@ object Task1NestRectMaxChainLen extends App {
   val g = DiGraphA.from(ordering)
   val lp = new LongestPathImpl(g)
 
-  println("DFS:")
+//  println("DFS:")
   // 47s - 10x slower
-  val (path, spent2) = timed(lp.longestPath)
-  println(s"Path: $path")
-  println(s"Length: ${path.length}")
-  println(s"time:${spent2}ms")
+//  val (path, spent2) = timed(lp.longestPath)
+//  println(s"Path: $path")
+//  println(s"Length: ${path.length}")
+//  println(s"time:${spent2}ms")
 
   // 42s - 7x slower
   println("DFS length only:")

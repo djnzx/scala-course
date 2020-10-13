@@ -21,6 +21,7 @@ class DiGraphSpec extends ASpec {
     (7,8),
     (7,9),
     (8,9),
+    (1,3),
   )
   val graph = DiGraphA.from(10, testGraph)
   
@@ -30,8 +31,8 @@ class DiGraphSpec extends ASpec {
   
   it("2") {
     val lp = new LongestPathImpl(graph)
-    println(lp.longestPath)
+    println(graph)
+    println(lp.longestLength)
   }
-  
   
 }
