@@ -26,11 +26,12 @@ class LongestPathImpl(g: DiGraph) extends LongestPath {
     val count = Array.ofDim[Int](g.v)
 
     def visitNext(p: Int, len: Int): Unit = {
+      if (count(p) >= len) return 
       count(p) = count(p) max len
-      g.adjTo(p).foreach { visitNext(_, len+1) }
+      g.adjTo(p).foreach(visitNext(_, len+1))
     }
     
-    g.vertices.foreach(v => visitNext(v, 1))
+    g.vertices.foreach(visitNext(_, 1))
     count.max
   }
   

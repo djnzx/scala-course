@@ -94,17 +94,17 @@ object Task1NestRectMaxChainLen extends App {
     m.indices.map(maxLenFor).max
   }
 
-  val rects = rndRects(110).toIndexedSeq
+  val rects = rndRects(10000).toIndexedSeq
   val ordering: Array[List[Int]] = compareToArray(rects)
 
   println(s"Vertices count:${ordering.count(_.nonEmpty)}")
   println(s"Total relations number: ${ordering.map(_.length).sum}")
 
   // 4.5s (len = 19)
-  val (maxLen, spent) = timed(maxLenFromArray(ordering))
-  println(s"Max length: $maxLen")
-  println(s"time:${spent}ms")
-  
+//  val (maxLen, spent) = timed(maxLenFromArray(ordering))
+//  println(s"Max length: $maxLen")
+//  println(s"time:${spent}ms")
+//  
   val g = DiGraphA.from(ordering)
   val lp = new LongestPathImpl(g)
 
@@ -115,7 +115,7 @@ object Task1NestRectMaxChainLen extends App {
 //  println(s"Length: ${path.length}")
 //  println(s"time:${spent2}ms")
 
-  // 2.5x faster
+  // 700x faster
   println("DFS length only:")
   val (maxLen3, spent3) = timed(lp.longestLength)
   println(s"Length: $maxLen3")
