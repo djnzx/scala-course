@@ -22,4 +22,16 @@ class LongestPathImpl(g: DiGraph) extends LongestPath {
     from.maxBy(_.length)
   }
   
+  def longestLength: Int = {
+    val from = Array.ofDim[Int](g.v)
+
+    def visitNext(vi: Int): Int = g.adjTo(vi) match {
+      case s if s.isEmpty => 1
+      case s              => 1 + s.map(visitNext).max
+    }
+    
+    g.vertices.foreach(v => from(v) = visitNext(v))
+    from.max
+  }
+  
 }

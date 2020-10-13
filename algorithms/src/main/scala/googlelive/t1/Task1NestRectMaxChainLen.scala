@@ -4,10 +4,9 @@ import graphs.impls.LongestPathImpl
 import graphs.rep.DiGraphA
 
 import scala.collection.mutable
-import scala.util.Random
 
 /**
-  * since the task was to fin the maximum length
+  * since the task was to find the maximum length
   * we can stop generation the all sequences
   * we need to calculate just the deepest one
   */
@@ -89,30 +88,37 @@ object Task1NestRectMaxChainLen extends App {
 
   def maxLenFromArray(m: Array[List[Int]]) = {
     def maxLenFor(r: Int): Int = m(r) match {
-      case Nil => 0
+      case Nil => 1
       case ls  => 1 + ls.map(maxLenFor).max
     }
-    1 + m.indices.map(maxLenFor).max
+    m.indices.map(maxLenFor).max
   }
 
   val rects = rndRects(110).toIndexedSeq
   val ordering: Array[List[Int]] = compareToArray(rects)
 
-  println(ordering.count(_.nonEmpty))
-  println(ordering.map(_.length).sum)
+  println(s"Vertices count:${ordering.count(_.nonEmpty)}")
+  println(s"Total relations number: ${ordering.map(_.length).sum}")
 
+  // 4.5s (len = 19)
   val (maxLen, spent) = timed(maxLenFromArray(ordering))
-
   println(s"Max length: $maxLen")
   println(s"time:${spent}ms")
   
   val g = DiGraphA.from(ordering)
   val lp = new LongestPathImpl(g)
-  println("DFS:")
-  val (path, spent2) = timed(lp.longestPath)
 
+  println("DFS:")
+  // 47s - 10x slower
+  val (path, spent2) = timed(lp.longestPath)
   println(s"Path: $path")
   println(s"Length: ${path.length}")
   println(s"time:${spent2}ms")
+
+  // 42s - 7x slower
+  println("DFS length only:")
+  val (maxLen3, spent3) = timed(lp.longestLength)
+  println(s"Length: $maxLen3")
+  println(s"time:${spent3}ms")
 
 }
