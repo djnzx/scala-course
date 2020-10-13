@@ -37,8 +37,8 @@ object B012SubsetSumDPFP {
     s.foldLeft(initial) { (prev, num) =>
       val next = initial.clone()
       
-      (1 to sum).foreach { j =>
-        next(j) = prev(j) || num <= j && prev(j - num)
+      (1 to sum).foreach { sm =>
+        next(sm) = prev(sm) || num <= sm && prev(sm - num)
       }
       
       next
