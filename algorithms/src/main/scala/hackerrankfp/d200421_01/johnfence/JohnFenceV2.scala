@@ -2,6 +2,8 @@ package hackerrankfp.d200421_01.johnfence
 
 import java.io.File
 
+import tools.Timed.{printTimed, timed}
+
 import scala.collection.mutable
 import scala.io.BufferedSource
 
@@ -46,17 +48,12 @@ object JohnFenceV2 extends App {
 
   //  local
   val src: BufferedSource =
-    scala.io.Source.fromFile(new File("scala_plain/src/main/scala/hackerrankfp/d200421_01/test2big"))
+    scala.io.Source.fromFile(new File("algorithms/src/main/scala/hackerrankfp/d200421_01/test2big"))
   val _ = src.getLines().take(1).next()
   val fence = src.getLines().map(_.trim).next().split(" ").map(_.toInt).toVector
-  val t0 = System.currentTimeMillis()
-//  val max = calcFence(fence)
-  val max = calcFence(Vector(
+  printTimed(calcFence(Vector(
     1,2,3,4,5,6,6,4,3,4,5,6,7,8,6,4,2
-  ))
-  val spent = System.currentTimeMillis()-t0
-  println(s"ms: $spent")
-  println(max)
+  )))
   println(process)
   println(process.size)
 //  process.foreach { case (h: Int, a: Set[Area]) => println(s"h:$h, s:${a.size}") }

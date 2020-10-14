@@ -127,6 +127,4 @@ object TreeManagerV3 {
       catch { case x: Throwable => x.printStackTrace() }
     }.fold(_ => ???, identity)
   }
-  def now = System.currentTimeMillis()
-  def delta(t0: Long): Long = System.currentTimeMillis() - t0
 }

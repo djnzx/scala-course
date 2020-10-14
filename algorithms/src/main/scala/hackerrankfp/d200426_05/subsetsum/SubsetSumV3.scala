@@ -24,13 +24,11 @@ object SubsetSumV3 {
   }
 
   def body(line: => String): Unit = {
-//    val start = System.currentTimeMillis();
     val _ = line.toInt
     val data = line.splitToIntArray
     val N = line.toInt
     val test = (1 to N).map { _ => line }.map { _.toLong }
     process(data, test).foreach(println)
-//    println(s"time: ${System.currentTimeMillis()-start}")
   }
 
   /** main to run from the console */

@@ -1,5 +1,6 @@
 package geeksforgeeks.p1basic
 
+import glovo.q.TaskA
 import tools.spec.ASpec
 
 /**
@@ -7,7 +8,7 @@ import tools.spec.ASpec
   * https://en.wikipedia.org/wiki/Binomial_coefficient
   * https://en.wikipedia.org/wiki/Pascal%27s_triangle
   * n choose k
-  * another solution in [[glovo.TaskA.solution]]
+  * another solution in [[TaskA.solution]]
   * 
    *          P(n, k)
   * C(n,k) = ---------

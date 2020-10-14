@@ -1,38 +1,56 @@
 package graphs.impls
 
-import graphs.ops.LongestPath
+import graphs.ops.{LongestLength, LongestPath}
 import graphs.rep.DiGraph
 
 /**
   * graph must be acyclic !!!
-  * complexity: V x Max Chain length
   */
-class LongestPathImpl(g: DiGraph) extends LongestPath {
-  
-  override def longestPath: Seq[Int] = {
-    val from = Array.ofDim[Seq[Int]](g.v)
+class LongestPathImpl(g: DiGraph) extends LongestPath with LongestLength {
 
-    def visitNext(vi: Int): List[Int] = g.adjTo(vi) match {
-      case s if s.isEmpty => List(vi)
-      case s              => vi :: s.map(visitNext).maxBy(_.length)
-    }
+  case class Item(len: Int, path: List[Int]) {
+    def add(x: Int) = Item(len + 1, x :: path)
+  }
+
+  private def visitNext(v: Int, proc: Item, pathTo: Array[Item], graph: DiGraph): Unit = {
+    if (pathTo(v).len >= proc.len) return
+    pathTo(v) = proc
+    graph.adjTo(v).foreach { vi => visitNext(vi, proc.add(vi), pathTo, graph) }
+  }
+  /** 
+    * DP version
+    * but 6x times slower than just `longestLength`
+    * because actually collects all longest paths
+    */
+  def allPaths = {
+    val pathTo = Array.fill[Item](g.v)(Item(0, Nil))
     
-    g.vertices.foreach(v => from(v) = visitNext(v))
-//    from.indices.foreach(idx => println(s"$idx: ${from(idx)}"))
-    from.maxBy(_.length)
+    /** trace all the paths */
+    g.vertices.foreach(v => visitNext(v, Item(1, List(v)), pathTo, g))
+    pathTo.map(_.path).map(_.reverse)
   }
   
-  def longestLength: Int = {
-    val count = Array.ofDim[Int](g.v)
+  override def longestPath: Seq[Int] = {
+    val (_, lastV) = longestLength
+    val pathTo = Array.fill[Item](g.v)(Item(0, Nil))
 
-    def visitNext(p: Int, len: Int): Unit = {
-      if (count(p) >= len) return 
-      count(p) = count(p) max len
-      g.adjTo(p).foreach(visitNext(_, len+1))
+    /** trace only one on reversed graph */
+    visitNext(lastV, Item(1, List(lastV)), pathTo, g.reverse)
+    pathTo.maxBy(_.len).path
+  }
+
+  /** DP version */
+  override def longestLength: (Int, Int) = {
+    val maxTo = Array.ofDim[Int](g.v)
+
+    def visitNext(v: Int, len: Int): Unit = {
+      if (maxTo(v) >= len) return 
+      maxTo(v) = len
+      g.adjTo(v).foreach(visitNext(_, len+1))
     }
     
     g.vertices.foreach(visitNext(_, 1))
-    count.max
+    maxTo.zipWithIndex.maxBy(_._1)
   }
   
 }

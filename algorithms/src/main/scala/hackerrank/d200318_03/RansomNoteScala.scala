@@ -7,7 +7,7 @@ import scala.collection.mutable
   */
 object RansomNoteScala extends App {
 
-  def checkMagazine(magazine: Array[String], note: Array[String]) {
+  def checkMagazine(magazine: Array[String], note: Array[String]) = {
     val words = magazine
       .groupBy(identity)
       .map { case (w, a) => (w, a.length) }

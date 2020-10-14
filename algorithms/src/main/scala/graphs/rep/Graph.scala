@@ -14,10 +14,11 @@ trait Graph {
   */
 trait DiGraph {
   def add(v: Int, w: Int): Unit
-//  def remove(v: Int, w: Int): Unit
+  def remove(v: Int, w: Int): Unit
   def v: Int
   def adjTo(v: Int): Seq[Int]
   def vertices: Range
+  def reverse: DiGraph
 }
 
 /**

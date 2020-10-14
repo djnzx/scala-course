@@ -1,21 +1,15 @@
 package ninetynine
 
 import tools.spec.ASpec
-import ninetynine.P31.primes
+import tools.Timed.timed
 
 /**
   * complexity investigation
   */
 class P38 extends ASpec {
+  import P31.primes
   import P34._
   import P37._
-  
-  def time[A](body: => A) = {
-    val startedAt = System.currentTimeMillis()
-    val x = body
-    val delta = System.currentTimeMillis() - startedAt
-    (x, delta)
-  }
   
   def pretty[A](data: (A, Long), msg: String) =
     println(s"$msg, res:${data._1}, time:${data._2}ms")
@@ -23,9 +17,9 @@ class P38 extends ASpec {
   it("1") {
     val N = 10090000
     // load
-    pretty(time(primes.takeWhile(_ <= math.sqrt(N.toDouble)).force), "warmup")
-    pretty(time(totient(N)), "1-st ver.")
-    pretty(time(phi(N)), "2-nd ver.")
+    pretty(timed(primes.takeWhile(_ <= math.sqrt(N.toDouble)).force), "warmup")
+    pretty(timed(totient(N)), "1-st ver.")
+    pretty(timed(phi(N)), "2-nd ver.")
   }
 
 }
