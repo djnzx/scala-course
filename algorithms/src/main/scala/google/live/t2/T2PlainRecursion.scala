@@ -9,6 +9,8 @@ import tools.Timed.printTimed
   * 
   * Exponential
   * 7 * 7 - 0.5 - 10s depends whether our matrix sparse or dense
+  * 
+  * TODO: can we apply DP ?
   */
 object T2PlainRecursion extends App {
   val rows = 3

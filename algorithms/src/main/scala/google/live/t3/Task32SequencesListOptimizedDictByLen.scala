@@ -24,6 +24,8 @@ import scala.collection.mutable
   * List("i", "ik", "ike", "like"),
   * List("i", "ik", "ink")
   * )
+  * 
+  * TODO: can we apply DP in a broader sense?
   */
 object Task32SequencesListOptimizedDictByLen extends App {
 

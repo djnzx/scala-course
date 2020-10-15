@@ -27,7 +27,7 @@ object Task33MaxLenOnly extends App {
   def maxLen(word: String = ""): Int =
     nextWordsTo(word) match {
       case Nil => 0
-      case ws  => 1 + ws.flatMap(w => List(maxLen(w))).max
+      case ws  => 1 + ws.map(maxLen).max
     }
 
   println(maxLen())
