@@ -3,7 +3,11 @@ package google.live.t3
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
-object Task30Levenstein {
+/**
+  * https://en.wikipedia.org/wiki/Levenshtein_distance
+  * https://medium.com/@kargostack/my-first-interview-code-challenge-levenshtein-distance-d53b38a4d03e
+  */
+object LevensteinDistance {
 
   def min3(a: Int, b: Int, c: Int) = a min b min c
   def cost(c1: Char, c2: Char) = if (c1 == c2) 0 else 1
@@ -33,7 +37,7 @@ object Task30Levenstein {
 }
 
 class Task31LevensteinSpec extends AnyFunSpec with Matchers {
-  import Task30Levenstein._
+  import LevensteinDistance._
   
   describe("distance") {
     it("1") {

@@ -5,7 +5,7 @@ package google.live.t3
   */
 object Task31SequencesSet extends App {
 
-  import Task30Levenstein.distance
+  import LevensteinDistance.distance
   import Task3Data._
 
   def nextWordsTo(word: String) =

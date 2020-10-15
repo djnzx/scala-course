@@ -27,7 +27,7 @@ import scala.collection.mutable
   */
 object Task32SequencesListOptimizedDictByLen extends App {
 
-  import Task30Levenstein.distance
+  import LevensteinDistance.distance
   import Task3Data._
 
   val dictByLen = mutable.Map.empty[Int, Set[String]]

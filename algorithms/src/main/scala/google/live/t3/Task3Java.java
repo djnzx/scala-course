@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 public class Task3Java {
   
   static boolean isNextTo(String word, String word2) {
-    return Task30Levenstein.distance(word, word2) == 1;
+    return LevensteinDistance.distance(word, word2) == 1;
   }
 
   static List<String> dict = Arrays.asList(
