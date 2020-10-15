@@ -9,7 +9,7 @@ import tools.Timed.{printTimed, timed}
   * we can stop generation the all sequences
   * we need to calculate just the deepest one
   */
-object Task1LongestChainDP extends App {
+object T1LongestChainDP extends App {
   import T1Compare._
   import T1Domain._
   import T1Data._

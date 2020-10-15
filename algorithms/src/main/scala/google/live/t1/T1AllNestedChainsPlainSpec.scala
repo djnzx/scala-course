@@ -3,10 +3,10 @@ package google.live.t1
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
-class Task1AllNestedChainsPlainSpec extends AnyFunSpec with Matchers {
+class T1AllNestedChainsPlainSpec extends AnyFunSpec with Matchers {
   import T1Domain._
   import T1Data._
-  import Task1AllNestedChainsPlain._
+  import T1AllNestedChainsPlain._
 
   it("fit") {
     val t = Seq(

@@ -13,7 +13,7 @@ package google.live.t1
   * plain recursion
   * time: exponential
   */
-object Task1AllNestedChainsPlain {
+object T1AllNestedChainsPlain {
   import T1Domain._
   
   def allSmallerTo(rs: List[R], bigger: R) = rs.filter(gt(bigger, _))

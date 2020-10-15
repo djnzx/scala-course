@@ -2,7 +2,7 @@ package google.live.t1
 
 import scala.collection.mutable
 
-object T1MaxChain {
+object T1LongestChainFlatMap {
   import T1Domain._
   
   def chainsFromMap(m: mutable.Map[R, Set[R]]) = {
