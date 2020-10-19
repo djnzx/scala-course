@@ -56,6 +56,7 @@ lazy val whole = (project in file("."))
     mix,
     degoes,
     dotty,
+    spark,
   )
 //  .enablePlugins(BuildInfoPlugin)
 //  .settings(
@@ -245,9 +246,11 @@ lazy val mix = (project in file("mix"))
       Libraries.refinedCore,
       Libraries.refinedScalaz,
       "org.scalaz" %% "scalaz-deriving-jsonformat" % "2.0.0-M5",
-
     ),
   )
+
+lazy val spark = (project in file("sparkx"))
+  .settings(commonSettings)
 
 /**
   * John A. De Goes Project ZIO

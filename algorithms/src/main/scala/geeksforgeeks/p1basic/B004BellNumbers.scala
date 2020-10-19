@@ -1,6 +1,6 @@
 package geeksforgeeks.p1basic
 
-import tools.fmt.Fmt.{prettyMatrix, printMatrix}
+import tools.fmt.Fmt.printMatrix
 import tools.spec.ASpec
 
 /**
