@@ -12,6 +12,7 @@ class B011SubsetSumSpec extends ASpec {
 
     val t = Seq(
       (Set(1,2,3,4), 10),
+      (Set(2,4,6,8,10), 10),
       (Set(1,2,3,4,5,6,7,8), 12),
       (Set(3,4,5,2), 9),
       (Set(3,34,4,12,5,2), 9),

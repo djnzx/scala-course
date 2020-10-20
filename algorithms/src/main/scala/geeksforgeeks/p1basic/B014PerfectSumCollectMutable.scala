@@ -1,7 +1,8 @@
 package geeksforgeeks.p1basic
 
-import tools.fmt.Fmt.{printArray, printBoolMatrix, rightPad, printIndices, printLine}
-import tools.spec.ASpec
+import tools.fmt.Fmt._
+
+import scala.collection.mutable.ListBuffer
 
 /**
   * https://www.geeksforgeeks.org/perfect-sum-problem-print-subsets-given-sum/
@@ -10,13 +11,13 @@ import tools.spec.ASpec
   * https://www.geeksforgeeks.org/subset-sum-problem-dp-25/
   * but with some extra things
   */
-object B014PerfectSum {
+object B014PerfectSumCollectMutable {
   
   def perfectSum(s0: Set[Int], sum: Int): Seq[Set[Int]] = {
     println(s"sum: $sum")
     val sa = s0.toArray.sorted//.reverse
     val dp = Array.ofDim[Boolean](sum + 1, sa.length + 1) // by default all are false
-    (0 to sa.length).foreach(dp(0)(_) = true)             // if sum = 0 the answer is true
+    (0 to sa.length).foreach(dp(0)(_) = true)             // base case 1: if sum = 0 the answer is true
 
     (1 to sum).foreach { psum =>                          // outer iteration by partial sum 1...sum
       sa.indices.foreach { j =>                           // inner iteration by set items
@@ -29,34 +30,38 @@ object B014PerfectSum {
     printArray(sa, 3, "value:   ")
     printLine(30, '-')
 
-    printIndices(dp(0).indices, 3, "mat.ind:")
+    printIndices(dp(0).indices, 3, "dp indx:")
     printLine(30)
     var v = -1
     printBoolMatrix(dp, linePrefix = () => { v+=1; s"ss=${rightPad(v, 2)} " }, width = 3)
-    dp(sum)(sa.length)
-    // TODO: calculate the path (build all possible combinations)
-    Seq(Set())
-  }
-}
-
-class B014PerfectSumSpec extends ASpec {
-  import B014PerfectSum._
-  
-  it("1") {
-    val data = Seq(
-      (Set(2,3,5,6,8,10),10) -> Seq(
-        Set(2,3,5),
-        Set(2,8),
-        Set(10),
-      ),
-      (Set(1,2,3,4,5),10) -> Seq(
-        Set(4,3,2,1),
-        Set(5,3,2),
-        Set(5,4,1),
-      )
-    )
     
-    runAllD(data, (perfectSum _).tupled)
+    val result = ListBuffer.empty[Set[Int]]
+    
+    def collect(i: Int, sum: Int, subset: Set[Int]): Unit = {
+      // termination with empty result
+      if (i == -1 && sum != 0) return
+      
+      // termination with non-empty result 
+      if (sum == 0) {
+        result.addOne(subset)
+        return
+      }
+
+      // recursion w.o. current element
+      if (dp(sum)(i)) 
+        collect(i - 1, sum, subset)
+
+      // recursion with current element
+      val item = sa(i)
+      if (sum >= item && dp(sum - item)(i)) 
+        collect(i - 1, sum - sa(i), subset + sa(i))
+    }
+    
+    if (!dp(sum)(sa.length)) 
+      Seq.empty
+    else {
+      collect(sa.length-1, sum, Set.empty)
+      result.toSeq
+    }
   }
-  
 }
