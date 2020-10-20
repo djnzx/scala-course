@@ -12,12 +12,12 @@ import tools.spec.ASpec
 class B014PerfectSumSpec extends ASpec {
   it("1") {
     val data = Seq(
-      (Set(2,3,5,6,8,10),10) -> Seq(
+      (Set(2,3,5,6,8,10),10) -> Set(
         Set(2,3,5),
         Set(2,8),
         Set(10),
       ),
-      (Set(1,2,3,4,5),10) -> Seq(
+      (Set(1,2,3,4,5),10) -> Set(
         Set(4,3,2,1),
         Set(5,3,2),
         Set(5,4,1),

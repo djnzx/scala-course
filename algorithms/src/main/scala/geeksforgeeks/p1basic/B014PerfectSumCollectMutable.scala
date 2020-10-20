@@ -13,7 +13,7 @@ import scala.collection.mutable.ListBuffer
   */
 object B014PerfectSumCollectMutable {
   
-  def perfectSum(s0: Set[Int], sum: Int): Seq[Set[Int]] = {
+  def perfectSum(s0: Set[Int], sum: Int): Set[Set[Int]] = {
     println(s"sum: $sum")
     val sa = s0.toArray.sorted//.reverse
     val dp = Array.ofDim[Boolean](sum + 1, sa.length + 1) // by default all are false
@@ -54,14 +54,14 @@ object B014PerfectSumCollectMutable {
       // recursion with current element
       val item = sa(i)
       if (sum >= item && dp(sum - item)(i)) 
-        collect(i - 1, sum - sa(i), subset + sa(i))
+        collect(i - 1, sum - item, subset + item)
     }
     
     if (!dp(sum)(sa.length)) 
-      Seq.empty
+      Set.empty
     else {
       collect(sa.length-1, sum, Set.empty)
-      result.toSeq
+      result.toSet
     }
   }
 }

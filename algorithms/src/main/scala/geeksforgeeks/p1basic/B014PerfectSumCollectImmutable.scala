@@ -2,8 +2,6 @@ package geeksforgeeks.p1basic
 
 import tools.fmt.Fmt._
 
-import scala.collection.mutable.ListBuffer
-
 /**
   * https://www.geeksforgeeks.org/perfect-sum-problem-print-subsets-given-sum/
   * 
@@ -13,7 +11,7 @@ import scala.collection.mutable.ListBuffer
   */
 object B014PerfectSumCollectImmutable {
   
-  def perfectSum(s0: Set[Int], sum: Int): Seq[Set[Int]] = {
+  def perfectSum(s0: Set[Int], sum: Int): Set[Set[Int]] = {
     println(s"sum: $sum")
     val sa = s0.toArray.sorted//.reverse
     val dp = Array.ofDim[Boolean](sum + 1, sa.length + 1) // by default all are false
@@ -39,33 +37,26 @@ object B014PerfectSumCollectImmutable {
     }
     
     solve()
-    val result = ListBuffer.empty[Set[Int]]
-    
-    def collect(i: Int, sum: Int, subset: Set[Int]): Unit = {
+
+    def collect(i: Int, sum: Int, part: Set[Int]): Set[Set[Int]] = {
+      // successful termination with non-empty result 
+      if (sum == 0) return Set(part)
       // termination with empty result
-      if (i == -1 && sum != 0) return
-      
-      // termination with non-empty result 
-      if (sum == 0) {
-        result.addOne(subset)
-        return
-      }
-
-      // recursion w.o. current element
-      if (dp(sum)(i)) 
-        collect(i - 1, sum, subset)
-
-      // recursion with current element, it it's possible
-      val item = sa(i)
-      if (sum >= item && dp(sum - item)(i)) 
-        collect(i - 1, sum - sa(i), subset + sa(i))
+      if (i == -1) return Set()
+      // current element
+      val curr = sa(i)
+      // if current is bigger than sub sum -> skip it, we can't use it
+      if (curr > sum) return collect(i - 1, sum, part)
+      // recursion branch w.o. current element
+      val withoutCurr = if (dp(sum)       (i)) collect(i - 1, sum,        part       ) else Set()
+      // recursion branch with current element
+      val withCurr    = if (dp(sum - curr)(i)) collect(i - 1, sum - curr, part + curr) else Set()
+          
+      withoutCurr ++ withCurr
     }
     
-    if (!dp(sum)(sa.length)) 
-      Seq.empty
-    else {
+    if (dp(sum)(sa.length)) 
       collect(sa.length-1, sum, Set.empty)
-      result.toSeq
-    }
+    else Set()
   }
 }
