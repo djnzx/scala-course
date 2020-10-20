@@ -4,8 +4,8 @@ import tools.spec.ASpec
 
 object ChessValidator {
   def wrongState(msg: String) = throw new IllegalArgumentException(msg)
-  
-  sealed trait Color
+
+  sealed trait Color extends Product
   final case object White extends Color
   final case object Black extends Color
 
@@ -13,6 +13,14 @@ object ChessValidator {
     def rep: Char = c match {
       case White => s.toUpper
       case Black => s.toLower
+    }
+    def nextFrom(l: Loc): Seq[Loc] = this match {
+      case Pawn(c)   => ??? 
+      case Queen(c)  => ???
+      case King(c)   => ???
+      case Bishop(c) => ???
+      case Knight(c) => ???
+      case Rook(c)   => ???
     }
   }
   final case class Pawn(color: Color) extends CFigure(color, 'p')   // Piece, Пешка
@@ -25,7 +33,7 @@ object ChessValidator {
   case class Loc(x: Int, y: Int) {
     def isOnBoard: Boolean = Loc.isOnBoard(x) && Loc.isOnBoard(y)
   }
-  
+
   object Loc {
     def iToX(i: Int) = i - 'a' + 1
     def iToY(i: Int) = i - '1' + 1
@@ -77,7 +85,7 @@ object ChessValidator {
     /** there is only one validation, whether source point is empty */
     def move(m: Move): (Board, Boolean) = m match {
       case Move(start, finish) => at(start) match {
-        case Some(f) => (clear(start).put(finish, f), true) 
+        case Some(f) => (clear(start).put(finish, f), true)
         case None    => (this,                      false)
       }
     }
@@ -118,7 +126,7 @@ object ChessValidator {
         row(Black)
       ))
   }
-  
+
   object PossibleMove {
     val oneDir = Seq(-1, 0, 1)
     val oneDeltas = for {
@@ -135,11 +143,18 @@ object ChessValidator {
     def applyAndFilter(l: Loc, ds: Seq[(Int, Int)]) = ds.flatMap { case (dx, dy) => Loc.move(l, dx, dy) }
     def oneSteps(l: Loc) = applyAndFilter(l, oneDeltas)  // King
     def knightSteps(l: Loc) = applyAndFilter(l, kDeltas) // Knight
+    def pawnSteps(l: Loc) = {
+      /**
+        * one forward
+        * +(opt) forward
+        * +bite left + bite right
+        */
+    }
     def seven(l: Loc, f: (Int, Loc) => Loc) = (1 to 7).map(d => f(d, l)).filter(_.isOnBoard)
-    def toR(l: Loc)  = seven(l, (d, l) => Loc(l.x + d, l.y)) 
-    def toL(l: Loc)  = seven(l, (d, l) => Loc(l.x - d, l.y))    
-    def toU(l: Loc)  = seven(l, (d, l) => Loc(l.x, l.y + d))    
-    def toD(l: Loc)  = seven(l, (d, l) => Loc(l.x, l.y - d))    
+    def toR(l: Loc)  = seven(l, (d, l) => Loc(l.x + d, l.y))
+    def toL(l: Loc)  = seven(l, (d, l) => Loc(l.x - d, l.y))
+    def toU(l: Loc)  = seven(l, (d, l) => Loc(l.x, l.y + d))
+    def toD(l: Loc)  = seven(l, (d, l) => Loc(l.x, l.y - d))
     def toRU(l: Loc) = seven(l, (d, l) => Loc(l.x + d, l.y + d))
     def toLU(l: Loc) = seven(l, (d, l) => Loc(l.x - d, l.y + d))
     def toRD(l: Loc) = seven(l, (d, l) => Loc(l.x + d, l.y - d))
@@ -154,15 +169,43 @@ object ChessValidator {
   }
   /**
     * TODO:
-    * 
+    *
     * - possible move for each figure
     *   - general
     *   - filtered by occupied cells and cells on board
     * - "check" ("шах")
     * - mirroring for opposite side for Pawn
-    * 
+    *
     */
-  
+  case class Chess(private val board: Board, val next: Color) {
+
+    def switchColor = next match {
+      case White => Black
+      case Black => White
+    }
+    /**                new state [Error message, Check]
+      *                    ||            ||       ||
+      *                    v             V        V    */
+    def move(m: String): (Chess, Either[String, Boolean]) = {
+      /**
+        * check:
+        * 1. move is valid syntactically (on Board), or Left(Wrong Syntax)
+        * 2. check color of source, Left(wrong order)
+        * 3. check the target color(must be empty or opposite)
+        * 4. target must be contained in possible moves (for each figure calculate next possible steps)
+        * 5. (optional) path must be empty
+        * 6. do move and switch color
+        * 7. check for the "CHECK"
+        */
+      copy(next = switchColor)
+      ???
+    }
+
+  }
+
+  object Chess {
+    def initial = new Chess(Board.initial, White)
+  }
 }
 
 class ChessValidatorSpec extends ASpec {
@@ -279,11 +322,11 @@ class ChessValidatorSpec extends ASpec {
         (in, out) <- good ++ bad
       } Move.parse(in) shouldEqual out
     }
-    
+
   }
 
   describe("board") {
-    
+
     it("at") {
       val b = Board.initial
 
@@ -308,16 +351,16 @@ class ChessValidatorSpec extends ASpec {
         (in, out) <- occupied ++ empty
       } b.at(in) shouldEqual out
     }
-    
+
     it("clear") {
       val b = Board.initial
       val loc = "a1"
       b.at(loc) shouldEqual Some(Rook(White))
-      
+
       val b2 = b.clear(loc)
       b2.at(loc) shouldEqual None
     }
-    
+
     it("put") {
       val b = Board.initial
       b.clear("e2") match {
@@ -325,11 +368,11 @@ class ChessValidatorSpec extends ASpec {
           val l = "e4"
           val f = Pawn(White)
           b2.put(l, f) match {
-            case b3 =>b3.at(l) shouldEqual Some(f) 
+            case b3 =>b3.at(l) shouldEqual Some(f)
           }
       }
     }
-    
+
     it("move") {
       val b = Board.initial
       b.move("e2e4") match {
@@ -339,7 +382,7 @@ class ChessValidatorSpec extends ASpec {
           b2.at("e4") shouldEqual Some(Pawn(White))
       }
     }
-    
+
     it("isOccupiedAt") {
       val b = Board.initial
       val data = Seq(
@@ -350,7 +393,7 @@ class ChessValidatorSpec extends ASpec {
         (in, out) <- data
       } b.isOccupiedAt(in) shouldEqual out
     }
-    
+
     it("isFreeAt") {
       val b = Board.initial
       val data = Seq(
@@ -361,7 +404,7 @@ class ChessValidatorSpec extends ASpec {
         (in, out) <- data
       } b.isFreeAt(in) shouldEqual out
     }
-    
+
     it("isColorAt") {
       val b = Board.initial
       val data = Seq(
@@ -370,15 +413,15 @@ class ChessValidatorSpec extends ASpec {
         ("e3", White) -> false,
         ("e3", Black) -> false,
       )
-      for { 
+      for {
         ((cell, c), r) <- data
       } b.isColorAt(cell, c) shouldEqual r
     }
   }
-  
+
   describe("possible moves") {
     import PossibleMove._
-    
+
     it("r,l,u,d") {
       val x = Loc(3,4)
       toR(x) should contain theSameElementsAs IndexedSeq(Loc(4,4),Loc(5,4),Loc(6,4),Loc(7,4),Loc(8,4))
@@ -393,11 +436,11 @@ class ChessValidatorSpec extends ASpec {
       toD(x) should contain theSameElementsAs IndexedSeq(Loc(3,3),Loc(3,2),Loc(3,1))
       toD(Loc(6,1)) should contain theSameElementsAs IndexedSeq()
     }
-    
+
     it("ru, lu, rd, ld") {
       toRU(Loc(6,1)) shouldEqual IndexedSeq(Loc(7,2), Loc(8,3))
       toRU(Loc(8,3)) shouldEqual IndexedSeq()
-      
+
       toLU(Loc(6,1)) shouldEqual IndexedSeq(Loc(5,2), Loc(4,3), Loc(3,4), Loc(2,5), Loc(1,6))
       toLU(Loc(1,1)) shouldEqual IndexedSeq()
 
@@ -407,7 +450,7 @@ class ChessValidatorSpec extends ASpec {
       toLD(Loc(7,4)) shouldEqual IndexedSeq(Loc(6,3), Loc(5,2), Loc(4,1))
       toLD(Loc(1,6)) shouldEqual IndexedSeq()
     }
-    
+
     it("1") {
       println(kDeltas)
     }
