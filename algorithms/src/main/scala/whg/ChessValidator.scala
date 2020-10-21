@@ -8,12 +8,19 @@ object ChessValidator {
   sealed trait Color extends Product
   final case object White extends Color
   final case object Black extends Color
+  object Color {
+    def another(c: Color) = c match {
+      case White => Black
+      case Black => White
+    }
+  }
 
   sealed abstract class CFigure(val c: Color, private val s: Char) {
     def rep: Char = c match {
       case White => s.toUpper
       case Black => s.toLower
     }
+    // TODO: consider to represent as Set to make contains O(1)
     def nextFrom(l: Loc): Seq[Loc] = this match {
       case Pawn(c)   => ??? 
       case Queen(c)  => ???
@@ -177,30 +184,29 @@ object ChessValidator {
     * - mirroring for opposite side for Pawn
     *
     */
-  case class Chess(private val board: Board, val next: Color) {
+  case class Chess(private val board: Board, nextC: Color) {
 
-    def switchColor = next match {
-      case White => Black
-      case Black => White
-    }
+    def nextTurn(b: Board) = copy(board = b, nextC = Color.another(nextC))
+    
     /**                new state [Error message, Check]
       *                    ||            ||       ||
       *                    v             V        V    */
-    def move(m: String): (Chess, Either[String, Boolean]) = {
-      /**
-        * check:
-        * 1. move is valid syntactically (on Board), or Left(Wrong Syntax)
-        * 2. check color of source, Left(wrong order)
-        * 3. check the target color(must be empty or opposite)
-        * 4. target must be contained in possible moves (for each figure calculate next possible steps)
-        * 5. (optional) path must be empty
-        * 6. do move and switch color
-        * 7. check for the "CHECK"
-        */
-      copy(next = switchColor)
-      ???
-    }
+    def move(m: String): (Chess, Either[String, Boolean]) =
+      Move.parse(m)                                                // move is valid syntactically (syntax, on board)
+        .filter(m => board.isColorAt(m.start, nextC))                // check color of start
+        .filter(m => board.isFreeAt(m.finish) ||                     // finish is empty   
+                    board.isColorAt(m.finish, Color.another(nextC))) // finish has another color
+        .map(m => (m, board.at(m.start).get))                      // obtain the source figure
+        .filter { case (Move(st, fi), f) => f.nextFrom(st).contains(fi) } // finish in the next moves
+        .filter { case (m, f) => isPathFree(m, f) }                 // (optionally) path must be empty
+        .map { case (m, _) => board.move(m) }                      // do move
+        .fold[(Chess, Either[String, Boolean])](
+          (this, Left("wrong move"))
+        ) {
+          case (b, _) => (nextTurn(b), Right(false)) // TODO: false means "CHECK" 
+        }
 
+    def isPathFree(m: Move, f: CFigure): Boolean = true // TODO: implement is PathFree
   }
 
   object Chess {
