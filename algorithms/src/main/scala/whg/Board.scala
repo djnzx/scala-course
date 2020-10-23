@@ -10,6 +10,8 @@ class Board(private val b: TBoard) {
   def isOccupiedAt(loc: Loc): Boolean = at(loc).isDefined
   def isFreeAt(loc: Loc): Boolean = !isOccupiedAt(loc)
   def isColorAt(loc: Loc, c: Color): Boolean = at(loc).exists(_.c == c)
+  def isWhiteAt(loc: Loc): Boolean = at(loc).exists(_.c == White)
+  def isBlackAt(loc: Loc): Boolean = at(loc).exists(_.c == Black)
   def updated(loc: Loc, of: TCell) = new Board(b.updated(loc.y - 1, b(loc.y -1).updated(loc.x - 1, of)))
   /** no any validation! */
   def put(loc: Loc, f: CFigure): Board = updated(loc, Some(f))

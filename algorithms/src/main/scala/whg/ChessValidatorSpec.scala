@@ -254,6 +254,16 @@ class ChessValidatorSpec extends ASpec {
       )
     }
     
+    it("4") {
+      val b = Board.initial
+      val lw = Loc(1,2) 
+      val lb = Loc(1,7)
+      println(mvPawn(lw, b))
+      println(mvPawn(lb, b))
+      val (b2, _) = b.move("a2a3")
+      println(b2.rep)
+      println(mvPawn(Loc(1,3), b2))
+    }
   }
 
 }

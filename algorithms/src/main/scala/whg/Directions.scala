@@ -26,19 +26,46 @@ object Directions {
   def toRD(l: Loc) = applyAndFilter(l, (l, d) => Loc.move(l,  d, -d))
   def toLD(l: Loc) = applyAndFilter(l, (l, d) => Loc.move(l, -d, -d))
   
-  def mvKing(l: Loc) = moveAndFilter(l, oneDeltas).map(l => Seq(l))
+  def mvKing(l: Loc) = moveAndFilter(l, oneDeltas).map(Seq(_))
   def mvRook(l: Loc) = Seq(toL(l),  toR(l),  toU(l),  toD(l))
   def mvBishop(l: Loc) = Seq(toLU(l), toLD(l), toRU(l), toRD(l))
   def mvQueen(l: Loc) = mvRook(l) ++ mvBishop(l)
-  def mvKnight(l: Loc) = moveAndFilter(l, knDeltas).map(l => Seq(l))
-  def mvPawn(l: Loc, b: Board): Seq[Seq[Loc]] = {
-    /**
-      * get the color of pawn for vector
-      * one forward
-      * + (opt) forward
-      * + (diagonal) bite left + bite right
-      * + white/black different directions
-      */
-    ???
+  def mvKnight(l: Loc) = moveAndFilter(l, knDeltas).map(Seq(_))
+  
+  // one step forward
+  def mvPawn1(l: Loc, b: Board) = Loc.move(l, 0, vector(l, b)) 
+  // two steps forward
+  def mvPawn2(l: Loc, b: Board) = (l, b) match {
+    case PawnCan2(v) => Loc.move(l, 0, v)
+    case _ => None
   }
+  // 1 + 2 steps forward
+  def mvPawnForward(l: Loc, b: Board) = Seq(mvPawn1(l, b), mvPawn2(l, b)).flatten.map(Seq(_))
+
+  def mvPawnBiteL(l: Loc, b: Board) = Loc.move(l, -1, vector(l, b)) 
+  def mvPawnBiteR(l: Loc, b: Board) = Loc.move(l,  1, vector(l, b))
+  def mvPawnBite(l: Loc, b: Board) = Seq(mvPawnBiteL(l, b), mvPawnBiteR(l, b)).flatten.map(Seq(_))
+
+  /**
+    * get the color of pawn for vector
+    * one forward
+    * + (opt) forward
+    * + (diagonal) bite left + bite right
+    * + white/black different directions
+    */
+  def mvPawn(l: Loc, b: Board) = mvPawnForward(l, b) ++ mvPawnBite(l, b)
+  
+  object PawnCan2 {
+    def unapply(arg: (Loc, Board)): Option[Int] = arg match {
+      case (l, b) if b.isWhiteAt(l) && l.y == 2 => Some(2)
+      case (l, b) if b.isBlackAt(l) && l.y == 7 => Some(-2)
+      case _ => None
+    }
+  }
+  
+  def vector(l: Loc, b: Board) = b.at(l).get.c match {
+    case White =>  1
+    case Black => -1
+  }
+
 }
