@@ -3,8 +3,7 @@ package whg
 import tools.spec.ASpec
 
 class ChessValidatorSpec extends ASpec {
-  import ChessValidator._
-  import ChessValidator.Board._
+  import Board._
 
   describe("representation") {
     it("one figure") {
@@ -33,8 +32,8 @@ class ChessValidatorSpec extends ASpec {
 
     it("pawns row") {
       val data = Seq(
-        Board.pawns(White) -> "P" * 8,
-        Board.pawns(Black) -> "p" * 8,
+        Board.pawnsRow(White) -> "P" * 8,
+        Board.pawnsRow(Black) -> "p" * 8,
       )
       for {
         (pp, r) <- data
@@ -43,8 +42,8 @@ class ChessValidatorSpec extends ASpec {
 
     it("start row") {
       val data = Seq(
-        row(White) -> "RNBQKBNR",
-        row(Black) -> "rnbqkbnr"
+        firstRow(White) -> "RNBQKBNR",
+        firstRow(Black) -> "rnbqkbnr"
       )
       for {
         (rw, r) <- data
@@ -126,7 +125,7 @@ class ChessValidatorSpec extends ASpec {
 
       val figures = for {
         (c, y) <- Seq((White, 1), (Black, 8))
-        (f, x) <- Board.row(c) zip LazyList.from('a').map(_.toChar)
+        (f, x) <- Board.firstRow(c) zip LazyList.from('a').map(_.toChar)
       } yield s"$x$y" -> f
 
       val pawns = for {
@@ -214,7 +213,7 @@ class ChessValidatorSpec extends ASpec {
   }
 
   describe("possible moves") {
-    import PossibleMove._
+    import Directions._
 
     it("r,l,u,d") {
       val x = Loc(3,4)
@@ -246,8 +245,15 @@ class ChessValidatorSpec extends ASpec {
     }
 
     it("1") {
-      println(kDeltas)
+      println(knDeltas)
     }
+    
+    it("2") {
+      println(
+        Seq[Int]().forall(_ => 2 == 3)
+      )
+    }
+    
   }
 
 }
