@@ -2,6 +2,9 @@ package whg
 
 import whg.Board.{TBoard, TCell}
 
+import scala.collection.immutable.{AbstractSeq, LinearSeq}
+import scala.xml.NodeSeq
+
 class Board(private val b: TBoard) {
   def rep = Board.repBoard(b)
 
@@ -32,6 +35,10 @@ class Board(private val b: TBoard) {
   def put(loc: String, f: CFigure): Board = put(Loc.parseOrEx(loc), f)
   def clear(loc: String): Board = clear(Loc.parseOrEx(loc))
   def move(m: String): (Board, Boolean) = move(Move.parseOrEx(m))
+  def move(ms: Seq[String]): Board = ms match {
+    case Nil     => this
+    case m::tail => move(m)._1.move(tail)
+  }
 }
 
 object Board {
@@ -51,7 +58,7 @@ object Board {
   def fill8[A] = Vector.fill[A](8) _
   def emptyRow = fill8(None)
   def pawnsRow(c: Color) = fill8(Some(Pawn(c)))
-  def firstRow(c: Color) = Seq(
+  def   firstRow(c: Color) = Seq(
     Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook
   ).map(f => Some(f(c))).toVector
   /** empty board */

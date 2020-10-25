@@ -4,6 +4,7 @@ import whg.Tools.wrongState
 
 case class Loc(x: Int, y: Int) {
   def isOnBoard = Loc.isOnBoard(x) && Loc.isOnBoard(y)
+  def move(dx: Int, dy: Int) = Loc.move(this, dx, dy)
 }
 
 object Loc {
@@ -33,6 +34,14 @@ object Move {
       x <- Loc.parse(s1)
       y <- Loc.parse(s2)
     } yield Move(x, y) }
+  
+  private def xx(x: Int) = (x + 'a').toChar
+  private def yy(y: Int) = (7 - y + '1').toChar
+  /** array has length 4 because of underline given implementation */
+  def fromGiven(move: Array[Int]) = move match {
+    case Array(w,x,y,z) => s"${xx(w)}${yy(x)}${xx(y)}${yy(z)}"
+  }
+  
   def parseOrEx(move: String) = parse(move)
     .getOrElse(wrongState(s"Wrong move given: `$move"))
 }

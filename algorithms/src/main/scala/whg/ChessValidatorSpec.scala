@@ -116,6 +116,32 @@ class ChessValidatorSpec extends ASpec {
       } Move.parse(in) shouldEqual out
     }
 
+    it("move given") {
+      val data = Seq(
+        Array(0, 6, 0, 5) -> "a2a3",
+        Array(1, 6, 1, 4) -> "b2b4",
+        Array(2, 6, 2, 5) -> "c2c3",
+        Array(3, 6, 3, 4) -> "d2d4",
+        Array(0, 0, 0, 1) -> "a8a7",
+      )
+      for {
+        (in, out) <- data
+      } Move.fromGiven(in) shouldEqual out
+    }
+
+    it("move given - full cycle") {
+      val readed: Vector[Array[Int]] = ChessIterator.resource("chess.txt").toVector
+      val mapped: Vector[String] = readed.map(Move.fromGiven)
+      val expected = Vector(
+        "a2a3",
+        "b2b4",
+        "c2c3",
+        "d2d4",
+        "a8a7",
+      )
+      mapped shouldEqual expected
+    }
+
   }
 
   describe("board") {

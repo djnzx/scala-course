@@ -5,7 +5,7 @@ package hackerrank.d200318_03
   */
 object RansomNoteScala2 extends App {
 
-  def checkMagazine(magazine: Array[String], note: Array[String]) {
+  def checkMagazine(magazine: Array[String], note: Array[String]) = {
     def toMap(a: Array[String]) = a.groupMapReduce(identity)(_=>1)(_+_) 
     val have = toMap(magazine)
     val need = toMap(note)

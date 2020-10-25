@@ -2,53 +2,77 @@ package whg
 
 sealed abstract class CFigure(val c: Color, private val s: Char) extends Product  {
   import Directions._
-  
+
   def rep: Char = c match {
     case White => s.toUpper
     case Black => s.toLower
   }
-  
-  /** 
+
+  /** required move is a pawn and it's in forward direction */
+  object IsPawnFwd {
+    def unapply(as: (Move, Board)): Option[Loc] = as match { case (m, b) =>
+      Some(m.finish).filter(mvPawnFwd(m.start, b).contains) 
+    }
+  }
+
+  /** required move is a pawn and it's in bite (L or R) direction */
+  object IsPawnBite {
+    def unapply(as: (Move, Board)): Option[Loc] = as match { case (m, b) =>
+      Some(m.finish).filter(mvPawnBite(m.start, b).contains)
+    }
+  }
+  /**
     * source color validation inside the Chess class
     * {{{nextFrom(l: Loc, b: Board): Seq[Seq[Length]]}}}
     * TODO: 2. target
     * {{{isPathClean}}}
     */
   def validateMove(m: Move, b: Board): Either[String, Move] = {
-    val figMy: CFigure = b.at(m.start).get
-    val colorMy = figMy.c
-    val colorOpp = Color.another(colorMy)
-    // just aliases to the board
-    def isOppositeAt(l: Loc) = b.isColorAt(l, colorOpp)
+    val colorOpposite = Color.another(b.at(m.start).get.c)
+    def isOppositeAt(l: Loc) = b.isColorAt(l, colorOpposite)
     def isFreeAt(l: Loc) = b.isFreeAt(l)
-    // we don't need to bother to validate king/knight moves since their seq's are empty
-    def checkPathClean(path: Seq[Loc]) = path.takeWhile(_ != m.finish).forall(isFreeAt)
-    // check target color
-    def checkTarget = this match {
-      case Pawn(c) => ???
-      case _:Queen |
-           _:King |
-           _:Bishop |
-           _:Knight |
-           _:Rook => isFreeAt(m.finish) || isOppositeAt(m.finish)
+
+    /**
+      * available moves from current point
+      * grouped by directions
+      * for further checking whether path is empty
+      */
+    def nextFrom(l: Loc) = this match {
+      case _: Pawn   => mvPawn(l, b)
+      case _: Queen  => mvQueen(l)
+      case _: King   => mvKing(l)
+      case _: Bishop => mvBishop(l)
+      case _: Knight => mvKnight(l)
+      case _: Rook   => mvRook(l)
     }
 
+    /**
+      * check target for opposite color/empty 
+      */
+    def checkTarget = this match {
+      case _: Pawn => (m, b) match {
+        case IsPawnFwd(fi)  => isFreeAt(fi)
+        case IsPawnBite(fi) => isOppositeAt(fi)
+        case _             => false
+      }
+      case _ => isFreeAt(m.finish) || isOppositeAt(m.finish)
+    }
+
+    /**
+      * checks that all cells PRIOR to target is EMPTY
+      * we don't need to consider special cases
+      * for king/knight/pawn bite
+      * since their sub-sequences will be empty
+      */
+    def checkPathClean(path: Seq[Loc]) = path.takeWhile(_ != m.finish).forall(isFreeAt)
+
+    // start point validation is done in Chess class
     Some(m.finish)
-      .flatMap(fi => nextFrom(m.start, b).find(_.contains(fi))) // vector with direction if found
-      .filter(checkPathClean)                                // path is clean
-      .filter(_ => checkTarget)                              // target is clean or opposite
+      .flatMap(fi => nextFrom(m.start).find(_.contains(fi))) // vector with direction if found
+      .filter(_ => checkTarget)                           // target is clean or opposite
+      .filter(checkPathClean)                             // path is clean
       .map(_ => m)
       .toRight("target cell isn't empty or has your color")
-  }
-  
-  // TODO: consider to represent as Set to make contains O(1) ???
-  private def nextFrom(l: Loc, b: Board) = this match {
-    case _:Pawn   => mvPawn(l, b)
-    case _:Queen  => mvQueen(l)
-    case _:King   => mvKing(l)
-    case _:Bishop => mvBishop(l)
-    case _:Knight => mvKnight(l)
-    case _:Rook   => mvRook(l)
   }
 }
 
