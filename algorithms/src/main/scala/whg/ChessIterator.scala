@@ -13,14 +13,14 @@ class ChessIterator(fileName: String) extends Iterator[Array[Int]] {
 
   /**
     * abcdefgh => 01234567
-    * 12345678 => 76543210  
+    * 12345678 => 76543210
     */
   override def next(): Array[Int] = line
 }
 
 object ChessIterator {
-  
-  def resource(fileName: String): ChessIterator = 
+
+  def resource(fileName: String): ChessIterator =
     new ChessIterator(this.getClass.getClassLoader.getResource(fileName).getFile)
-    
+
 }
