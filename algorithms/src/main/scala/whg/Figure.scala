@@ -28,8 +28,8 @@ sealed abstract class CFigure(val c: Color, private val s: Char) extends Product
     * {{{isPathClean}}}
     */
   def validateMove(m: Move, b: Board): Either[String, Move] = {
-    val colorOpposite = Color.another(b.at(m.start).get.c)
-    def isOppositeAt(l: Loc) = b.isColorAt(l, colorOpposite)
+    val colorOppositeMe = b.at(m.start).get.c.another
+    def isOppositeAt(l: Loc) = b.isColorAt(l, colorOppositeMe)
     def isFreeAt(l: Loc) = b.isFreeAt(l)
 
     /**

@@ -10,19 +10,19 @@ class PawnMoveSpec extends ASpec {
     
     it("fwd1") {
       val t = Seq(
-        Loc(1,2) -> Loc(1,3),
-        Loc(2,2) -> Loc(2,3),
-        Loc(3,2) -> Loc(3,3),
-        Loc(4,2) -> Loc(4,3),
-        Loc(1,7) -> Loc(1,6),
-        Loc(2,7) -> Loc(2,6),
+        Loc("a2") -> Loc("a3"),
+        Loc("b2") -> Loc("b3"),
+        Loc("c2") -> Loc("c3"),
+        Loc("d2") -> Loc("d3"),
+        Loc("e2") -> Loc("e3"),
+        Loc("f2") -> Loc("f3"),
         Loc(3,7) -> Loc(3,6),
         Loc(4,7) -> Loc(4,6),
       ).map { case (in, out) => in -> Some(out)}
       
       val f: Seq[(Loc, None.type)] = Seq(
-        Loc(1,1),
-        Loc(2,1),
+        Loc.a(1),
+        Loc.b(1),
         Loc(3,1),
         Loc(4,1),
         Loc(5,8),

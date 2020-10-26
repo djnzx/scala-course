@@ -12,7 +12,7 @@ package whg
   */
 case class Chess(private val board: Board, nextC: Color) {
 
-  def nextTurn(b: Board) = copy(board = b, nextC = Color.another(nextC))
+  def nextTurn(b: Board) = copy(board = b, nextC = nextC.another)
   
   /** validation of figure color */
   def validate(m: Move): Either[String, Move] =
