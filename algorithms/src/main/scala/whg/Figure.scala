@@ -14,14 +14,16 @@ sealed abstract class CFigure(val c: Color, private val s: Char) extends Product
   /** required move is a pawn and it's in forward direction */
   object IsPawnFwd {
     def unapply(as: (Move, Board)): Option[Loc] = as match { case (m, b) =>
-      Some(m.finish).filter(mvPawnFwd(m.start, b).contains) 
+      Some(m.finish)
+        .filter(fi => mvPawnFwd(m.start, b).exists(_.contains(fi)))
     }
   }
 
   /** required move is a pawn and it's in bite (L or R) direction */
   object IsPawnBite {
     def unapply(as: (Move, Board)): Option[Loc] = as match { case (m, b) =>
-      Some(m.finish).filter(mvPawnBite(m.start, b).contains)
+      Some(m.finish)
+        .filter(fi => mvPawnBite(m.start, b).exists(_.contains(fi)))
     }
   }
   /**
