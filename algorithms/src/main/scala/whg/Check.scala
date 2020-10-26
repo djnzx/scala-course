@@ -1,7 +1,6 @@
 package whg
 
-import Directions._
-import whg.Board.TCell
+import whg.Directions._
 
 object Check {
 
@@ -13,12 +12,7 @@ object Check {
   }
   def isUnderTheCheck(bd: Board, c: Color): Boolean = {
     val (q, r, b, n, p) = threats(c)
-    def detectThreatHV(of: TCell) = of.contains(q) || of.contains(r) // vert & hor
-    def detectThreatD (of: TCell) = of.contains(q) || of.contains(b) // diag
-    def detectThreatKN(of: TCell) = of.contains(n)                   // knight
-    def detectThreatPW(of: TCell) = of.contains(p)                   // pawn
-//    val firstOccupied   = (ll: Seq[Loc]) => ll.dropWhile(b.at(_).isEmpty).headOption.flatMap(b.at)
-    val firstOccupied   = (ll: Seq[Loc]) => ll.find(bd.at(_).isDefined).flatMap(bd.at)
+    def firstOccupiedIs(ll: Seq[Loc], p: CFigure => Boolean) = ll.flatMap(bd.at).exists(p)
     // find the king on the board
     val kingAt = bd.findKing(c)
     // get the dirs
@@ -26,11 +20,24 @@ object Check {
     val diag   = mvBishop(kingAt)
     val knight = mvKnight(kingAt)
     val pawn   = mvPawnBite(kingAt, bd)
-    val threatAtHV = cross .filter(dir => detectThreatHV(firstOccupied(dir))).flatten.nonEmpty
-    val threatAtD  = diag  .filter(dir => detectThreatD (firstOccupied(dir))).flatten.nonEmpty
-    val threatAtKN = knight.filter(dir => detectThreatKN(firstOccupied(dir))).flatten.nonEmpty
-    val threatAtPW = pawn  .filter(dir => detectThreatPW(firstOccupied(dir))).flatten.nonEmpty
-    threatAtHV || threatAtD || threatAtKN || threatAtPW
+    // check the threats
+    val threatHV = cross .exists(firstOccupiedIs(_, f => f == q || f == r))
+    val threatD  = diag  .exists(firstOccupiedIs(_, f => f == q || f == b))
+    val threatKN = knight.exists(firstOccupiedIs(_, _ == n))
+    val threatPW = pawn  .exists(firstOccupiedIs(_, _ == p))
+    threatHV || threatD || threatKN || threatPW
+//    V2
+//    val data: Seq[(Seq[Seq[Loc]], CFigure => Boolean)] = Seq(
+//      mvRook(kingAt)         -> (f => f == q || f == r),
+//      mvBishop(kingAt)       -> (f => f == q || f == r),
+//      mvKnight(kingAt)       -> (_ == n),
+//      mvPawnBite(kingAt, bd) -> (_ == p),
+//    )
+//    data.foldLeft(false) { case (a, (ll, p)) =>
+//      a || ll.exists(firstOccupiedIs(_, p))
+//    }
+
+
   }
   
 }
