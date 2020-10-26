@@ -24,8 +24,7 @@ sealed abstract class CFigure(val c: Color, private val s: Char) extends Product
   /**
     * source color validation inside the Chess class
     * {{{nextFrom(l: Loc, b: Board): Seq[Seq[Length]]}}}
-    * TODO: 2. target
-    * {{{isPathClean}}}
+    * {{{isPathClean}}} checking path to the target
     */
   def validateMove(m: Move, b: Board): Either[String, Move] = {
     val colorOppositeMe = b.at(m.start).get.c.another

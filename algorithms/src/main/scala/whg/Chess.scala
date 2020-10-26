@@ -1,13 +1,10 @@
 package whg
 
 /**
-  * TODO:
-  *
   * - possible move for each figure
   *   - general
   *   - filtered by occupied cells and cells on board
-  * - "check" ("шах")
-  * - mirroring for opposite side for Pawn
+  * - "check"
   *
   */
 case class Chess(private val board: Board, nextC: Color) {

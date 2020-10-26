@@ -96,6 +96,22 @@ class BoardSpec extends ASpec {
         ((cell, c), r) <- data
       } b.isColorAt(cell, c) shouldEqual r
     }
+    
+    it("findKing") {
+      val b = Board.initial
+      val data = Seq(
+        White -> "e1",
+        Black -> "e8"
+      ).map { case (in, out) => in -> Loc(out) }
+      
+      for {
+        (in, out) <- data
+      } b.findKing(in) shouldEqual out
+      
+      for {
+        (in, out) <- data
+      } Board.findKing(b, in) shouldEqual Some(out) 
+    }
   }
 
 }
