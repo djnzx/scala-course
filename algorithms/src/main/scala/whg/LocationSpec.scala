@@ -72,7 +72,7 @@ class LocationSpec extends ASpec {
     }
     
     it("exploring the syntax") {
-      import Loc.e
+      import L._
       e(2)>e(4) shouldEqual Move("e2e4")
     }
 

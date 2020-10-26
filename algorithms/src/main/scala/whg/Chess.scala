@@ -7,9 +7,11 @@ package whg
   * - "check"
   *
   */
-case class Chess(private val board: Board, nextC: Color) {
+case class Chess(private val board: Board, nextC: Color, checkBlack: Boolean = false, checkWhite: Boolean = false) {
 
   def nextTurn(b: Board) = copy(board = b, nextC = nextC.another)
+  def chWhite(c: Boolean) = copy(checkWhite = c)
+  def chBlack(c: Boolean) = copy(checkBlack = c)
   
   /** validation of figure color */
   def validate(m: Move): Either[String, Move] =

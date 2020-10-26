@@ -1,13 +1,13 @@
 package whg
 
 object Directions {
-  lazy val oneVals = Seq(-1, 0, 1)
+  lazy val oneVals = IndexedSeq(-1, 0, 1)
   lazy val oneDeltas = for {
     x <- oneVals
     y <- oneVals
     if !(x == 0 && y == 0)
   } yield (x, y)
-  lazy val knVals = Seq(-2, -1, 1, 2)
+  lazy val knVals = IndexedSeq(-2, -1, 1, 2)
   lazy val knDeltas = for {
     x <- knVals
     y <- knVals
@@ -37,12 +37,11 @@ object Directions {
     * direction extractor for White Pawn
     * @return Some(1) if board(loc) == white pawn
     */
-  object PawnWhite {
+  object IsWhite {
     def unapply(args: (Loc, Board)) = args match { case (l, b) =>
-      b.at(l) match {
-        case Some(Pawn(White)) => Some(+1)
-//        case Some(f) if f.isWhite => Some(-1)
-        case _                 => None
+      b.isWhiteAt(l) match {
+        case true => Some(+1)
+        case _    => None
       }
     }
   }
@@ -52,12 +51,11 @@ object Directions {
     * direction extractor for White Pawn
     * @return Some(-1) if board(loc) == black pawn
     */
-  object PawnBlack {
+  object IsBlack {
     def unapply(args: (Loc, Board)) = args match { case (l, b) =>
-      b.at(l) match {
-        case Some(Pawn(Black)) => Some(-1)
-//        case Some(f) if f.isBlack => Some(-1)
-        case _                 => None
+      b.isBlackAt(l) match {
+        case true => Some(-1)
+        case _    => None
       }
     }
   }
@@ -68,8 +66,8 @@ object Directions {
     */
   object PawnMove1 {
     def unapply(args: (Loc, Board)) = args match {
-      case PawnWhite(dy) => Some(dy * 1)
-      case PawnBlack(dy) => Some(dy * 1)
+      case IsWhite(dy) => Some(dy * 1)
+      case IsBlack(dy) => Some(dy * 1)
       case _             => None
     }
   }
@@ -80,25 +78,39 @@ object Directions {
     */
   object PawnMove2 {
     def unapply(as: (Loc, Board)) = as match {
-      case PawnWhite(dy) if as._1.y == 2 => Some(dy * 2)
-      case PawnBlack(dy) if as._1.y == 7 => Some(dy * 2)
+      case IsWhite(dy) if as._1.y == 2 => Some(dy * 2)
+      case IsBlack(dy) if as._1.y == 7 => Some(dy * 2)
       case _                             => None
     }
   }
 
-  // one step forward
+  /**
+    * ONE step forward, if possible.
+    * picking the right direction based on the color
+    * taking into account only color
+    * @return Option[Loc] - if possible, None - if not
+    */
   def mvPawn1(l: Loc, b: Board) = (l, b) match {
     case PawnMove1(dy) => l.move(0, dy)
     case _             => None
   }
 
-  // two steps forward
+  /**
+    * TWO steps forward, if possible.
+    * picking the right direction based on the color
+    * taking into account only color
+    * @return Option[Loc] - if possible, None - if not
+    */
   def mvPawn2(l: Loc, b: Board) = (l, b) match {
     case PawnMove2(dy) => l.move(0, dy)
     case _             => None
   }
 
-  // 1 + 2 steps forward
+  /**
+    * ONE and TWO steps forward, if possible.
+    * picking the right direction based on the color
+    * taking into account only color
+    */
   def mvPawnFwd(l: Loc, b: Board) = Seq(
     Seq(mvPawn1(l, b), mvPawn2(l, b)).flatten
   )
@@ -113,17 +125,16 @@ object Directions {
     case _             => None
   }
 
+  /**
+    * mvPawnBite = mvPawnBiteL + mvPawnBiteR
+    */
   def mvPawnBite(l: Loc, b: Board) =
     Seq(mvPawnBiteL(l, b), mvPawnBiteR(l, b))
       .flatten
       .map(Seq(_))
 
   /**
-    * get the color of pawn for vector
-    * one forward
-    * + (opt) forward
-    * + (diagonal) bite left + bite right
-    * + white/black different directions
+    * mvPawn = mvPawnFwd + mvPawnBite
     */
   def mvPawn(l: Loc, b: Board) = mvPawnFwd(l, b) ++ mvPawnBite(l, b)
 

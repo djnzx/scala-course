@@ -40,6 +40,9 @@ object Loc {
   def move(l: Loc, dx: Int, dy: Int) = Option(l)
     .map { case Loc(x, y) => Loc(x + dx, y + dy) }
     .filter(_.isOnBoard)
+}
+
+object L {
   def a(y: Int) = Loc(1, y)
   def b(y: Int) = Loc(2, y)
   def c(y: Int) = Loc(3, y)

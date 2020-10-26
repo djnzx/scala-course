@@ -8,28 +8,22 @@ class PawnMoveSpec extends ASpec {
   describe("pawn moves") {
     val b = Board.initial
     
-    it("fwd1") {
+    it("should move a pawn forward 1 step") {
       val t = Seq(
-        Loc("a2") -> Loc("a3"),
-        Loc("b2") -> Loc("b3"),
-        Loc("c2") -> Loc("c3"),
-        Loc("d2") -> Loc("d3"),
-        Loc("e2") -> Loc("e3"),
-        Loc("f2") -> Loc("f3"),
-        Loc(3,7) -> Loc(3,6),
-        Loc(4,7) -> Loc(4,6),
+        L.a(2) -> L.a(3),
+        L.b(2) -> L.b(3),
+        L.c(2) -> L.c(3),
+        L.d(2) -> L.d(3),
+        L.e(2) -> L.e(3),
+        L.f(2) -> L.f(3),
+        L.g(2) -> L.g(3),
+
+        L.c(7) -> L.c(6),
+        L.d(7) -> L.d(6),
       ).map { case (in, out) => in -> Some(out)}
       
-      val f: Seq[(Loc, None.type)] = Seq(
-        Loc.a(1),
-        Loc.b(1),
-        Loc(3,1),
-        Loc(4,1),
-        Loc(5,8),
-        Loc(6,8),
-        Loc(7,8),
-        Loc(8,8),
-        
+      // no way to move. because these cell are empty
+      val f = Seq(
         Loc(3,3),
         Loc(4,4),
       ).map(_ -> None)
@@ -39,49 +33,34 @@ class PawnMoveSpec extends ASpec {
       } mvPawn1(in, b) shouldEqual out
     }
     
-    it("fwd2") {
+    it("should move a pawn forward 2 steps (true cases)") {
+      // we can do BIG step only from initial position
       val t = Seq(
-        Loc(1,2) -> Loc(1,4),
-        Loc(2,2) -> Loc(2,4),
-        Loc(3,2) -> Loc(3,4),
-        Loc(4,2) -> Loc(4,4),
-        Loc(1,7) -> Loc(1,5),
-        Loc(2,7) -> Loc(2,5),
-        Loc(3,7) -> Loc(3,5),
-        Loc(4,7) -> Loc(4,5),
+        L.a(2) -> L.a(4),
+        L.b(2) -> L.b(4),
+        L.c(2) -> L.c(4),
+        L.d(2) -> L.d(4),
+        L.e(2) -> L.e(4),
+        L.f(2) -> L.f(4),
+        L.g(2) -> L.g(4),
+        L.h(2) -> L.h(4),
+        
+        L.a(7) -> L.a(5),
+        L.b(7) -> L.b(5),
+        L.c(7) -> L.c(5),
+        L.d(7) -> L.d(5),
+        L.e(7) -> L.e(5),
+        L.f(7) -> L.f(5),
+        L.g(7) -> L.g(5),
+        L.h(7) -> L.h(5),
       ).map { case (in, out) => in -> Some(out)}
       
-      val f = Seq(
-        Loc(1,1),
-        Loc(2,1),
-        Loc(3,1),
-        Loc(4,1),
-        Loc(5,8),
-        Loc(6,8),
-        Loc(7,8),
-        Loc(8,8),
-        
-        Loc(3,3),
-        Loc(4,4),
-      ).map(_ -> None)
-      
       for {
-        (in, out) <- t ++ f
+        (in, out) <- t
       } mvPawn2(in, b) shouldEqual out
     }
     
-    it("fwd2 #2") {
-      val t = Seq( // pawn in orig. position moved on 2 steps
-        Loc(5,2) -> Loc(5,4),
-        Loc(6,2) -> Loc(6,4),
-        Loc(7,2) -> Loc(7,4),
-        Loc(8,2) -> Loc(8,4),
-        Loc(1,7) -> Loc(1,5),
-        Loc(2,7) -> Loc(2,5),
-        Loc(3,7) -> Loc(3,5),
-        Loc(4,7) -> Loc(4,5),
-      ).map { case (in, out) => in -> Some(out)}
-
+    it("should move a pawn forward 2 steps (false cases)") {
       val f1 = Seq(
         // pawns already moved ONE step
         Loc(1,3),
@@ -98,18 +77,21 @@ class PawnMoveSpec extends ASpec {
       ).map(_ -> None)
 
       val f2 = Seq(
-        // non pawns
-        Loc(1,1),
-        Loc(2,1),
-        Loc(3,1),
-        Loc(4,1),
-        Loc(5,8),
-        Loc(6,8),
-        Loc(7,8),
-        Loc(8,8),
+        // wrong positions, non pawns, but actually they don't fit into line 2 or 7
+        L.a(1),
+        L.b(1),
+        L.c(1),
+        L.d(1),
+        L.c(8),
+        L.d(8),
+        L.e(8),
+        L.f(8),
+        // empty positions
+        L.c(3),
+        L.d(4),
       ).map(_ -> None)
 
-      val b5 = b.move(Seq(
+      val board2 = b.move(Seq(
         "a2a3",
         "b2b3",
         "c2c3",
@@ -117,14 +99,14 @@ class PawnMoveSpec extends ASpec {
       ))
 
       for {
-        (in, out) <- t ++ f1 ++ f2
-      } mvPawn2(in, b5) shouldEqual out
+        (in, out) <- f1 ++ f2
+      } mvPawn2(in, board2) shouldEqual out
 
     }
     
     it("fwd 1 + 2") {
       // first row moved 1 step
-      val b7 = b.move(Seq(
+      val board2 = b.move(Seq(
         "a2a3",
         "b2b3",
         "c2c3",
@@ -133,7 +115,7 @@ class PawnMoveSpec extends ASpec {
         "b3b4",
       ))
 
-      println(b7.rep)
+//      println(b7.rep)
       
       val data1 = Seq(
         Loc(6,2) -> Seq(Loc(6,3), Loc(6,4)),
@@ -148,18 +130,17 @@ class PawnMoveSpec extends ASpec {
       
       for {
         (in, out) <- data1
-      } mvPawnFwd(in, b7) shouldEqual out 
+      } mvPawnFwd(in, board2) shouldEqual out 
     }
     
     it("bite") {
       val data1 = Seq(
-        Loc(1,2) -> Seq(Loc(2,3)),           // white. corner
-        Loc(2,2) -> Seq(Loc(1,3), Loc(3,3)), // white. non-corner
-        Loc(8,7) -> Seq(Loc(7,6)),           // black. corner
-        Loc(7,7) -> Seq(Loc(6,6), Loc(8,6)), // black. non-corner
+        Loc("a2") -> Seq(Loc("b3")),            // white. corner
+        Loc("b2") -> Seq(Loc("a3"), Loc("c3")), // white. non-corner
+        Loc("h7") -> Seq(Loc("g6")),            // black. corner
+        Loc("g7") -> Seq(Loc("f6"), Loc("h6")), // black. non-corner
       ).map { case (in, out) => in -> out.map(Seq(_)) }
       val data2 = Seq(
-        Loc(1,1), // non pawn
         Loc(3,3), // empty
       ).map(_->Seq())
       for {
@@ -169,7 +150,12 @@ class PawnMoveSpec extends ASpec {
     }
     
     it("fwd 1 + 2 + bite L + R") {
-      println(mvPawn(Loc(5,2), b))
+      mvPawn(Loc("e2"), b) should contain theSameElementsAs
+        List(
+          List(Loc("e3"), Loc("e4")), 
+          List(Loc("d3")), 
+          List(Loc("f3"))
+        )
     }
   }
 
