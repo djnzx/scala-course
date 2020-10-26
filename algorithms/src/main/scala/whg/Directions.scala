@@ -25,14 +25,14 @@ object Directions {
   def toLU(l: Loc) = applyAndFilter(l, (l, d) => l.move(-d,  d))
   def toRD(l: Loc) = applyAndFilter(l, (l, d) => l.move( d, -d))
   def toLD(l: Loc) = applyAndFilter(l, (l, d) => l.move(-d, -d))
-  
+
   def mvKing(l: Loc) = moveAndFilter(l, oneDeltas).map(Seq(_))
   def mvRook(l: Loc) = Seq(toL(l),  toR(l),  toU(l),  toD(l))
   def mvBishop(l: Loc) = Seq(toLU(l), toLD(l), toRU(l), toRD(l))
   def mvQueen(l: Loc) = mvRook(l) ++ mvBishop(l)
   def mvKnight(l: Loc) = moveAndFilter(l, knDeltas).map(Seq(_))
 
-  /** 
+  /**
     * describes White Pawn,
     * direction extractor for White Pawn
     * @return Some(1) if board(loc) == white pawn
@@ -41,6 +41,7 @@ object Directions {
     def unapply(args: (Loc, Board)) = args match { case (l, b) =>
       b.at(l) match {
         case Some(Pawn(White)) => Some(+1)
+//        case Some(f) if f.isWhite => Some(-1)
         case _                 => None
       }
     }
@@ -55,6 +56,7 @@ object Directions {
     def unapply(args: (Loc, Board)) = args match { case (l, b) =>
       b.at(l) match {
         case Some(Pawn(Black)) => Some(-1)
+//        case Some(f) if f.isBlack => Some(-1)
         case _                 => None
       }
     }
@@ -95,7 +97,7 @@ object Directions {
     case PawnMove2(dy) => l.move(0, dy)
     case _             => None
   }
-  
+
   // 1 + 2 steps forward
   def mvPawnFwd(l: Loc, b: Board) = Seq(
     Seq(mvPawn1(l, b), mvPawn2(l, b)).flatten
@@ -105,7 +107,7 @@ object Directions {
     case PawnMove1(dy) => l.move(-1, dy)
     case _             => None
   }
-    
+
   def mvPawnBiteR(l: Loc, b: Board) = (l, b) match {
     case PawnMove1(dy) => l.move(+1, dy)
     case _             => None

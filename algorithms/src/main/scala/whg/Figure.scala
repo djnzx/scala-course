@@ -7,6 +7,9 @@ sealed abstract class CFigure(val c: Color, private val s: Char) extends Product
     case White => s.toUpper
     case Black => s.toLower
   }
+  
+  def isWhite = c == White
+  def isBlack = c == Black
 
   /** required move is a pawn and it's in forward direction */
   object IsPawnFwd {

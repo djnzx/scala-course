@@ -15,10 +15,16 @@ case class Loc private (x: Int, y: Int) {
   def isOnBoard = Loc.isOnBoard(x) && Loc.isOnBoard(y)
   def move(dx: Int, dy: Int) = Loc.move(this, dx, dy)
   def >(dst: Loc) = Move(this, dst)
+  override def toString: String = {
+    import Loc.{xToL, yToD}
+    s"${xToL(x)}${yToD(y)}"
+  }
 }
 
 object Loc {
   def apply(loc: String): Loc = parseOrEx(loc)
+  def xToL(i: Int): Char = (i + 'a' - 1).toChar
+  def yToD(i: Int): Char = (i + '0').toChar
   def iToX(i: Int) = i - 'a' + 1
   def iToY(i: Int) = i - '1' + 1
   def isOnBoard(a: Int) = a >= 1 && a <= 8
