@@ -4,8 +4,6 @@ import whg.Directions._
 
 object Check {
 
-  def isWhiteUnderTheCheck(b: Board) = isUnderTheCheck(b, White)
-  def isBlackUnderTheCheck(b: Board) = isUnderTheCheck(b, Black)
   def threats(c: Color) = {
     val another = c.another
     (Queen(another), Rook(another), Bishop(another), Knight(another), Pawn(another))
@@ -36,8 +34,8 @@ object Check {
 //    data.foldLeft(false) { case (a, (ll, p)) =>
 //      a || ll.exists(firstOccupiedIs(_, p))
 //    }
-
-
   }
+  
+  def foldCheck(check: Option[Color], f: Color => Boolean) = check.fold(true)(f)
   
 }

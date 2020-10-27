@@ -68,4 +68,15 @@ class CheckSpec extends ASpec {
     isUnderTheCheck(b, White) shouldEqual false
     isUnderTheCheck(b, Black) shouldEqual true
   }
+
+  it("foldCheck") {
+    import Check.foldCheck
+    foldCheck(None, _ => true) shouldEqual true
+    foldCheck(None, _ => false) shouldEqual true
+    foldCheck(Some(White), { c => println(s"folding $c"); true}) shouldEqual true
+    foldCheck(Some(White), { c => println(s"folding $c"); false}) shouldEqual false
+    foldCheck(Some(Black), { c => println(s"folding $c"); true}) shouldEqual true
+    foldCheck(Some(Black), { c => println(s"folding $c"); false}) shouldEqual false
+  }
+
 }

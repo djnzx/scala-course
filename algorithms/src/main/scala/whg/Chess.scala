@@ -25,9 +25,19 @@ case class Chess(private val board: Board, nextC: Color, check: Option[Color] = 
       .toRight(s"error parsing `$m`") // Either[String, Move]
       .flatMap(validate)               // Either[String, Move]
       .map(board.move)                // Either[String, (Board, Boolean)]
+      .flatMap { case (b, _) =>
+        // if nextC was under the "check" we need to clear it from that color
+        // None folds to true
+        // for Some(White) we run isUnderTheCheck(..., White).
+        // we need to get false from isUnderTheCheck
+        Check.foldCheck(check, color => !Check.isUnderTheCheck(b, color)) match {
+          case true  => Right(b)                                          // "check" was absent or cleared
+          case false => Left(s"Invalid, $nextC is still under the CHECK") // still in "check"
+        }
+      }
       .fold (
-        msg => (this, Some(msg)),
-        { case (b, _) => (nextMove(b), None) }
+        msg => (this,                 Some(msg)), // same board + error message
+        b   => (nextMove(b).chNone(), None)       // new board, switched color, cleared "check"
       )
       
   def rep = board.rep
@@ -48,7 +58,7 @@ object Chess {
   def printLine() = println("-----------------------")
   
   def encolorColor(c: Color) = {
-    val cs = s"  ${c.toString}  "
+    val cs = s"  $c  "
     c match {
       case White => BG.Black(FG.DarkGray(cs))
       case Black => BG.White(FG.LightGray(cs))
