@@ -1,15 +1,12 @@
 package whg
 
-/**
-  * - possible move for each figure
-  *   - general
-  *   - filtered by occupied cells and cells on board
-  * - "check"
-  *
-  */
 case class Chess(private val board: Board, nextC: Color, check: Option[Color] = None) {
 
-  def nextMove(b: Board) = copy(board = b, nextC = nextC.another)
+  def nextMove(b: Board, check: Boolean) = {
+    val next = nextC.another
+    Chess(b, next, Option.when(check)(next))
+  }
+
   def chNone() = copy(check = None)
   def chBlack() = copy(check = Some(Black))
   def chWhite() = copy(check = Some(White))
@@ -31,13 +28,14 @@ case class Chess(private val board: Board, nextC: Color, check: Option[Color] = 
         // for Some(White) we run isUnderTheCheck(..., White).
         // we need to get false from isUnderTheCheck
         Check.foldCheck(check, color => !Check.isUnderTheCheck(b, color)) match {
-          case true  => Right(b)                                          // "check" was absent or cleared
-          case false => Left(s"Invalid, $nextC is still under the CHECK") // still in "check"
+          case true  => Right(b)      // "check" was absent or cleared successfully
+          case false => Left(s"Invalid move: $nextC is still in CHECK")
         }
       }
+      .map(b => (b, Check.isUnderTheCheck(b, nextC.another)))
       .fold (
-        msg => (this,                 Some(msg)), // same board + error message
-        b   => (nextMove(b).chNone(), None)       // new board, switched color, cleared "check"
+        msg => (this,                       Some(msg)), // same board + error message
+        { case (b, ch) => (nextMove(b, ch), None) }     // new board, switched color, cleared "check"
       )
       
   def rep = board.rep
@@ -75,7 +73,7 @@ object Chess {
     val msg = FG.Red("message:")
     println(chess2.board.rep)
     message.foreach(m => println(s"$msg $m"))
-    chess2.check.foreach(c => println(s"$c: CHECK"))
+    chess2.check.foreach(c => println(encolorColor(c) + FG.Red(">CHECK!<").toString))
     printLine()
   }
 

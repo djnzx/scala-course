@@ -1,7 +1,7 @@
 package whg
 
 sealed trait Color extends Product {
-  lazy val another: Color = Color.another(this)
+  val another: Color = Color.another(this)
 }
 case object White extends Color
 case object Black extends Color
