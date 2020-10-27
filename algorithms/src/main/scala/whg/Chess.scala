@@ -1,5 +1,7 @@
 package whg
 
+import fansi.Str
+
 /**
   * - possible move for each figure
   *   - general
@@ -7,11 +9,12 @@ package whg
   * - "check"
   *
   */
-case class Chess(private val board: Board, nextC: Color, checkBlack: Boolean = false, checkWhite: Boolean = false) {
+case class Chess(private val board: Board, nextC: Color, check: Option[Color] = None) {
 
   def nextTurn(b: Board) = copy(board = b, nextC = nextC.another)
-  def chWhite(ch: Boolean) = copy(checkWhite = ch)
-  def chBlack(ch: Boolean) = copy(checkBlack = ch)
+  def chNone() = copy(check = None)
+  def chBlack() = copy(check = Some(Black))
+  def chWhite() = copy(check = Some(White))
   
   def validate(m: Move): Either[String, Move] =
     Some(m)
@@ -34,14 +37,22 @@ case class Chess(private val board: Board, nextC: Color, checkBlack: Boolean = f
   def play(turns: Seq[String]): Unit = turns match {
     case Nil        => ()
     case turn::tail => 
-      println(s"${Console.WHITE}$nextC${Console.RESET} is going to make turn ${Console.BLUE}$turn${Console.RESET}")
+      val color: Str = fansi.Color.White(nextC.toString)
+      val turns = fansi.Color.Blue(turn)
+      val msg = fansi.Color.Red("message:")
+      
+      println(s"$color is going to make turn $turns")
       val (chess2, message) = move(turn)
       println(chess2.board.rep)
-      message.foreach(m => println(s"${Console.RED}message:${Console.RESET} $m"))
-      if (chess2.checkWhite) println("WHITE: CHECK") 
-      if (chess2.checkBlack) println("BLACK: CHECK") 
+      message.foreach(m => println(s"$msg $m"))
+      chess2.check.foreach(c => println(s"$c: CHECK"))
       println
       chess2.play(tail)
+  }
+  
+  def play(fileName: String) = {
+    // read file
+    // run play(turns: Seq[String])
   }
 }
 
