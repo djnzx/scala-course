@@ -24,8 +24,8 @@ case class Chess(private val board: Board, nextC: Color, check: Option[Color] = 
     Move.parse(m)                     // Option[Move]
       .toRight(s"error parsing `$m`") // Either[String, Move]
       .flatMap(validate)               // Either[String, Move]
-      .map(board.move)                // Either[String, (Board, Boolean)]
-      .flatMap { case (b, _) =>
+      .flatMap(board.move)             // Either[String, Board(new)]
+      .flatMap { b =>                  // Either[String, Board(new)]
         // if nextC was under the "check" we need to clear it from that color
         // None folds to true
         // for Some(White) we run isUnderTheCheck(..., White).

@@ -3,7 +3,8 @@ package whg
 import tools.spec.ASpec
 
 class BoardSpec extends ASpec {
-
+  import Board.{toLoc, toMove} // implicit conversion String => Move and String => Location, BE CAREFUL!
+  
   describe("board operations") {
 
     it("at") {
@@ -54,23 +55,14 @@ class BoardSpec extends ASpec {
 
     it("move") {
       val b = Board.initial
-      b.move("e2e4") match {
-        case (b2, valid) =>
-          valid shouldEqual true
+      val b2 = b.move("e2e4")
+      b2.isRight shouldEqual true
+      b2 match {
+        case Right(b2) =>
           b2.at("e2") shouldEqual None
           b2.at("e4") shouldEqual Some(Pawn(White))
+        case Left(_) => ??? 
       }
-    }
-
-    it("isOccupiedAt") {
-      val b = Board.initial
-      val data = Seq(
-        "e2" -> true,
-        "e3" -> false,
-      )
-      for {
-        (in, out) <- data
-      } b.isOccupiedAt(in) shouldEqual out
     }
 
     it("isFreeAt") {

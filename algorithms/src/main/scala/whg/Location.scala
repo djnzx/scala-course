@@ -1,6 +1,6 @@
 package whg
 
-import whg.Tools.wrongState
+import Tools.wrongState
 
 /**
   * represents location

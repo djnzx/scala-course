@@ -4,6 +4,8 @@ import tools.spec.ASpec
 
 class CheckSpec extends ASpec {
   import Check._
+  import Board.{toLoc, toMove} // implicit conversion String => Move and String => Location, BE CAREFUL!
+
   val b = Board.initial
   
   it("basic case 1") {
@@ -54,7 +56,7 @@ class CheckSpec extends ASpec {
   }
 
   it("check mate #1") {
-    val b = Board.initial.move(Seq(
+    val b = Board.initial.moveAll(Seq(
       "e2e4",
       "e7e5",
       "f1c4",
