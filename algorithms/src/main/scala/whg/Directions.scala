@@ -28,15 +28,15 @@ object Directions {
   def toRD(l: Loc) = aaf(l) { case (l, d) => l.move( d, -d) }
   def toLD(l: Loc) = aaf(l) { case (l, d) => l.move(-d, -d) }
 
-  def mvKing(l: Loc) = moveAndFilter(l, oneDeltas).map(Seq(_))
   def mvRook(l: Loc) = Seq(toL(l), toR(l), toU(l), toD(l))
   def mvBishop(l: Loc) = Seq(toLU(l), toLD(l), toRU(l), toRD(l))
   def mvQueen(l: Loc) = mvRook(l) ++ mvBishop(l)
   def mvKnight(l: Loc) = moveAndFilter(l, knDeltas).map(Seq(_))
+  def mvKing(l: Loc) = moveAndFilter(l, oneDeltas).map(Seq(_))
 
   /**
     * direction extractor for White Pawn
-    * @return Some(1) if board(loc) == white pawn
+    * @return Some(1) if board(loc) == white
     */
   object IsWhite {
     def unapply(args: (Loc, Board)) = args match { case (l, b) =>
@@ -49,7 +49,7 @@ object Directions {
 
   /**
     * direction extractor for White Pawn
-    * @return Some(-1) if board(loc) == black pawn
+    * @return Some(-1) if board(loc) == black
     */
   object IsBlack {
     def unapply(args: (Loc, Board)) = args match { case (l, b) =>
@@ -110,6 +110,7 @@ object Directions {
     * ONE and TWO steps forward, if possible.
     * picking the right direction based on the color
     * taking into account only color
+    * both of them must me wrapped into one Seq, because they are on the same direction
     */
   def mvPawnFwd(l: Loc, b: Board) = Seq(
     Seq(mvPawn1(l, b), mvPawn2(l, b)).flatten
@@ -127,6 +128,7 @@ object Directions {
 
   /**
     * mvPawnBite = mvPawnBiteL + mvPawnBiteR
+    * each of them must me wrapped into own Seq, since directions are different
     */
   def mvPawnBite(l: Loc, b: Board) =
     Seq(mvPawnBiteL(l, b), mvPawnBiteR(l, b))

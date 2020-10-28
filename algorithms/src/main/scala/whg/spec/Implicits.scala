@@ -1,4 +1,6 @@
-package whg
+package whg.spec
+
+import whg.{Loc, Move}
 
 import scala.language.implicitConversions
 

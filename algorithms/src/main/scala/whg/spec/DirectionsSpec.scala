@@ -1,7 +1,7 @@
 package whg.spec
 
 import tools.spec.ASpec
-import whg.{Board, Directions, Implicits, Loc}
+import whg.{Board, Directions, Loc}
 
 class DirectionsSpec extends ASpec {
   

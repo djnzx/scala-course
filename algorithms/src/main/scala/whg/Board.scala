@@ -1,7 +1,7 @@
 package whg
 
 import whg.Board.{TBoard, TCell}
-import Utils.wrong
+import ExceptionSyntax._
 
 class Board(private val a: TBoard) {
   /** implementation dependent operations */
@@ -26,7 +26,7 @@ class Board(private val a: TBoard) {
     */
   def moveOneOrDie(m: Move) = move(m).fold(_.die, identity)
   def moveAllOrDie(ms: Seq[Move]) = ms.foldLeft(this)((b, m) => b.moveOneOrDie(m))  
-  def findKingOrDie(c: Color) = Board.findKing(this, c).getOrElse(wrong(msg.noKing(c)))
+  def findKingOrDie(c: Color) = Board.findKing(this, c).getOrElse(!msg.noKing(c))
   override def toString: String = Board.repBoard(a)
 }
 

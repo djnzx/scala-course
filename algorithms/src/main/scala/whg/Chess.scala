@@ -11,47 +11,47 @@ case class Chess(private val board: Board, nextC: Color, check: Option[Color] = 
   }
 
   def checkStartCell(m: Move) =
-    Either.cond(board.isColorAt(m.start, nextC), 
-      m, 
+    Either.cond(board.isColorAt(m.start, nextC),
+      m,
       ImWrongColorAtStartCell(m, nextC)
     )
-  
+
   def validateFigureMove(m: Move) =
     board.at(m.start).get.validateMove(m, board)
 
   /** "check" was absent or cleared successfully */
   def wasCheckCleared(m: Move, b: Board) =
-    Either.cond(Check.fold(check, color => !Check.isKingInCheck(b, color)), 
-      b, 
+    Either.cond(Check.fold(check, color => !Check.isKingInCheck(b, color)),
+      b,
       ImInvalidMoveInCheck(m, nextC)
     )
-  
+
   def isNextInCheck(b: Board) =
-    (b, Check.isKingInCheck(b, nextC.another))
-  
+    Check.isKingInCheck(b, nextC.another)
+
   def moveValidated(m: String) =
     Move.parse(m)
       .flatMap(checkStartCell)
       .flatMap(validateFigureMove)
       .flatMap(m => board.move(m).map(b => (m, b)))
       .flatMap((wasCheckCleared _).tupled)
-      .map(isNextInCheck)
+      .map(b => (b, isNextInCheck(b)))
       .fold(
         im             => (this,        Some(im)),  // same board + error
         { case (b, ch) => (nextMove(b, ch), None) } // new board, switched color, new "check"
       )
-      
+
   override def toString: String = board.toString
 
 }
 
 object Chess {
   import fansi.{Back => BG, Color => FG}
-  
+
   def initial = new Chess(Board.initial, White)
-  
+
   def printLine() = println("-----------------------")
-  
+
   def encolorColor(c: Color) = {
     val cs = s"  $c  "
     c match {
@@ -81,7 +81,7 @@ object Chess {
     afterMove(chess2, message)
     chess2
   }
-  
+
   /** plays WHOLE GAME from the given state */
   def play(turns: Iterator[String], ch: Chess) = turns.foldLeft(ch)(makeMove)
 

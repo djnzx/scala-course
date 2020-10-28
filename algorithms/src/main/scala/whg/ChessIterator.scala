@@ -19,15 +19,18 @@ class ChessIterator private (fileName: String) extends Iterator[Array[Int]] {
 }
 
 object ChessIterator {
-  import Utils.{obtainResource, wrong}
+  import ExceptionSyntax._
+
+  def obtainResource(fileName: String) =
+    Option(getClass.getClassLoader.getResource(fileName)).map(_.getFile)
 
   /** file - any location */
   def file(fileName: String) = new ChessIterator(fileName)
   
   /** file - located in the resources folder */
   def resource(fileName: String) = {
-    val r = obtainResource(fileName).getOrElse(wrong(msg.fileNotFound(fileName))) 
-    new ChessIterator(r)
+    val file = obtainResource(fileName).getOrElse(!msg.fileNotFound(fileName)) 
+    new ChessIterator(file)
   }
 
 }

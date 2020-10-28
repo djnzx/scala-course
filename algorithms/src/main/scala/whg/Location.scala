@@ -26,7 +26,7 @@ object Loc {
       .map { case Array(x, y) => (iToX(x), iToY(y)) }
       .filter { case (x, y) => isOnBoard(x) && isOnBoard(y) }
       .map { case (x, y) => Loc(x, y) }
-      .toRight[InvalidMove](ImErrorParsingLocation(loc))
+      .toRight(ImErrorParsingLocation(loc))
   def parseOrDie(loc: String) = parse(loc).fold(_.die, identity)
   def isOnBoard(a: Int) = a >= 1 && a <= 8
   def apply(loc: String): Loc = parseOrDie(loc)
@@ -67,7 +67,7 @@ object Move {
         x <- Loc.parse(s1)
         y <- Loc.parse(s2)
       } yield Move(x, y) }
-    match { // we don't have Cats to use leftMap
+    match { // we don't have Cats to use leftMap, bt this is only for tests
       case Right(m) => Right(m)
       case Left(_)  => Left(ImErrorParsingMove(move))
     }
