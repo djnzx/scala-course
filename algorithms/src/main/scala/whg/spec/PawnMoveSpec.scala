@@ -1,10 +1,11 @@
-package whg
+package whg.spec
 
 import tools.spec.ASpec
+import whg._
 
 class PawnMoveSpec extends ASpec {
   import Directions._
-  import Board.{toLoc, toMove} // implicit conversion String => Move and String => Location, BE CAREFUL!
+  import Implicits._ // implicit conversion String => Move and String => Location, BE CAREFUL!
 
   describe("pawn moves") {
     val b = Board.initial
@@ -92,7 +93,7 @@ class PawnMoveSpec extends ASpec {
         L.d(4),
       ).map(_ -> None)
 
-      val board2 = b.moveAll(Seq(
+      val board2 = b.moveAllOrDie(Seq(
         "a2a3",
         "b2b3",
         "c2c3",
@@ -107,7 +108,7 @@ class PawnMoveSpec extends ASpec {
     
     it("fwd 1 + 2") {
       // first row moved 1 step
-      val board2 = b.moveAll(Seq(
+      val board2 = b.moveAllOrDie(Seq(
         "a2a3",
         "b2b3",
         "c2c3",

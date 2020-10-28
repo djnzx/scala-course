@@ -1,44 +1,36 @@
 package whg
 
 import whg.Board.{TBoard, TCell}
-import Tools.wrongState
+import Utils.wrong
 
-class Board(private val b: TBoard) {
-  def rep = Board.repBoard(b)
-
-  /** basic operations */
-  def at(x: Int, y: Int): TCell = b(y - 1)(x - 1)
+class Board(private val a: TBoard) {
+  /** implementation dependent operations */
+  private def at(x: Int, y: Int): TCell = a(y - 1)(x - 1)
+  private def upd(loc: Loc, of: TCell) = new Board(a.updated(loc.y - 1, a(loc.y -1).updated(loc.x - 1, of)))
+  /** basic low level operations, made public only for tests */
+  def put(loc: Loc, f: CFigure) = upd(loc, Some(f))
+  def clear(loc: Loc) = upd(loc, None)
+  /** public API */
   def at(loc: Loc): TCell = at(loc.x, loc.y)
   def isFreeAt(loc: Loc) = at(loc).isEmpty
   def isColorAt(loc: Loc, c: Color) = at(loc).exists(_.c == c)
   def isWhiteAt(loc: Loc) = isColorAt(loc, White)
   def isBlackAt(loc: Loc) = isColorAt(loc, Black)
-  def updated(loc: Loc, of: TCell) = new Board(b.updated(loc.y - 1, b(loc.y -1).updated(loc.x - 1, of)))
-  def put(loc: Loc, f: CFigure) = updated(loc, Some(f))
-  def clear(loc: Loc) = updated(loc, None)
-  /** one move => Either */
-  def move(m: Move) = m match {
-    case Move(start, finish) => at(start) match {
-      case Some(f) => Right(clear(start).put(finish, f))
-      case None    => Left(s"source cell `$start`is empty")
-    }
-  }
-  /** one move => Board */
-  def moveOrEx(m: Move) = move(m).fold(err => wrongState(err), identity)
-  /** many moves => Board */
-  def moveAll(ms: Seq[Move]): Board = ms match {
-    case Nil     => this
-    case m::tail => moveOrEx(m).moveAll(tail)
-  }
+  def move(m: Move) = 
+    at(m.start)
+      .map(f => clear(m.start).put(m.finish, f))
+      .toRight(ImStartCellIsEmpty(m))
 
-  def findKing(c: Color) = Board.findKing(this, c).getOrElse(wrongState(s"there is no king of color $c"))
+  /**
+    * orDie semantic is used only in tests
+    */
+  def moveOneOrDie(m: Move) = move(m).fold(_.die, identity)
+  def moveAllOrDie(ms: Seq[Move]) = ms.foldLeft(this)((b, m) => b.moveOneOrDie(m))  
+  def findKingOrDie(c: Color) = Board.findKing(this, c).getOrElse(wrong(msg.noKing(c)))
+  override def toString: String = Board.repBoard(a)
 }
 
 object Board {
-  implicit def toLoc(s: String) = Loc.parseOrEx(s)
-  implicit def toMove(s: String) = Move.parseOrEx(s)
-  
-  /** types */
   type TCell = Option[CFigure]
   type TRow = Vector[TCell]
   type TBoard = Vector[TRow]
@@ -48,7 +40,7 @@ object Board {
   def repCell(f: TCell) = f.map(_.rep).getOrElse(EMPTY)
   /** row representation */
   def repRow(row: TRow) = row.map(repCell).mkString
-  /** representation */
+  /** board representation */
   def repBoard(b: TBoard) = b.map(repRow).reverseIterator.mkString("\n")
 
   def fill8[A] = Vector.fill[A](8) _

@@ -1,14 +1,10 @@
 package whg
 
 sealed trait Color extends Product {
-  val another: Color = Color.another(this)
-}
-case object White extends Color
-case object Black extends Color
-
-object Color {
-  def another: Color => Color = {
+  val another = this match {
     case White => Black
     case Black => White
   }
 }
+case object White extends Color
+case object Black extends Color

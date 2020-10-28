@@ -1,39 +1,40 @@
 package whg
 
 object Directions {
-  lazy val oneVals = IndexedSeq(-1, 0, 1)
-  lazy val oneDeltas = for {
+  val oneVals = IndexedSeq(-1, 0, 1)
+  val oneDeltas = for {
     x <- oneVals
     y <- oneVals
     if !(x == 0 && y == 0)
   } yield (x, y)
-  lazy val knVals = IndexedSeq(-2, -1, 1, 2)
-  lazy val knDeltas = for {
+  val knVals = IndexedSeq(-2, -1, 1, 2)
+  val knDeltas = for {
     x <- knVals
     y <- knVals
     if math.abs(x) != math.abs(y)
   } yield (x, y)
   def moveAndFilter(l: Loc, deltas: Seq[(Int, Int)]) =
     deltas.flatMap { case (dx, dy) => l.move(dx, dy) }
-  def applyAndFilter(l: Loc, f: (Loc, Int) => Option[Loc]) =
+  /** apply and filter */
+  def aaf(l: Loc)(f: (Loc, Int) => Option[Loc]) =
     (1 to 7).flatMap(d => f(l, d))
-  def toR(l: Loc)  = applyAndFilter(l, (l, d) => l.move( d, 0))
-  def toL(l: Loc)  = applyAndFilter(l, (l, d) => l.move(-d, 0))
-  def toU(l: Loc)  = applyAndFilter(l, (l, d) => l.move(0,  d))
-  def toD(l: Loc)  = applyAndFilter(l, (l, d) => l.move(0, -d))
-  def toRU(l: Loc) = applyAndFilter(l, (l, d) => l.move( d,  d))
-  def toLU(l: Loc) = applyAndFilter(l, (l, d) => l.move(-d,  d))
-  def toRD(l: Loc) = applyAndFilter(l, (l, d) => l.move( d, -d))
-  def toLD(l: Loc) = applyAndFilter(l, (l, d) => l.move(-d, -d))
+  
+  def toR(l: Loc)  = aaf(l) { case (l, d) => l.move( d, 0) }
+  def toL(l: Loc)  = aaf(l) { case (l, d) => l.move(-d, 0) }
+  def toU(l: Loc)  = aaf(l) { case (l, d) => l.move(0,  d) }
+  def toD(l: Loc)  = aaf(l) { case (l, d) => l.move(0, -d) }
+  def toRU(l: Loc) = aaf(l) { case (l, d) => l.move( d,  d) }
+  def toLU(l: Loc) = aaf(l) { case (l, d) => l.move(-d,  d) }
+  def toRD(l: Loc) = aaf(l) { case (l, d) => l.move( d, -d) }
+  def toLD(l: Loc) = aaf(l) { case (l, d) => l.move(-d, -d) }
 
   def mvKing(l: Loc) = moveAndFilter(l, oneDeltas).map(Seq(_))
-  def mvRook(l: Loc) = Seq(toL(l),  toR(l),  toU(l),  toD(l))
+  def mvRook(l: Loc) = Seq(toL(l), toR(l), toU(l), toD(l))
   def mvBishop(l: Loc) = Seq(toLU(l), toLD(l), toRU(l), toRD(l))
   def mvQueen(l: Loc) = mvRook(l) ++ mvBishop(l)
   def mvKnight(l: Loc) = moveAndFilter(l, knDeltas).map(Seq(_))
 
   /**
-    * describes White Pawn,
     * direction extractor for White Pawn
     * @return Some(1) if board(loc) == white pawn
     */
@@ -47,7 +48,6 @@ object Directions {
   }
 
   /**
-    * describes Black Pawn,
     * direction extractor for White Pawn
     * @return Some(-1) if board(loc) == black pawn
     */

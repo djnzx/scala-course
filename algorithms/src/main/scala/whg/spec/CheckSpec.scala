@@ -1,23 +1,24 @@
-package whg
+package whg.spec
 
 import tools.spec.ASpec
+import whg._
 
 class CheckSpec extends ASpec {
   import Check._
-  import Board.{toLoc, toMove} // implicit conversion String => Move and String => Location, BE CAREFUL!
+  import Implicits._ // implicit conversion String => Move and String => Location, BE CAREFUL!
 
   val b = Board.initial
   
   it("basic case 1") {
-    isUnderTheCheck(b, White) shouldEqual false
-    isUnderTheCheck(b, Black) shouldEqual false
+    isKingInCheck(b, White) shouldEqual false
+    isKingInCheck(b, Black) shouldEqual false
   }
   
   it("basic case 2") {
     import Directions._
     
     // find the king
-    val kingAt = b.findKing(White)
+    val kingAt = b.findKingOrDie(White)
     
     // rook and queen
     mvRook(kingAt) should contain theSameElementsAs
@@ -56,7 +57,7 @@ class CheckSpec extends ASpec {
   }
 
   it("check mate #1") {
-    val b = Board.initial.moveAll(Seq(
+    val b = Board.initial.moveAllOrDie(Seq(
       "e2e4",
       "e7e5",
       "f1c4",
@@ -65,20 +66,20 @@ class CheckSpec extends ASpec {
       "d7d6",
       "f3f7",
     ))
-    Predef.println(b.rep)
+    Predef.println(b)
 
-    isUnderTheCheck(b, White) shouldEqual false
-    isUnderTheCheck(b, Black) shouldEqual true
+    isKingInCheck(b, White) shouldEqual false
+    isKingInCheck(b, Black) shouldEqual true
   }
 
   it("foldCheck") {
-    import Check.foldCheck
-    foldCheck(None, _ => true) shouldEqual true
-    foldCheck(None, _ => false) shouldEqual true
-    foldCheck(Some(White), { c => println(s"folding $c"); true}) shouldEqual true
-    foldCheck(Some(White), { c => println(s"folding $c"); false}) shouldEqual false
-    foldCheck(Some(Black), { c => println(s"folding $c"); true}) shouldEqual true
-    foldCheck(Some(Black), { c => println(s"folding $c"); false}) shouldEqual false
+    import Check.fold
+    fold(None, _ => true) shouldEqual true
+    fold(None, _ => false) shouldEqual true
+    fold(Some(White), { c => println(s"folding $c"); true}) shouldEqual true
+    fold(Some(White), { c => println(s"folding $c"); false}) shouldEqual false
+    fold(Some(Black), { c => println(s"folding $c"); true}) shouldEqual true
+    fold(Some(Black), { c => println(s"folding $c"); false}) shouldEqual false
   }
 
 }

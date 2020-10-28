@@ -1,7 +1,8 @@
-package whg
+package whg.spec
 
 import tools.spec.ASpec
 import whg.Board.{EMPTY, emptyRow, firstRow, repRow}
+import whg._
 
 class RepresentationSpec extends ASpec {
   
@@ -51,7 +52,7 @@ class RepresentationSpec extends ASpec {
     }
 
     it("empty board") {
-      Board.empty.rep shouldEqual
+      Board.empty.toString shouldEqual
         """........
           |........
           |........
@@ -63,7 +64,7 @@ class RepresentationSpec extends ASpec {
     }
 
     it("initial board") {
-      Board.initial.rep shouldEqual
+      Board.initial.toString shouldEqual
         """rnbqkbnr
           |pppppppp
           |........

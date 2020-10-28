@@ -8,9 +8,6 @@ sealed abstract class CFigure(val c: Color, private val s: Char) extends Product
     case Black => s.toLower
   }
   
-  def isWhite = c == White
-  def isBlack = c == Black
-
   /** required move is a pawn and it's in forward direction */
   object IsPawnFwd {
     def unapply(as: (Move, Board)): Option[Loc] = as match { case (m, b) =>
@@ -31,7 +28,7 @@ sealed abstract class CFigure(val c: Color, private val s: Char) extends Product
     * {{{nextFrom(l: Loc, b: Board): Seq[Seq[Length]]}}}
     * {{{isPathClean}}} checking path to the target
     */
-  def validateMove(m: Move, b: Board): Either[String, Move] = {
+  def validateMove(m: Move, b: Board) = {
     val colorOppositeMe = b.at(m.start).get.c.another
     def isOppositeAt(l: Loc) = b.isColorAt(l, colorOppositeMe)
     def isFreeAt(l: Loc) = b.isFreeAt(l)
@@ -50,9 +47,7 @@ sealed abstract class CFigure(val c: Color, private val s: Char) extends Product
       case _: Rook   => mvRook(l)
     }
 
-    /**
-      * check target for opposite color/empty 
-      */
+    /** check the target for opposite color/empty */
     def checkTarget = this match {
       case _: Pawn => (m, b) match {
         case IsPawnFwd(fi)  => isFreeAt(fi)
@@ -63,7 +58,7 @@ sealed abstract class CFigure(val c: Color, private val s: Char) extends Product
     }
 
     /**
-      * checks that all cells PRIOR to target is EMPTY
+      * checks that all cells PRIOR to target are EMPTY
       * we don't need to consider special cases
       * for king/knight/pawn bite
       * since their sub-sequences will be empty
@@ -71,12 +66,13 @@ sealed abstract class CFigure(val c: Color, private val s: Char) extends Product
     def checkPathClean(path: Seq[Loc]) = path.takeWhile(_ != m.finish).forall(isFreeAt)
 
     // start point validation is done in Chess class
+    // TODO make all of them Either to distinguish these 3 different cases
     Some(m.finish)
       .flatMap(fi => nextFrom(m.start).find(_.contains(fi))) // vector with direction if found
       .filter(_ => checkTarget)                           // target is clean or opposite
       .filter(checkPathClean)                             // path is clean
       .map(_ => m)
-      .toRight("target cell isn't empty or has your color")
+      .toRight(ImInvalidFigureMove(m))
   }
 }
 

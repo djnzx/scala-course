@@ -1,12 +1,13 @@
-package whg
+package whg.spec
 
 import tools.spec.ASpec
+import whg.{Board, Directions, Implicits, Loc}
 
 class DirectionsSpec extends ASpec {
   
   describe("possible moves") {
     import Directions._
-    import Board.{toLoc, toMove} // implicit conversion String => Move and String => Location, BE CAREFUL!
+    import Implicits._ // implicit conversion String => Move and String => Location, BE CAREFUL!
 
     it("r, l, u, d") {
       val x = Loc(3,4)
@@ -56,7 +57,7 @@ class DirectionsSpec extends ASpec {
         List(List(Loc("a6"), Loc("a5")), List(Loc("b6")))
       
       // TODO: refactor that
-      val b2 = b.moveOrEx("a2a3")
+      val b2 = b.moveOneOrDie("a2a3")
       mvPawn(Loc("a3"), b2) should contain theSameElementsAs
         List(List(Loc("a4")), List(Loc("b4")))
     }

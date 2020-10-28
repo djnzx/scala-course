@@ -1,6 +1,7 @@
-package whg
+package whg.spec
 
 import tools.spec.ASpec
+import whg.{Black, White}
 
 class ColorSpec extends ASpec {
 
@@ -9,13 +10,7 @@ class ColorSpec extends ASpec {
     White -> Black
   )
 
-  it("another color. syntax #1") {
-    for {
-      (in, out) <- data
-    } Color.another(in) shouldEqual out
-  }
-  
-  it("another color. syntax #2") {
+  it("another color") {
     for {
       (in, out) <- data
     } in.another shouldEqual out

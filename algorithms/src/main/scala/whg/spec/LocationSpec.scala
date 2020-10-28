@@ -1,6 +1,7 @@
-package whg
+package whg.spec
 
 import tools.spec.ASpec
+import whg._
 
 class LocationSpec extends ASpec {
   
@@ -14,14 +15,14 @@ class LocationSpec extends ASpec {
         "a2"   -> Loc(1, 2),
         "b3"   -> Loc(2, 3),
         "h8"   -> Loc(8, 8),
-      ).map { case (in, out) => in -> Some(out) }
+      ).map { case (in, out) => in -> Right(out) }
       val bad = Seq(
         "a",
         "abc",
         "a0", "h0", "i0",
         "x1", "+1", "i1", "k1",
         "i9"
-      ).map(_ -> None)
+      ).map(x => (x, Left(ImErrorParsingLocation(x))))
 
       for {
         (in, out) <- good ++ bad
@@ -29,16 +30,16 @@ class LocationSpec extends ASpec {
     }
 
     it("move parse") {
-      val good = Seq(
+      val good: Seq[(String, Right[Nothing, Move])] = Seq(
         "e2e4" -> Move(Loc(5, 2), Loc(5, 4)),
-      ).map { case (in, out) => in -> Some(out) }
-      val bad = Seq(
+      ).map { case (in, out) => in -> Right(out) }
+      val bad: Seq[(String, Left[ImErrorParsingMove, Nothing])] = Seq(
         "adfvd",
         "ab3",
         "a0",
         "e0e4",
         "c1c9"
-      ).map(_ -> None)
+      ).map(x => (x, Left(ImErrorParsingMove(x))))
 
       for {
         (in, out) <- good ++ bad
@@ -55,12 +56,12 @@ class LocationSpec extends ASpec {
       )
       for {
         (in, out) <- data
-      } Move.fromGiven(in) shouldEqual out
+      } Move.fromArray(in) shouldEqual out
     }
 
     it("move given - full cycle") {
       val readed: Vector[Array[Int]] = ChessIterator.resource("chess.txt").toVector
-      val mapped: Vector[String] = readed.map(Move.fromGiven)
+      val mapped: Vector[String] = readed.map(Move.fromArray)
       val expected = Vector(
         "a2a3",
         "b2b4",

@@ -1,9 +1,10 @@
-package whg
+package whg.spec
 
 import tools.spec.ASpec
+import whg._
 
 class BoardSpec extends ASpec {
-  import Board.{toLoc, toMove} // implicit conversion String => Move and String => Location, BE CAREFUL!
+  import Implicits._ // implicit conversion String => Move and String => Location, BE CAREFUL!
   
   describe("board operations") {
 
@@ -98,7 +99,7 @@ class BoardSpec extends ASpec {
       
       for {
         (in, out) <- data
-      } b.findKing(in) shouldEqual out
+      } b.findKingOrDie(in) shouldEqual out
       
       for {
         (in, out) <- data

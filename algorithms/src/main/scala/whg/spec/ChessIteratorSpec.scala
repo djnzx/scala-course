@@ -1,6 +1,7 @@
-package whg
+package whg.spec
 
 import tools.spec.ASpec
+import whg.ChessIterator
 
 class ChessIteratorSpec extends ASpec {
   

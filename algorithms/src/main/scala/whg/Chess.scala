@@ -1,51 +1,48 @@
 package whg
 
+import scala.util.Try
+
 case class Chess(private val board: Board, nextC: Color, check: Option[Color] = None) {
 
+  /** new board, new check, switched color */
   def nextMove(b: Board, check: Boolean) = {
     val next = nextC.another
     Chess(b, next, Option.when(check)(next))
   }
 
-  def chNone() = copy(check = None)
-  def chBlack() = copy(check = Some(Black))
-  def chWhite() = copy(check = Some(White))
+  def checkStartCell(m: Move) =
+    Either.cond(board.isColorAt(m.start, nextC), 
+      m, 
+      ImWrongColorAtStartCell(m, nextC)
+    )
   
-  def validate(m: Move): Either[String, Move] =
-    Some(m)
-      .filter(m => board.isColorAt(m.start, nextC)) 
-      .toRight(s"cell ${m.start} has the wrong color: $nextC")
-      .flatMap(m => board.at(m.start).get.validateMove(m, board))
+  def validateFigureMove(m: Move) =
+    board.at(m.start).get.validateMove(m, board)
 
-  def move(m: String): (Chess, Option[String]) =
-    Move.parse(m)                     // Option[Move]
-      .toRight(s"error parsing `$m`") // Either[String, Move]
-      .flatMap(validate)               // Either[String, Move]
-      .flatMap(board.move)             // Either[String, Board(new)]
-      .flatMap { b =>                  // Either[String, Board(new)]
-        // if nextC was under the "check" we need to clear it from that color
-        // None folds to true
-        // for Some(White) we run isUnderTheCheck(..., White).
-        // we need to get false from isUnderTheCheck
-        Check.foldCheck(check, color => !Check.isUnderTheCheck(b, color)) match {
-          case true  => Right(b)      // "check" was absent or cleared successfully
-          case false => Left(s"Invalid move: $nextC is still in CHECK")
-        }
-      }
-      .map(b => (b, Check.isUnderTheCheck(b, nextC.another)))
-      .fold (
-        msg => (this,                       Some(msg)), // same board + error message
-        { case (b, ch) => (nextMove(b, ch), None) }     // new board, switched color, cleared "check"
+  /** "check" was absent or cleared successfully */
+  def wasCheckCleared(m: Move, b: Board) =
+    Either.cond(Check.fold(check, color => !Check.isKingInCheck(b, color)), 
+      b, 
+      ImInvalidMoveInCheck(m, nextC)
+    )
+  
+  def isNextInCheck(b: Board) =
+    (b, Check.isKingInCheck(b, nextC.another))
+  
+  def moveValidated(m: String) =
+    Move.parse(m)
+      .flatMap(checkStartCell)
+      .flatMap(validateFigureMove)
+      .flatMap(m => board.move(m).map(b => (m, b)))
+      .flatMap((wasCheckCleared _).tupled)
+      .map(isNextInCheck)
+      .fold(
+        im             => (this,        Some(im)),  // same board + error
+        { case (b, ch) => (nextMove(b, ch), None) } // new board, switched color, new "check"
       )
       
-  def rep = board.rep
+  override def toString: String = board.toString
 
-  def play(turns: Iterator[String]): Chess = Chess.play(turns, this)
-
-  def play(turns: Iterable[String]): Chess = play(turns.iterator)
-
-  /** filename from the file located in the resources folder */
-  def play(fileName: String): Chess = play(ChessIterator.resource(fileName).map(Move.fromGiven))
 }
 
 object Chess {
@@ -69,28 +66,36 @@ object Chess {
     println(s"$cs is going to make a move: $moves")
   }
 
-  def afterMove(chess2: Chess, message: Option[String]) = {
+  def afterMove(chess2: Chess, invalid: Option[InvalidMove] = None) = {
     val msg = FG.Red("message:")
-    println(chess2.board.rep)
-    message.foreach(m => println(s"$msg $m"))
+    println(chess2.board)
+    invalid.foreach(m => println(s"$msg ${m.rep}"))
     chess2.check.foreach(c => println(encolorColor(c) + FG.Red(">CHECK!<").toString))
     printLine()
   }
 
+  /** makes ONE move and print all details */
   def makeMove(chess: Chess, move: String) = {
     beforeMove(chess, move)
-    val (chess2, message) = chess.move(move)
+    val (chess2, message) = chess.moveValidated(move)
     afterMove(chess2, message)
     chess2
   }
   
-  def play(turns: Iterator[String], ch: Chess = initial) = turns.foldLeft(ch) { makeMove }
-  
-  def play(fileName: String) = {
-    val c = Chess.initial
-    println(c.rep)
-    Chess.printLine()
-    c.play(fileName)
+  /** plays WHOLE GAME from the given state */
+  def play(turns: Iterator[String], ch: Chess) = turns.foldLeft(ch)(makeMove)
+
+  /** prints initial state nd plays WHOLE FILE */
+  def play(fileName: String): Unit = {
+    Try(ChessIterator.resource(fileName).map(Move.fromArray))
+      .map { it =>
+        val ch = initial
+        afterMove(ch)
+        play(it, ch)
+      }
+      .fold(
+        t => println(t.getMessage),
+        _ => println(msg.done)
+      )
   }
-  
 }
