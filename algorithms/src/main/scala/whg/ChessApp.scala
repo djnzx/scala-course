@@ -7,5 +7,5 @@ object ChessApp extends App {
 //    "sample- moves-invalid.txt"
 //    "sample-moves-invalid.txt"
   )
-  
+
 }

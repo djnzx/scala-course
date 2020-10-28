@@ -1,45 +1,50 @@
 package whg
 
 object Directions {
-  val oneVals = IndexedSeq(-1, 0, 1)
-  val oneDeltas = for {
-    x <- oneVals
-    y <- oneVals
+  /** move to (dx, dy) and filter */
+  val maf = (deltas: Seq[(Int, Int)]) => (l: Loc) => deltas.flatMap { case (dx, dy) => l.move(dx, dy) }
+  /** apply delta and filter */
+  val aaf = (f: Int => Loc => Option[Loc]) => (l: Loc) => (1 to 7).flatMap(d => f(d)(l))
+  /** values to produce deltas */
+  val kgVals = IndexedSeq(-1, 0, 1)
+  val knVals = IndexedSeq(-2, -1, 1, 2)
+  /** deltas: (dx, dy) 
+    * for King */
+  val kgDeltas = for {
+    x <- kgVals
+    y <- kgVals
     if !(x == 0 && y == 0)
   } yield (x, y)
-  val knVals = IndexedSeq(-2, -1, 1, 2)
+  /** for Knight */
   val knDeltas = for {
     x <- knVals
     y <- knVals
     if math.abs(x) != math.abs(y)
   } yield (x, y)
-  def moveAndFilter(l: Loc, deltas: Seq[(Int, Int)]) =
-    deltas.flatMap { case (dx, dy) => l.move(dx, dy) }
-  /** apply and filter */
-  def aaf(l: Loc)(f: (Loc, Int) => Option[Loc]) =
-    (1 to 7).flatMap(d => f(l, d))
+  val kgMoves = maf(kgDeltas)
+  val knMoves = maf(knDeltas)
   
-  def toR(l: Loc)  = aaf(l) { case (l, d) => l.move( d, 0) }
-  def toL(l: Loc)  = aaf(l) { case (l, d) => l.move(-d, 0) }
-  def toU(l: Loc)  = aaf(l) { case (l, d) => l.move(0,  d) }
-  def toD(l: Loc)  = aaf(l) { case (l, d) => l.move(0, -d) }
-  def toRU(l: Loc) = aaf(l) { case (l, d) => l.move( d,  d) }
-  def toLU(l: Loc) = aaf(l) { case (l, d) => l.move(-d,  d) }
-  def toRD(l: Loc) = aaf(l) { case (l, d) => l.move( d, -d) }
-  def toLD(l: Loc) = aaf(l) { case (l, d) => l.move(-d, -d) }
+  val toR  = aaf { d => _.move( d, 0) }
+  val toL  = aaf { d => _.move(-d, 0) }
+  val toU  = aaf { d => _.move(0,  d) }
+  val toD  = aaf { d => _.move(0, -d) }
+  val toRU = aaf { d => _.move( d,  d) }
+  val toLU = aaf { d => _.move(-d,  d) }
+  val toRD = aaf { d => _.move( d, -d) }
+  val toLD = aaf { d => _.move(-d, -d) }
 
   def mvRook(l: Loc) = Seq(toL(l), toR(l), toU(l), toD(l))
   def mvBishop(l: Loc) = Seq(toLU(l), toLD(l), toRU(l), toRD(l))
   def mvQueen(l: Loc) = mvRook(l) ++ mvBishop(l)
-  def mvKnight(l: Loc) = moveAndFilter(l, knDeltas).map(Seq(_))
-  def mvKing(l: Loc) = moveAndFilter(l, oneDeltas).map(Seq(_))
+  def mvKnight(l: Loc) = knMoves(l).map(Seq(_))
+  def mvKing(l: Loc) = kgMoves(l).map(Seq(_))
 
   /**
     * direction extractor for White Pawn
     * @return Some(1) if board(loc) == white
     */
   object IsWhite {
-    def unapply(args: (Loc, Board)) = args match { case (l, b) =>
+    def unapply(as: (Loc, Board)) = as match { case (l, b) =>
       b.isWhiteAt(l) match {
         case true => Some(+1)
         case _    => None
@@ -52,7 +57,7 @@ object Directions {
     * @return Some(-1) if board(loc) == black
     */
   object IsBlack {
-    def unapply(args: (Loc, Board)) = args match { case (l, b) =>
+    def unapply(as: (Loc, Board)) = as match { case (l, b) =>
       b.isBlackAt(l) match {
         case true => Some(-1)
         case _    => None
@@ -65,7 +70,7 @@ object Directions {
     * semantically, just a function (Loc, Board) => Option[Int]
     */
   object PawnMove1 {
-    def unapply(args: (Loc, Board)) = args match {
+    def unapply(as: (Loc, Board)) = as match {
       case IsWhite(dy) => Some(dy * 1)
       case IsBlack(dy) => Some(dy * 1)
       case _             => None
