@@ -68,15 +68,13 @@ object Chapter4Exercises extends App {
   object task4 {
     case class Symptom(x: String)
     def print(a: Any) = ZIO.effectTotal(println(a))
-    // TODO: doesn't work
     def onAnyFailure[R, E, A](zio: ZIO[R, E, A], handler: ZIO[R, E, Any]): ZIO[R, E, A] =
       zio.foldCauseM(
-        _ => handler *> ???,
+        _ => handler *> zio,
         a => ZIO.succeed(a)
       )
       
-//    val code = console.putStrLn("q")
-    val code = ZIO.fail(Symptom("A"))
+    val code = ZIO.fail(Symptom("S"))
     val h = console.putStrLn(">> my specific handler <<")
     val app = onAnyFailure(code, h)
     
