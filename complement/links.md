@@ -237,6 +237,9 @@
 - [misc](https://github.com/andr83/scalaconfig.git)
 
 ###
+- [Functional Error Handling in Scala](https://www.iteratorshq.com/blog/benchmarking-functional-error-handling-in-scala/)
+  - [reddit](https://www.reddit.com/r/scala/comments/cnky9d/benchmarking_functional_error_handling_in_scala/)
+  - [github](https://github.com/theiterators/error-benchmarks)
 - [cats-effect](https://typelevel.org/cats-effect/)
 - [declarative data visualization](http://haifengl.github.io/vegalite.html)
 - [WIX @ meduim](https://medium.com/wix-engineering/6-event-driven-architecture-patterns-part-1-93758b253f47)

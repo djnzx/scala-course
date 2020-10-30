@@ -5,11 +5,7 @@ package gettingstarted
   */
 import zio._
 import zio.clock.Clock
-import zio.console._
 import zio.duration.durationInt
-import zio.test._
-import zio.test.Assertion._
-import zio.test.environment._
 
 /** core, representation */
 object GS1 extends zio.App {

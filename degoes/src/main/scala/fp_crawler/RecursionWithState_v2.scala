@@ -18,7 +18,7 @@ object RecursionWithState_v2 extends App {
 
   @tailrec
   def loop(state: CrawlState): CrawlState = {
-    val line = readLine
+    val line = readLine()
     if (line == "q") return state
     val state_new = iteration(line, state)
     loop(state_new)

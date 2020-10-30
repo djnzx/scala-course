@@ -15,7 +15,7 @@ object RecursionWithState_v1 extends App {
   def action(line: String, state: CrawlState): CrawlState = {
     if (line == "q") return state
 
-    val line_new = readLine
+    val line_new = readLine()
     val state_new = Try(line_new.toInt) match {
       case Success(_) => state.addVisited(line_new)
       case Failure(_) => state.logError(line_new)

@@ -3,13 +3,12 @@ package gettingstarted.testing
 /**
   * https://www.youtube.com/watch?v=6A1SA5Be9qw
   */
-import zio.ExitCode.success
 import zio._
 import zio.clock._
 import zio.console._
 import zio.duration._
-import zio.test._
 import zio.test.Assertion._
+import zio.test._
 import zio.test.environment._
 
 /** type inference */

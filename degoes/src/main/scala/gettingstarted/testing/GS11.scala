@@ -32,7 +32,7 @@ object GS11Spec extends DefaultRunnableSpec {
         exp: Vector[String] = Vector("Hello, World!\n")
         ass: Assertion[Vector[String]] = equalTo(exp)
         tr: TestResult = assert(output)(ass)
-      } yield tr 
+      } yield tr
     }
   )
 }

@@ -1,4 +1,4 @@
-package nomicon
+package nomicon.ch02
 
 import zio._
 import zio.clock._
