@@ -2,6 +2,7 @@ package nomicon.ch02layer
 
 import Services.{Logging, UserRepo}
 import nomicon.ch02layer.Domain._
+import nomicon.ch02layer.services.{DBError, Logging, UserRepo}
 import zio.console.Console
 import zio._
 
@@ -23,9 +24,14 @@ object ZLayerPlayground extends App {
     _  <- Logging.info(s"id 124: $u2")
   } yield ()
 
+  /** given console, will produce Logging + UserRepo */
   val horizontal: ZLayer[Console, Nothing, Logging with UserRepo] = Logging.consoleLogger ++ UserRepo.inMemory
+  /** full layer constructed */
   val fullLayer: Layer[Nothing, Logging with UserRepo] = Console.live >>> horizontal
-  val app: ZIO[Any, DBError, Unit] = makeUser.provideLayer(fullLayer)
+  /** we can build the app */
+  val app: ZIO[Console, Nothing, Unit] = makeUser
+    .provideLayer(fullLayer)
+    .catchAll(_ => console.putStrLn("Error"))
 
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = app.exitCode
 }
