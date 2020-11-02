@@ -8,6 +8,7 @@ import scala.collection.mutable
 /**
   * Modules, Layers
   * https://zio.dev/docs/howto/howto_use_layers
+  * https://scala.monster/welcome-zio/#summary
   */
 object ZApp3a extends App {
 
