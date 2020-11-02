@@ -9,6 +9,10 @@ import zio.blocking.Blocking
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
+/**
+  * https://github.com/ghostdogpr/zio-cheatsheet
+  * https://zio.dev/docs/overview/overview_index
+  */
 object ZIOPlayground extends App {
   case class Symptom(name: String)
   case class SymptomX(name: String) extends Exception(name)
@@ -101,10 +105,22 @@ object ZIOPlayground extends App {
 
     /** version 3 with error handling and */
     def getUserAsync3(id: Int, callback: Either[Throwable, Option[User]] => Unit): Unit = ???
-    /** TODO: wrapping to ZIO */
+    /** 
+      * version 3 wrapped to ZIO
+      * given function: {{{ZIO[Any, Throwable, Option[User]] => Unit}}}
+      * return Unit
+      * actually, it describes, 
+      * how to wrap values after callback
+      * so, actually we have TWO nested callbacks 
+      */
     def wrapped3(id: Int) =
-      ZIO.effectAsync(???)
-      
+      ZIO.effectAsync { cb: (ZIO[Any, Throwable, Option[User]] => Unit) => 
+        getUserAsync3(id, {
+          case Right(Some(u)) => cb(ZIO.succeed(Some(u)))
+          case Right(None)    => cb(ZIO.succeed(None))
+          case Left(t)        => cb(ZIO.fail(t))
+        })
+      }.some
   }
   object effectCreationManualExtra {
     val t: Throwable = ???

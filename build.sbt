@@ -269,6 +269,7 @@ lazy val degoes = (project in file("degoes"))
       Libraries.zio("zio-test-magnolia"),
       Libraries.zio("zio-streams"),
       pf.zio %% "zio-kafka" % "0.12.0",
+      "com.github.pureconfig" %% "pureconfig" % "0.14.0",
       Libraries.doobieCore,
     ),
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")

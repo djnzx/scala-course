@@ -56,11 +56,11 @@ object ZApp1 extends App { // this is an App from ZIO
   // U - means cant fail, Resource - ZENV
   // type ZEnv = Clock + Console + System + Random + Blocking
   override def run(args: List[String]): URIO[ZEnv, ExitCode] =
-    goShoppingLater.exitCode
+    collected.exitCode
     
   for {
     a <- Seq(1,2,3) // flatmap
     b <- Seq(1,2,3) // map
-    if (a!=b)       // withFilter (lazy)
+    if a != b       // withFilter (lazy)
   } yield (a,b)
 }
