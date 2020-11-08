@@ -97,5 +97,4 @@ object ScareProxy extends App {
     def markWaitingIfNeed(s: SessionID, t: Time) = if (sessions(s).at == WORK_TIME) markWaiting(s, t)
   }
   
-  
 }
