@@ -5,10 +5,10 @@ import java.util.UUID
 import scala.collection.mutable
 
 /**
-  * Disclaimer.
-  * this is the Proof of Concept
+  * DISCLAIMER.
+  * this is only an idea
   * 
-  * - Async anc Concurrent stuff haven't been taken into account.
+  * - Async and Concurrent stuff haven't been taken into account.
   * - we assume that spawning an instance and terminating them have zero overhead.
   * Actually, we need to use more sophisticated algorithm
   * and bring to the table something like moving average to start our instances in advance
@@ -16,7 +16,7 @@ import scala.collection.mutable
   * 
   * Proper concurrent data types should be used.
   */
-object ScareProxy extends App {
+object ScareProxy {
   /** type aliases */
   type Time = Long
   type SessionID = UUID
@@ -37,14 +37,14 @@ object ScareProxy extends App {
   case class SState(state: State, at: Time)
   
   /** incoming Request to process (all GET and POST) */
-  abstract class Request(s: SessionID, val t: Time = now)
-  case class RqStartResume(s: SessionID) extends Request(s)
-  case class RqSubmitOrGet(s: SessionID) extends Request(s)
-  case class RqEnd        (s: SessionID) extends Request(s)
+  abstract class Request(val s: SessionID, val t: Time = now)
+  case class RqStartResume(override val s: SessionID) extends Request(s)
+  case class RqSubmitOrGet(override val s: SessionID) extends Request(s)
+  case class RqEnd        (override val s: SessionID) extends Request(s)
   
   /** Instance API provided by Instance implementation */
   trait Instance {
-    def doTheRealJob(rq: Request): Unit
+    def doTheRealJob(r: Request): Unit
   }
   
   /** Cloud API provided by vendor */
@@ -60,6 +60,9 @@ object ScareProxy extends App {
     // load of our instances
     val pool = mutable.Map.empty[Instance, Int]
 
+    def terminateSession(s: SessionID) = sessions.remove(s)
+    def markWorking(s: SessionID, t: Time) = sessions.update(s, SState(Working, t))
+    def markWaiting(s: SessionID, t: Time) = sessions.update(s, SState(Waiting, t))
     def sessionsActive = sessions.count { case (_, ss) => ss.state == Working }
     def instancesActive = pool.size
     def instancesNeed = math.ceil(sessionsActive.toDouble / THROUGHPUT).toInt
@@ -67,13 +70,14 @@ object ScareProxy extends App {
     def pickToTerminate = pool.find { case (_, 0) => true }.map(_._1)
     /** logic for picking instance for forwarding */
     def pickToForward = pool
-      .foldLeft((-1, Option.empty[Instance])) {           // -1, because we need to handle start case 
-        case (r      , (_, THROUGHPUT))  => r             // we don't need fully loaded instances  
-        case ((mx, _), (i, c)) if c > mx => (mx, Some(i)) // logic 
-        case (r, _)                      => r             // if it less loaded than already found
-      }._2
+      .filter { case (_, c) => c < THROUGHPUT } // we don't need fully loaded instances
+      .maxByOption { case (_, c) => c }         // logic 
+      .map(_._1)
     def spawnIfNeed() = while (instancesNeed > instancesActive) pool.addOne(c.spawn -> 0)
-    def shrinkIfCan() = while (instancesNeed < instancesActive) pickToTerminate.foreach(pool.remove)
+    def shrinkIfCan() = while (instancesNeed < instancesActive) pickToTerminate.foreach { i =>
+      c.terminate(i)
+      pool.remove(i)
+    }
     /** actually, it should be implemented as a chain of future calls */
     def forward(r: Request) = 
       pickToForward.foreach { instance =>                         // pick instance to forward to
@@ -82,19 +86,15 @@ object ScareProxy extends App {
         pool.updateWith(instance) { case Some(c) => Some(c - 1) } // decrement load
       }
     def handleRequest(r: Request) = r match {
-      case RqStartResume(s) => markWorking(s, r.t); spawnIfNeed(); forward(r)
-      case RqSubmitOrGet(s) => forward(r); markWaitingIfNeed(s, r.t)
-      case RqEnd        (s) => forward(r); terminateSession(s); shrinkIfCan()
+      case _: RqStartResume => markWorking(r.s, r.t); spawnIfNeed(); forward(r)
+      case _: RqSubmitOrGet => markOldWaiting(r.t); shrinkIfCan(); forward(r)
+      case _: RqEnd         => forward(r); terminateSession(r.s); shrinkIfCan()
     }
-    def terminateSession(s: SessionID) = sessions.remove(s)
-    def markWorking(s: SessionID, t: Time) = sessions.update(s, SState(Working, t))
-    def markWaiting(s: SessionID, t: Time) = sessions.update(s, SState(Waiting, t))
-    /**
-      * actually it should be done in a different way
-      * for example during processing each request
-      * and checking current time and first activity of each active session
-      */
-    def markWaitingIfNeed(s: SessionID, t: Time) = if (sessions(s).at == WORK_TIME) markWaiting(s, t)
+    /** on each new request try to deactivate older than 30m */
+    def markOldWaiting(t: Time) = sessions
+      .withFilter { case (_, SState(Working, _)) => true }                // working only
+      .withFilter { case (_, SState(_, at))      => t - at >= WORK_TIME } // time > 30m
+      .foreach    { case (s, SState(_, at))      => markWaiting(s, at + WORK_TIME) }
   }
   
 }
