@@ -79,16 +79,23 @@ object ScareProxy {
       pool.remove(i)
     }
     /** actually, it should be implemented as a chain of future calls */
-    def forward(r: Request) = 
+    def handle(r: Request) = 
       pickToForward.foreach { instance =>                         // pick instance to forward to
         pool.updateWith(instance) { case Some(c) => Some(c + 1) } // increment load
         instance.doTheRealJob(r)                                  // send the request
         pool.updateWith(instance) { case Some(c) => Some(c - 1) } // decrement load
       }
-    def handleRequest(r: Request) = r match {
-      case _: RqStartResume => markWorking(r.s, r.t); spawnIfNeed(); forward(r)
-      case _: RqSubmitOrGet => markOldWaiting(r.t); shrinkIfCan(); forward(r)
-      case _: RqEnd         => forward(r); terminateSession(r.s); shrinkIfCan()
+    def beforeHandle(r: Request) = r match {
+      case _: RqStartResume => markWorking(r.s, r.t); spawnIfNeed()
+    }
+    def afterHandle(r: Request) = r match {
+      case _: RqEnd         => terminateSession(r.s)
+    }
+    def handleRequest(r: Request) = {
+      beforeHandle(r)
+      handle(r)
+      afterHandle(r)
+      markOldWaiting(r.t); shrinkIfCan();
     }
     /** on each new request try to deactivate older than 30m */
     def markOldWaiting(t: Time) = sessions
