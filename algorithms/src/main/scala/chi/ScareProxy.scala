@@ -78,12 +78,20 @@ object ScareProxy {
       c.terminate(i)
       pool.remove(i)
     }
+    val inc: Option[Int] => Option[Int] = {
+      case Some(x) => Some(x + 1)
+      case None    => None
+    }
+    val dec: Option[Int] => Option[Int] = {
+      case Some(x) => Some(x - 1)
+      case None    => None
+    }
     /** actually, it should be implemented as a chain of future calls */
     def handle(r: Request) = 
-      pickToForward.foreach { instance =>                         // pick instance to forward to
-        pool.updateWith(instance) { case Some(c) => Some(c + 1) } // increment load
-        instance.doTheRealJob(r)                                  // send the request
-        pool.updateWith(instance) { case Some(c) => Some(c - 1) } // decrement load
+      pickToForward.foreach { instance =>  // pick instance to forward to
+        pool.updateWith(instance)(inc)     // increment load
+        instance.doTheRealJob(r)           // send the request
+        pool.updateWith(instance)(dec)     // decrement load
       }
     def beforeHandle(r: Request) = r match {
       case _: RqStartResume => markWorking(r.s, r.t); spawnIfNeed()
