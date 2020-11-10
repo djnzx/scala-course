@@ -11,3 +11,15 @@ git branch `abc` - create branch `abc` and switch to it (?)
 git checkout `abc` - switches to `abc`
 -----------------
 git commit -m "git.txt"
+
+------------
+global -> to all repos
+------------
+git config --global user.name "Alexey Rykhalskiy"
+vim ~/.gitconfig
+
+------------
+local -> to current repo
+------------
+git config --local user.email arykhalskiy@luxoft.com
+vim .git/config
