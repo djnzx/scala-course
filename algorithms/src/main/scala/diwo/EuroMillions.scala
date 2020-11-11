@@ -1,5 +1,7 @@
 package diwo
 
+import scala.util.{Try, Using}
+
 object EuroMillions extends App {
   implicit class ExSyntax(s: String) {
     def unary_! = throw new IllegalArgumentException(s)
@@ -15,7 +17,6 @@ object EuroMillions extends App {
   val NCS = 10 // 5..10 of 50
   val SNC = 2  //     2 of 11
   val SNCS = 5 //  2..5 of 11
-  case class Draw(ns: Set[Int], sns: Set[Int])
   trait Ticket {
     def ns: Set[Int]
     def sns: Set[Int]
@@ -38,6 +39,7 @@ object EuroMillions extends App {
   def msg_csn(s: String) = s"count of star numbers $s"
   def msg_nt(s: String) = s"Normal ticket $s"
   def msg_st(s: String) = s"System ticket $s"
+  def msg_draw(s: String) = s"Draw $s"
   
   /** 5/50 + 2/11 */
   case class NormalTicket private(ns: Set[Int], sns: Set[Int]) extends Ticket
@@ -49,7 +51,6 @@ object EuroMillions extends App {
       } yield (nor, str))
         .mapLeft(msg_nt)
         .map { case (ns, sns) => new NormalTicket(ns, sns) }
-        .fold(!_, identity)
   }
   /** up to 10/50 + up to 5/11 */
   case class SystemTicket private (ns: Set[Int], sns: Set[Int]) extends Ticket
@@ -61,7 +62,46 @@ object EuroMillions extends App {
       } yield (nor, str))
         .mapLeft(msg_st)
         .map { case (ns, sns) => new SystemTicket(ns, sns) }
-        .fold(!_, identity)
+  }
+
+  def toInt(s: String) = Try(s.toInt).toOption
+  
+  def parse2arrays(s: String) =
+    Option(s)
+      .map(_.trim)
+      .map(_.split("/"))
+      .filter(_.length == 2)
+      .map(_.map(_.split(",")))
+      .map(_.map(_.map(_.trim)))
+      .map(_.map(_.flatMap(toInt)))
+  
+  case class Draw private(ns: Set[Int], sns: Set[Int])
+  object Draw {
+    
+    def apply(s: String): Either[String, Draw] =
+      parse2arrays(s)
+        .toRight(!"error parsing Draw, $s given")
+        .flatMap { case Array(a, b) => apply(a.toSet, b.toSet) }
+        
+    def apply(ns: Set[Int], sns: Set[Int]): Either[String, Draw] =
+      (for {
+        nor <- sizeEq(ns, NC).mapLeft(msg_cn)    // TODO messages
+        str <- sizeEq(sns, SNC).mapLeft(msg_csn) // TODO messages
+      } yield (nor, str))
+        .mapLeft(msg_nt)                         // TODO messages
+        .map { case (ns, sns) => new Draw(ns, sns) }
+  }
+  
+  object Ticket {
+    def apply(s: String) =
+      parse2arrays(s)
+        .flatMap { case Array(a, b) =>
+          (NormalTicket(a.toSet, b.toSet), SystemTicket(a.toSet, b.toSet)) match {
+            case (Right(nt), _) => Some(nt)
+            case (_, Right(st)) => Some(st)
+            case _              => None
+          }
+        }
   }
   
   def prize(t: Ticket, d: Draw): Option[Int] =
@@ -105,7 +145,7 @@ object EuroMillions extends App {
   def allCombinations(t: SystemTicket) = for {
     n  <- allCombN(NC, t.ns.toSeq)
     sn <- allCombN(SNC, t.sns.toSeq)
-  } yield NormalTicket(n.toSet, sn.toSet)
+  } yield NormalTicket(n.toSet, sn.toSet).fold(!_, identity)
   
   def expand(t: SystemTicket) = allCombinations(t)
   
@@ -134,4 +174,27 @@ object EuroMillions extends App {
       .map { case (t, n) => WinningClass(t) -> n }
       .map((ResultLine.apply _).tupled)
 
+  def obtainResource(fileName: String) =
+    Option(getClass.getClassLoader.getResource(fileName)).map(_.getFile)
+
+  def resource(fileName: String) =
+    obtainResource(fileName).getOrElse(!s"file $fileName not found")
+
+  def process(draw: String, tickets: String) = 
+    Using.resources(
+      scala.io.Source.fromFile(resource(draw)),
+      scala.io.Source.fromFile(resource(tickets))
+    ) { case (draw, tickets) => 
+      draw.getLines().nextOption().toRight("err").flatMap(Draw(_)).foreach { draw: Draw =>
+        val out: Map[Int, Int] = calculateResults(
+          draw, 
+          tickets.getLines().flatMap(Ticket(_)).toSeq
+        )
+        represent(out)
+          .foreach(println)
+      }
+      
+    }
+
+  process("draw.txt", "tickets.txt")
 }
