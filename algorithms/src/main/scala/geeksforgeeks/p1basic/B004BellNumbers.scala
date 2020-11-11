@@ -7,7 +7,7 @@ import tools.spec.ASpec
   * https://www.geeksforgeeks.org/bell-numbers-number-of-ways-to-partition-a-set/
   * https://www.geeksforgeeks.org/wp-content/ql-cache/quicklatex.com-6ea5decd6aa25a444e0ed57bf5a1e856_l3.svg
   * Number of ways to Partition a Set
-  * 
+  *
   * Sum k=0..N (S(n,k))
   * S(n+1,k) = k*S(n, k) +S(n, k-1)
   */
@@ -17,9 +17,9 @@ object B004BellNumbers {
     if (n < 2) return 1
     val a = Array.ofDim[Int](n, n)
     a(0)(0) = 1
-    (1 until n).foreach { n => 
+    (1 until n).foreach { n =>
       (0 to n).foreach { k =>
-        a(n)(k) = 
+        a(n)(k) =
           if (k==0) a(n-1)(n-1)
           else      a(n-1)(k-1) + a(n)(k-1)
 //        println(s"n=$n, k=$k")
