@@ -7,12 +7,17 @@ object EuroMillions extends App {
   implicit class ExSyntax(s: String) {
     def unary_! = throw new IllegalArgumentException(s)
   }
-  /** missed stuff on Either */
+  /** missed Either combinators */
   implicit class RichEither[L, R](e: Either[L, R]) {
-    def mapLeft[L2](f: L => L2): Either[L2, R] = e match {
+    def mapLeft[L2](f: L => L2) = e match {
       case Right(r) => Right(r)
-      case Left(l)  => Left(f(l)) 
+      case Left(l)  => Left(f(l))
     }
+    def or[R2 >: R](e2: Either[L, R2]) = e match {
+      case Right(r) => Right(r)
+      case _        => e2
+    }
+    def getOrDie = e.fold(!_.toString, identity)
   }
   /** constants to avoid magic number in code */
   val NC = 5   //     5 of 50
@@ -38,6 +43,9 @@ object EuroMillions extends App {
   def msg_nt(s: String) = s"Normal ticket $s"
   def msg_st(s: String) = s"System ticket $s"
   def msg_dr(s: String) = s"Draw $s"
+  def msg_dr_parse(s: String) = s"Draw parse error, $s given"
+  def msg_file_not_found(s: String) = s"file $s not found"
+  def msg_file_is_empty(s: String) = s"file $s is empty"
   /** generic validator */
   def validate(s: Set[Int])(p: Set[Int] => Boolean) = Some(s).filter(p)
   /** exact size validation */
@@ -72,7 +80,7 @@ object EuroMillions extends App {
         .mapLeft(msg_nt)
     def buildOrDie(ns: Set[Int], sns: Set[Int]) =
       apply(ns, sns)
-        .fold(!_, identity)
+        .getOrDie
   }
   /** attaching validation to SystemTicket syntax */
   object SystemTicket {
@@ -88,7 +96,7 @@ object EuroMillions extends App {
   object Draw {
     def parse(s: String) =
       parse2arrays(s)
-        .toRight(!s"error parsing Draw, $s given")
+        .toRight(msg_dr_parse(s))
         .flatMap { case (a, b) => apply(a, b) }
     def apply(ns: Set[Int], sns: Set[Int]) =
       normalValidation(ns, sns)
@@ -100,14 +108,9 @@ object EuroMillions extends App {
     def apply(s: String) =
       parse2arrays(s)
         .flatMap { case (a, b) =>
-          /** nested stuff to avoid double checking in tuple*/
-          NormalTicket(a, b) match {
-            case Right(nt)   => Some(nt)  // normal
-            case _ => SystemTicket(a, b) match {
-              case Right(st) => Some(st)  // system 
-              case _         => None      // wrong
-            }
-          }
+          NormalTicket(a, b)
+            .or(SystemTicket(a, b))
+            .toOption
         }
   }
   /** calculating prize */
@@ -127,8 +130,8 @@ object EuroMillions extends App {
     (2, 0) -> 13,
   )
   def prize(d: Draw, t: Ticket) =
-    (t.ns.intersect(d.ns).size, t.sns.intersect(d.sns).size) match {
-      case t => prizes.collectFirst { case (`t`, x) => x } 
+    ((t.ns & d.ns).size, (t.sns & d.sns).size) match {
+      case iss => prizes.collectFirst { case (`iss`, x) => x } 
     } 
   /**
     * Combinatorics and math stuff:
@@ -190,23 +193,23 @@ object EuroMillions extends App {
   /** obtain file, or die with meaningful message */
   def resourceOrDie(fileName: String) =
     obtainResource(fileName)
-      .getOrElse(!s"file $fileName not found")
+      .getOrElse(!msg_file_not_found(fileName))
   /** main process */
   def process(draw: String, tickets: String) = 
     Using.resources(
       scala.io.Source.fromFile(resourceOrDie(draw)),
       scala.io.Source.fromFile(resourceOrDie(tickets))
-    ) { case (draw, tickets) =>
-      draw.getLines()
+    ) { case (dr, ts) =>
+      dr.getLines()
         .nextOption()
-        .toRight(s"file $draw is empty")
+        .toRight(!msg_file_is_empty(draw))
         .flatMap(Draw.parse)
         .foreach { d: Draw =>
-        val ts = tickets.getLines().flatMap(Ticket(_)).toSeq
-        val out = calculateResults(d, ts)
-        represent(out)
-          .foreach(println)
-      }
+          val tss = ts.getLines().flatMap(Ticket(_)).toSeq
+          val out = calculateResults(d, tss)
+          represent(out)
+            .foreach(println)
+        }
     }
 
   process("draw.txt", "tickets.txt")
