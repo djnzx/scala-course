@@ -111,23 +111,25 @@ object EuroMillions extends App {
         }
   }
   /** calculating prize */
-  def prize(d: Draw, t: Ticket): Option[Int] =
+  val prizes = Seq(
+    (5, 2) -> 1,
+    (5, 1) -> 2,
+    (5, 0) -> 3,
+    (4, 2) -> 4,
+    (4, 1) -> 5,
+    (4, 0) -> 6,
+    (3, 2) -> 7,
+    (2, 2) -> 8,
+    (3, 1) -> 9,
+    (3, 0) -> 10,
+    (1, 2) -> 11,
+    (2, 1) -> 12,
+    (2, 0) -> 13,
+  )
+  def prize(d: Draw, t: Ticket) =
     (t.ns.intersect(d.ns).size, t.sns.intersect(d.sns).size) match {
-      case (5, 2) => Some(1)
-      case (5, 1) => Some(2)
-      case (5, 0) => Some(3)
-      case (4, 2) => Some(4)
-      case (4, 1) => Some(5)
-      case (4, 0) => Some(6)
-      case (3, 2) => Some(7)
-      case (2, 2) => Some(8)
-      case (3, 1) => Some(9)
-      case (3, 0) => Some(10)
-      case (1, 2) => Some(11)
-      case (2, 1) => Some(12)
-      case (2, 0) => Some(13)
-      case _      => None
-    }
+      case t => prizes.collectFirst { case (`t`, x) => x } 
+    } 
   /**
     * Combinatorics and math stuff:
     * {{{
