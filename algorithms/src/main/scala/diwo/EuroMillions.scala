@@ -26,28 +26,28 @@ object EuroMillions extends App {
   
   def sizeEq(s: Set[Int], sz: Int) = 
     validate(s)(_.size == sz)
-      .toRight(mustEq(sz, s.size))
+      .toRight(msg_mustEq(sz, s.size))
 
   def sizeBtw(s: Set[Int], mn: Int, mx: Int) =
     validate(s)(s => s.size >= mn && s.size <= mx)
-      .toRight(mustBtw(mn, mx, s.size))
+      .toRight(msg_mustBtw(mn, mx, s.size))
 
-  def mustEq(must: Int, given: Int) = s"must equal $must, $given given"
-  def mustBtw(mn: Int, mx: Int, given: Int) = s"must be in range[$mn, $mx], $given given"
-  def cn(s: String) = s"count of numbers $s"
-  def csn(s: String) = s"count of star numbers $s"
-  def nt(s: String) = s"Normal ticket $s"
-  def st(s: String) = s"System ticket $s"
+  def msg_mustEq(must: Int, given: Int) = s"must equal $must, $given given"
+  def msg_mustBtw(mn: Int, mx: Int, given: Int) = s"must be in range[$mn, $mx], $given given"
+  def msg_cn(s: String) = s"count of numbers $s"
+  def msg_csn(s: String) = s"count of star numbers $s"
+  def msg_nt(s: String) = s"Normal ticket $s"
+  def msg_st(s: String) = s"System ticket $s"
   
   /** 5/50 + 2/11 */
   case class NormalTicket private(ns: Set[Int], sns: Set[Int]) extends Ticket
   object NormalTicket {
     def apply(ns: Set[Int], sns: Set[Int]) =
       (for {
-        nor <- sizeEq(ns, NC).mapLeft(cn)
-        str <- sizeEq(sns, SNC).mapLeft(csn)
+        nor <- sizeEq(ns, NC).mapLeft(msg_cn)
+        str <- sizeEq(sns, SNC).mapLeft(msg_csn)
       } yield (nor, str))
-        .mapLeft(nt)
+        .mapLeft(msg_nt)
         .map { case (ns, sns) => new NormalTicket(ns, sns) }
         .fold(!_, identity)
   }
@@ -56,10 +56,10 @@ object EuroMillions extends App {
   object SystemTicket {
     def apply(ns: Set[Int], sns: Set[Int]) =
       (for {
-        nor <- sizeBtw(ns, NC, NCS).mapLeft(cn)
-        str <- sizeBtw(sns, SNC, SNCS).mapLeft(csn)
+        nor <- sizeBtw(ns, NC, NCS).mapLeft(msg_cn)
+        str <- sizeBtw(sns, SNC, SNCS).mapLeft(msg_csn)
       } yield (nor, str))
-        .mapLeft(st)
+        .mapLeft(msg_st)
         .map { case (ns, sns) => new SystemTicket(ns, sns) }
         .fold(!_, identity)
   }
@@ -107,28 +107,31 @@ object EuroMillions extends App {
     sn <- allCombN(SNC, t.sns.toSeq)
   } yield NormalTicket(n.toSet, sn.toSet)
   
+  def expand(t: SystemTicket) = allCombinations(t)
+  
   def normalize(t: Ticket) = t match {
     case nt: NormalTicket => Seq(nt) 
-    case st: SystemTicket => allCombinations(st)
+    case st: SystemTicket => expand(st)
   }
 
-  def calculateResults1(d: Draw, ts: Seq[Ticket]) =
+  def calculateResults(d: Draw, ts: Seq[Ticket]) =
     ts.flatMap(normalize)
       .flatMap(prize(_, d))
-      .groupMapReduce(identity)(_ => 1)(_ + _)
-
-  def calculateResults2(d: Draw, ts: Seq[Ticket]) =
-    ts.flatMap(prize(_, d))
       .groupMapReduce(identity)(_ => 1)(_ + _)
 
   case class WinningClass(n: Int) {
     override def toString: String = s"Winning class $n"
   }
+  
+  case class ResultLine(wc: WinningClass, count: Int) {
+    override def toString: String = s"$wc : $count"
+  }
 
   def represent(outcome: Map[Int, Int]) =
     outcome
       .toVector
+      .sortBy(-_._1)
       .map { case (t, n) => WinningClass(t) -> n }
-      .map { case (m, n) => s"$m : $n" }
+      .map((ResultLine.apply _).tupled)
 
 }
