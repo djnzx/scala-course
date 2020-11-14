@@ -152,13 +152,11 @@ lazy val typesafe = (project in file("typesafe"))
     libraryDependencies ++= Seq(
       // untyped - old examples
       Libraries.akka("akka-actor"),
-      // typed - current version
+
       Libraries.akka("akka-actor-typed"),
-      // streams
       Libraries.akka("akka-stream"),
-      // http
+
       Libraries.akkaHttp("akka-http"),
-      // json
       Libraries.akkaHttp("akka-http-spray-json"),
       // play JSON
       s"${pf.typesafe}.play" %% "play-json" % Versions.play,
@@ -169,6 +167,7 @@ lazy val typesafe = (project in file("typesafe"))
       Libraries.tsconfig,
       // logger
       Libraries.slf4j("slf4j-simple"),
+      "ch.qos.logback"    % "logback-classic"           % "1.2.3",
     )
   )
 

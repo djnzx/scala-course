@@ -41,8 +41,8 @@ object Dependencies {
     val contextApplied   = "0.1.4"
 
     // typesafe stack
-    val akka             = "2.6.8"
-    val akkaHttp         = "10.2.0"
+    val akka             = "2.6.10"
+    val akkaHttp         = "10.2.1"
     val play             = "2.9.1"
     val slick            = "3.3.2"
     val tsconfig          = "1.4.0"
