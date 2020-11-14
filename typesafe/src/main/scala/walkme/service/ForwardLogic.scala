@@ -7,7 +7,8 @@ import akka.http.scaladsl.{Http, HttpExt}
 import akka.util.ByteString
 import walkme.service.LoadBalancer._
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.duration.DurationInt
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
 object ForwardLogic {
@@ -36,7 +37,8 @@ object ForwardLogic {
     Behaviors.receiveMessage {
       case RequestAJoke(sender) =>
         // TODO insert logic here
-        b.onRequest(_, sender ! _)
+        b.onRequest(_: Any, m => sender ! m)
+          .onComplete(_ => Behaviors.same)
 //        doGet(1)
 //          .andThen {
 //            case Success(m)  => sender ! m

@@ -4,7 +4,9 @@ import java.util.concurrent.atomic.AtomicReference
 
 import walkme.thName
 
+import scala.concurrent.impl.Promise
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 
 object LoadBalancer {
 
@@ -67,7 +69,7 @@ object LoadBalancer {
           .onComplete(_ => process(http))
       }
 
-    def onRequest(rq: A, cb: B => Any)(implicit ec: ExecutionContext): Unit =
+    def onRequest(rq: A, cb: B => Any)(implicit ec: ExecutionContext): Future[Unit] =
       Future {
         println(s"==> onRequest $rq in $thName")
         state.enqueue(rq, cb)
