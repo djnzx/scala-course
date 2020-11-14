@@ -1,0 +1,23 @@
+version: "3"
+services:
+
+  worker1:
+    image: thereisnospoon/wm-test-worker:0.1.1
+    ports:
+      - "9551:9551"
+    environment:
+      - WORKER_PORT=9551
+
+  worker2:
+    image: thereisnospoon/wm-test-worker:0.1.1
+    ports:
+      - "9552:9552"
+    environment:
+      - WORKER_PORT=9552
+
+  worker3:
+    image: thereisnospoon/wm-test-worker:0.1.1
+    ports:
+      - "9553:9553"
+    environment:
+      - WORKER_PORT=9553

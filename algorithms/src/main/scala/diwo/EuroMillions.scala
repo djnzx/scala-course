@@ -49,11 +49,11 @@ object EuroMillions extends App {
   /** generic validator */
   def validate(s: Set[Int])(p: Set[Int] => Boolean) = Some(s).filter(p)
   /** exact size validation */
-  def sizeEq(s: Set[Int], sz: Int) = 
+  def sizeEq(s: Set[Int], sz: Int) =
     validate(s)(_.size == sz)
       .toRight(msg_mustEq(sz, s.size))
   /** range validation */
-  def sizeBtw(s: Set[Int], mn: Int, mx: Int) = 
+  def sizeBtw(s: Set[Int], mn: Int, mx: Int) =
     validate(s)(s => s.size >= mn && s.size <= mx)
       .toRight(msg_mustBtw(mn, mx, s.size))
   /** normal validation: shared in normal ticket and draw */
@@ -92,7 +92,7 @@ object EuroMillions extends App {
         .map { case (ns, sns) => new SystemTicket(ns, sns) }
         .mapLeft(msg_st)
   }
-  /** attaching validation to Draw syntax */    
+  /** attaching validation to Draw syntax */
   object Draw {
     def parse(s: String) =
       parse2arrays(s)
@@ -131,8 +131,8 @@ object EuroMillions extends App {
   )
   def prize(d: Draw, t: Ticket) =
     ((t.ns & d.ns).size, (t.sns & d.sns).size) match {
-      case iss => prizes.collectFirst { case (`iss`, x) => x } 
-    } 
+      case iss => prizes.collectFirst { case (`iss`, x) => x }
+    }
   /**
     * Combinatorics and math stuff:
     * {{{
@@ -146,7 +146,7 @@ object EuroMillions extends App {
     * total up to 252 * 10 = 2520
     */
   private def tails[A](la: Seq[A])(f: Seq[A] => Seq[Seq[A]]): Seq[Seq[A]] = la match {
-    case Nil => Seq.empty
+    case Nil    => Seq.empty
     case _ :: t => f(la) ++ tails(t)(f)
   }
   /** generic combinations */
@@ -163,7 +163,7 @@ object EuroMillions extends App {
   def expand(t: SystemTicket) = allCombinations(t)
   /** normalize any ticket to Seq[NormalTicket] */
   def normalize(t: Ticket) = t match {
-    case nt: NormalTicket => Seq(nt) 
+    case nt: NormalTicket => Seq(nt)
     case st: SystemTicket => expand(st)
   }
   /** normalize, flatten, apply `prize`, and group results */
@@ -195,7 +195,7 @@ object EuroMillions extends App {
     obtainResource(fileName)
       .getOrElse(!msg_file_not_found(fileName))
   /** main process */
-  def process(draw: String, tickets: String) = 
+  def process(draw: String, tickets: String) =
     Using.resources(
       scala.io.Source.fromFile(resourceOrDie(draw)),
       scala.io.Source.fromFile(resourceOrDie(tickets))
