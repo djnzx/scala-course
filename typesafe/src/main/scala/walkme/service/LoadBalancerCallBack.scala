@@ -8,7 +8,7 @@ import scala.concurrent.impl.Promise
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
-object LoadBalancer {
+object LoadBalancerCallBack {
 
   trait HttpClient[A, B] {
     def mkGet(rq: A, id: Int)(implicit ec: ExecutionContext): Future[B]
@@ -43,7 +43,10 @@ object LoadBalancer {
 
   class StateRef[A, B] private(n: Int) {
     private val ref = new AtomicReference(State.initial[A, B](n))
-    def enqueue(rq: A, cb: B => Any): Unit = ref.updateAndGet(_.enqueue(rq, cb))
+    def enqueue(rq: A, cb: B => Any): Unit = {
+      ref.updateAndGet(_.enqueue(rq, cb))
+      println(s"enqueued: $rq: ${ref.get().queue.map(_._1).mkString(" ")}")
+    }
     def release(i: Int): Unit = ref.updateAndGet(_.release(i))
     def dequeue =
       Some(ref.get)
@@ -62,18 +65,17 @@ object LoadBalancer {
     private def process(http: HttpClient[A, B])(implicit ec: ExecutionContext): Unit =
       state.dequeue.foreach { case ((rq: A, rh: (B => Any)), i) =>
         println(s"====> $rq dequeued to run on $i")
-        http.mkGet(rq, i)
+        println(s"doing HTTP Rq to ${clients(i)} at ${System.currentTimeMillis()}")
+        http.mkGet(rq, clients(i))
           .map { rs => println(s"===> mkGet Response GOT: $rs"); rs }
           .map(rh(_))
           .andThen(_ => state.release(i))
           .onComplete(_ => process(http))
       }
 
-    def onRequest(rq: A, cb: B => Any)(implicit ec: ExecutionContext): Future[Unit] =
-      Future {
-        println(s"==> onRequest $rq in $thName")
-        state.enqueue(rq, cb)
-      }
+    def handle(rq: A, cb: B => Any)(implicit ec: ExecutionContext): Future[Unit] =
+      Future { println(s"==> onRequest $rq in $thName") }
+        .andThen(_ => state.enqueue(rq, cb))
         .andThen(_ => process(http))
 
   }
