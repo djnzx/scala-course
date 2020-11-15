@@ -14,11 +14,13 @@ object valid {
   def sizeEq(s: Set[Int], sz: Int) =
     validate(s)(_.size == sz)
       .toRight(msg.mustEq(sz, s.size))
+      .mapLeft(msg.size)
       
   /** range validation */
   def sizeBtw(s: Set[Int], mn: Int, mx: Int) =
     validate(s)(s => s.size >= mn && s.size <= mx)
       .toRight(msg.mustBtw(mn, mx, s.size))
+      .mapLeft(msg.size)
       
   /** normal validation: shared in normal ticket and draw */
   def normalValidation(ns: Set[Int], sns: Set[Int]) = for {
@@ -33,8 +35,10 @@ object valid {
     * parse String to Two Sets:
     * Sets delimiter - `/` (slash)
     * Items delimiter - `,` (comma)
+    * size of arrays isn't checked, it will be done
+    * in appropriate apply() methods
     */
-  def parse2arrays(s: String) =
+  def parseTwoArrays(s: String) =
     Option(s)
       .map(_.trim)
       .map(_.split("/"))

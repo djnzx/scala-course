@@ -1,6 +1,6 @@
 package diwo
 
-import diwo.valid.{normalValidation, parse2arrays, sizeBtw}
+import diwo.valid.{normalValidation, parseTwoArrays, sizeBtw}
 import ExtendedSyntax.RichEither
 
 object Domain {
@@ -46,24 +46,30 @@ object Domain {
       } yield (nor, str))
         .map { case (ns, sns) => new SystemTicket(ns, sns) }
         .mapLeft(msg.st)
+    def buildOrDie(ns: Set[Int], sns: Set[Int]) =
+      apply(ns, sns)
+        .getOrDie
   }
   
   /** attaching validation to Draw syntax */
   object Draw {
     def parse(s: String) =
-      parse2arrays(s)
+      parseTwoArrays(s)
         .toRight(msg.dr_parse(s))
         .flatMap { case (a, b) => apply(a, b) }
     def apply(ns: Set[Int], sns: Set[Int]) =
       normalValidation(ns, sns)
         .map { case (ns, sns) => new Draw(ns, sns) }
         .mapLeft(msg.dr)
+    def buildOrDie(ns: Set[Int], sns: Set[Int]) =
+      apply(ns, sns)
+        .getOrDie
   }
   
   /** analyzing different tickets */
   object Ticket {
     def apply(s: String) =
-      parse2arrays(s)
+      parseTwoArrays(s)
         .flatMap { case (a, b) =>
           NormalTicket(a, b)
             .or(SystemTicket(a, b))

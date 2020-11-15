@@ -5,7 +5,7 @@ import diwo.ExtendedSyntax._
 
 import scala.util.Using
 
-/** main app runnner */
+/** main app runner */
 object EuroMillionsApp extends App {
 
   def process(draw: String, tickets: String) =

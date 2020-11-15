@@ -12,4 +12,5 @@ object msg {
   def dr_parse(s: String) = s"Draw parse error, $s given"
   def file_not_found(s: String) = s"file $s not found"
   def file_is_empty(s: String) = s"file $s is empty"
+  def size(s: String) = s"size $s"
 }
