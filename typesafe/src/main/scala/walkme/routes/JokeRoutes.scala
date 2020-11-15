@@ -11,7 +11,6 @@ import walkme.service.ForwardLogic.RequestAJoke
 import scala.concurrent.Future
 
 class JokeRoutes(service: ActorRef[ForwardLogic.Command])(implicit val system: ActorSystem[_]) {
-  // timeout for ask pattern
   private implicit val timeout =
     Timeout.create(system.settings.config.getDuration("jokes-app.routes.ask-timeout"))
 
