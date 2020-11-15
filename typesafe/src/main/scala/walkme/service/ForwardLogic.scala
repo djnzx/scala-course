@@ -24,10 +24,7 @@ object ForwardLogic {
       .map(_.utf8String)
 
     val clients = IndexedSeq(9551, 9552, 9553)
-    val hc = new HttpClient[Any, String] {
-      override def mkGet(rq: Any, id: Int)(implicit ec: ExecutionContext): Future[String] = doGet(id)
-    }
-    val b = Balancer.create(clients, hc)
+    val b = Balancer.create[Any, String](clients.length, (_, i) => doGet(clients(i)))
 
     Behaviors.receiveMessage {
       case RequestAJoke(sender) =>
