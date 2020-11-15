@@ -72,7 +72,7 @@ object Dependencies {
     def akka(artifact: String):              ModuleID = akka(artifact, Versions.akka)
     def akkaHttp(artifact: String):          ModuleID = akka(artifact, Versions.akkaHttp)
     def slf4j(artifact: String):             ModuleID = pf.slf4j                %  artifact    % Versions.slf4j17
-    val tsconfig:                             ModuleID = pf.typesafe             %  "config"     % Versions.tsconfig
+    val tsconfig:                            ModuleID = pf.typesafe             %  "config"     % Versions.tsconfig
 
     val shapeless     = "com.chuusai"      %% "shapeless"     % Versions.shapeless
     val jsoup         = "org.jsoup"        %  "jsoup"         % Versions.jsoup
