@@ -8,6 +8,8 @@
 - Bartosz Milewski (Category Theory)
   - [blog](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
   - [youtube](https://www.youtube.com/user/DrBartosz/playlists)
+- Alexandru nedelcu
+  - [blog](https://alexn.org/blog/2020/11/15/managing-database-migrations-scala.html?pk_campaign=reddit&pk_kwd=link)
 - Adam Warski
   - [SoftwareMill](http://www.softwaremill.com)
     - [cats](https://blog.softwaremill.com/9-tips-about-using-cats-in-scala-you-might-want-to-know-e1bafd365f88)
@@ -173,6 +175,7 @@
    - [my clone](https://github.com/alexr007/scala-sql-compare.git)
 
 ### ZIO
+- [ZparkIO](https://medium.com/@AyoubFakir/migrating-from-a-plain-spark-application-to-zio-with-zparkio-8fcd5f5da6ab)
 - [zio-workshop](https://github.com/alexr007/zio-workshop.git)
 - [play-zio2](https://github.com/alexr007/play-zio.git)
 - [zio-uzhttp](https://github.com/alexr007/uzhttp.git)
