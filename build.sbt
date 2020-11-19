@@ -8,7 +8,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 lazy val commonSettings = Seq(
   scalaVersion := "2.13.3",
   organization := "org.alexr",
-  version      := "20.09.04",
+  version      := "20.11.19.1",
 
   javacOptions  ++= Seq(
     //  "-source", "1.8",
