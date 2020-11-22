@@ -50,12 +50,9 @@ object IPv4 {
       .foldLeft(empty) { (map, ip) =>
         map.updatedWith(ip.a) {
           case Some(a) => ???
-          case None    => ???
+          case None    => Some(map3(ip.b, ip.c, ip.d))
         }
-        val m: IPS = ip.toMap
-        ???
       }
-
 }
 
 class IPv4Test extends AnyFunSpec with Matchers {
