@@ -20,7 +20,7 @@ object IPv4 {
   
   def stringToIP(s: String): Option[IP] = for {
     s1 <- Option(s)
-    s2 = s1.split(".")
+    s2 = s1.split("\\.")
     if s2.length == SIZE
     s3 = s2.flatMap(s => Try(s.toInt).toOption)
     if s3.length == SIZE
@@ -30,7 +30,7 @@ object IPv4 {
 
   def len(a: Array[_]) = a.length == SIZE
   def stringToIP2(s: String): Option[IP] = Option(s)
-    .map(_.split("."))
+    .map(_.split("\\."))
     .filter(len)
     .map(_.flatMap(x => Try(x.toInt).toOption))
     .filter(len)
@@ -49,18 +49,25 @@ object IPv4 {
     ss.flatMap(stringToIP2)
       .foldLeft(empty) { (map, ip) =>
         map.updatedWith(ip.a) {
-          case Some(a) => ???
-          case None    => Some(map3(ip.b, ip.c, ip.d))
+          case Some(am) => Some(am.updatedWith(ip.b) {
+            case Some(bm) => Some(bm.updatedWith(ip.c) {
+              case Some(cm) => Some(cm ++ map1(ip.d))
+              case None     => Some(map1(ip.d))
+            })
+            case None     => Some(map2(ip.c, ip.d)) 
+          })
+          case None     => Some(map3(ip.b, ip.c, ip.d))
         }
       }
 }
 
 class IPv4Test extends AnyFunSpec with Matchers {
+  import IPv4._
   it("1") {
-    import IPv4._
-    
     val src = Seq(
       "1.2.3.4",
+      "1.2.3.4",
+      "1.2.3.5",
       "1.2.3.5"
     )
     val dst = Map(1 -> Map(2 -> Map(3 -> Set(4,5))))
