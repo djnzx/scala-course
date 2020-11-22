@@ -1,77 +1,86 @@
 package ipv4
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-
 import scala.util.Try
 
 object IPv4 {
-  type IPS = Map[Int, Map[Int, Map[Int, Set[Int]]]]
-  val empty: IPS = Map.empty
-  val SIZE = 4
-  case class IP(a: Int, b: Int, c: Int, d: Int)
-  def map1(d: Int) = Set(d)
-  def map2(c: Int, d: Int) = Map(c -> map1(d))
-  def map3(b: Int, c: Int, d: Int) = Map(b -> map2(c, d))
-  def map4(a: Int, b: Int, c: Int, d: Int) = Map(a -> map3(b, c, d))
+  /** IP address representation */
+  case class IP(a: Int, b: Int, c: Int, d: Int) 
+  /** syntax to manipulate with IP parts */
   implicit class IPSyntax(private val ip: IP) extends AnyVal {
-    def toMap = map4(ip.a, ip.b, ip.c, ip.d)
+    import ip._
+    def a8  = Set(d)        // last 1
+    def a16 = Map(c -> a8)  // last 2
+    def a24 = Map(b -> a16) // last 3
+  }
+  /** parser */
+  object IP {
+    private def isLen4(a: Array[_]) = a.length == 4
+    def parse(s: String) = Option(s)
+      .map(_.split("\\."))
+      .filter(isLen4)
+      .map(_.flatMap(x => Try(x.toInt).toOption))
+      .filter(isLen4)
+      .map(_.filter(x => x >=0 && x <= 255))
+      .filter(isLen4)
+      .map { case Array(a, b, c, d) => IP(a, b, c, d) }
+  }
+
+  type IPS = Map[Int, Map[Int, Map[Int, Set[Int]]]]
+  class UniqueIPs(val map: IPS = Map.empty) {
+    import UniqueIPs._
+
+    /** process ONE IP */
+    def process(ip: String): UniqueIPs =
+      new UniqueIPs(processToMap(map, ip))
+
+    /** process MANY IPs */
+    def process(ips: Seq[String]): UniqueIPs =
+      new UniqueIPs(ips.foldLeft(map)(processToMap))
+
+    /** contains by IP */
+    def contains(ip: IP): Boolean =
+      map.get(ip.a)
+        .flatMap(_.get(ip.b))
+        .flatMap(_.get(ip.c))
+        .exists(_.contains(ip.d))
+
+    /** contains by String */
+    def contains(ip: String): Boolean = 
+      IP.parse(ip).exists(contains)
+    
+    /** produce Iterable[IP] from map */
+    def flatten = for {
+      (a, m2) <- map
+      (b, m3) <- m2
+      (c, s4) <- m3
+      d <- s4
+    } yield IP(a, b, c, d)
   }
   
-  def stringToIP(s: String): Option[IP] = for {
-    s1 <- Option(s)
-    s2 = s1.split("\\.")
-    if s2.length == SIZE
-    s3 = s2.flatMap(s => Try(s.toInt).toOption)
-    if s3.length == SIZE
-    i4 = s3.flatMap(x => Option.when(x >= 0 && x <= 255)(x))
-    if i4.length == SIZE
-  } yield IP(i4(0), i4(1), i4(2), i4(3))
-
-  def len(a: Array[_]) = a.length == SIZE
-  def stringToIP2(s: String): Option[IP] = Option(s)
-    .map(_.split("\\."))
-    .filter(len)
-    .map(_.flatMap(x => Try(x.toInt).toOption))
-    .filter(len)
-    .map(_.filter(x => x >=0 && x <= 255))
-    .filter(len)
-    .map { case Array(a, b, c, d) => IP(a, b, c, d) }
-  
-  def combine(m: IPS) = for {
-    (a, m2) <- m
-    (b, m3) <- m2
-    (c, s4) <- m3
-    d <- s4
-  } yield (a, b, c, d)
-
-  def process(ss: Seq[String]): IPS =
-    ss.flatMap(stringToIP2)
-      .foldLeft(empty) { (map, ip) =>
-        map.updatedWith(ip.a) {
-          case Some(am) => Some(am.updatedWith(ip.b) {
-            case Some(bm) => Some(bm.updatedWith(ip.c) {
-              case Some(cm) => Some(cm ++ map1(ip.d))
-              case None     => Some(map1(ip.d))
-            })
-            case None     => Some(map2(ip.c, ip.d)) 
+  object UniqueIPs {
+    
+    /** core function to combine map with IP given */
+    private def combine(map: IPS, ip: IP) =
+      map.updatedWith(ip.a) {
+        case None     => Some(ip.a24)
+        case Some(ma) => Some(ma.updatedWith(ip.b) {
+          case None     => Some(ip.a16)
+          case Some(mb) => Some(mb.updatedWith(ip.c) {
+            case None     => Some(ip.a8)
+            case Some(mc) => Some(mc ++ ip.a8)
           })
-          case None     => Some(map3(ip.b, ip.c, ip.d))
-        }
+        })
       }
-}
+      
+    private def processToMap(map: IPS, ip: String) =
+      IP.parse(ip)
+        .map(combine(map, _))
+        .getOrElse(map)
 
-class IPv4Test extends AnyFunSpec with Matchers {
-  import IPv4._
-  it("1") {
-    val src = Seq(
-      "1.2.3.4",
-      "1.2.3.4",
-      "1.2.3.5",
-      "1.2.3.5"
-    )
-    val dst = Map(1 -> Map(2 -> Map(3 -> Set(4,5))))
-    val processed: IPS = process(src)
-    processed shouldEqual dst
+    /** entry point to process group of IP addresses */
+    def process(ss: Seq[String]) =
+      new UniqueIPs()
+        .process(ss)
+        
   }
 }
