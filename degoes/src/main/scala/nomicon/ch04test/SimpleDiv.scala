@@ -84,7 +84,7 @@ object Example7 extends DefaultRunnableSpec {
 
   val assertion1: Assertion[Iterable[Int]] = isNonEmpty && forall(nonNegative)
   val assertion2: Assertion[Iterable[Any]] = isEmpty || hasSize(equalTo(3))
-  val atLeastOneDup = not(isDistinct)
+  val atLeastOneDup: Assertion[Iterable[Any]] = not(isDistinct)
   
   override def spec = suite("custom suite")(
     test("custom test") {
@@ -92,6 +92,9 @@ object Example7 extends DefaultRunnableSpec {
     },
     test("notEmpty") {
       assert(List(1,2,3))(assertion1)
-    }
+    },
+    test("absurd") {
+      assert(List())(not(isEmpty))
+    },
   )
 }
