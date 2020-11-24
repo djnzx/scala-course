@@ -15,6 +15,9 @@ object Aspects extends DefaultRunnableSpec {
   ) @@ timeoutWarning(1.second) @@ repeats(10)
 }
 
+/**
+  * property testing out of the box
+  */
 object Property extends DefaultRunnableSpec {
   
   val intGen: Gen[Random, Int] = Gen.anyInt
