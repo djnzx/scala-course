@@ -4,7 +4,7 @@ import scala.util.Try
 
 object IPv4 {
   /** IP address representation */
-  case class IP(a: Int, b: Int, c: Int, d: Int) 
+  case class IP(a: Int, b: Int, c: Int, d: Int)
   /** syntax to manipulate with IP parts */
   implicit class IPSyntax(private val ip: IP) extends AnyVal {
     import ip._
@@ -45,9 +45,9 @@ object IPv4 {
         .exists(_.contains(ip.d))
 
     /** contains by String */
-    def contains(ip: String): Boolean = 
+    def contains(ip: String): Boolean =
       IP.parse(ip).exists(contains)
-    
+
     /** produce Iterable[IP] from map */
     def flatten = for {
       (a, m2) <- map
@@ -56,9 +56,9 @@ object IPv4 {
       d <- s4
     } yield IP(a, b, c, d)
   }
-  
+
   object UniqueIPs {
-    
+
     /** core function to combine map with IP given */
     private def combine(map: IPS, ip: IP) =
       map.updatedWith(ip.a) {
@@ -71,7 +71,7 @@ object IPv4 {
           })
         })
       }
-      
+
     private def processToMap(map: IPS, ip: String) =
       IP.parse(ip)
         .map(combine(map, _))
@@ -81,6 +81,6 @@ object IPv4 {
     def process(ss: Seq[String]) =
       new UniqueIPs()
         .process(ss)
-        
+
   }
 }
