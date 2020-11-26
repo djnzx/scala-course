@@ -21,4 +21,10 @@ object PartialEx extends App {
   
   val l = Vector("a", "b")
   val fx: Int => Option[String] = l.lift
+  
+//  val toInt: String => Int = (s: String) => s.toInt
+//  val toIntOpt: String => Option[Int] = PartialFunction.fromFunction(toInt).lift
+//  
+//  pprint.pprintln(toIntOpt("55"))
+//  pprint.pprintln(toIntOpt("55x"))
 }
