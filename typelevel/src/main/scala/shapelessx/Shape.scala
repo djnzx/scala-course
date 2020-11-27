@@ -1,5 +1,6 @@
 package shapelessx
 
+import shapeless.Generic.Aux
 import shapeless.{::, Generic, HList, HNil}
 
 object Shape extends App {
@@ -47,11 +48,12 @@ object Shape extends App {
   }
 
   case class User(name: String, age: Int)
+  case class Person(name: String, age: Int)
 
-  val transformer = Generic[User]
+  val transformer: Aux[User, String :: Int :: HNil] = Generic[User]
 
-  transformer.from(HList("name", 42))
-  transformer.to(User("name", 42))
+  val x1: User                  = transformer.from(HList("name", 42))
+  val x2: String :: Int :: HNil = transformer.to(User("name", 42))
 
   //  Compare[Int].compare(1, 1)
   //  Compare[String].compare("a", "a")
@@ -59,7 +61,6 @@ object Shape extends App {
 
   trait Transform[A, B] {
     def from(v: A): B
-
     def to(v: B): A
   }
 
@@ -74,7 +75,6 @@ object Shape extends App {
     }
   }
 
-  case class Person(name: String, age: Int)
 
   implicitly[Transform[User, Person]].from(User("A", 1))
   implicitly[Transform[User, Person]].to(Person("A", 1))
