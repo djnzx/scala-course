@@ -1,7 +1,11 @@
 package shapelessx
 
+import shapeless._
 import pprint.{pprintln => println}
 
+/**
+  * https://books.underscore.io/shapeless-guide/shapeless-guide.html#introduction
+  */
 object Chapter01 extends App {
   case class Employee(name: String, number: Int, manager: Boolean)
   case class IceCream(name: String, numCherries: Int, inCone: Boolean)
@@ -11,7 +15,6 @@ object Chapter01 extends App {
   def iceCreamCsv(c: IceCream): List[String] =
     List(c.name, c.numCherries.toString, c.inCone.toString)
 
-  import shapeless._
   
   // unpack case classes to Heterogeneous typed lists
   val genericEmployee: String :: Int :: Boolean :: HNil = Generic[Employee].to(Employee("Dave", 123, false))
