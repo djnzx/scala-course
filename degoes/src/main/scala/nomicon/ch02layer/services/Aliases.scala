@@ -1,9 +1,11 @@
-package nomicon.ch02layer
+package nomicon.ch02layer.services
 
-import nomicon.ch02layer.services.{Logging, UserRepo}
 import zio.Has
 
-object Services {
+/**
+  * just aliases to our services
+  */
+object Aliases {
 
   type Logging = Has[Logging.Service]
   type UserRepo = Has[UserRepo.Service]

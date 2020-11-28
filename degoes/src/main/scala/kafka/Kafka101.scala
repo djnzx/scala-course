@@ -7,7 +7,7 @@ import zio.kafka.consumer.{CommittableRecord, Consumer, ConsumerSettings, Offset
 import zio.stream.ZStream
 import zio._
 
-object Kafka101 {
+object Kafka101 extends App {
 
   /** connector configuration */
   val kafkaConfig = ConsumerSettings(List("localhost:9092"))
@@ -52,11 +52,12 @@ object Kafka101 {
   val zioConsumer: ZManaged[Clock with Blocking, Throwable, Consumer.Service] =
     Consumer.make(kafkaConfig)
     
-  val zioConsumerLayer = ZLayer(zioConsumer)
+  val zioConsumerLayer: ZLayer[Clock with Blocking, Throwable, Consumer.Service] = ZLayer(zioConsumer)
 
   val managedStreamFiber =
-    printerStream
-      .provideCustomLayer(zioConsumerLayer)
-      .foreachManaged(_ => ZIO.unit).fork
+    processingFiber
+//      .provideLayer(zioConsumerLayer)
+//      .foreachManaged(_ => ZIO.unit).fork
 
+  override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = ???
 }

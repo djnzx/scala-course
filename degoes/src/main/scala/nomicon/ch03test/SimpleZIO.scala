@@ -1,4 +1,4 @@
-package nomicon.ch04test
+package nomicon.ch03test
 
 object SimpleZIO extends zio.App {
   

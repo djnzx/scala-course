@@ -1,6 +1,6 @@
 package nomicon.ch02layer.services
 
-import nomicon.ch02layer.Services.Logging
+import Aliases.Logging
 import zio.console.Console
 import zio.{UIO, URIO, ZIO, ZLayer}
 
@@ -20,7 +20,12 @@ object Logging {
   /** real implementation #1, will be wired further */
   val consoleLogger: ZLayer[Console, Nothing, Logging] = ZLayer.fromFunction((console: Console) =>
     new Service {
-      def info(s: String): UIO[Unit] = console.get.putStrLn(s"info - $s")
+      def info(s: String): UIO[Unit] = {
+        // DOESNT WORK (((
+        println(s"Logger.info $s")
+        val c: Console.Service = console.get
+        c.putStrLn(s"info - $s")
+      }
       def error(s: String): UIO[Unit] = console.get.putStrLn(s"error - $s")
     }
   )

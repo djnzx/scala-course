@@ -1,4 +1,4 @@
-package nomicon.ch04test
+package nomicon.ch03test
 
 import zio.{Exit, ZIO}
 
