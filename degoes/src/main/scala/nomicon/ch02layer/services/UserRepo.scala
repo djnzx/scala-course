@@ -23,11 +23,9 @@ object UserRepo {
     * 2. convert interface methods A => B to R => A => B
     * actually just implementing reader, requiring the env. (just reader)
     * to provide it later 
-    *
-    * can fail, so => accessM
     */
-  def createUser(user: User): ZIO[UserRepo, DBError, Unit] = ZIO.accessM(ur => ur.get.createUser(user))
-  def getUser(userId: UserId): ZIO[UserRepo, DBError, Option[User]] = ZIO.accessM(ur => ur.get.getUser(userId))
+  def createUser(user: User): ZIO[UserRepo, DBError, Unit] = ZIO.accessM[UserRepo](_.get.createUser(user))
+  def getUser(userId: UserId): ZIO[UserRepo, DBError, Option[User]] = ZIO.accessM[UserRepo](_.get.getUser(userId))
 
   /**
     * 3. one of particular implementations represented as a Layer

@@ -10,7 +10,7 @@ import zio._
 object Kafka101 extends App {
 
   /** connector configuration */
-  val kafkaConfig = ConsumerSettings(List("localhost:9092"))
+  val kafkaConfig: ConsumerSettings = ConsumerSettings(List("localhost:9092"))
   
   /** stream of data read */
   val recordStream: ZStream[Consumer with Clock with Blocking, Throwable, CommittableRecord[String, String]] = 
@@ -46,14 +46,16 @@ object Kafka101 extends App {
         .as(committableRecord.offset)
     }
     .aggregateAsync(Consumer.offsetBatches)
-    .mapM(_.commit)
+//    .mapM(_.commit)
 
   /** consumer */
-  val zioConsumer: ZManaged[Clock with Blocking, Throwable, Consumer.Service] =
-    Consumer.make(kafkaConfig)
-    
+  val zioConsumer: ZManaged[Clock with Blocking, Throwable, Consumer.Service] = Consumer.make(kafkaConfig)
+
+  /** consumer layer*/
   val zioConsumerLayer: ZLayer[Clock with Blocking, Throwable, Consumer.Service] = ZLayer(zioConsumer)
 
+  val full: ZLayer[Any, Throwable, Consumer.Service] = Clock.live ++ Blocking.live >>> zioConsumerLayer
+  
   val managedStreamFiber =
     processingFiber
 //      .provideLayer(zioConsumerLayer)
