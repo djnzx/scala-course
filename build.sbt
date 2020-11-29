@@ -270,6 +270,7 @@ lazy val degoes = (project in file("degoes"))
       pf.zio %% "zio-interop-cats" % "2.2.0.1",
       pf.zio %% "zio-kafka"        % "0.13.0",
       "com.github.pureconfig" %% "pureconfig" % "0.14.0",
+      Libraries.sqlPg,
       Libraries.doobieCore,
       Libraries.doobiePg,
       Libraries.doobieHikari,
