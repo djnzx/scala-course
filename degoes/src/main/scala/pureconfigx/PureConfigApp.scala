@@ -7,11 +7,10 @@ import pureconfig.generic.auto._
   * class members mus have the same 
   * names as the properties in config file
   */
-case class AppConf(name: String)
-case class PgConfig(url: String, user: String, password: String)
-case class WholeConf(app: AppConf, db: PgConfig)
+case class AppDetails(name: String)
+case class PgConfig(driver: String, url: String, user: String, password: String)
+case class AppConfig(app: AppDetails, db: PgConfig)
 
-object PureConfigApp extends App {
-  val r: WholeConf = ConfigSource.default.loadOrThrow[WholeConf]
-  pprint.pprintln(r)
+object PureConfigApp {
+  val r: AppConfig = ConfigSource.default.loadOrThrow[AppConfig]
 }
