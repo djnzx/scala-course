@@ -19,7 +19,7 @@ object Dependencies {
     val refined           = "0.9.15"
     val redis4cats       = "0.9.6"
     val skunk            = "0.0.7"
-    val doobie           = "0.9.0"
+    val doobie           = "0.9.4"
     val squants          = "1.6.0"
     val logback          = "1.2.3"
     val zio              = "1.0.3"
@@ -124,6 +124,7 @@ object Dependencies {
 
     val doobieCore    = pf.tpolecat           %% "doobie-core"     % Versions.doobie
     val doobiePg      = pf.tpolecat           %% "doobie-postgres" % Versions.doobie
+    val doobieHikari  = pf.tpolecat           %% "doobie-hikari"   % Versions.doobie
     val skunkCore     = pf.tpolecat           %% "skunk-core"      % Versions.skunk
     val skunkCirce    = pf.tpolecat           %% "skunk-circe"     % Versions.skunk
 
