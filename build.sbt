@@ -6,9 +6,9 @@ import sbt.Keys._
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val commonSettings = Seq(
-  scalaVersion := "2.13.3",
+  scalaVersion := "2.13.4",
   organization := "org.alexr",
-  version      := "20.11.19.2",
+  version      := "20.12.4",
 
   javacOptions  ++= Seq(
     //  "-source", "1.8",

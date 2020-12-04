@@ -14,7 +14,7 @@ object Logging {
 
   /** linking interface to implementation
     * can't fail, so => access */
-  def info(s: String): URIO[Logging, Unit] = ZIO.accessM(_.get.info(s))
+  def info(s: String): URIO[Logging, Unit] = ZIO.accessM((x: Logging) => x.get.info(s))
   def error(s: String): URIO[Logging, Unit] = ZIO.accessM(_.get.error(s))
 
   /** real implementation #1, will be wired further */
