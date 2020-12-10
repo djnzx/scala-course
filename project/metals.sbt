@@ -1,1 +1,2 @@
-addSbtPlugin("ch.epfl.scala" % "sbt-bloop" % "1.4.0-RC1-229-b7c15aa9")
+// https://github.com/scalacenter/bloop/releases
+addSbtPlugin("ch.epfl.scala" % "sbt-bloop" % "1.4.6")

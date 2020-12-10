@@ -70,7 +70,7 @@ object IntroApp extends App {
   def pow(x: Double, n: Int): Double = (1 to n).foldLeft(1: Double)((acc, _) => acc * x)
   def ex(x: Double): Double =      1 + (1 to 9).foldLeft(0: Double)((acc, n) => acc + pow(x,n)/fact(n) )
 
-  def main_ex(args: Array[String]) {
+  def main_ex(args: Array[String]) = {
     val stdin = scala.io.StdIn
     val n = stdin.readLine.trim.toInt
     for (_ <- 1 to n) {
