@@ -43,16 +43,13 @@ object XMLParse1 extends App {
     </persons>
 //  val result: Elem = scala.xml.XML.loadString(xml)
 
-  def linearize(node: Node, stack: String, map: Map[String,String])
-  : List[(Node, String, Map[String,String])] = {
+  def linearize(node: Node, stack: String, map: Map[String,String]): List[(Node, String, Map[String,String])] = 
     (node, stack, map) :: node.child.flatMap {
-      case e: Elem => {
+      case e: Elem => 
         if (e.descendant.size == 1) linearize(e, stack, map ++ Map(stack + "/" + e.label -> e.text))
         else linearize(e, stack + "/" + e.label, map)
-      }
       case _ => Nil
     }.toList
-  }
 
   val map = linearize(result, "", Map[String,String]()).flatMap(_._3).toMap
 
