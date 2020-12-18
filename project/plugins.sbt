@@ -1,7 +1,8 @@
 // artima scalatest section
 resolvers ++= Seq(
 //  Repos.artima
-  MavenRepository("Artima", "https://repo.artima.com/releases")
+  MavenRepository("Artima", "https://repo.artima.com/releases"),
+  Resolver.sonatypeRepo("public")
 )
 
 // https://github.com/spray/sbt-revolver

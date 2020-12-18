@@ -1,0 +1,16 @@
+------------------------------------
+global configuration -> to all repos
+------------------------------------
+vim ~/.gitconfig
+------------------------------------
+git config --global user.name "Alexey Rykhalskiy"
+git config --global user.email "alexey.rykhalskiy@gmail.com"
+------------------------------------
+
+------------------------------------
+local configuration -> to current repo only
+------------------------------------
+vim .git/config
+------------------------------------
+git config --local user.email arykhalskiy@luxoft.com
+------------------------------------

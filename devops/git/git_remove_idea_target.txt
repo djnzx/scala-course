@@ -1,0 +1,16 @@
+How to remove the .idea folder from git?
+----------------------------------------
+
+1. remove from commits tree
+
+git rm -r --cached .idea
+git rm -r --cached target
+git commit -m "fixed untracked files"
+git push
+
+2. don't forget to add to .gitignore
+
+3. read links:
+
+https://stackoverflow.com/questions/11451535/gitignore-is-ignored-by-git
+https://www.david-merrick.com/2017/08/04/how-to-remove-the-idea-folder-from-git/

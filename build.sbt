@@ -69,13 +69,14 @@ lazy val whole = (project in file("."))
   * no 3rd-party libraries involved
   */
 lazy val scala_plain = (project in file("scala_plain"))
+  .enablePlugins(ScalaxbPlugin)
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
       "org.scala-lang.modules"     %% "scala-parallel-collections" % "0.2.0",
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
       "org.scala-lang"             %  "scala-reflect"               % "2.13.3",
-
+      "org.scalaxb" %% "scalaxb" % "1.8.0",
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
       Libraries.scalactic,
