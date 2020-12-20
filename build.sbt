@@ -284,7 +284,7 @@ lazy val degoes = (project in file("degoes"))
   */
 lazy val dotty = (project in file("dotty"))
   .settings(
-    scalaVersion := "3.0.0-M2",
+    scalaVersion := "3.0.0-M3",
     useScala3doc := true,
   )
   .settings(
