@@ -17,9 +17,9 @@ object SeqToCaseClass {
   case object TeIntTransform extends TransformError
   case object TeDoubleTransform extends TransformError
   case object TeBooleanTransform extends TransformError
-  
+
   type Result[+A] = Either[TransformError, A]
-  
+
   trait Reader[+A] { self =>
     def read(ss: Seq[String]): Result[A]
 
@@ -42,7 +42,7 @@ object SeqToCaseClass {
       case Nil      => Left(TeSequenceIsEmpty)
       case h <::> _ => Right(h)
     }
-    
+
     /** implicit instances */
     implicit val strReader = new Reader[String] {
       def read(ss: Seq[String]) = head(ss)
@@ -66,12 +66,12 @@ object SeqToCaseClass {
       override def read(ss: Seq[String]) = head(ss).flatMap {
         case EMPTY => Right(None)
         case s     => Reader.read[A](Seq(s)).map(Some[A])
-      } 
+      }
     }
     private def take(ss: Seq[String]): (Seq[String], Seq[String]) = ss match {
       case Nil    => (Nil, Nil)
       case h <::> t => (Seq(h), t)
-    } 
+    }
     implicit def hListReader[H: Reader, T <: HList : Reader]: Reader[H :: T] = new Reader[H :: T] {
       def read(ss: Seq[String]) = {
         val (head, tail) = take(ss)
