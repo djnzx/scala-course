@@ -5,7 +5,11 @@ import shapeless.{::, HList, HNil}
 
 import scala.util.{Failure, Success, Try}
 
-object StringToCase {
+/**
+  * String-parsing with delimiter based implementation
+  * Try-based result
+  */
+object StringToCaseClass {
 
   trait Reader[+A] { self =>
     def read(s: String): Try[A]
