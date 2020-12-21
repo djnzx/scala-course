@@ -55,7 +55,7 @@ object StringToCaseApp extends App {
         case t  => t.tail
       }
       (head, tail)
-    } 
+    }
     implicit def hListReader[H: Reader, T <: HList: Reader]: Reader[H :: T] = new Reader[H :: T] {
       def read(s: String) = {
         val (head: String, tail: String) = take(s)
