@@ -33,21 +33,30 @@ I thought I knew Scala...
 - Rock The JVM
 - Sam Halliday. FP for Mortals with Scalaz.
 
-### 2020. Thanks to COVID-19
+### 2020. Thanks to COVID-19 :)
 - [Lightbend](https://academy.lightbend.com). [All possible on-line certificates](https://www.youracclaim.com/users/alexey-rykhalskiy)
 - Lightbend Telemetry.
-- 
-- Paul Chiusano and Runar Bjarnason. Red book FP in Scala.
-- Debasish Ghosh. Functional and Reactive Domain Modeling.
-- Gabriel Volpe. Practical FP in Scala.
-- Li Haoyi. Hands-on Scala Programming.
-- 
-- fs2
-- http4s
-- circe
--
-- Scalacheck in deep
-- Scalatest in deep
-- 
-- Kubernetes
-- Prometheus, Grafana
+- Books done 
+  - Paul Chiusano and Runar Bjarnason. Red book FP in Scala.
+  - Debasish Ghosh. Functional and Reactive Domain Modeling.
+  - Gabriel Volpe. Practical FP in Scala.
+  - Li Haoyi. Hands-on Scala Programming.
+- Typelevel Frameworks 
+  - fs2
+  - http4s
+  - circe
+  - shapeless
+- Testing frameworks
+  - Scalacheck in deep
+  - Scalatest in deep
+- DevOps 
+  - Kubernetes 
+- Monitoring
+  - Prometheus
+  - Grafana
+- Big Data
+  - Spark
+- Streaming
+  - Kafka
+- NoSQL  
+  - Cassandra
