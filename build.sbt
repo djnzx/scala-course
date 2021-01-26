@@ -80,6 +80,10 @@ lazy val scala_plain = (project in file("scala_plain"))
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
       Libraries.scalactic,
+//      "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf",
+    ),
+    Compile / PB.targets := Seq(
+      scalapb.gen() -> (Compile / sourceManaged).value / "scalapb"
     )
   )
 

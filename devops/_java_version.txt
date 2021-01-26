@@ -2,8 +2,8 @@
 /usr/libexec/java_home -V
 
 # setting desired version
-export JAVA_HOME=`/usr/libexec/java_home -v 11.0.8`
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_ 1.8.0_271`
+export JAVA_HOME=`/usr/libexec/java_home -v 11.0.9`
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_271`
 
 # checking again
 java -version
