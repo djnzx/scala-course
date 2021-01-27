@@ -6,6 +6,7 @@ message Person {
   required string name = 1;
   required int32 id = 2;
   optional string email = 3;
+  optional string details = 4;
 
   enum PhoneType {
     MOBILE = 0;
@@ -18,7 +19,7 @@ message Person {
     optional PhoneType type = 2 [default = HOME];
   }
 
-  repeated PhoneNumber phones = 4;
+  repeated PhoneNumber phones = 5;
 }
 
 message AddressBook {
