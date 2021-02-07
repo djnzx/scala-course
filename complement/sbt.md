@@ -1,1 +1,0 @@
-- [1.4.0](http://eed3si9n.com/sbt-1.4.0)
