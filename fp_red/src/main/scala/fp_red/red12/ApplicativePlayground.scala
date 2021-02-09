@@ -1,7 +1,5 @@
 package fp_red.red12
 
-import fp_red.red06.State
-
 import java.util.Date
 import fp_red.red09.p1impl.ReferenceTypes.Parser
 import fp_red.red09.p1impl.Reference._
@@ -51,7 +49,8 @@ object ApplicativePlaygroundApp0 extends App {
 }
 
 object ApplicativePlaygroundApp extends App {
-  val xs = List(0,1,2,3,-3,-4,-5,-6,0)
+  val xs = (1 to 100000).map(x => if(x%2 == 0)-x else x).toList
+//  val xs = List(0,1,2,3,-3,-4,-5,-6,0)
   
   type Counter = (Int, Int, Int) // N, Z, P
   
@@ -65,30 +64,36 @@ object ApplicativePlaygroundApp extends App {
   
   /** function which will modify state with COUNTED 10 */
   val count10: Counter => Counter = count(10)
-  val c10 = count10(initial)
-  println(c10)
+  val r1 = count10(initial)
+  print("A:"); println(r1)
   
   /** fold data structure to the VALUE */
-  val foldEagerly: Counter = xs.foldLeft(initial) { case (acc, x) => count(x)(acc) }
-  println(foldEagerly)
-
-  /** fold data structure to the FUNCTION */
-  val foldLazy: Counter => Counter = xs.foldLeft(identity[Counter] _) { (acc, x) => acc compose count(x) }
-  /** actual calculation is HERE */
-  val r3 = foldLazy(initial)
-  println(r3)
+  val r2: Counter = xs.foldLeft(initial) { case (acc, x) => count(x)(acc) }
+  print("B:"); println(r2)
 
   import fp_red.red06.State
 
-  /** fold data structure to the FUNCTION via State monad */
-  val f3 = State.sequence(xs.map { State.modify[Counter] _ compose count } ) 
+  /** fold data structure to the FUNCTION via State monad, Stack safe */
+  val f3 = State.sequence(xs.map { State.modify[Counter] _ compose count } )
   // run and extract the result
-  println(f3.run(initial)._2)
+  val r3 = f3.run(initial)._2
+  print("C:"); println(r3)
 
-  def foldV4(inputs: List[Int]): State[Counter, Counter] = for {
-    _ <- State.sequence(inputs map (State.modify[Counter] _ compose count))
-    s <- State.get
-  } yield s
+  /** fold data structure to the FUNCTION via State monad, Stack safe */
+  def f4(inputs: List[Int]): State[Counter, Counter] = {
+    val ss: List[State[Counter, Unit]] = inputs.map { x => State.modify[Counter](count(x)) }
+    val sq: State[Counter, List[Unit]] = State.sequence(ss) // it has stack safe implementations 
+    for {
+      _ <- sq
+      s <- State.get
+    } yield s
+  }
+  val r4 = f4(xs).run(initial)._1
+  print("D:"); println(r4)
 
-  println(foldV4(xs).run(initial)._1)
+  /** fold data structure to the FUNCTION, not stack safe */
+  val f5: Counter => Counter = xs.foldLeft(identity[Counter] _) { (acc, x) => acc compose count(x) }
+  /** actual calculation is HERE */
+  val r5 = f5(initial)
+  print("E:"); println(r5)
 }
