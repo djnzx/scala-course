@@ -74,9 +74,12 @@ object ApplicativePlaygroundApp extends App {
   import fp_red.red06.State
 
   /** fold data structure to the FUNCTION via State monad, Stack safe */
-  val f3 = State.sequence(xs.map { State.modify[Counter] _ compose count } )
-  // run and extract the result
-  val r3 = f3.run(initial)._2
+  val f30: List[State[Counter, Unit]] = xs.map { State.modify[Counter] _ compose count }
+  val f3: State[Counter, List[Unit]] = State.sequence(f30)
+  /** run (fold) */
+  val r3t = f3.run(initial)
+  /** extract the result */
+  val r3 = r3t._2
   print("C:"); println(r3)
 
   /** fold data structure to the FUNCTION via State monad, Stack safe */
