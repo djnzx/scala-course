@@ -28,7 +28,7 @@ trait Applicative[F[_]] extends Functor[F] { self =>
 
   /** `apply` via `map2` */
   def apply[A,B](fab: F[A => B])(fa: F[A]): F[B] =
-    map2(fa, fab) { (fa: A, fab: A => B) => fab(fa) }
+    map2(fa, fab) { (a: A, ab: A => B) => ab(a) }
 
   /** `map` via `unit` and `apply` */
   def map_functor[A,B](fa: F[A])(f: A => B): F[B] =
