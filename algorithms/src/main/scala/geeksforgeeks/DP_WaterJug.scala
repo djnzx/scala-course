@@ -44,6 +44,6 @@ object DP_WaterJug extends App {
       }
     }
 
-  
+
   solve(0,0)
 }

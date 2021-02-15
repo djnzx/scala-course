@@ -26,7 +26,7 @@ object ImperativeAndLazyIO {
     * ongoing ideas:
     */
   object Examples {
-    val lines: Stream[String] = sys.error("defined elsewhere")
+    val lines: Stream[String] = ???
     val ex1 = lines.zipWithIndex.exists(_._2 + 1 >= 40000)
     val ex2 = lines.filter(!_.trim.isEmpty).zipWithIndex.exists(_._2 + 1 >= 40000)
     val ex3 = lines.take(40000).map(_.head).indexOfSlice("abracadabra".toList)
@@ -37,6 +37,6 @@ object ImperativeAndLazyIO {
     */
   def lines(filename: String): IO[Stream[String]] = IO {
     val src = scala.io.Source.fromFile(filename)
-    src.getLines.toStream append { src.close; Stream.empty }
+    src.getLines.to(Stream).lazyAppendedAll { src.close; Stream.empty }
   }
 }

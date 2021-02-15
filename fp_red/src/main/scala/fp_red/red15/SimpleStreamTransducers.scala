@@ -16,14 +16,18 @@ object SimpleStreamTransducers {
   sealed trait Process[I,O] {
     import Process._
 
-    /** A `Process[I,O]` can be used to transform a `Stream[I]` to a `Stream[O]` */
+    /**
+      * this is a driver (interpreter) of our stream
+      * A `Process[I,O]` can be used to transform
+      * `Stream[I]` to a `Stream[O]`
+      */
     def apply(s: Stream[I]): Stream[O] = this match {
-      case Halt() => Stream.empty
+      case Halt()      => Stream.empty
       case Await(recv) => s match {
-        case h #:: t => recv(Some(h))(t)
-        case xs      => recv(None   )(xs) // Stream is empty
+        case h #:: t => recv(Some(h))(t)  // Non-empty stream
+        case xs      => recv(None   )(xs) // Empty stream
       }
-      case Emit(h, t) => h #:: t(s)
+      case Emit(h, t)  => h #:: t(s)
     }
 
     /**
@@ -33,8 +37,8 @@ object SimpleStreamTransducers {
     /**
      * `Process` definitions can often be expressed without explicit
      * recursion, by repeating some simpler `Process` forever */
-    def repeat: Process[I,O] = {
-      def go(p: Process[I,O]): Process[I,O] = p match {
+    def repeat: Process[I, O] = {
+      def go(p: Process[I, O]): Process[I,O] = p match {
         case Halt() => go(this)
         case Await(recv) => Await {
           case None => recv(None)
@@ -42,6 +46,7 @@ object SimpleStreamTransducers {
         }
         case Emit(h, t) => Emit(h, go(t))
       }
+      
       go(this)
     }
 
@@ -125,7 +130,7 @@ object SimpleStreamTransducers {
       Process.zip(this, p)
 
     /** Exercise 6: Implement `zipWithIndex` */
-    def zipWithIndex: Process[I,(O,Int)] = 
+    def zipWithIndex: Process[I,(O, Int)] = 
       this zip (count map (_ - 1))
 
     /** Add `p` to the fallback branch of this process */
@@ -145,19 +150,20 @@ object SimpleStreamTransducers {
       * 
       * emitting a value to the output */
     case class Emit[I,O](
-      head: O, tail: Process[I,O] = Halt[I,O]()
-    ) extends Process[I,O]
+      head: O,
+      tail: Process[I, O] = Halt[I, O]()
+    ) extends Process[I, O]
     
     /** reading a value from its input */
-    case class Await[I,O](
-      recv: Option[I] => Process[I,O]
-    ) extends Process[I,O]
+    case class Await[I, O](
+      recv: Option[I] => Process[I, O]
+    ) extends Process[I, O]
     
     /** termination */
-    case class Halt[I,O]() extends Process[I,O]
+    case class Halt[I, O]() extends Process[I, O]
 
-    /** emitting one value, without carrying to input type */
-    def emit[I,O](head: O, tail: Process[I,O] = Halt[I,O]()): Process[I,O] = 
+    /** emitting ONE value, without carrying to input type */
+    def emit[I, O](head: O, tail: Process[I, O] = Halt[I, O]()): Process[I, O] =
       Emit(head, tail)
 
     /**
@@ -165,7 +171,7 @@ object SimpleStreamTransducers {
       * simply `Await`, then `Emit` the value received, transformed by `f`.
       * We terminate stream after 1st element 
       */
-    def liftOne[I,O](f: I => O): Process[I,O] =
+    def liftOne[I, O](f: I => O): Process[I,O] =
       Await {
         case Some(i) => emit(f(i))
         case None    => Halt()
@@ -397,4 +403,22 @@ object SimpleStreamTransducers {
   }
 }
 
+object SimpleSTRPlayground extends App {
+  import SimpleStreamTransducers.Process
+
+  val process: Process[Int, String] = Process.liftOne((x: Int) => s"<<${x * 2}>>")
+  val src: Stream[Int] = Stream.unfold(0) { n: Int =>
+    if (n > 5) None
+    else {
+      print(".")
+      val next = n+1
+      Some(next, next)
+    }
+  }
+  println("applying transformer (lazy)")
+  val xs: Stream[String] = process.apply(src)
+  println("running")
+  val res = xs.toList
+  pprint.pprintln(res)
+}
 
