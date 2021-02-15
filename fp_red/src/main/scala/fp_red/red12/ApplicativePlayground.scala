@@ -51,9 +51,9 @@ object ApplicativePlaygroundApp0 extends App {
 object ApplicativePlaygroundApp extends App {
   val xs = (1 to 100000).map(x => if(x%2 == 0)-x else x).toList
 //  val xs = List(0,1,2,3,-3,-4,-5,-6,0)
-  
+
   type Counter = (Int, Int, Int) // N, Z, P
-  
+
   /** our state manipulation */
   def count(x: Int) = (c: Counter) => c match { case (n, z, p) => x match {
     case x if x > 0 => (n, z, p+1)
@@ -61,16 +61,20 @@ object ApplicativePlaygroundApp extends App {
     case _          => (n, z+1, p)
   }}
   val initial = (0,0,0)
-  
+
   /** function which will modify state with COUNTED 10 */
   val count10: Counter => Counter = count(10)
   val r1 = count10(initial)
   print("A:"); println(r1)
-  
-  /** fold data structure to the VALUE */
-  val r2: Counter = xs.foldLeft(initial) { case (acc, x) => count(x)(acc) }
-  print("B:"); println(r2)
 
+  /** fold data structure to the VALUE */
+  val r2: Counter = xs.foldLeft(initial) { (acc, x) => count(x)(acc) }
+  print("B1:"); println(r2)
+  
+  val r2a = (zero: Counter) => xs.foldLeft(zero) { (acc, x) => count(x)(acc)}
+  val r2ar = r2a(initial)
+  print("B2:"); println(r2ar)
+  
   import fp_red.red06.State
 
   /** fold data structure to the FUNCTION via State monad, Stack safe */
@@ -85,7 +89,7 @@ object ApplicativePlaygroundApp extends App {
   /** fold data structure to the FUNCTION via State monad, Stack safe */
   def f4(inputs: List[Int]): State[Counter, Counter] = {
     val ss: List[State[Counter, Unit]] = inputs.map { x => State.modify[Counter](count(x)) }
-    val sq: State[Counter, List[Unit]] = State.sequence(ss) // it has stack safe implementations 
+    val sq: State[Counter, List[Unit]] = State.sequence(ss) // it has stack safe implementations
     for {
       _ <- sq
       s <- State.get
