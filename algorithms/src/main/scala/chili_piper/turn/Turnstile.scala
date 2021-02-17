@@ -1,4 +1,4 @@
-package t20211602
+package chili_piper.turn
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
@@ -47,6 +47,7 @@ object Turnstile extends App {
       case (a @ ((t1, d1), idx1)) :: (b @ ((t2, d2), idx2)) :: tail if t1 == t2 => (d1, d2) match {
         case (Exit, _) => go(b :: tail, State(t1, Exit), t1 -> idx1 :: acc)
         case (_, Exit) => go(a :: tail, State(t2, Exit), t2 -> idx2 :: acc)
+        case _         => go(b :: tail, State(t1, d1), t1 -> idx1 :: acc)
       }
 
       /** 5. 1+ item */
@@ -80,6 +81,14 @@ class TurnstileSpec extends AnyFunSpec with Matchers {
         Array(0, 1, 1, 3, 3),
         Array(0, 1, 0, 0, 1),
       ) shouldEqual Array(0, 2, 1, 4, 3)
+    }
+
+    it("3") {
+      getTimes(
+        Array(3, 3, 3, 4, 4, 5, 6, 6, 7, 8),
+        Array(1, 1, 0, 1, 0, 0, 0, 1, 0, 0),
+      ) shouldEqual Array(3, 4, 7, 5, 8, 9, 10, 6, 11, 12)
+      //                  3, 4, 6, 5, 7, 8, 9, 12, 10, 11
     }
   }
 }

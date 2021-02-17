@@ -1,4 +1,4 @@
-package t20211602
+package chili_piper.airport
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
@@ -7,6 +7,7 @@ import scala.util.chaining.scalaUtilChainingOps
 
 object AirportLimousine extends App {
 
+  type Road = Array[Array[Int]]
   case class Pt(x: Int, y: Int) {
     def r = copy(x = x + 1)
     def d = copy(y = y + 1)
@@ -19,7 +20,6 @@ object AirportLimousine extends App {
     def city = Pt(0, 0)
     def airport(road: Road) = Pt(road(0).length-1, road.length-1)
   }
-  type Road = Array[Array[Int]]
   def markVisited(road: Road, pt: Pt) = road(pt.y)(pt.x).tap(_ => road(pt.y)(pt.x) = 0)
   def markUnvisited(road: Road, pt: Pt, value: Int) = road(pt.y)(pt.x) = value
   def isOnRoad(road: Road, pt: Pt) = pt.y >= 0 && pt.y < road.length && pt.x >= 0 && pt.x < road(pt.y).length
