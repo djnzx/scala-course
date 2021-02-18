@@ -2,6 +2,7 @@ package fp_red.red15
 
 import fp_red.red13.{IO, Monad}
 
+import scala.annotation.tailrec
 import scala.language.{implicitConversions, postfixOps}
 
 object SimpleStreamTransducers {
@@ -35,9 +36,10 @@ object SimpleStreamTransducers {
      * definition expressed with explicit recursion */
 
     /**
-     * `Process` definitions can often be expressed without explicit
+     * `Process`  definitions can often be expressed without explicit
      * recursion, by repeating some simpler `Process` forever */
     def repeat: Process[I, O] = {
+      
       def go(p: Process[I, O]): Process[I,O] = p match {
         case Halt() => go(this)
         case Await(recv) => Await {
@@ -50,15 +52,18 @@ object SimpleStreamTransducers {
       go(this)
     }
 
-    def repeatN(n: Int): Process[I,O] = {
-      def go(n: Int, p: Process[I,O]): Process[I,O] = p match {
-        case Halt() => if (n > 0) go(n-1, this) else Halt()
+    def repeatN(n: Int): Process[I, O] = {
+      
+      def go(n: Int, p: Process[I, O]): Process[I, O] = p match {
+        case Halt() if n > 0 => go(n - 1, this)
+        case Halt() => Halt()
         case Await(recv) => Await {
           case None => recv(None)
           case i => go(n,recv(i))
         }
         case Emit(h, t) => Emit(h, go(n,t))
       }
+      
       go(n, this)
     }
 
@@ -89,14 +94,14 @@ object SimpleStreamTransducers {
     /**
      * Exercise 5: Implement `|>`. Let the types guide your implementation.
      */
-    def |>[O2](p2: Process[O,O2]): Process[I,O2] =
+    def |>[O2](p2: Process[O, O2]): Process[I, O2] =
       p2 match {
         case Halt()    => Halt()
         case Emit(h,t) => Emit(h, this |> t)
         case Await(f)  => this match {
-          case Emit(h,t) => t |> f(Some(h))
-          case Halt()    => Halt() |> f(None)  // it's okay about Idea Warning here :)
-          case Await(g)  => Await((i: Option[I]) => g(i) |> p2)
+          case Emit(h,t)  => t |> f(Some(h))
+          case x @ Halt() => x |> f(None)
+          case Await(g)   => Await { i: Option[I] => g(i) |> p2 }
         }
       }
 
@@ -105,7 +110,7 @@ object SimpleStreamTransducers {
      * as `this` is in the `Await` state.
      */
     def feed(in: Seq[I]): Process[I,O] = {
-      @annotation.tailrec
+      @tailrec
       def go(in: Seq[I], cur: Process[I,O]): Process[I,O] =
         cur match {
           case Halt() => Halt()
@@ -391,7 +396,7 @@ object SimpleStreamTransducers {
 
     // This process defines the here is core logic, a transducer that converts input lines
     // (assumed to be temperatures in degrees fahrenheit) to output lines (temperatures in
-    // degress celsius). Left as an exercise to supply another wrapper like `processFile`
+    // degrees celsius). Left as an exercise to supply another wrapper like `processFile`
     // to actually do the IO and drive the process.
     def convertFahrenheit: Process[String,String] =
       filter((line: String) => !line.startsWith("#")) |>
@@ -403,22 +408,26 @@ object SimpleStreamTransducers {
   }
 }
 
-object SimpleSTRPlayground extends App {
+object SimpleStreamTransducerPlayground extends App {
   import SimpleStreamTransducers.Process
 
-  val process: Process[Int, String] = Process.liftOne((x: Int) => s"<<${x * 2}>>")
-  val src: Stream[Int] = Stream.unfold(0) { n: Int =>
-    if (n > 5) None
-    else {
+  //                                initial state
+  val source: Stream[Int] = Stream.unfold(0) {
+    case n if n <= 5 =>
       print(".")
-      val next = n+1
-      Some(next, next)
-    }
+      //  element, next state
+      Some((n, n + 1))
+    case _ => None
   }
-  println("applying transformer (lazy)")
-  val xs: Stream[String] = process.apply(src)
-  println("running")
-  val res = xs.toList
-  pprint.pprintln(res)
+  println("source constructed (lazily)") // not completely lazy. we created the first element
+
+  val process: Process[Int, String] = Process.lift((x: Int) => s"<<${x * 2}>>")
+  println("transformer constructed (lazily)")
+  
+  val processed: Stream[String] = process.apply(source)
+  println("transformer applied (lazily)")  // not completely lazy. we touched the first element
+  
+  println("running .toList on the result")
+  pprint.pprintln(processed.toList) // one less because 1st already evaluated
 }
 
