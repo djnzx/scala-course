@@ -85,7 +85,7 @@ object SimpleStreamTransducers {
       case Emit(h, t) => Emit(h, t ++ p)
       case Await(recv) => Await(recv andThen (_ ++ p))
     }
-    def flatMap[O2](f: O => Process[I,O2]): Process[I,O2] = this match {
+    def flatMap[O2](f: O => Process[I, O2]): Process[I, O2] = this match {
       case Halt() => Halt()
       case Emit(h, t) => f(h) ++ t.flatMap(f)
       case Await(recv) => Await(recv andThen (_ flatMap f))
@@ -135,8 +135,8 @@ object SimpleStreamTransducers {
       Process.zip(this, p)
 
     /** Exercise 6: Implement `zipWithIndex` */
-    def zipWithIndex: Process[I,(O, Int)] = 
-      this zip (count map (_ - 1))
+    def zipWithIndex: Process[I, (O, Int)] = 
+      this zip[Int] (count[I].map(_ - 1))
 
     /** Add `p` to the fallback branch of this process */
     def orElse(p: Process[I,O]): Process[I,O] = this match {
@@ -190,8 +190,8 @@ object SimpleStreamTransducers {
       * transducer can do way more than map:
       * insert, delete, filter, ...
       */
-    def filter[I](f: I => Boolean): Process[I,I] =
-      Await[I,I] {
+    def filter[I](f: I => Boolean): Process[I, I] =
+      Await[I, I] {
         case Some(i) if f(i) => emit(i)
         case _ => Halt()
       }.repeat
@@ -212,8 +212,8 @@ object SimpleStreamTransducers {
      * Here's a typical `Process` definition that requires tracking some
      * piece of state (in this case, the running total):
      */
-    def sum: Process[Double,Double] = {
-      def go(acc: Double): Process[Double,Double] =
+    def sum: Process[Double, Double] = {
+      def go(acc: Double): Process[Double, Double] =
         await(d => emit(d+acc, go(d+acc)))
         
       go(0.0)
@@ -235,32 +235,36 @@ object SimpleStreamTransducers {
       * will be converted back to `Int`, then the `Process` will examine
       * the next element, and so on.
       */
-    def count[I]: Process[I,Int] =
-      lift((i: I) => 1.0) |> sum |> lift(_.toInt)
+    def count[I]: Process[I, Int] =
+      lift { _: I => 1.0 } |> sum |> lift(_.toInt)
 
     /**
       * Implement `mean`.
       * This is an explicit recursive definition. We'll factor out a
       * generic combinator shortly.
       */
-    def mean: Process[Double,Double] = {
-      def go(sum: Double, count: Double): Process[Double,Double] =
-        await((d: Double) => emit((sum+d) / (count+1), go(sum+d, count+1)))
+    def mean: Process[Double, Double] = {
+      
+      def go(sum: Double, count: Double): Process[Double, Double] =
+        await { d: Double =>
+          emit((sum + d) / (count + 1), go(sum + d, count + 1))
+        }
+      
       go(0.0, 0.0)
     }
     /**
       * discovering the new primitive !
       */
-    def loop[S,I,O](z: S)(f: (I,S) => (O,S)): Process[I,O] =
-      await((i: I) => f(i,z) match {
-        case (o,s2) => emit(o, loop(s2)(f))
-      })
+    def loop[S, I, O](z: S)(f: (I, S) => (O, S)): Process[I, O] =
+      await { i: I => f(i, z) match {
+        case (o, s2) => emit(o, loop(s2)(f))
+      }}
 
     /** Process forms a monad, and we provide monad syntax for it  */
-    def monad[I]: Monad[({ type f[x] = Process[I,x]})#f] =
+    def monad[I]: Monad[({ type f[x] = Process[I, x]})#f] =
       new Monad[({ type f[x] = Process[I,x]})#f] {
         def unit[O](o: => O): Process[I,O] = emit(o)
-        def flatMap[O,O2](p: Process[I,O])(f: O => Process[I,O2]): Process[I,O2] =
+        def flatMap[O, O2](p: Process[I,O])(f: O => Process[I, O2]): Process[I,O2] =
           p flatMap f
       }
 
