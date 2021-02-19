@@ -24,11 +24,11 @@ object SimpleStreamTransducers {
       */
     def apply(s: Stream[I]): Stream[O] = this match {
       case Halt()      => Stream.empty
-      case Await(recv) => s match {
-        case h #:: t => recv(Some(h))(t)  // Non-empty stream
-        case xs      => recv(None   )(xs) // Empty stream
+      case Await(f)  => s match {
+        case h #:: t => f(Some(h))(t) // Non-empty stream
+        case x       => f(None   )(x) // Empty stream
       }
-      case Emit(h, t)  => h #:: t(s)
+      case Emit(h, t)  => h #:: t(s)   // we are ready to emit value
     }
 
     /**
@@ -73,14 +73,14 @@ object SimpleStreamTransducers {
      * can be defined for `Process[I,O]`, for instance `map`, `++` and
      * `flatMap`. The definitions are analogous.
      */
-    def map[O2](f: O => O2): Process[I,O2] = this match {
+    def map[O2](f: O => O2): Process[I, O2] = this match {
       case Halt() => Halt()
       case Emit(h, t) => Emit(f(h), t map f)
       case Await(recv) => Await(recv andThen (_ map f))
     }
     def map_pipe[O2](f: O => O2): Process[I,O2] = this |> lift(f)
 
-    def ++(p: => Process[I,O]): Process[I,O] = this match {
+    def ++(p: => Process[I, O]): Process[I, O] = this match {
       case Halt() => p
       case Emit(h, t) => Emit(h, t ++ p)
       case Await(recv) => Await(recv andThen (_ ++ p))
@@ -139,11 +139,11 @@ object SimpleStreamTransducers {
       this zip[Int] (count[I].map(_ - 1))
 
     /** Add `p` to the fallback branch of this process */
-    def orElse(p: Process[I,O]): Process[I,O] = this match {
+    def orElse(p: Process[I, O]): Process[I, O] = this match {
       case Halt() => p
-      case Await(recv) => Await {
+      case Await(f) => Await {
         case None => p
-        case x => recv(x)
+        case x => f(x)
       }
       case _ => this
     }
@@ -154,15 +154,10 @@ object SimpleStreamTransducers {
     /** REPRESENTATION:
       * 
       * emitting a value to the output */
-    case class Emit[I,O](
-      head: O,
-      tail: Process[I, O] = Halt[I, O]()
-    ) extends Process[I, O]
+    case class Emit[I, O](head: O, tail: Process[I, O] = Halt[I, O]()) extends Process[I, O]
     
     /** reading a value from its input */
-    case class Await[I, O](
-      recv: Option[I] => Process[I, O]
-    ) extends Process[I, O]
+    case class Await[I, O](recv: Option[I] => Process[I, O]) extends Process[I, O]
     
     /** termination */
     case class Halt[I, O]() extends Process[I, O]
@@ -201,8 +196,9 @@ object SimpleStreamTransducers {
       * or fall back to another process
       * if there is no input.
       */
-    def await[I,O](f: I => Process[I,O],
-                   fallback: Process[I,O] = Halt[I,O]()): Process[I,O] =
+    def await[I,O](f: I => Process[I, O], 
+                   fallback: Process[I, O] = Halt[I,O]()
+                  ): Process[I,O] =
       Await[I,O] {
         case Some(i) => f(i)
         case None => fallback
@@ -213,8 +209,9 @@ object SimpleStreamTransducers {
      * piece of state (in this case, the running total):
      */
     def sum: Process[Double, Double] = {
+      
       def go(acc: Double): Process[Double, Double] =
-        await(d => emit(d+acc, go(d+acc)))
+        await(x => emit(x + acc, go(x + acc)))
         
       go(0.0)
     }
@@ -433,5 +430,20 @@ object SimpleStreamTransducerPlayground extends App {
   
   println("running .toList on the result")
   pprint.pprintln(processed.toList) // one less because 1st already evaluated
+
+  print("zipping:")
+  val s2 = source zip Stream.from(100)
+  println("zipped (lazily)")
+  
+  pprint.pprintln(s2.toList)
 }
 
+object SimpleStreamTransducerPlayground2 extends App {
+  import SimpleStreamTransducers._
+  import SimpleStreamTransducers.Process._
+  
+  val src = Stream(1,2,3,4,5).map(_.toDouble)
+  val p: Process[Double, Double] = sum
+  val dst = p(src)
+  pprint.pprintln(dst.toList)
+}
