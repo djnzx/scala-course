@@ -12,14 +12,6 @@ object Transducers2 extends App {
   
   def decomposeLine(src: String, acc: List[Sentence] = Nil): List[Sentence] = ???
 
-  /**
-    * (Some(line), buf) => (None,                          buf + line) - don't have delimiter, just collect to the buffer
-    * (Some(line), buf) => (Some(List(Sentence)),          buf2 + ...) - one sentence extracted
-    * (Some(line), buf) => (Some(List(sent1, sent2, ...)), buf2 + ...) - more sentences extracted
-    * (None,       buf) => (Some(List(Sentence+.)),        Nil       ) - extract whatever we have from buf and build sentence          
-    */
-  def restoreSentences(line: Option[String], buf: List[String]): (Option[List[Sentence]], List[String]) = ???
-  
   def processLine(line: String, buf: List[String] = Nil, acc: List[Sentence] = Nil): (List[Sentence], List[String]) =
     line match {
       case "" => (acc, buf)
@@ -34,7 +26,25 @@ object Transducers2 extends App {
       }
     }
 
-  pprint.pprintln(processLine("a b c"))                 // (List(), List("a b c"))
+  def toOpt(ls: List[Sentence]) = ls match {
+    case Nil => None
+    case x => Some(x)
+  }
+  
+  /**
+    * (Some(line), buf) => (None,                          buf + line) - don't have delimiter, just collect to the buffer
+    * (Some(line), buf) => (Some(List(Sentence)),          buf2 + ...) - one sentence extracted
+    * (Some(line), buf) => (Some(List(sent1, sent2, ...)), buf2 + ...) - more sentences extracted
+    * (None,       buf) => (Some(List(Sentence+.)),        Nil       ) - extract whatever we have from buf and build sentence          
+    */
+  def restoreSentences(line: Option[String], buf: List[String] = Nil, acc: List[Sentence] = Nil): (Option[List[Sentence]], List[String]) =
+    (line, buf) match {
+      case (None, Nil)       => (toOpt(acc), Nil)
+      case (Some(line), buf) => processLine(line,     buf, acc) match { case (lse, ls) => (toOpt(lse), ls) }
+      case (None, buf)       => processLine(".", buf, acc) match { case (lse, ls) => (toOpt(lse), ls) }
+    }
+
+  pprint.pprintln(processLine("a b c")) // (List(), List("a b c"))
   pprint.pprintln(processLine("a b c", List("d", "e"))) // (List(), List("d", "e", "a b c"))
   pprint.pprintln(processLine("a.b.c."))                // (List(Sentence(value = "a."), Sentence(value = "b."), Sentence(value = "c.")), List())
   pprint.pprintln(processLine("a.b.c"))                 // (List(Sentence(value = "a."), Sentence(value = "b.")), List("c"))
