@@ -36,7 +36,7 @@ object Transducers1 extends App {
 
     /** implementation based on the await helper function */
     def go2(buf: List[Int]): Process[Int, List[Int]] = await(
-      /** function to do the job */
+      /** function to do the job, element will be given by the interpreter */
       { i: Int =>
         buf.length match {
           /** buffer is full, emit buffer, and start with given element */
@@ -59,19 +59,25 @@ object Transducers1 extends App {
    
   val packed: Stream[List[Int]] = packBy2(source)
   pprint.pprintln(packed.toVector)
-  
-  val flatten: Process[List[Int], Int] = await { xs: List[Int] =>
-        
-    def go(xs: List[Int]): Process[List[Int], Int] = xs match {
-      case Nil => Halt()
-      case h :: t => emit(h, go(t))
-    }       
 
-    go(xs)
+  /** make one nested list flatten
+    * it's recursive in terms on nested structure
+    */
+  def go(xs: List[Int]): Process[List[Int], Int] = xs match {
+    case Nil => Halt()
+    case h :: t => emit(h, go(t))
   }
-  
-  val flattened: Stream[Int] = flatten(packed)
-  pprint.pprintln(flattened.toVector)
 
+  /** xs will be fed by `driver`, each item: List(1, 2), List(3, 4), ...  */
+  val flatten1: Process[List[Int], Int] = await[List[Int], Int]             { xs => go(xs) }.repeat 
+  val flatten2: Process[List[Int], Int] = lift(identity[List[Int]]).flatMap { xs => go(xs) }
+
+  val flattened1: Stream[Int] = flatten1.apply(packed)
+  val flattened2: Stream[Int] = flatten2.apply(packed)
+  pprint.pprintln(flattened1.toVector)
+  pprint.pprintln(flattened2.toVector)
+  
+  // TODO: implement random string packing by number of lines
+  // TODO: implement random string packing by resulting char number
 }
 
