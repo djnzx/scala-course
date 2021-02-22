@@ -110,6 +110,7 @@ object SimpleStreamTransducers {
      * as `this` is in the `Await` state.
      */
     def feed(in: Seq[I]): Process[I,O] = {
+      
       @tailrec
       def go(in: Seq[I], cur: Process[I,O]): Process[I,O] =
         cur match {
@@ -119,6 +120,7 @@ object SimpleStreamTransducers {
             else cur
           case Emit(h, t) => Emit(h, t.feed(in))
         }
+      
       go(in, this)
     }
 
@@ -162,9 +164,8 @@ object SimpleStreamTransducers {
     /** termination */
     case class Halt[I, O]() extends Process[I, O]
 
-    /** emitting ONE value, without carrying to input type */
-    def emit[I, O](head: O, tail: Process[I, O] = Halt[I, O]()): Process[I, O] =
-      Emit(head, tail)
+    /** emitting ONE value, without carrying to input value and its type */
+    def emit[I, O](head: O, tail: Process[I, O] = Halt[I, O]()): Process[I, O] = Emit(head, tail)
 
     /**
       * We can convert any function `f: I => O` to a `Process[I,O]`. We

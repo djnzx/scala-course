@@ -41,7 +41,7 @@ object Transducers2 extends App {
     (line, buf) match {
       case (None, Nil)       => (toOpt(acc), Nil)
       case (Some(line), buf) => processLine(line,     buf, acc) match { case (lse, ls) => (toOpt(lse), ls) }
-      case (None, buf)       => processLine(".", buf, acc) match { case (lse, ls) => (toOpt(lse), ls) }
+      case (None      , buf) => processLine(".", buf, acc) match { case (lse, ls) => (toOpt(lse), ls) }
     }
 
   pprint.pprintln(processLine("a b c")) // (List(), List("a b c"))
