@@ -31,5 +31,5 @@ object ZivergeChallenge extends App {
   }
   
   val now = Instant.now().getEpochSecond
-  processIt(Frame.empty(now, frameSize))
+  processIt(Frame.next(now, frameSize))
 }
