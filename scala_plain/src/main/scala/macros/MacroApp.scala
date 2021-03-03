@@ -6,12 +6,13 @@ object MacroApp {
 
 
   def main(args: Array[String]): Unit = {
-    hello()
-    print_param(33)
-    
+//    hello()
+//    print_param(33)
+
     val x = "G"
     val y = "K"
-    debug(x + y)
+//    debug(x + y)
+//    debug(x + y)
     debug(for {
       x <- List(1,2)
       y <- List("a","b")
