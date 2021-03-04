@@ -44,7 +44,7 @@ lazy val commonSettings = Seq(
 lazy val whole = (project in file("."))
   .settings(commonSettings)
   .settings(
-    name := "learn-scala",
+    name := "scala-course",
   )
   .aggregate(
     algorithms,

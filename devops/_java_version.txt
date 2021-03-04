@@ -1,8 +1,12 @@
 # list of all available version on my system
 /usr/libexec/java_home -V
 
+    11.0.10 (x86_64) "Oracle Corporation" - "Java SE 11.0.10" /Library/Java/JavaVirtualMachines/jdk-11.0.10.jdk/Contents/Home
+    1.8.0_271 (x86_64) "Oracle Corporation" - "Java SE 8" /Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home
+
+
 # setting desired version
-export JAVA_HOME=`/usr/libexec/java_home -v 11.0.9`
+export JAVA_HOME=`/usr/libexec/java_home -v 11.0.10`
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_271`
 
 # checking again
