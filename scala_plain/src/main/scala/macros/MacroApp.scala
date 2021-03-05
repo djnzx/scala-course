@@ -17,6 +17,13 @@ object MacroApp {
       x <- List(1,2)
       y <- List("a","b")
     } yield (x,y))
+//    val ss: Range.Inclusive = 1 to 3
+//    val ss1: List[Int] = ss.toList
+//    debug(
+//      for(i <- ss1) {
+//         println(i)
+//      }
+//    )
   }
   
   
