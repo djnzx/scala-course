@@ -1,11 +1,11 @@
 package fp_red.red15
 
 import fp_red.red15.SimpleStreamTransducers.Process
-import fp_red.red15.SimpleStreamTransducers.Process.{emit, lift, liftOne, filter, sum}
+import fp_red.red15.SimpleStreamTransducers.Process.{emitOne, lift, liftOne, filter, sum}
 
 object TransducersExperiments extends App{
   /** whatever given, produce int val `1` */
-  val emit1: Process[Any, Int] = emit(1)
+  val emit1: Process[Any, Int] = emitOne(1)
 
   /** we can lift plain function A=>B to Process[A, B] */
   val orig_fn   : Int => String        = (i: Int) => i.toString

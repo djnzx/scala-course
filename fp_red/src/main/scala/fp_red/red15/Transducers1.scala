@@ -19,7 +19,7 @@ object Transducers1 extends App {
       case Some(i) =>
         buf.length match {
           /** buffer is full, emit buffer, and start with given element */
-          case 2 => emit(buf, go1(List(i))) // emit List, and start from empty
+          case 2 => emitOne(buf, go1(List(i))) // emit List, and start from empty
           /** buffer isn't full, keep collecting */
           case _ => go1(buf :+ i)
         }
@@ -30,7 +30,7 @@ object Transducers1 extends App {
           /** buffer is empty - terminate */
           case 0 => Halt()
           /** buffer is not empty - emit last element */
-          case _ => emit(buf)
+          case _ => emitOne(buf)
         }
     }
 
@@ -40,7 +40,7 @@ object Transducers1 extends App {
       { i: Int =>
         buf.length match {
           /** buffer is full, emit buffer, and start with given element */
-          case 2 => emit(buf, go2(List(i)))
+          case 2 => emitOne(buf, go2(List(i)))
           /** buffer isn't full, keep collecting */
           case _ => go2(buf :+ i)
         }
@@ -50,7 +50,7 @@ object Transducers1 extends App {
         /** buffer is empty - terminate */
         case 0 => Halt()
         /** buffer is not empty - emit last element */
-        case _ => emit(buf)
+        case _ => emitOne(buf)
       }
     )
       
@@ -65,7 +65,7 @@ object Transducers1 extends App {
     */
   def go(xs: List[Int]): Process[List[Int], Int] = xs match {
     case Nil => Halt()
-    case h :: t => emit(h, go(t))
+    case h :: t => emitOne(h, go(t))
   }
 
   /** xs will be fed by `driver`, each item: List(1, 2), List(3, 4), ...  */

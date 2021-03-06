@@ -1,9 +1,11 @@
 package fp_red.red15
 
 import fp_red.red13.{IO, Monad}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.annotation.tailrec
-import scala.language.{implicitConversions, postfixOps}
+import scala.language.implicitConversions
 import scala.util.chaining.scalaUtilChainingOps
 
 object SimpleStreamTransducers {
@@ -175,7 +177,18 @@ object SimpleStreamTransducers {
     case class Halt[A, B]() extends Process[A, B]
 
     /** emitting ONE value, without carrying to input value and its type */
-    def emit[I, O](head: O, tail: Process[I, O] = Halt[I, O]()): Process[I, O] = Emit(head, tail)
+    def emitOne[A, B](item: B, tail: Process[A, B] = Halt[A, B]()): Process[A, B] =
+      Emit(item, tail)
+
+    def emitSeq[A, B](items: Seq[B], tail: Process[A, B] = Halt[A, B]()): Process[A, B] = items match {
+      case b +: bs => Emit(b, emitSeq(bs, tail))
+      case _       => tail
+    }
+
+    def emitStream[A, B](items: Stream[B], tail: Process[A, B] = Halt[A, B]()): Process[A, B] = items match {
+      case b #:: bs => Emit(b, emitSeq(bs, tail))
+      case _ => tail
+    }
 
     /**
       * We can convert any function `f: I => O` to a `Process[I,O]`. We
@@ -184,7 +197,7 @@ object SimpleStreamTransducers {
       */
     def liftOne[I, O](f: I => O): Process[I,O] =
       Await {
-        case Some(i) => emit(f(i))
+        case Some(i) => emitOne(f(i))
         case None    => Halt()
       }
       
@@ -198,7 +211,7 @@ object SimpleStreamTransducers {
       */
     def filter[I](f: I => Boolean): Process[I, I] =
       Await[I, I] {
-        case Some(i) if f(i) => emit(i)
+        case Some(i) if f(i) => emitOne(i)
         case _ => Halt()
       }.repeat
 
@@ -223,7 +236,7 @@ object SimpleStreamTransducers {
       
       def go(acc: Double): Process[Double, Double] =
         await { x => 
-          emit(x + acc, go(x + acc))
+          emitOne(x + acc, go(x + acc))
         }
         
       go(0.0)
@@ -233,7 +246,7 @@ object SimpleStreamTransducers {
     def count1[I]: Process[I, Int] = {
       def go(count: Int): Process[I, Int] =
         await { _ =>
-          emit(count + 1, go(count + 1))
+          emitOne(count + 1, go(count + 1))
         }
       
       go(0)
@@ -259,7 +272,7 @@ object SimpleStreamTransducers {
       
       def go(sum: Double, count: Double): Process[Double, Double] =
         await { d: Double =>
-          emit((sum + d) / (count + 1), go(sum + d, count + 1))
+          emitOne((sum + d) / (count + 1), go(sum + d, count + 1))
         }
       
       go(0.0, 0.0)
@@ -269,27 +282,76 @@ object SimpleStreamTransducers {
       */
     def loop[S, I, O](z: S)(f: (I, S) => (O, S)): Process[I, O] =
       await { i: I => f(i, z) match {
-        case (o, s2) => emit(o, loop(s2)(f))
+        case (o, s2) => emitOne(o, loop(s2)(f))
       }}
 
+    /** stateful iteration */
     def loops[S, I, O](z: S)(f: (I, S) => (Option[O], S))(ft: S => Option[O]): Process[I, O] = 
       await(
         { // handle the next item
           i: I => f(i, z) match {
             case (None, s2)    => loops(s2)(f)(ft)
-            case (Some(o), s2) => emit[I, O](o, loops(s2)(f)(ft))
+            case (Some(o), s2) => emitOne[I, O](o, loops(s2)(f)(ft))
         }},
         { // carefully handle state on finished stream
           ft(z) match {
             case None    => Halt[I, O]()
-            case Some(x) => emit[I, O](x)
+            case Some(x) => emitOne[I, O](x)
         }}
+      )
+
+    /** stateful iteration, V2 */
+    def loops2[S, A, B](s: S)(f: (S, Option[A]) => (Option[B], S)): Process[A, B] = 
+      await(
+        { i: A =>
+          f(s, Some(i)) match {
+            case (Some(o), s2) => emitOne(o, loops2(s2)(f))
+            case (None,    s2) => loops2(s2)(f)
+          }
+        },
+        f(s, None) match {
+          case (Some(x), _) => emitOne(x)
+          case (None,    _) => Halt()
+        }
+      )
+      
+    /** 
+      * every new item ot type A potentially can produce 0 or more elements of type B
+      * to handle that, probably we need emit items recursively 
+      */
+    def loopssq[S, A, B](s: S)(f: (S, A) => (Seq[B], S))(residual: S => Seq[B]): Process[A, B] =
+      await(
+        { a: A =>
+          f(s, a) match {
+            case (Seq(), s2) => loopssq(s2)(f)(residual)
+            case (bs,    s2) => emitSeq(bs, loopssq(s2)(f)(residual))
+          }
+        },
+        residual(s) match {
+          case Seq() => Halt()
+          case bs => emitSeq(bs)
+        }
+      )
+    
+    /** stream version */
+    def loopsst[S, A, B](s: S)(f: (S, Option[A]) => (Stream[B], S)): Process[A, B] =
+      await(
+        { i: A =>
+          f(s, Some(i)) match {
+            case (Seq(), s2) => loopsst(s2)(f)
+            case (bs,    s2) => emitStream(bs, loopsst(s2)(f))
+          }
+        },
+        f(s, None) match {
+          case (Seq(), _) => Halt()
+          case (bs,    _) => emitStream(bs)
+        }
       )
 
     /** Process forms a monad, and we provide monad syntax for it  */
     def monad[I]: Monad[({ type f[x] = Process[I, x]})#f] =
       new Monad[({ type f[x] = Process[I,x]})#f] {
-        def unit[O](o: => O): Process[I,O] = emit(o)
+        def unit[O](o: => O): Process[I,O] = emitOne(o)
         def flatMap[O, O2](p: Process[I,O])(f: O => Process[I, O2]): Process[I,O2] =
           p flatMap f
       }
@@ -299,22 +361,22 @@ object SimpleStreamTransducers {
 
     def take[I](n: Int): Process[I, I] =
       if (n <= 0) Halt()
-      else await { i => emit(i, take[I](n - 1)) }
+      else await { i => emitOne(i, take[I](n - 1)) }
 
     def drop[I](n: Int): Process[I, I] =
       if (n <= 0) id
-      else await { i => drop[I](n - 1) }
+      else await { _ => drop[I](n - 1) }
 
     def takeWhile[I](f: I => Boolean): Process[I,I] =
       await { i =>
-        if (f(i)) emit(i, takeWhile(f))
+        if (f(i)) emitOne(i, takeWhile(f))
         else      Halt()
       }
 
     def dropWhile[I](f: I => Boolean): Process[I,I] =
       await { i =>
         if (f(i)) dropWhile(f)
-        else      emit(i,id)
+        else      emitOne(i,id)
       }
 
     /* The identity `Process`, just repeatedly echos its input. */
@@ -380,7 +442,7 @@ object SimpleStreamTransducers {
 
     /* A trimmed `exists`, containing just the final result. */
     def existsResult[I](f: I => Boolean) =
-      exists(f) |> takeThrough(!_) |> dropWhile(!_) |> echo.orElse(emit(false))
+      exists(f) |> takeThrough(!_) |> dropWhile(!_) |> echo.orElse(emitOne(false))
 
     /**
      * Like `takeWhile`, but includes the first element that tests
@@ -390,13 +452,13 @@ object SimpleStreamTransducers {
       takeWhile(f) ++ echo
 
     /* Awaits then emits a single value, then halts. */
-    def echo[I]: Process[I,I] = await(i => emit(i))
+    def echo[I]: Process[I,I] = await(i => emitOne(i))
 
-    def skip[I,O]: Process[I,O] = await(i => Halt())
+    def skip[I,O]: Process[I,O] = await(_ => Halt())
     def ignore[I,O]: Process[I,O] = skip.repeat
 
     def terminated[I]: Process[I,Option[I]] =
-      await((i: I) => emit(Some(i), terminated[I]), emit(None))
+      await((i: I) => emitOne(Some(i), terminated[I]), emitOne(None))
 
     def processFile[A,B](f: java.io.File,
                          p: Process[String, A],
@@ -406,13 +468,13 @@ object SimpleStreamTransducers {
         cur match {
           case Halt() => acc
           case Await(recv) =>
-            val next = if (ss.hasNext) recv(Some(ss.next))
+            val next = if (ss.hasNext) recv(Some(ss.next()))
                        else recv(None)
             go(ss, next, acc)
           case Emit(h, t) => go(ss, t, g(acc, h))
         }
       val s = scala.io.Source.fromFile(f)
-      try go(s.getLines, p, z)
+      try go(s.getLines(), p, z)
       finally s.close
     }
 
@@ -481,11 +543,103 @@ object SimpleStreamTransducerPlayground3 extends App {
   
   val s = (1 to 10).to(Stream)
   
+  /** pack numbers in list of N */
   def repackBy(n: Int): Process[Int, List[Int]] =
     loops(List.empty[Int]) { (x: Int, buf) =>
       if (buf.length == n) (Some(buf), List(x))
       else (None, buf :+ x)
     } { buf => Some(buf) }
+
+  /** pack numbers in list of N */
+  def repackByV2(n: Int): Process[Int, List[Int]] =
+    loops2(List.empty[Int]) {
+      case (buf, Some(x)) => 
+        if (buf.length == n) (Some(buf), List(x))
+        else (None, buf :+ x)
+      case (buf, None) => (Some(buf), buf)
+    }
   
-  repackBy(4)(s).toList.pipe(println)
+  repackBy  (4)(s).toList.pipe(println)
+  repackByV2(4)(s).toList.pipe(println)
+  
 }
+
+object SimpleStreamTransducerPlayground4 extends App {
+
+  import SimpleStreamTransducers.Process
+  import SimpleStreamTransducers.Process._
+  
+  val p = emitSeq(List(1,2,3))
+  val r = p(Stream.empty).toList
+  pprint.pprintln(r)
+
+  val src: Stream[Int] = (1 to 10).to(Stream)
+  val p2: Process[Nothing, Int] = emitStream(src).filter(_ < 5)
+  val r2 = p2(Stream.empty).toList
+  pprint.pprintln(r2)
+
+}
+
+object SimpleStreamTransducerPlayground5 extends App {
+
+  import SimpleStreamTransducers.Process
+  import SimpleStreamTransducers.Process._
+
+  val s = (1 to 10).to(Stream)
+
+  /** pack List[Int] to List of len 3 */
+  val src: Stream[List[Int]] = List(
+    List(1),            // emit: -,               state: (1)
+    List(2),            // emit: -,               state: (1,2)
+    List(),             // emit: -,               state: (1,2)
+    List(3,4,5),        // emit: (1,2,3),         state: (4,5)
+    List(6,7,8,9,11,12) // emit: (4,5,6), (7,8,9) state: (11,12)
+                        // emit: (11, 12)
+  ).to(Stream)
+
+  /** implementation */
+  def joinBy[A](n: Int, buf0: List[A], data0: List[A]): (List[List[A]], List[A]) = {
+    
+    @tailrec
+    def go(bufLen: Int, buf: List[A], data: List[A], acc: List[List[A]] = Nil): (List[List[A]], List[A]) =
+      data match {
+        /** collected enough, add to the ac */
+        case _ if bufLen == n => go(0, Nil, data, acc :+ buf)
+        /** data exhausted, return what we have */
+        case Nil              => (acc, buf)
+        /** size of buffer is less, keep collecting */
+        case a :: as          => go(bufLen + 1, buf :+ a, as, acc)
+      }
+    
+    go(buf0.length, buf0, data0)
+  }  
+
+  /** attaching to the Streams */  
+  def repackInto(n: Int): Process[List[Int], List[Int]] =
+    loopssq(List.empty[Int]) { (buf, item: List[Int]) => 
+      /** function to handle normal join */
+      joinBy(n, buf, item)
+    } {
+      /** function to handle tail state */
+      buf => List(buf)
+    }
+  
+  val r = repackInto(3)(src).toList
+  pprint.pprintln(r)
+}
+
+class TestJoinSpec extends AnyFunSpec with Matchers {
+
+  import SimpleStreamTransducerPlayground5._
+  
+  describe("join") {
+    it("1") {
+      joinBy(3, List(), List(1,2)) shouldEqual (Nil, List(1,2))
+      joinBy(3, List(), List(1,2,3)) shouldEqual (List(List(1,2,3)), Nil)
+      joinBy(3, List(1), List(10,20,30)) shouldEqual (List(List(1,10,20)), List(30))
+      joinBy(3, List(1), List(3,4,5,6,7,8)) shouldEqual (List(List(1,3,4),List(5,6,7)), List(8))
+    }
+  }
+
+}
+
