@@ -1,8 +1,9 @@
 package fp_red.red15
 
-object App1 extends App {
+import fp_red.red15.Playground0.convertFahrenheit
+
+object Playground1 extends App {
   import SimpleStreamTransducers.Process
-  import SimpleStreamTransducers.Process.convertFahrenheit
   
   val conv: Process[String, String] = convertFahrenheit
   

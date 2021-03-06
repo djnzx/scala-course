@@ -3,7 +3,7 @@ package fp_red.red15
 import fp_red.red15.SimpleStreamTransducers.Process
 import fp_red.red15.SimpleStreamTransducers.Process.{emitOne, lift, liftOne, filter, sum}
 
-object TransducersExperiments extends App{
+object Playground9 extends App{
   /** whatever given, produce int val `1` */
   val emit1: Process[Any, Int] = emitOne(1)
 

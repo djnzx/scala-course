@@ -1,6 +1,6 @@
 package fp_red.red15
 
-object Transducers2 extends App {
+object Playground8 extends App {
   val sourceData = Stream("Hello ", "my ", "dear. Hope ", "to see ", "you.", "Again. Again.")
   val expected = Stream("Hello  my  dear.", "Hope to see you.", "Again.", "Again.")
   type Transducer[I, O, S] = (Option[I], S) => (Option[O], S)

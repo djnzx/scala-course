@@ -1,12 +1,9 @@
 package fp_red.red15
 
-import fp_red.red13.{IO, Monad}
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
+import fp_red.red13.Monad
 
 import scala.annotation.tailrec
 import scala.language.implicitConversions
-import scala.util.chaining.scalaUtilChainingOps
 
 object SimpleStreamTransducers {
 
@@ -25,26 +22,14 @@ object SimpleStreamTransducers {
       * A `Process[I,O]` can be used to transform
       * `Stream[I]` to a `Stream[O]`
       */
-    def apply(s: Stream[A]): Stream[B] = this match {
+    def apply(as: Stream[A]): Stream[B] = this match {
       case Halt()     => Stream.empty
-      case Await(f)   => s match {
-        /** Non-empty stream, apply function to the head */
-        case h #:: t =>
-          val p: Process[A, B] = f(Some(h)) 
-          p(t) 
-        /** empty */
-        case _       => 
-          val p: Process[A, B] = f(None)
-          p(Stream.empty)
+      case Emit(h, t) => h #:: t(as)
+      case Await(f)   => as match {
+        case h #:: t => f(Some(h))(t) 
+        case _       => f(None   )(Stream.empty)
       }
-      /** we are ready to emit value */
-      case Emit(h, t) => h #:: t(s)
     }
-
-    /**
-      * See `Process.lift` for a typical repeating `Process`
-      * definition expressed with explicit recursion 
-      */
 
     /**
      * `Process`  definitions can often be expressed without explicit
@@ -53,9 +38,9 @@ object SimpleStreamTransducers {
       
       def go(p: Process[A, B]): Process[A,B] = p match {
         case Halt() => go(this)
-        case Await(recv) => Await {
-          case None => recv(None)
-          case i => go(recv(i))
+        case Await(onReceive) => Await {
+          case None => onReceive(None)
+          case a    => go(onReceive(a))
         }
         case Emit(h, t) => Emit(h, go(t))
       }
@@ -127,8 +112,8 @@ object SimpleStreamTransducers {
       def go(in: Seq[A], cur: Process[A, B]): Process[A, B] =
         cur match {
           case Halt() => Halt()
-          case Await(recv) =>
-            if (in.nonEmpty) go(in.tail, recv(Some(in.head)))
+          case Await(onReceive) =>
+            if (in.nonEmpty) go(in.tail, onReceive(Some(in.head)))
             else cur
           case Emit(h, t) => Emit(h, t.feed(in))
         }
@@ -187,7 +172,7 @@ object SimpleStreamTransducers {
 
     def emitStream[A, B](items: Stream[B], tail: Process[A, B] = Halt[A, B]()): Process[A, B] = items match {
       case b #:: bs => Emit(b, emitSeq(bs, tail))
-      case _ => tail
+      case _        => tail
     }
 
     /**
@@ -460,186 +445,5 @@ object SimpleStreamTransducers {
     def terminated[I]: Process[I,Option[I]] =
       await((i: I) => emitOne(Some(i), terminated[I]), emitOne(None))
 
-    def processFile[A,B](f: java.io.File,
-                         p: Process[String, A],
-                         z: B)(g: (B, A) => B): IO[B] = IO {
-      @annotation.tailrec
-      def go(ss: Iterator[String], cur: Process[String, A], acc: B): B =
-        cur match {
-          case Halt() => acc
-          case Await(recv) =>
-            val next = if (ss.hasNext) recv(Some(ss.next()))
-                       else recv(None)
-            go(ss, next, acc)
-          case Emit(h, t) => go(ss, t, g(acc, h))
-        }
-      val s = scala.io.Source.fromFile(f)
-      try go(s.getLines(), p, z)
-      finally s.close
-    }
-
-    /**
-     * Exercise 9: Write a program that reads degrees fahrenheit as `Double` values from a file,
-     * converts each temperature to celsius, and writes results to another file.
-     */
-
-    // This process defines the here is core logic, a transducer that converts input lines
-    // (assumed to be temperatures in degrees fahrenheit) to output lines (temperatures in
-    // degrees celsius). Left as an exercise to supply another wrapper like `processFile`
-    // to actually do the IO and drive the process.
-    def convertFahrenheit: Process[String,String] =
-      filter((line: String) => !line.startsWith("#")) |>
-      filter(line => line.trim.nonEmpty) |>
-      lift(line => toCelsius(line.toDouble).toString)
-
-    def toCelsius(fahrenheit: Double): Double =
-      (5.0 / 9.0) * (fahrenheit - 32.0)
   }
 }
-
-object SimpleStreamTransducerPlayground extends App {
-  import SimpleStreamTransducers.Process
-
-  //                                initial state
-  val source: Stream[Int] = Stream.unfold(0) {
-    case n if n <= 5 =>
-      print(".")
-      //  element, next state
-      Some((n, n + 1))
-    case _ => None
-  }
-  println("source constructed (lazily)") // not completely lazy. we created the first element
-
-  val process: Process[Int, String] = Process.lift((x: Int) => s"<<${x * 2}>>")
-  println("transformer constructed (lazily)")
-  
-  val processed: Stream[String] = process.apply(source)
-  println("transformer applied (lazily)")  // not completely lazy. we touched the first element
-  
-  println("running .toList on the result")
-  pprint.pprintln(processed.toList) // one less because 1st already evaluated
-
-  print("zipping:")
-  val s2 = source zip Stream.from(100)
-  println("zipped (lazily)")
-  
-  pprint.pprintln(s2.toList)
-}
-
-object SimpleStreamTransducerPlayground2 extends App {
-  import SimpleStreamTransducers._
-  import SimpleStreamTransducers.Process._
-  
-  val src = Stream(1,2,3,4,5).map(_.toDouble)
-  val p: Process[Double, Double] = sum
-  val dst = p(src)
-  pprint.pprintln(dst.toList)
-}
-
-object SimpleStreamTransducerPlayground3 extends App {
-  
-  import SimpleStreamTransducers.Process
-  import SimpleStreamTransducers.Process._
-  
-  val s = (1 to 10).to(Stream)
-  
-  /** pack numbers in list of N */
-  def repackBy(n: Int): Process[Int, List[Int]] =
-    loops(List.empty[Int]) { (x: Int, buf) =>
-      if (buf.length == n) (Some(buf), List(x))
-      else (None, buf :+ x)
-    } { buf => Some(buf) }
-
-  /** pack numbers in list of N */
-  def repackByV2(n: Int): Process[Int, List[Int]] =
-    loops2(List.empty[Int]) {
-      case (buf, Some(x)) => 
-        if (buf.length == n) (Some(buf), List(x))
-        else (None, buf :+ x)
-      case (buf, None) => (Some(buf), buf)
-    }
-  
-  repackBy  (4)(s).toList.pipe(println)
-  repackByV2(4)(s).toList.pipe(println)
-  
-}
-
-object SimpleStreamTransducerPlayground4 extends App {
-
-  import SimpleStreamTransducers.Process
-  import SimpleStreamTransducers.Process._
-  
-  val p = emitSeq(List(1,2,3))
-  val r = p(Stream.empty).toList
-  pprint.pprintln(r)
-
-  val src: Stream[Int] = (1 to 10).to(Stream)
-  val p2: Process[Nothing, Int] = emitStream(src).filter(_ < 5)
-  val r2 = p2(Stream.empty).toList
-  pprint.pprintln(r2)
-
-}
-
-object SimpleStreamTransducerPlayground5 extends App {
-
-  import SimpleStreamTransducers.Process
-  import SimpleStreamTransducers.Process._
-
-  val s = (1 to 10).to(Stream)
-
-  /** pack List[Int] to List of len 3 */
-  val src: Stream[List[Int]] = List(
-    List(1),            // emit: -,               state: (1)
-    List(2),            // emit: -,               state: (1,2)
-    List(),             // emit: -,               state: (1,2)
-    List(3,4,5),        // emit: (1,2,3),         state: (4,5)
-    List(6,7,8,9,11,12) // emit: (4,5,6), (7,8,9) state: (11,12)
-                        // emit: (11, 12)
-  ).to(Stream)
-
-  /** implementation */
-  def joinBy[A](n: Int, buf0: List[A], data0: List[A]): (List[List[A]], List[A]) = {
-    
-    @tailrec
-    def go(bufLen: Int, buf: List[A], data: List[A], acc: List[List[A]] = Nil): (List[List[A]], List[A]) =
-      data match {
-        /** collected enough, add to the ac */
-        case _ if bufLen == n => go(0, Nil, data, acc :+ buf)
-        /** data exhausted, return what we have */
-        case Nil              => (acc, buf)
-        /** size of buffer is less, keep collecting */
-        case a :: as          => go(bufLen + 1, buf :+ a, as, acc)
-      }
-    
-    go(buf0.length, buf0, data0)
-  }  
-
-  /** attaching to the Streams */  
-  def repackInto(n: Int): Process[List[Int], List[Int]] =
-    loopssq(List.empty[Int]) { (buf, item: List[Int]) => 
-      /** function to handle normal join */
-      joinBy(n, buf, item)
-    } {
-      /** function to handle tail state */
-      buf => List(buf)
-    }
-  
-  val r = repackInto(3)(src).toList
-  pprint.pprintln(r)
-}
-
-class TestJoinSpec extends AnyFunSpec with Matchers {
-
-  import SimpleStreamTransducerPlayground5._
-  
-  describe("join") {
-    it("1") {
-      joinBy(3, List(), List(1,2)) shouldEqual (Nil, List(1,2))
-      joinBy(3, List(), List(1,2,3)) shouldEqual (List(List(1,2,3)), Nil)
-      joinBy(3, List(1), List(10,20,30)) shouldEqual (List(List(1,10,20)), List(30))
-      joinBy(3, List(1), List(3,4,5,6,7,8)) shouldEqual (List(List(1,3,4),List(5,6,7)), List(8))
-    }
-  }
-
-}
-

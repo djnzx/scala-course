@@ -7,7 +7,7 @@ import fp_red.red15.SimpleStreamTransducers.Process._
   * this use-case covers grouping
   * Stream[A] => Stream[B], B <: Seq[A]
   */
-object Transducers1 extends App {
+object Playground7 extends App {
   val source: Stream[Int] = (1 to 15).to(Stream)
   pprint.pprintln(source.toVector)
   
