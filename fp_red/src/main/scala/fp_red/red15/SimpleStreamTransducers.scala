@@ -26,7 +26,7 @@ object SimpleStreamTransducers {
       case Halt()     => Stream.empty
       case Emit(h, t) => h #:: t(as)
       case Await(f)   => as match {
-        case h #:: t => f(Some(h))(t) 
+        case h #:: t => f(Some(h))(t)
         case _       => f(None   )(Stream.empty)
       }
     }
@@ -178,14 +178,14 @@ object SimpleStreamTransducers {
     /**
       * We can convert any function `f: I => O` to a `Process[I,O]`. We
       * simply `Await`, then `Emit` the value received, transformed by `f`.
-      * We terminate stream after 1st element 
+      * We terminate stream after 1st element
       */
     def liftOne[I, O](f: I => O): Process[I,O] =
       Await {
         case Some(i) => emitOne(f(i))
         case None    => Halt()
       }
-      
+
     /** lifting whole stream just repeating [[liftOne]] */
     def lift[I,O](f: I => O): Process[I,O] =
       liftOne(f).repeat
@@ -201,39 +201,39 @@ object SimpleStreamTransducers {
       }.repeat
 
     /**
-      * A helper function to await an element 
+      * A helper function to await an element
       * or fall back to another process
       * if there is no input.
       */
-    def await[I,O](f: I => Process[I, O], 
+    def await[I,O](f: I => Process[I, O],
                    fallback: Process[I, O] = Halt[I,O]()
                   ): Process[I,O] =
       Await[I,O] {
         case Some(i) => f(i)
         case None    => fallback
       }
-      
+
     /**
      * Here's a typical `Process` definition that requires tracking some
      * piece of state (in this case, the running total):
      */
     def sum: Process[Double, Double] = {
-      
+
       def go(acc: Double): Process[Double, Double] =
-        await { x => 
+        await { x =>
           emitOne(x + acc, go(x + acc))
         }
-        
+
       go(0.0)
     }
-    
+
     /** count recursive */
     def count1[I]: Process[I, Int] = {
       def go(count: Int): Process[I, Int] =
         await { _ =>
           emitOne(count + 1, go(count + 1))
         }
-      
+
       go(0)
     }
     /**
@@ -254,12 +254,12 @@ object SimpleStreamTransducers {
       * generic combinator shortly.
       */
     def mean: Process[Double, Double] = {
-      
+
       def go(sum: Double, count: Double): Process[Double, Double] =
         await { d: Double =>
           emitOne((sum + d) / (count + 1), go(sum + d, count + 1))
         }
-      
+
       go(0.0, 0.0)
     }
     /**
@@ -271,7 +271,7 @@ object SimpleStreamTransducers {
       }}
 
     /** stateful iteration */
-    def loops[S, I, O](z: S)(f: (I, S) => (Option[O], S))(ft: S => Option[O]): Process[I, O] = 
+    def loops[S, I, O](z: S)(f: (I, S) => (Option[O], S))(ft: S => Option[O]): Process[I, O] =
       await(
         { // handle the next item
           i: I => f(i, z) match {
@@ -286,7 +286,7 @@ object SimpleStreamTransducers {
       )
 
     /** stateful iteration, V2 */
-    def loops2[S, A, B](s: S)(f: (S, Option[A]) => (Option[B], S)): Process[A, B] = 
+    def loops2[S, A, B](s: S)(f: (S, Option[A]) => (Option[B], S)): Process[A, B] =
       await(
         { i: A =>
           f(s, Some(i)) match {
@@ -299,10 +299,10 @@ object SimpleStreamTransducers {
           case (None,    _) => Halt()
         }
       )
-      
-    /** 
+
+    /**
       * every new item ot type A potentially can produce 0 or more elements of type B
-      * to handle that, probably we need emit items recursively 
+      * to handle that, probably we need emit items recursively
       */
     def loopssq[S, A, B](s: S)(f: (S, A) => (Seq[B], S))(residual: S => Seq[B]): Process[A, B] =
       await(
@@ -317,7 +317,7 @@ object SimpleStreamTransducers {
           case bs => emitSeq(bs)
         }
       )
-    
+
     /** stream version */
     def loopsst[S, A, B](s: S)(f: (S, Option[A]) => (Stream[B], S)): Process[A, B] =
       await(
@@ -333,16 +333,30 @@ object SimpleStreamTransducers {
         }
       )
 
+    /**
+      * to make it lazy even in term of one chunk,
+      * we emit sequence of elements with type (B)
+      * and in the end we emit the state (S)
+      * 
+      * @param s - initial state
+      * @param f - function to fold the state with source element of type A to produce the Stream of type B and state in the end
+      * @param rf - function to process the state after chunk processing 
+      * @tparam S - state 
+      * @tparam A - source stream type
+      * @tparam B - target stream type
+      */
+    def loopsst2[S, A, B](s: S)(f: (S, Option[A]) => Stream[Either[S, B]])(rf: S => Stream[B] = (_: S) => Stream.empty): Process[A, B] = ???
+
     /** Process forms a monad, and we provide monad syntax for it  */
-    def monad[I]: Monad[({ type f[x] = Process[I, x]})#f] =
-      new Monad[({ type f[x] = Process[I,x]})#f] {
-        def unit[O](o: => O): Process[I,O] = emitOne(o)
-        def flatMap[O, O2](p: Process[I,O])(f: O => Process[I, O2]): Process[I,O2] =
+    def monad[A]: Monad[({ type f[x] = Process[A, x]})#f] =
+      new Monad[({ type f[x] = Process[A,x]})#f] {
+        def unit[B](o: => B): Process[A,B] = emitOne(o)
+        def flatMap[B, B2](p: Process[A, B])(f: B => Process[A, B2]): Process[A,B2] =
           p flatMap f
       }
 
     /** enable monadic syntax */
-    implicit def toMonadic[I,O](a: Process[I,O]) = monad[I].toMonadic(a)
+    implicit def toMonadic[I, O](a: Process[I, O]) = monad[I].toMonadic(a)
 
     def take[I](n: Int): Process[I, I] =
       if (n <= 0) Halt()
