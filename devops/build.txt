@@ -10,7 +10,7 @@ brew upgrade sbt
 git clone https://github.com/alexr007/learn-scala-cook-book-aa.git
 cd learn-scala-cook-book-aa
 /usr/libexec/java_home -V
-export JAVA_HOME=`/usr/libexec/java_home -v 11.0.1`
+export JAVA_HOME=`/usr/libexec/java_home -v 11.0.10`
 java -version
 
 sbt compile
