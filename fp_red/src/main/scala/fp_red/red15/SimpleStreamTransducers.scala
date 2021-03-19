@@ -171,7 +171,7 @@ object SimpleStreamTransducers {
     }
 
     def emitStream[A, B](items: Stream[B], tail: Process[A, B] = Halt[A, B]()): Process[A, B] = items match {
-      case b #:: bs => Emit(b, emitSeq(bs, tail))
+      case b #:: bs => Emit(b, emitStream(bs, tail))
       case _        => tail
     }
 
@@ -345,7 +345,24 @@ object SimpleStreamTransducers {
       * @tparam A - source stream type
       * @tparam B - target stream type
       */
-    def loopsst2[S, A, B](s: S)(f: (S, Option[A]) => Stream[Either[S, B]])(rf: S => Stream[B] = (_: S) => Stream.empty): Process[A, B] = ???
+    def loopsst2[S, A, B](s: S)(f: (S, Option[A]) => Stream[Either[S, B]])(rf: S => Stream[B] = (_: S) => Stream.empty): Process[A, B] =
+      await(
+        { i: A =>
+          f(s, Some(i)) match {
+            case h #:: t => h match {
+              case b: B  => ??? // lazily emit one by one until we have type b
+              case s2: S => ??? // use state S to further process of elements of type A 
+            }
+            case _       => sys.error("wrong state")
+          } 
+//          match {
+//            case (Seq(), s2) => loopsst(s2)(f)
+//            case (bs,    s2) => emitStream(bs, loopsst(s2)(f))
+//          }
+          ???
+        },
+        emitStream(rf(s))
+      )
 
     /** Process forms a monad, and we provide monad syntax for it  */
     def monad[A]: Monad[({ type f[x] = Process[A, x]})#f] =
