@@ -154,8 +154,8 @@ object Dependencies {
     // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
     val silencerAnnotation = "com.github.ghik" % "silencer-lib" % Versions.silencer % Provided cross CrossVersion.full
 
-    val pprint: ModuleID = pf.lihaoyi         %% "pprint"       % "0.6.0"
-    val fansi: ModuleID  = pf.lihaoyi         %% "fansi"        % "0.2.7"
+    val pprint: ModuleID = pf.lihaoyi         %% "pprint"       % "0.6.4"
+    val fansi: ModuleID  = pf.lihaoyi         %% "fansi"        % "0.2.12"
   }
 
 }
