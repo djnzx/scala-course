@@ -1,8 +1,5 @@
 package fp_red.red15
 
-import fp_red.red13.Monad
-
-import scala.annotation.tailrec
 import scala.language.implicitConversions
 
 object StatefulStreamTransducers {
@@ -10,36 +7,49 @@ object StatefulStreamTransducers {
   sealed trait Process[-A, +B, +S] {
     import Process._
 
-    def apply(as: Stream[A]): Stream[B] = this match {
-      /** terminate */
-      case Halt()     => Stream.empty
-      /** emit value and keep processing */
-      case Emit(h, t) => h #:: t(as)
-      case Await(f)   => as match {
-        case h #:: t => f(Some(h))(t)
-        case _       => f(None   )(Stream.empty)
-      }
-      case AwaitS(s, f) => as match {
-        case h #:: t => f(Some(h), s)(t)
-        case _       => f(None,    s)(Stream.empty)
-      }
+    /** syntax to write handle function */
+    def handle[S2 >: S]: Handle[A, B, S2] = {
+      /** process next element + state from previous step */
+      case (Some(a), Some(s)) => ???
+      /** process next element + NO state from previous step */
+      case (Some(a), None)    => ???
+      /** end of the stream + state from previous step */
+      case (None,    Some(s)) => ???
+      /** end of the stream + NO state from previous step */
+      case (None,    None)    => ???
     }
+    
+    def apply(as: Stream[A]): Stream[B] = ??? 
+//      this match {
+//      /** terminate */
+//      case Halt()     => Stream.empty
+//      /** emit value and keep processing */
+//      case Emit(h, t) => h #:: t(as)
+//      case Await(f)   => as match {
+//        case h #:: t => f(Some(h))(t)
+//        case _       => f(None   )(Stream.empty)
+//      }
+//      case AwaitS(s, f) => as match {
+//        case h #:: t => f(Some(h), s)(t)
+//        case _       => f(None,    s)(Stream.empty)
+//      }
+//    }
 
-    def repeat: Process[A, B, S] = {
-
-      def go(p: Process[A, B, S]): Process[A, B, S] = p match {
-        case Halt() => go(this)
-        case Await(onReceive) => Await[A, B, S] {
-          case None => onReceive(None)
-          case a    => go(onReceive(a))
-        }
-        // TODO: handle this !!!
-        case AwaitS(s, onReceive) => ??? 
-        case Emit(h, t) => Emit(h, go(t))
-      }
-
-      go(this)
-    }
+//    def repeat: Process[A, B, S] = {
+//
+//      def go(p: Process[A, B, S]): Process[A, B, S] = p match {
+//        case Halt() => go(this)
+//        case Await(onReceive) => Await[A, B, S] {
+//          case None => onReceive(None)
+//          case a    => go(onReceive(a))
+//        }
+//        // TODO: handle this !!!
+//        case AwaitS(s, onReceive) => ??? 
+//        case Emit(h, t) => Emit(h, go(t))
+//      }
+//
+//      go(this)
+//    }
 
 //    def repeatN(n: Int): Process[A, B] = {
 //      
@@ -143,44 +153,49 @@ object StatefulStreamTransducers {
 
   object Process {
 
-    type HandleSimple[A, B, S] = Option[A] => Process[A, B, S]
-    type HandleState[A, B, S] = (Option[A], S) => Process[A, B, S]
+    /** option to handle end of the stream */
+    type Handle      [-A, +B, S] = (Option[A], Option[S]) => Process[A, B, S]
+    type HandleSimple[-A, +B, S] = Option[A]              => Process[A, B, S]
+    type HandleState [-A, +B, S] = (Option[A], S)         => Process[A, B, S]
+    
     
     /** emitting a value to the output */
     case class Emit[A, B, S](item: B, tail: Process[A, B, S] = Halt[A, B, S]()) extends Process[A, B, S]
+
     /** reading a value from its input, NO state */
     case class Await[A, B, S](onReceive: HandleSimple[A, B, S]) extends Process[A, B, S]
     /** reading a value from its input, HAVE state */
     case class AwaitS[A, B, S](s: S, onReceive: HandleState[A, B, S]) extends Process[A, B, S]
-    /** termination */
-    case class Halt[A, B, S]() extends Process[A, B, S]
 
-    /** emitting ONE value, without carrying to input value and its type */
-    def emitOne[A, B, S](item: B, tail: Process[A, B, S] = Halt[A, B, S]()): Process[A, B, S] =
-      Emit(item, tail)
+    /** termination with/without state*/
+    case class Halt[A, B, S](s: Option[S] = None) extends Process[A, B, S]
 
-    /** emitting SEQ of values, without carrying to input value and its type */
-    def emitSeq[A, B, S](items: Seq[B], tail: Process[A, B, S] = Halt[A, B, S]()): Process[A, B, S] = items match {
-      case b +: bs => Emit(b, emitSeq(bs, tail))
-      case _       => tail
-    }
-
-    /** emitting STREAM of values, without carrying to input value and its type */
-    def emitStream[A, B, S](items: Stream[B], tail: Process[A, B, S] = Halt[A, B, S]()): Process[A, B, S] = items match {
-      case b #:: bs => Emit(b, emitStream(bs, tail))
-      case _        => tail
-    }
-
-    /** lift function A => B to Process[A, B, S] */
-    def liftOne[A, B, S](f: A => B): Process[A, B, S] =
-      Await[A, B, S] {
-        case Some(i) => emitOne(f(i))
-        case None    => Halt()
-      }
-
-    /** lifting whole stream just repeating [[liftOne]] */
-    def lift[A, B, S](f: A => B): Process[A, B, S] =
-      liftOne(f).repeat
+//    /** emitting ONE value, without carrying to input value and its type */
+//    def emitOne[A, B, S](item: B, tail: Process[A, B, S] = Halt[A, B, S]()): Process[A, B, S] =
+//      Emit(item, tail)
+//
+//    /** emitting SEQ of values, without carrying to input value and its type */
+//    def emitSeq[A, B, S](items: Seq[B], tail: Process[A, B, S] = Halt[A, B, S]()): Process[A, B, S] = items match {
+//      case b +: bs => Emit(b, emitSeq(bs, tail))
+//      case _       => tail
+//    }
+//
+//    /** emitting STREAM of values, without carrying to input value and its type */
+//    def emitStream[A, B, S](items: Stream[B], tail: Process[A, B, S] = Halt[A, B, S]()): Process[A, B, S] = items match {
+//      case b #:: bs => Emit(b, emitStream(bs, tail))
+//      case _        => tail
+//    }
+//
+//    /** lift function A => B to Process[A, B, S] */
+//    def liftOne[A, B, S](f: A => B): Process[A, B, S] =
+//      Await[A, B, S] {
+//        case Some(i) => emitOne(f(i))
+//        case None    => Halt()
+//      }
+//
+//    /** lifting whole stream just repeating [[liftOne]] */
+//    def lift[A, B, S](f: A => B): Process[A, B, S] =
+//      liftOne(f).repeat
 
 //    /**
 //      * transducer can do way more than map:
