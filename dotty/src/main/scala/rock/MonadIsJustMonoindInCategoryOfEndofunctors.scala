@@ -1,6 +1,6 @@
 package rock
 
-object MonadIs {
+object MonadIsJustMonoindInCategoryOfEndofunctors {
 
   /** monoid in a category A[_] */
   trait MonoidInCategoryK2[A[_], ~>[_[_], _[_]], E[_], P[_]] {
@@ -8,7 +8,11 @@ object MonadIs {
     def combine: P ~> A
   }
 
-  /** monoid in a category A */
+  /**
+    * monoid in a category A
+    *
+    * A ~> B - any natural transformation, not just a function
+    */
   trait MonoidInCategory[A, ~>[_, _], E, P] {
     def unit: E ~> A    // ~> [E, A]
     def combine: P ~> A // ~> [P, A]
@@ -20,7 +24,11 @@ object MonadIs {
 //    def combine: P => A
   }
 
-  /** define E as a Unit, P as a (A, A) */
+  /**
+    * define
+    * E as a Unit,
+    * P as a (A, A)
+    */
   trait FunctionalMonoid[A] extends GeneralMonoid [A, Unit, (A, A)] {
 //    def unit: Unit => A
 //    def combine: ((A, A)) => A
@@ -45,9 +53,7 @@ object MonadIs {
     override def combine(a1: Int, a2: Int): Int = a1 + a2
   }
 
-  /** endofunctors in the same cathegory F
-    * F[A] => F[B]
-    */
+  /** endofunctors in the same cathegory F: F[A] => F[B] */
   trait Functor[F[_]] {
     def map[A, B](fa: F[A])(f: A => B): F[B]
   }
@@ -67,30 +73,30 @@ object MonadIs {
   }
 
   /**
-    * and also
-    * .to*******
-    *
+    * and also all functions .to*******
     * all are the natural transformations
     */
   object ListToOptionTrans extends FunctorNaturalTransformation[List, Option] {
     override def apply[A](fa: List[A]): Option[A] = fa.headOption
   }
 
-  /** id functor */
+  /** type alias */
   type Id[A] = A
 
+  /** id functor */
   given idFunctor: Functor[Id] with {
     override def map[A, B](fa: A)(f: A => B): B = f(fa)
   }
 
   /** function composition */
   def funcComposition[A, B, C](f: A => B, g: B => C, x: A) = g(f(x))
+  /** higher type composition */
+  type HigherKindTypeComposition[F[_], G[_], A] = G[F[A]]
+  /** same type composition */
+  type SameTypeComposition[F[_], A] = HigherKindTypeComposition[F, F, A]
 
-  type HKTComposition[F[_], G[_], A] = G[F[A]]
-  type SameTypeComposition[F[_], A] = F[F[A]]
-
-  // doesnt work
-//  trait MonoidInCategoryOfFunctors[F[_]: Functor] extends MonoidInCategoryK2[F, FunctorNaturalTransformation, Id, F[F[_]]]
+  // doesn't work
+//  trait MonoidInCategoryOfFunctorsX[F[_]: Functor] extends MonoidInCategoryK2[F, FunctorNaturalTransformation, Id, F[F[_]]]
   // type lambda syntax
   trait MonoidInCategoryOfFunctors[F[_]: Functor] extends MonoidInCategoryK2[F, FunctorNaturalTransformation, Id, [A] =>> F[F[A]]] {
     type FunctorProduct[A] = F[F[A]]
@@ -129,8 +135,8 @@ object MonadIs {
     }
   }
 
-
   object ListSpecialMonoid extends MonoidInCategoryOfFunctors[List] {
+
     override def unit: FunctorNaturalTransformation[Id, List] = new FunctorNaturalTransformation[Id, List] {
       override def apply[A](fa: Id[A]): List[A] = List(fa)
     }
@@ -142,6 +148,7 @@ object MonadIs {
     override def combine: FunctorNaturalTransformation[FunctorProduct, List] = new FunctorNaturalTransformation[FunctorProduct, List] {
       override def apply[A](fa: List[List[A]]): List[A] = fa.flatMap(x => x)
     }
+
   }
 
   def main(args: Array[String]): Unit = {
