@@ -1,6 +1,6 @@
 package rock
 
-object GivenUsingSummonVsImplicits extends App {
+object GivenUsingSummonExtensionVsImplicit extends App {
 
   /** Scala 2 */
   def add2(a: Int)(implicit b: Int): Int = a + b
@@ -17,4 +17,14 @@ object GivenUsingSummonVsImplicits extends App {
   /** Scala 3 */
   val i2 = summon[Double]
 
+  /** Scala 2 */
+  implicit class IntSyntax(a: Int) {
+    def print2(s: String) = (1 to a).foreach(_ => println(s))
+  }
+  /** Scala 3 */
+  extension (a: Int)
+    def print3(s: String) = (1 to a).foreach(_ => println(s))
+
+  2.print2("Hello!")
+  3.print3("Hi, there!")
 }
