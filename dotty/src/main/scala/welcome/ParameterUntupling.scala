@@ -1,14 +1,12 @@
+package welcome
+
 /**
   * Parameter Untupling: https://dotty.epfl.ch/docs/reference/other-new-features/parameter-untupling.html
   */
-object ParameterUntupling {
+object ParameterUntupling:
 
-  def test: Unit = {
-    /**
-      * In order to get thread safety, you need to put @volatile before lazy vals.
-      * https://dotty.epfl.ch/docs/reference/changed-features/lazy-vals.html
-      */
-    @volatile lazy val xs: List[String] = List("d", "o", "t", "t", "y")
+  def test(): Unit =
+    val xs: List[String] = List("d", "o", "t", "t", "y")
 
     /**
       * Current behaviour in Scala 2.12.2 :
@@ -17,6 +15,4 @@ object ParameterUntupling {
       * Consider a pattern matching anonymous function, `{ case (s, i) =>  ... }`
       */
     xs.zipWithIndex.map((s, i) => println(s"$i: $s"))
-  }
 
-}

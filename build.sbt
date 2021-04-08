@@ -287,14 +287,6 @@ lazy val degoes = (project in file("degoes"))
   * Dotty experiments
   */
 lazy val dotty = (project in file("dotty"))
-  .settings(
-    scalaVersion := "3.0.0-M3",
-    useScala3doc := true,
-  )
-  .settings(
-    libraryDependencies ++= Seq(
-    )
-  )
 //initialCommands in console := "import scalaz._, Scalaz._"
 //addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
 //addCommandAlias("check", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")
