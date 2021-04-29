@@ -5,10 +5,10 @@ object ApplyApp extends App {
 //  case class Person (val name: String, val age: Int)
 
   class Person (val name: String, val age: Int) {
-    def this(name: String) {
+    def this(name: String) = {
       this(name, -1)
     }
-    def this(list: List[String]) {
+    def this(list: List[String]) = {
       this(list.head, -1)
     }
     override def toString: String = s"Person:[name:$name, age:$age]"

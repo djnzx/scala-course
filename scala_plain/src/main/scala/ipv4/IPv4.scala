@@ -18,7 +18,7 @@ object IPv4 {
     def parse(s: String) = Option(s)
       .map(_.split("\\."))
       .filter(isLen4)
-      .map(_.flatMap(x => Try(x.toInt).toOption))
+      .map(_.flatMap(x => x.toIntOption))
       .filter(isLen4)
       .map(_.filter(x => x >=0 && x <= 255))
       .filter(isLen4)

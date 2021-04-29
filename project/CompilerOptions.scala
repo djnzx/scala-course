@@ -19,14 +19,15 @@ object CompilerOptions {
     "-Ywarn-numeric-widen",
     "-Ywarn-value-discard",
     "-Ywarn-dead-code",
-    "-Ywarn-extra-implicit",
     "-Ywarn-unused",
-    "-Xlint:unused,-type-parameter-shadow",
     "-Yrepl-class-based",
     "-Yrangepos",
     "-explaintypes",
-    "-opt-warnings",
-    "-opt:l:inline",
-    "-opt-inline-from:<source>",
+    // doesn't work for 2.11
+//    "-Ywarn-extra-implicit", 
+//    "-Xlint:unused,-type-parameter-shadow",
+//    "-opt-warnings",
+//    "-opt:l:inline",
+//    "-opt-inline-from:<source>",
   )
 }
