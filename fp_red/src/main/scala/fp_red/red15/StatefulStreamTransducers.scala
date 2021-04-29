@@ -34,7 +34,7 @@ object StatefulStreamTransducers {
           case a    => go(onReceive(a))
         }
         // TODO: handle this !!!
-        case AwaitS(s, onReceive) => ??? 
+        case AwaitS(s, onReceive) => ???
         case Emit(h, t) => Emit(h, go(t))
       }
 
@@ -42,7 +42,7 @@ object StatefulStreamTransducers {
     }
 
 //    def repeatN(n: Int): Process[A, B] = {
-//      
+//
 //      def go(n: Int, p: Process[A, B]): Process[A, B] = p match {
 //        case Halt() if n > 0 => go(n - 1, this)
 //        case Halt() => Halt()
@@ -52,7 +52,7 @@ object StatefulStreamTransducers {
 //        }
 //        case Emit(h, t) => Emit(h, go(n,t))
 //      }
-//      
+//
 //      go(n, this)
 //    }
 //
@@ -67,7 +67,7 @@ object StatefulStreamTransducers {
 //      case Emit(h, t)  => Emit(f(h), t map f)
 //      case Await(recv) => Await(recv andThen (_ map f))
 //    }
-//    
+//
 //    def map_pipe[O2](f: B => O2): Process[A,O2] = this |> lift(f)
 //
 //    def ++(p: => Process[A, B]): Process[A, B] = this match {
@@ -100,7 +100,7 @@ object StatefulStreamTransducers {
 //     * as `this` is in the `Await` state.
 //     */
 //    def feed(in: Seq[A]): Process[A, B] = {
-//      
+//
 //      @tailrec
 //      def go(in: Seq[A], cur: Process[A, B]): Process[A, B] =
 //        cur match {
@@ -110,7 +110,7 @@ object StatefulStreamTransducers {
 //            else cur
 //          case Emit(h, t) => Emit(h, t.feed(in))
 //        }
-//      
+//
 //      go(in, this)
 //    }
 //
@@ -127,7 +127,7 @@ object StatefulStreamTransducers {
 //      Process.zip(this, p)
 //
 //    /** Exercise 6: Implement `zipWithIndex` */
-//    def zipWithIndex: Process[A, (B, Int)] = 
+//    def zipWithIndex: Process[A, (B, Int)] =
 //      this zip[Int] (count[A].map(_ - 1))
 //
 //    /** Add `p` to the fallback branch of this process */
@@ -145,7 +145,7 @@ object StatefulStreamTransducers {
 
     type HandleSimple[A, B, S] = Option[A] => Process[A, B, S]
     type HandleState[A, B, S] = (Option[A], S) => Process[A, B, S]
-    
+
     /** emitting a value to the output */
     case class Emit[A, B, S](item: B, tail: Process[A, B, S] = Halt[A, B, S]()) extends Process[A, B, S]
     /** reading a value from its input, NO state */
@@ -329,11 +329,11 @@ object StatefulStreamTransducers {
 //      * to make it lazy even in term of one chunk,
 //      * we emit sequence of elements with type (B)
 //      * and in the end we emit the state (S)
-//      * 
+//      *
 //      * @param s - initial state
 //      * @param f - function to fold the state with source element of type A to produce the Stream of type B and state in the end
-//      * @param rf - function to process the state after chunk processing 
-//      * @tparam S - state 
+//      * @param rf - function to process the state after chunk processing
+//      * @tparam S - state
 //      * @tparam A - source stream type
 //      * @tparam B - target stream type
 //      */
@@ -343,10 +343,10 @@ object StatefulStreamTransducers {
 //          f(s, Some(i)) match {
 //            case h #:: t => h match {
 //              case b: B  => ??? // lazily emit one by one until we have type b
-//              case s2: S => ??? // use state S to further process of elements of type A 
+//              case s2: S => ??? // use state S to further process of elements of type A
 //            }
 //            case _       => sys.error("wrong state")
-//          } 
+//          }
 ////          match {
 ////            case (Seq(), s2) => loopsst(s2)(f)
 ////            case (bs,    s2) => emitStream(bs, loopsst(s2)(f))
