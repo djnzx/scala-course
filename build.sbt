@@ -128,7 +128,7 @@ lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      pf.lihaoyi         %% "upickle"      % "1.2.0", // http://www.lihaoyi.com/upickle
+      pf.lihaoyi         %% "upickle"      % "1.3.8", // http://www.lihaoyi.com/upickle
       pf.lihaoyi         %% "ujson"        % "1.2.0",
       pf.lihaoyi         %% "os-lib"       % "0.7.1", // https://github.com/lihaoyi/os-lib
       pf.lihaoyi         %% "scalatags"    % "0.9.1",
