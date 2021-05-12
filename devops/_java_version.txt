@@ -1,8 +1,8 @@
 # list of all available version on my system
 /usr/libexec/java_home -V
 
-    11.0.11 (x86_64) "Oracle Corporation" - "Java SE 11.0.10" /Library/Java/JavaVirtualMachines/jdk-11.0.11.jdk/Contents/Home
-    1.8.0_291 (x86_64) "Oracle Corporation" - "Java SE 8" /Library/Java/JavaVirtualMachines/jdk1.8.0_291.jdk/Contents/Home
+    11.0.11, x86_64:	"Java SE 11.0.11"	/Library/Java/JavaVirtualMachines/jdk-11.0.11.jdk/Contents/Home
+    1.8.0_291, x86_64:	"Java SE 8"	/Library/Java/JavaVirtualMachines/jdk1.8.0_291.jdk/Contents/Home
 
 # setting desired version
 export JAVA_HOME=`/usr/libexec/java_home -v 11.0.11`
@@ -12,6 +12,8 @@ export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_291`
 java -version
 
 vim vim ~/.zshrc
+----------------
 alias j8="export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_291`"
 alias j11="export JAVA_HOME=`/usr/libexec/java_home -v 11.0.11`"
 alias jv="java -version"
+alias jw="/usr/libexec/java_home -V"
