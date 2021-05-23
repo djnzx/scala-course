@@ -22,12 +22,19 @@ object Task2 {
     
     val m = in.map { case s"$a>$b" => (a(0), b(0)) }.toMap
 
-    /** find the start letter: KEY which DOESN'T appear as a VALUE */
+    /**
+      * find the start letter: KEY which DOESN'T appear as a VALUE
+      * complexity O(N^2^)
+      */
     def findStart(x: Char = m.head._1): Char =
       m.find { case (_, v) => v == x } match {
         case None         => x
         case Some((k, _)) => findStart(k)
       }
+
+    /** complexity O(2*N) */
+
+    def findStart2() = (m.keySet -- m.values.toSet).head
 
     /** construct the word from the given start letter (map traverse)*/
     def makeWord(c: Char, word: List[Char] = Nil): List[Char] =
@@ -36,7 +43,7 @@ object Task2 {
         case Some(l) => makeWord(l, c::word)
       }
     
-    makeWord(findStart()).reverse.mkString
+    makeWord(findStart2).reverse.mkString
   }
   
 }
