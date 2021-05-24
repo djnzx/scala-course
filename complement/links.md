@@ -159,6 +159,26 @@
   - [reddit thread](https://www.reddit.com/r/scala/comments/ggamlh/i_wrote_another_blog_for_beginners_in_the_actor/)
 - [Akka Stream and Akka Typed](https://kaplan.dev/articles/akka-stream-coexistence-with-akka-typed/)
 
+### 2021 Akka platform
+- [Platform Guide](https://developer.lightbend.com/docs/akka-platform-guide/index.html)
+
+### 2021 Akka platform training
+
+#### 14.04.2021. Part 1
+- [recording](https://info.lightbend.com/akka-platform-workshop-part-1-recording.html)
+#### 21.04.2021. Part 2. Event Sourcing and Cart Entity
+- [docs](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/entity.html?mkt_tok=NTU4LU5DWC03MDIAAAF8egcjYuEhp2_9KzqjT7yGhzExKnr-X_CtuAlkZRkMqYZjarVIga9fva8LvERnv3pOvu4n8yjyGXTMyLi0nitZBFHjpOBDLsswdPsteOxlD4YMAQ)
+- [recording](https://info.lightbend.com/akka-platform-workshop-part-2-recording.html)
+#### 28.04.2021. Part 3. CQRS and Projections for Queries
+- [docs](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/projection-query.html?mkt_tok=NTU4LU5DWC03MDIAAAF8ngWavtMm_gcuvkJtCKkne4OMW1aGaBHjKaFlEkuSc5lLqWP6C_7pd_MH7-L-sv3JbJDofjHCzsDh03s5FrBNqz7Bq39sG4xBHbbyjDB1tpdnkQ)
+- [recording](https://info.lightbend.com/akka-platform-workshop-part-3-recording.html)
+#### 05.05.2021. Part 4. CQRS and Projections for Kafka and gRPC
+- [docs](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/projection-kafka.html?mkt_tok=NTU4LU5DWC03MDIAAAF8wmR-CVnrXSK2lrhCrnxo51fLYYDW9SjE34779rMbb9eWtPNP9G4tWsBCovJWU248SqIrjbJJZR1cZ4SJ6CaTD82NuldhvaWqX9srKufDHRH70g)
+- [recording](https://info.lightbend.com/akka-platform-workshop-part-4-recording.html)
+#### 12.05.2021. Part 5. Cloud deployment
+- [docs](https://developer.lightbend.com/docs/akka-platform-guide/deployment/cloud-deployment.html?mkt_tok=NTU4LU5DWC03MDIAAAF85nEFdR2E-Y-Jc_-2lJSfHIYEbh2dZYqI2YMB5Pg1PnDsdGa9N0BZggfB2Nx3hf1xhkLwxfNuCgCTDt_ErnP38H1fWSpK-vP877adX5XZRBRizg)
+- [recording](https://info.lightbend.com/akka-platform-workshop-part-5-recording.html)
+
 ### PLAY
 - [play-from-scratch-reddit-thread](https://www.reddit.com/r/scala/comments/fx6u4t/play_framework_create_application_from_scratch/)
 - [play-from-scratch-document](https://dvirf1.github.io/play-tutorial/)
