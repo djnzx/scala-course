@@ -1,0 +1,39 @@
+sbt plugins located here:
+
+ls -la ~/.ivy2/cache/scala_2.12/sbt_1.0
+
+drwxr-xr-x   3 alexr  staff   96 May 13 12:01 com.cognitops.sbt
+drwxr-xr-x   3 alexr  staff   96 May 13 12:02 com.dwijnand
+drwxr-xr-x   3 alexr  staff   96 May 13 12:01 com.eed3si9n
+drwxr-xr-x   3 alexr  staff   96 May 13 12:01 com.github.gseitz
+drwxr-xr-x   3 alexr  staff   96 May 13 12:02 com.lightbend
+drwxr-xr-x   3 alexr  staff   96 May 13 12:02 com.typesafe.sbt
+drwxr-xr-x   3 alexr  staff   96 May 13 12:01 io.github.davidmweber
+drwxr-xr-x@  4 alexr  staff  128 May 13 16:39 net.globalwebindex
+drwxr-xr-x   3 alexr  staff   96 May 13 12:02 net.virtual-void
+drwxr-xr-x   3 alexr  staff   96 May 13 12:01 org.scalameta
+
+dependencies located here:
+
+ls -la ~/.ivy2/cache/
+
+...
+drwxr-xr-x    3 alexr  staff     96 Mar 15 12:42 org.apache
+drwxr-xr-x    5 alexr  staff    160 May 13 12:02 org.apache.ant
+drwxr-xr-x    6 alexr  staff    192 May 13 16:41 org.apache.commons
+drwxr-xr-x    8 alexr  staff    256 May 13 16:40 org.apache.httpcomponents
+drwxr-xr-x    3 alexr  staff     96 May 13 12:02 org.apache.ivy
+drwxr-xr-x    3 alexr  staff     96 May 13 16:41 org.apache.kafka
+drwxr-xr-x    6 alexr  staff    192 Mar 15 12:43 org.apache.logging.log4j
+drwxr-xr-x    4 alexr  staff    128 May 13 16:40 org.checkerframework
+drwxr-xr-x    3 alexr  staff     96 May 13 12:03 org.codehaus.jackson
+drwxr-xr-x    5 alexr  staff    160 May 13 16:40 org.codehaus.janino
+drwxr-xr-x    5 alexr  staff    160 May 13 16:40 org.codehaus.mojo
+drwxr-xr-x   10 alexr  staff    320 May 13 16:41 org.eclipse.jetty
+drwxr-xr-x    3 alexr  staff     96 May 13 16:41 org.eclipse.jetty.alpn
+drwxr-xr-x    6 alexr  staff    192 May 13 16:41 org.eclipse.jetty.http2
+drwxr-xr-x    4 alexr  staff    128 May 13 12:01 org.flywaydb
+drwxr-xr-x    3 alexr  staff     96 Mar 15 12:42 org.fusesource
+drwxr-xr-x    4 alexr  staff    128 Mar 15 12:42 org.fusesource.jansi
+drwxr-xr-x   16 alexr  staff    512 May 13 16:41 org.http4s
+...
