@@ -16,7 +16,7 @@ object ValueTypes extends App {
   val person1a: PersonId = PersonId(1)
   val person1b: PersonId = PersonId(1)
   val book1   : BookId   = BookId(1)
-//  f1(person1a)
+  f1(person1a)
 //  f1(book1)
 
   val testData = List(
@@ -30,12 +30,6 @@ object ValueTypes extends App {
   )
   testData foreach { el =>
     printf(el._1+"\n", doCheck(el._2))
-  }
-
-  val cars: Seq[CarId] = Seq(CarId(1), CarId(2))
-  cars foreach {
-    case CarId(id) => println(id)
-    case _ => println("non CarID instance in the sequence!")
   }
 
 }

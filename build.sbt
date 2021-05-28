@@ -3,16 +3,18 @@ import Dependencies.Libraries.CompilerPlugins
 import sbt.Def.spaceDelimited
 import sbt.Keys._
 
+lazy val vScala = "2.13.6"
+
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val commonSettings = Seq(
-  scalaVersion := "2.13.3",
+  scalaVersion := vScala,
   organization := "org.alexr",
-  version      := "20.12.4",
+  version      := "21.05.28",
 
   javacOptions  ++= Seq(
-    //  "-source", "1.8",
-    //  "-target", "1.8"
+    "-source", "11",
+    "-target", "11"
   ),
 
   // https://docs.scala-lang.org/overviews/compiler-options/index.html#Warning_Settings
@@ -56,7 +58,7 @@ lazy val whole = (project in file("."))
     mix,
     degoes,
     dotty,
-    spark,
+    sparkx,
   )
 //  .enablePlugins(BuildInfoPlugin)
 //  .settings(
@@ -64,18 +66,14 @@ lazy val whole = (project in file("."))
 //    buildInfoPackage := "learn"
 //  )
 
-/**
-  * plain Scala
-  * no 3rd-party libraries involved
-  */
 lazy val scala_plain = (project in file("scala_plain"))
   .enablePlugins(ScalaxbPlugin)
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "org.scala-lang.modules"     %% "scala-parallel-collections" % "0.2.0",
-      "com.softwaremill.quicklens" %% "quicklens"                  % "1.4.12",
-      "org.scala-lang"             %  "scala-reflect"               % "2.13.3",
+      "org.scala-lang.modules"     %% "scala-parallel-collections" % "1.0.3",
+      "com.softwaremill.quicklens" %% "quicklens"                  % "1.7.3",
+      "org.scala-lang"             %  "scala-reflect"               % vScala,
       "org.scalaxb" %% "scalaxb" % "1.8.0",
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
@@ -253,7 +251,7 @@ lazy val mix = (project in file("mix"))
     ),
   )
 
-lazy val spark = (project in file("sparkx"))
+lazy val sparkx = (project in file("sparkx"))
   .settings(commonSettings)
 
 /**

@@ -35,23 +35,6 @@ object StatefulStreamTransducers {
 //      }
 //    }
 
-<<<<<<< HEAD
-    def repeat: Process[A, B, S] = {
-
-      def go(p: Process[A, B, S]): Process[A, B, S] = p match {
-        case Halt() => go(this)
-        case Await(onReceive) => Await[A, B, S] {
-          case None => onReceive(None)
-          case a    => go(onReceive(a))
-        }
-        // TODO: handle this !!!
-        case AwaitS(s, onReceive) => ???
-        case Emit(h, t) => Emit(h, go(t))
-      }
-
-      go(this)
-    }
-=======
 //    def repeat: Process[A, B, S] = {
 //
 //      def go(p: Process[A, B, S]): Process[A, B, S] = p match {
@@ -67,7 +50,6 @@ object StatefulStreamTransducers {
 //
 //      go(this)
 //    }
->>>>>>> origin/master
 
 //    def repeatN(n: Int): Process[A, B] = {
 //
@@ -171,18 +153,11 @@ object StatefulStreamTransducers {
 
   object Process {
 
-<<<<<<< HEAD
-    type HandleSimple[A, B, S] = Option[A] => Process[A, B, S]
-    type HandleState[A, B, S] = (Option[A], S) => Process[A, B, S]
-
-=======
     /** option to handle end of the stream */
     type Handle      [-A, +B, S] = (Option[A], Option[S]) => Process[A, B, S]
     type HandleSimple[-A, +B, S] = Option[A]              => Process[A, B, S]
     type HandleState [-A, +B, S] = (Option[A], S)         => Process[A, B, S]
-    
-    
->>>>>>> origin/master
+
     /** emitting a value to the output */
     case class Emit[A, B, S](item: B, tail: Process[A, B, S] = Halt[A, B, S]()) extends Process[A, B, S]
 

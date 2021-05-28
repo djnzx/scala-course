@@ -37,7 +37,7 @@ object Dependencies {
     // compiler plugins
     val silencer         = "1.6.0"
     val betterMonadicFor = "0.3.1"
-    val kindProjector    = "0.11.0"
+    val kindProjector    = "0.13.0"
     val contextApplied   = "0.1.4"
 
     // typesafe stack
