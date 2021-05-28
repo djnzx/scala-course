@@ -60,3 +60,19 @@ I thought I knew Scala...
   - Kafka
 - NoSQL  
   - Cassandra
+  
+### 2021
+- Books done
+  - [zionomicon](https://www.zionomicon.com)
+  - [Programming in Scala, Fifth Editio](https://www.artima.com/shop/programming_in_scala_5ed)
+- Trainings Done  
+  - [Akka Platform](https://info.lightbend.com/akka-platform-workshop-part-1-on-demand-recording.html)
+  - [ForgeRock](https://www.forgerock.com)
+- Datastax Cassandra
+  - [DS101](https://academy.datastax.com/#/online-courses/0da20519-364d-47a9-9916-b59c02175393)
+  - [DS201](https://academy.datastax.com/#/online-courses/6167eee3-0575-4d88-9f80-f2270587ce23)
+  - [DS210](https://academy.datastax.com/#/online-courses/b0ef552b-4f01-4e0e-ac17-6e7ce29ad6f0)
+  - [DS220](https://academy.datastax.com/#/online-courses/ca2e1209-510b-44a6-97de-d5219d835319)
+- SBT Plugins mastering
+  - [sbt-plugin](https://github.com/alexr007/sbt-first-plugin)
+  - [sbp-plugin-usage](https://github.com/alexr007/sbt-plugin-usage)
