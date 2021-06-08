@@ -38,4 +38,8 @@ object CirceBasics extends App {
     e => println(s"E:$e"),
     box => println(s"BOX:$box")
   )
+  // TODO: handle absence of fields as Option[A]
+  // TODO: handle enum
+  // TODO: handle sealed traits
+  // TODO: custom logic
 }
