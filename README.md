@@ -67,6 +67,25 @@ I thought I knew Scala...
   - [Programming in Scala, Fifth Editio](https://www.artima.com/shop/programming_in_scala_5ed)
 - Trainings Done  
   - [Akka Platform](https://info.lightbend.com/akka-platform-workshop-part-1-on-demand-recording.html)
+  - Steps
+    - [0](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/overview.html)
+    - [1](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/dev-env.html)
+    - [2](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/template.html)
+    - [3](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/grpc-service.html)
+    - [4](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/entity.html)
+    - [5](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/complete-entity.html)
+    - [6](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/projection-query.html)
+    - [7](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/projection-kafka.html)
+    - [8](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/projection-grpc-client.html)
+  - Repositories  
+    - [0](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/index.html)
+    - [1](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/_attachments/0-shopping-cart-start-scala.zip)
+    - [2](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/_attachments/1-shopping-cart-grpc-scala.zip)
+    - [3](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/_attachments/2-shopping-cart-event-sourced-scala.zip)
+    - [4](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/_attachments/3-shopping-cart-event-sourced-complete-scala.zip)
+    - [5](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/_attachments/4-shopping-cart-projection-scala.zip)
+    - [6](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/_attachments/5-shopping-cart-projection-kafka-scala.zip)
+    - [7](https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/_attachments/6-shopping-cart-complete-scala.zip)
   - [ForgeRock](https://www.forgerock.com)
 - Datastax Cassandra
   - [DS101](https://academy.datastax.com/#/online-courses/0da20519-364d-47a9-9916-b59c02175393)
