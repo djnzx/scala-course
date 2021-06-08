@@ -27,7 +27,7 @@ object Dependencies {
     val sqlH2            = "1.4.200"
     val scalaz           = "7.2.30"
     val jsoup            = "1.13.1"
-    val shapeless        = "2.3.3"
+    val shapeless        = "2.3.7"
 
     // testing
     val scalaCheck       = "1.14.3"

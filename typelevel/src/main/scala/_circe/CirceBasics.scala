@@ -40,6 +40,6 @@ object CirceBasics extends App {
   )
   // TODO: handle absence of fields as Option[A]
   // TODO: handle enum
-  // TODO: handle sealed traits
+  // TODO: handle sealed traits (ADT)
   // TODO: custom logic
 }
