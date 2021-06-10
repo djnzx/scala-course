@@ -32,9 +32,12 @@ object Task2 {
         case Some((k, _)) => findStart(k)
       }
 
-    /** complexity O(2*N) */
+    /** complexity O(3*N) */
+    def findStart2 = (m.keySet -- m.values.toSet).head
 
-    def findStart2() = (m.keySet -- m.values.toSet).head
+    /** complexity O(2*N) */
+    def findStart3 = m.foldLeft(Set.empty[Char], Set.empty[Char]){ case ((sa, sb), (a, b)) => (sa + a, sb + b)} match
+    { case (sa, sb) => (sa -- sb).head }
 
     /** construct the word from the given start letter (map traverse)*/
     def makeWord(c: Char, word: List[Char] = Nil): List[Char] =
@@ -43,7 +46,7 @@ object Task2 {
         case Some(l) => makeWord(l, c::word)
       }
     
-    makeWord(findStart2).reverse.mkString
+    makeWord(findStart3).reverse.mkString
   }
   
 }
@@ -55,7 +58,8 @@ class Task2Spec extends ASpec {
     val data = Seq(
       Seq("P>E","E>R","R>U") -> "PERU",
       Seq("I>N","A>I","P>A","S>P") -> "SPAIN",
-      Seq("I>V","K>Y","Y>I") -> "KYIV"
+      Seq("I>V","K>Y","Y>I") -> "KYIV",
+      Seq("U>K","K>R","R>A","A>I","I>N","N>E") -> "UKRAINE"
     )
     
     runAllD(data, findWord)
