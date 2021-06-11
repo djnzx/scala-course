@@ -4,6 +4,14 @@ import scala.collection.mutable.ArrayBuffer
 
 object ScalaInterviewQuestions extends App {
 
+  val f1 = (1 to 10).filter(_%2==0)
+  val f2 = (1 to 10).flatMap {
+    case x if x%2 == 0 => Some(x)
+    case _ => None
+  }
+  println(f1)
+  println(f2)
+
   object problem_01 {
 
     def switch(s: String) = {
@@ -69,7 +77,7 @@ object ScalaInterviewQuestions extends App {
       a.length
     }
 
-    val x = for { // -
+    val x: Seq[(Int, String)] = for {
       a <- List(1,2,3)
       if a > 1
       b <- List("a","b")
