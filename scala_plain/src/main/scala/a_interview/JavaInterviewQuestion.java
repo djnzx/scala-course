@@ -2,6 +2,7 @@ package a_interview;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -15,11 +16,20 @@ public class JavaInterviewQuestion {
     Predicate<Integer> p = x -> x % 2 == 0;
 
     // 2. filter via flatMap
+    List<Integer> collect = IntStream.range(1, 10).boxed()
+        .filter(x -> x % 2 == 0)
+        .collect(Collectors.toList());
+
+    // Why Optional // 2 + 4 + 6 + 8
+    Optional<Integer> reduced = IntStream.range(1, 10).boxed()
+        .filter(x -> x % 2 == 0)
+        .reduce((a, b) -> a + b);
+
     List<Integer> a1 = IntStream.range(1, 10).boxed()
       .filter(p)
       .collect(Collectors.toList());
     List<Integer> f2 = IntStream.range(1, 10).boxed()
-      .flatMap(x -> p.test(x) ? Stream.of(x) : Stream.empty())
+      .flatMap(x -> x % 2 == 0 ? Stream.of(x) : Stream.empty())
       .collect(Collectors.toList());
 
     // 3.1. Implement collector
