@@ -49,6 +49,8 @@ object ScalaInterviewQuestions extends App {
 
   }
 
+  def go[A: Ordering](a: A) = ???
+
   object problems {
     // list. reverse
     // list. filter
