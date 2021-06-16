@@ -11,6 +11,7 @@ object Http4sApp extends IOApp {
 
   val routes = HttpRoutes.of[IO] {
     case GET -> Root / "hello" / name => Ok(s"Hello, $name.")
+    case _ => NotFound()
   }
 
   implicit val ec = scala.concurrent.ExecutionContext.global

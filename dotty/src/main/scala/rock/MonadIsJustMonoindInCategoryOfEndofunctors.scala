@@ -2,6 +2,7 @@ package rock
 
 object MonadIsJustMonoindInCategoryOfEndofunctors {
 
+
   /** monoid in a category A[_] */
   trait MonoidInCategoryK2[A[_], ~>[_[_], _[_]], E[_], P[_]] {
     def unit: E ~> A
