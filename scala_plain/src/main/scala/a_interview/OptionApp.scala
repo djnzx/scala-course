@@ -5,7 +5,7 @@ object OptionApp extends App {
   sealed trait OptionX[A] {
     def flatMap[B](f: A => OptionX[B]): OptionX[B]
     def map[B](f: A => B): OptionX[B] = flatMap(a => SomeX(f(a)))
-    def filter(p: A => Boolean): OptionX[A] = flatMap(a => if (p(a)) SomeX(x) else NoneX())
+    def filter(p: A => Boolean): OptionX[A] = flatMap(a => if (p(a)) SomeX(a) else NoneX())
     def getOrElse(other: => A): A = this match {
       case SomeX(a) => a
       case NoneX() => other
