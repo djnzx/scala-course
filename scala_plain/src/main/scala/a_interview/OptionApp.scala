@@ -36,6 +36,12 @@ object OptionApp extends App {
   val opop66: OptionX[OptionX[Int]] = OptionX.some(op66)
   val op66f:  OptionX[Int] = opop66.flatten
 
+//  OptionX.some(5).flatten
+  OptionX.some(OptionX.some(5)).flatten
+//  OptionX.none[Int].flatten
+  OptionX.none[Nothing].flatten
+  OptionX.none.flatten
+
   println(op66)
   println(opop66)
   println(op66f)
