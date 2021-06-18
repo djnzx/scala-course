@@ -9,7 +9,9 @@ import org.http4s.server.blaze.BlazeServerBuilder
 
 object Http4sApp extends IOApp {
 
-  import CirceThings._
+  import SealedTraitDecoder._
+
+  object FruitParamMatcher extends QueryParamDecoderMatcher[Fruit]("f")
 
   /** http://localhost:8080/hello?f=Apple
     */
@@ -17,6 +19,7 @@ object Http4sApp extends IOApp {
     case GET -> Root / "hello"
       :? FruitParamMatcher(f) =>
       val f1: Fruit = f
+      println(f1)
       Ok(s"fruit given: $f1")
     case _ => NotFound()
   }
