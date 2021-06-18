@@ -9,8 +9,7 @@ import org.http4s.server.blaze.BlazeServerBuilder
 
 object Http4sApp extends IOApp {
 
-//  import SealedTraitDecoder._
-  import com.cognitops.common.http.HttpParamUtils.anyDecodableAsParamDecoder
+  import SealedTraitDecoder._
 
   object FruitParamMatcher extends QueryParamDecoderMatcher[Fruit]("f")
 
