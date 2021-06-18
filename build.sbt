@@ -213,6 +213,7 @@ lazy val typelevel = (project in file("typelevel"))
       // Serialization
       Libraries.circeCore,
       Libraries.circeGeneric,
+      Libraries.circeGenericEx,
       Libraries.circeParser,
       Libraries.circeRefined,
       // @newtype annotation
@@ -221,6 +222,47 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.refinedCore,
       // shapeless
       Libraries.shapeless,
+    )
+  )
+lazy val co = (project in file("co"))
+  .settings(commonSettings)
+  .settings(
+    scalacOptions -= "-Ymacro-annotations",
+    scalaVersion := "2.12.13",
+    libraryDependencies ++= Seq(
+      CompilerPlugins.betterMonadicFor,
+      CompilerPlugins.contextApplied,
+      CompilerPlugins.kindProjector,
+
+      // CATS
+      Libraries.cats,
+      Libraries.catsLaws,
+      Libraries.catsEffect,
+      Libraries.catsMtlCore,
+      "dev.profunktor"         %% "console4cats"               % "0.8.1",
+      // FS2
+      Libraries.fs2core,
+      Libraries.fs2reactive,
+      // HTTP
+      Libraries.http4sServer,
+      Libraries.http4sDsl,
+      Libraries.http4sClient,
+      Libraries.http4sCirce,
+      Libraries.http4sJwtAuth,
+      // Serialization
+      Libraries.circeCore,
+      Libraries.circeGeneric,
+      Libraries.circeGenericEx,
+      Libraries.circeParser,
+      Libraries.circeRefined,
+      // @newtype annotation
+      Libraries.newtype,
+      // refined types
+      Libraries.refinedCore,
+      // shapeless
+      Libraries.shapeless,
+      "com.cognitops.common" %% "common-json"  % "8.12-SNAPSHOT",
+      "com.cognitops.common" %% "common-utils" % "8.12-SNAPSHOT",
     )
   )
 
