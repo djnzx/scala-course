@@ -261,8 +261,8 @@ lazy val co = (project in file("co"))
       Libraries.refinedCore,
       // shapeless
       Libraries.shapeless,
-      "com.cognitops.common" %% "common-json"  % "8.12-SNAPSHOT",
-      "com.cognitops.common" %% "common-utils" % "8.12-SNAPSHOT",
+      "com.cognitops.common" %% "common-json"  % "8.13-SNAPSHOT",
+      "com.cognitops.common" %% "common-utils" % "8.13-SNAPSHOT",
     )
   )
 
