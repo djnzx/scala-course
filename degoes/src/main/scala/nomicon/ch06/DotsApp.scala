@@ -16,7 +16,7 @@ object DotsApp extends App {
     _    <- clock.sleep(5 seconds)
     _    <- fiber.interrupt
   } yield ()
-  
+
   val app2 = dots.timeout(5 seconds)
 
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = app2.exitCode

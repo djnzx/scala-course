@@ -79,17 +79,19 @@ object ScalaInterviewQuestions extends App {
       a.length
     }
 
-    val x: Seq[(Int, String)] = for {
+    val x = for {
       a <- List(1,2,3)
       if a > 1
       b <- List("a","b")
-                  } yield (a, b)
+    } yield (a, b)
 
     object Even {
-      def unapply(x: Int): Option[String] = ???
+      def unapply(x: Int): Option[String] =
+        if (x % 2 == 0) Some(s"$x is Even") else None
     }
     object Odd {
-      def unapply(x: Int): Option[String] = ???
+      def unapply(x: Int): Option[String] =
+        if (x % 2 != 0) Some(s"$x is Odd") else None
     }
 
     def go(x: Int): String = x match {
