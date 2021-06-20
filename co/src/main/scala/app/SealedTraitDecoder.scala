@@ -21,6 +21,10 @@ object SealedTraitDecoder {
   private val q = "\""
   def wrap(s: String) = s"$q$s$q"
 
+  /**
+    * putting return type here causes infinite recursion
+    * with Stack Overflow error
+    */
   implicit def customQueryParamDecoder[A: Decoder] =
     QueryParamDecoder[String].emap { x =>
       io.circe.parser.decode[A](wrap(x))

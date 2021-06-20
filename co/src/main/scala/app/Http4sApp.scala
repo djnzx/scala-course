@@ -9,18 +9,10 @@ import org.http4s.server.blaze.BlazeServerBuilder
 
 object Http4sApp extends IOApp {
 
-  import SealedTraitDecoder._
-
-  object FruitParamMatcher extends QueryParamDecoderMatcher[Fruit]("f")
-
-  /** http://localhost:8080/hello?f=Apple
-    */
+  /** http://localhost:8080/hello?f=Apple */
   val routes = HttpRoutes.of[IO] {
-    case GET -> Root / "hello"
-      :? FruitParamMatcher(f) =>
-      val f1: Fruit = f
-      println(f1)
-      Ok(s"fruit given: $f1")
+    case GET -> Root / "hello" :? FruitParamMatcher(f) =>
+      Ok(s"fruit given: $f")
     case _ => NotFound()
   }
 
@@ -29,9 +21,7 @@ object Http4sApp extends IOApp {
   override def run(args: List[String]): IO[ExitCode] =
     BlazeServerBuilder[IO](ec)
       .bindHttp(8080, "localhost")
-      .withHttpApp(Router(
-        "/" -> routes
-      ).orNotFound)
+      .withHttpApp(Router("/" -> routes).orNotFound)
       .serve
       .compile
       .drain
