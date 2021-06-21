@@ -3,7 +3,12 @@ package app
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
-class FruitParamMatcher$Spec extends AnyFunSpec with Matchers {
+class FruitParamMatcherSpec extends AnyFunSpec with Matchers {
+
+  private val props = new java.util.Properties
+  props.load(getClass.getResourceAsStream("/library.properties"))
+  val line: String = props.getProperty("version.number")
+  println(line)
 
   describe("fruit param matcher") {
     def mkParam(value: String) = Map("f" -> Seq(value))

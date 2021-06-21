@@ -228,7 +228,7 @@ lazy val co = (project in file("co"))
   .settings(commonSettings)
   .settings(
     scalacOptions -= "-Ymacro-annotations",
-    scalaVersion := "2.12.13",
+//    scalaVersion := "2.12.13",
     libraryDependencies ++= Seq(
       CompilerPlugins.betterMonadicFor,
       CompilerPlugins.contextApplied,

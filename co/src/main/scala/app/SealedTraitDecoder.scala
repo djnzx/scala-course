@@ -23,8 +23,9 @@ object SealedTraitDecoder {
 
   /**
     * putting return type here causes infinite recursion
-    * with Stack Overflow error
+    * with Stack Overflow error 2.12.13, 2.13.6
     */
+//  implicit def customQueryParamDecoder[A: Decoder]: QueryParamDecoder[A] =
   implicit def customQueryParamDecoder[A: Decoder] =
     QueryParamDecoder[String].emap { x =>
       io.circe.parser.decode[A](wrap(x))
