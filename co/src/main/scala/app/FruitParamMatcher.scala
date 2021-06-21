@@ -1,6 +1,6 @@
 package app
 
+import app.SealedTraitDecoder.customQueryParamDecoder
 import org.http4s.dsl.io.QueryParamDecoderMatcher
 
-import SealedTraitDecoder._
 object FruitParamMatcher extends QueryParamDecoderMatcher[Fruit]("f")
