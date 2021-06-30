@@ -62,6 +62,8 @@ object ScalaInterviewQuestions extends App {
 
     // object / case object
 
+    // partial function
+
     def abc1(a: Int): String = ???
     val abc2: Int => String = ???
     def abc3[A, B](a: A): B = ???
@@ -85,9 +87,11 @@ object ScalaInterviewQuestions extends App {
       b <- List("a","b")
     } yield (a, b)
 
+    // 5. unapply
+
     object Even {
       def unapply(x: Int): Option[String] =
-        if (x % 2 == 0) Some(s"$x is Even") else None
+        Option.when(x % 2 == 0)(s"$x is Even")
     }
     object Odd {
       def unapply(x: Int): Option[String] =
