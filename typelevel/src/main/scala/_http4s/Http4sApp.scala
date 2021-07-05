@@ -28,8 +28,7 @@ object Http4sApp extends IOApp {
   val app = httpStream
     .compile
     .drain
-    .map(_ => ExitCode.Success)
 
-  override def run(args: List[String]): IO[ExitCode] = app
+  override def run(args: List[String]): IO[ExitCode] = app.map(_ => ExitCode.Success)
 
 }
