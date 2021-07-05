@@ -6,6 +6,7 @@ import org.http4s.dsl.io._
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
+import scala.concurrent.ExecutionContext.{global => ec}
 
 object Http4sApp extends IOApp {
 
@@ -17,8 +18,6 @@ object Http4sApp extends IOApp {
   val allRoutes = Router(
     "/" -> coreRoutes
   ).orNotFound
-
-  val ec = scala.concurrent.ExecutionContext.global
 
   val httpStream: fs2.Stream[IO, ExitCode] = BlazeServerBuilder[IO](ec)
     .bindHttp(8080, "localhost")
