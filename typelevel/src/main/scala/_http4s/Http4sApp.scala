@@ -9,21 +9,27 @@ import org.http4s.server.blaze.BlazeServerBuilder
 
 object Http4sApp extends IOApp {
 
-  val routes = HttpRoutes.of[IO] {
+  val coreRoutes: HttpRoutes[IO] = HttpRoutes.of[IO] {
     case GET -> Root / "hello" / name => Ok(s"Hello, $name.")
     case _ => NotFound()
   }
 
-  implicit val ec = scala.concurrent.ExecutionContext.global
+  val allRoutes = Router(
+    "/" -> coreRoutes
+  ).orNotFound
 
-  override def run(args: List[String]): IO[ExitCode] =
-    BlazeServerBuilder[IO](ec)
-      .bindHttp(8080, "localhost")
-      .withHttpApp(Router(
-        "/" -> routes
-      ).orNotFound)
-      .serve
-      .compile
-      .drain
-      .map(_ => ExitCode.Success)
+  val ec = scala.concurrent.ExecutionContext.global
+
+  val httpStream: fs2.Stream[IO, ExitCode] = BlazeServerBuilder[IO](ec)
+    .bindHttp(8080, "localhost")
+    .withHttpApp(allRoutes)
+    .serve
+
+  val app = httpStream
+    .compile
+    .drain
+    .map(_ => ExitCode.Success)
+
+  override def run(args: List[String]): IO[ExitCode] = app
+
 }
