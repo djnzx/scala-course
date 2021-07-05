@@ -25,7 +25,7 @@ object Http4sApp extends IOApp {
     .withHttpApp(allRoutes)
     .serve
 
-  val app = httpStream
+  val app: IO[Unit] = httpStream
     .compile
     .drain
 
