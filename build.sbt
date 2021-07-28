@@ -222,6 +222,8 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.refinedCore,
       // shapeless
       Libraries.shapeless,
+      "com.github.fd4s" %% "fs2-kafka" % "1.7.0",
+
     )
   )
 lazy val co = (project in file("co"))
