@@ -14,6 +14,9 @@ object PartialApp extends App {
   def represent: PartialFunction[Int, String] = {
     case 1 => "one"
     case 2 => "two"
+    case 3 => "three"
+    case 4 => "four"
+    case 5 => "five"
   }
 
   /** postprocess */
@@ -21,13 +24,13 @@ object PartialApp extends App {
 
   /** elseCase */
   def another: PartialFunction[Int, String] = {
-    case _ => "something else"
+    case _ => "else"
   }
 
   /** whole composition */
   def composition = validatePartial andThen represent andThen (postprocess _) orElse another
 
-  val data = List(1,2,3,4,5)
+  val data = 1 to 15
 
   val outcome = data.collect(composition)
   println(outcome)
