@@ -6,7 +6,7 @@ import scala.util.Try
   * the power of partial application
   * and handle errors at the very last moment
   */
-object PartialApp2 extends App {
+object PartialApp2 {
 
   /**
     * our implementation,
@@ -70,8 +70,8 @@ object PartialApp2 extends App {
   lazy val x3 = reallySafeComposition(3)     // Right(covered!),                     hasn't implemented, but handled in `takeCareAtTheLastMoment`
   lazy val x10 = reallySafeComposition(10)   // Right(covered!),                     has filtered, hence implemented => hasn't implemented, but handled in `takeCareAtTheLastMoment`
 
-  println(x1)
-  println(x2)
-  println(x3)
-  println(x10)
+//  println(x1)
+//  println(x2)
+//  println(x3)
+//  println(x10)
 }
