@@ -1,6 +1,6 @@
 package partial
 
-object PartialApp1 extends App {
+object PartialBasicIdeas extends App {
 
   /** our validation (for example token checking) */
   def validate(x: Int) = x < 10
