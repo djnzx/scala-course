@@ -1,14 +1,13 @@
-package catsx
+package catsx.c047functors
 
-import cats.instances.function._ // functor
-import cats.syntax.functor._     // map
+import cats.implicits.toFunctorOps
 
 object C058Functor extends App {
   val func1 = (a: Int) => a + 1
   val func2 = (a: Int) => a * 2
   val func3 = (a: Int) => s"$a!"
 
-  // scala - sysntax based on Function2[A,B]
+  // scala - syntax based on Function2[A,B]
   val func4a: Int => String = func1 andThen func2 andThen func3
   // cats
   val func4b: Int => String = func1 map func2 map func3

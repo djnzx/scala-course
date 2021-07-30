@@ -1,9 +1,8 @@
-package catsx
+package catsx.c047functors
 
-import scala.concurrent.Future
-import scala.concurrent.{Future, Await}
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationInt
+import scala.concurrent.{Await, Future}
 
 object C047Functors extends App {
   // types can be different
@@ -14,7 +13,7 @@ object C047Functors extends App {
   List(1, 2, 3).map(n => n + 1)
   // value different, but structure - the same!
   val l2: Seq[String] = List(1, 2, 3).map(functor)
-  val l3: Seq[Int]    = List(1, 2, 3).map(endofunctor)
+  val l3: Seq[Int] = List(1, 2, 3).map(endofunctor)
 
   val future: Future[String] =
     Future(123)

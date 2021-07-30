@@ -1,15 +1,15 @@
-package catsx
-
-import java.time.{LocalDate, LocalTime, ZoneId}
-import java.time.format.DateTimeFormatter
+package catsx.c001show
 
 import cats.Show
-import cats.syntax.all._
+import cats.implicits.toShow
+
+import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, LocalTime, ZoneId}
 
 object C023Show extends App {
 
   val ld = LocalDate.now()
-  val lt = LocalTime.now()                            // current time according to system settings
+  val lt = LocalTime.now() // current time according to system settings
   val lt2 = LocalTime.now(ZoneId.of("GMT+1")) // current time in requested zone, based on system settings
   val fmtd = DateTimeFormatter.ofPattern(">dd.MM.yyyy<")
   val fmtt = DateTimeFormatter.ofPattern(">HH:mm:ss<")

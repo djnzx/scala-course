@@ -1,12 +1,10 @@
-package catsx
+package catsx.c047functors
 
 import cats.Functor
-import cats.instances.list._
-import cats.instances.option._ // for Functor
 
 /**
   * `trait Functor[F[_]]` {
-  *   def map[A, B](fa: F[A])(f: A => B): F[B]
+  * def map[A, B](fa: F[A])(f: A => B): F[B]
   * }
   *
   */
@@ -15,12 +13,12 @@ object C057Functor extends App {
   val function = (x: Int) => x * 2
 
   // peek the functor from the implicits
-  val functor3: Functor[List] = implicitly[Functor[List]]// syntax #1
-  val functor2: Functor[List] = Functor.apply[List]      // syntax #2
-  val functor:  Functor[List] = Functor[List]            // syntax #3
+  val functor3: Functor[List] = implicitly[Functor[List]] // syntax #1
+  val functor2: Functor[List] = Functor.apply[List] // syntax #2
+  val functor: Functor[List] = Functor[List] // syntax #3
 
   // Scala embedded List[A].map[A=>B]
-  val list2a: List[Int] = source.map(function)   // this will be called under the hood
+  val list2a: List[Int] = source.map(function) // this will be called under the hood
   // cats functor
   val list2b: List[Int] = functor.map(source)(function)
   // create lifter

@@ -1,4 +1,4 @@
-package catsx.functors
+package catsx.c047functors
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

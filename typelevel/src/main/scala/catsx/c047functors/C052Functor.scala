@@ -1,9 +1,10 @@
-package catsx
+package catsx.c047functors
 
 import cats.Id
 import cats.data.{Kleisli, Reader}
 
 object C052Functor extends App {
+
   val f1 = (a: Int) => a + 1
   val f2 = (a: Int) => a * 2
   val f3 = (a: Int) => s"<$a>"

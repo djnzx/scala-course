@@ -1,15 +1,14 @@
-package catsx
+package catsx.c001show
 
 object C021Show extends App {
+
   import cats._
-  import cats.implicits._ // or import cats.syntax.show._
-  import C020Show.Cat
-//  import C020.MyImplicitInstances.show_cat
+  import cats.implicits._
 
   // instances
-  val showInt:          Show[Int]    = Show.apply[Int]    // extract implicit from scope (as in line 21)
-  val showString:       Show[String] = Show.apply[String]
-  implicit val showCat: Show[Cat]    = C020Show.MyImplicitInstances.show_cat
+  val showInt: Show[Int] = Show.apply[Int] // extract implicit from scope (as in line 21)
+  val showString: Show[String] = Show.apply[String]
+  implicit val showCat: Show[Cat] = C020Show.MyImplicitInstances.showCat
 
   val cat: Cat = Cat("Barcelona", 7)
 

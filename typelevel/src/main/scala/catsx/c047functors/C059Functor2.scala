@@ -1,14 +1,14 @@
-package catsx
+package catsx.c047functors
 
 import cats.Functor
-import cats.instances.function._
-import cats.syntax.functor._     // map
+import cats.implicits.toFunctorOps
+
 /**
   * implicit class FunctorOps[F[_], A](src: F[A]) {
   * def map[B]
   * (func: A => B)
   * (implicit functor: Functor[F]): F[B] =
-  *         functor.map(src)(func)
+  * functor.map(src)(func)
   * }
   *
   * after that, compiler can insert .map wherever it can find the implicit
@@ -21,6 +21,7 @@ object C059Functor2 extends App {
   val func4a = func1 map func2 map func3
 
   final case class Box[A](value: A)
+
   val b1: Box[Int] = Box[Int](123)
   val b3: Box[Option[Int]] = Box(Option(13))
 

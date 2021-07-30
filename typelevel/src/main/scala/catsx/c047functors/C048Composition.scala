@@ -1,4 +1,4 @@
-package catsx
+package catsx.c047functors
 
 object C048Composition extends App {
   // all af them are functions Int => Int
