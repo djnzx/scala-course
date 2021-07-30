@@ -1,8 +1,6 @@
-package catsx
+package catsx.c062contra
 
-//import cats.Functor._
-import cats.instances.function._
-import cats.syntax.functor._
+import cats.implicits.toFunctorOps
 
 object C070PartialUnification extends App {
   /**
@@ -16,18 +14,18 @@ object C070PartialUnification extends App {
     * in order to compile this, compiler will search Functor for Function1
     *
     * trait Functor[F[_]] {
-    *   def map[A, B](fa: F[A])(func: A => B): F[B]
+    * def map[A, B](fa: F[A])(func: A => B): F[B]
     * }
     *
     * trait Function1[-A, +B] {
-    *   def apply(arg: A): B
+    * def apply(arg: A): B
     * }
     * type F[A] = Int => A
     * type F[A] = A => Double
     *
     * this .map from cats. functor
     */
-  val func3: Int => Double = func1.map(func2)
+  val func3: Int => Double = func1 map func2
 
   val r: Double = func3(3) // 6.0
   println(r)

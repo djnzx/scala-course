@@ -1,11 +1,10 @@
-package catsx
+package catsx.c062contra
 
 object C063ContraVsShow extends App {
 
-  final case class Box[A](value: A)
-
-  trait Printable[A] { me =>
+  trait Printable[A] {me =>
     def format(a: A): String
+
     // we describe how to convert from any B to A
     // and result will be
     def contraMap[B](f: B => A): Printable[B] = new Printable[B] {
@@ -46,9 +45,9 @@ object C063ContraVsShow extends App {
   def formatx[A](value: A)(implicit pa: Printable[A]): String = pa.format(value)
 
   val s1: String = formatx("hello") // "hello"
-  val s2: String = formatx(true)    // yes
-  val s3: String = formatx(Box(false))     // no
-  val s4: String = formatx(Box("abc"))     // "abc"
+  val s2: String = formatx(true) // yes
+  val s3: String = formatx(Box(false)) // no
+  val s4: String = formatx(Box("abc")) // "abc"
   println(s1)
   println(s2)
   println(s3)

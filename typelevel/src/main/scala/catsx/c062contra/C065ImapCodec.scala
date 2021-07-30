@@ -1,8 +1,6 @@
-package catsx
+package catsx.c062contra
 
 object C065ImapCodec extends App {
-
-  final case class Box[A](value: A)
 
   trait Codec[A] {
     def encode(value: A): String
@@ -18,14 +16,15 @@ object C065ImapCodec extends App {
 
   implicit val stringCodec: Codec[String] = new Codec[String] {
     def encode(value: String): String = s"<$value>"
-    def decode(raw: String): String = raw.substring(1, raw.length-1)
+    def decode(raw: String): String = raw.substring(1, raw.length - 1)
   }
 
-  implicit val intCodec:     Codec[Int]     = stringCodec.imap[Int]    (x => x.toInt,     x => x.toString)
+  implicit val intCodec: Codec[Int] = stringCodec.imap[Int](x => x.toInt, x => x.toString)
   implicit val booleanCodec: Codec[Boolean] = stringCodec.imap[Boolean](x => x.toBoolean, x => x.toString)
-  implicit val doubleCodec:  Codec[Double]  = stringCodec.imap[Double] (x => x.toDouble,  x => x.toString)
+  implicit val doubleCodec: Codec[Double] = stringCodec.imap[Double](x => x.toDouble, x => x.toString)
+
   implicit def boxCodec[A](implicit c: Codec[A]):
-                             Codec[Box[A]]  =           c.imap[Box[A]] (x => Box(x),      x => x.value)
+  Codec[Box[A]] = c.imap[Box[A]](x => Box(x), x => x.value)
 
   def encode[A](value: A)(implicit c: Codec[A]): String = c.encode(value)
   def decode[A](value: String)(implicit c: Codec[A]): A = c.decode(value)
