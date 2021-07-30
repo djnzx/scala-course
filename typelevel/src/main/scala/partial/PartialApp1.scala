@@ -1,6 +1,6 @@
 package partial
 
-object PartialApp extends App {
+object PartialApp1 extends App {
 
   /** our validation (for example token checking) */
   def validate(x: Int) = x < 10
@@ -28,11 +28,14 @@ object PartialApp extends App {
   }
 
   /** whole composition */
-  def composition = validatePartial andThen represent andThen (postprocess _) orElse another
+  def composition1 = validatePartial andThen represent andThen postprocess _
+  def composition2: PartialFunction[Int, String] = validatePartial andThen represent andThen (postprocess _) orElse another
 
   val data = 1 to 15
 
-  val outcome = data.collect(composition)
-  println(outcome)
+  val outcome1 = data.collect(composition1)
+  val outcome2 = data.collect(composition2)
+  println(outcome1) // Vector(ONE, TWO, THREE, FOUR, FIVE)
+  println(outcome2) // Vector(ONE, TWO, THREE, FOUR, FIVE, else, else, else, else, else, else, else, else, else, else)
 
 }
