@@ -6,7 +6,7 @@ object C021Show extends App {
   import cats.implicits._
 
   // instances
-  val showInt: Show[Int] = Show.apply[Int] // extract implicit from scope (as in line 21)
+  val showInt: Show[Int] = Show.apply[Int]
   val showString: Show[String] = Show.apply[String]
   implicit val showCat: Show[Cat] = C020Show.MyImplicitInstances.showCat
 
@@ -23,6 +23,5 @@ object C021Show extends App {
   val s5: String = 123.show
   val s6: String = "Hello".show
   val s7: String = 3.5.show
-  // syntax because of line 7 or 12
   val s8: String = cat.show
 }
