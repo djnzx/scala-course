@@ -1,11 +1,28 @@
 package catsx.c000representation
 
-import catsx.c000representation.C010Json.{JsonWriter, OptionDerivation3PatternMatch}
-import catsx.c000representation.C010Json.JsonWriterInstances.personWriter
-
 object C011AccessingImplicitInstances {
 
-  val instance: JsonWriter[Person] = implicitly[JsonWriter[Person]]
-  implicit def optionWriter[A](implicit writer: JsonWriter[A]): JsonWriter[Option[A]] = OptionDerivation3PatternMatch.optionWriter[A]
+  trait Box[A] {
+    val a: A
+  }
+
+  val boxInt = new Box[Int] {
+    override val a: Int = 33
+  }
+
+  object Method1Direct {
+    val a = boxInt.a
+  }
+
+  object Method2ViaImplicitKeyword {
+    implicit val boxIntImpl = boxInt
+    val a = implicitly[Box[Int]].a
+  }
+
+  object Method3ViaImplicitParameter {
+    implicit val boxIntImpl = boxInt
+    def whatever(implicit ba: Box[Int]) = ba.a
+    val a = whatever
+  }
 
 }
