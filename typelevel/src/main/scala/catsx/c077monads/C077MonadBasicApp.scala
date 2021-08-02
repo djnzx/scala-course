@@ -1,4 +1,4 @@
-package catsx
+package catsx.c077monads
 
 object C077MonadBasicApp extends App {
   def parse(s: String): Option[Int] = try {
@@ -8,7 +8,7 @@ object C077MonadBasicApp extends App {
   }
 
   def divide(a: Int, b: Int): Option[Int] =
-    if (b == 0) None else Some(a/b)
+    if (b == 0) None else Some(a / b)
 
   def calc(as: String, bs: String): Option[Int] =
     for {

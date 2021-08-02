@@ -1,20 +1,17 @@
-package catsx
+package catsx.c077monads
 
-import cats.Monad
-import cats.syntax.flatMap._
-import cats.syntax.functor._
-import cats.syntax.applicative._
-import cats.instances.option._
-
-import cats.Id
+import cats.implicits._
+import cats.{Id, Monad}
 
 object C088IdentityMonad extends App {
 
   def pure[A](value: A): Id[A] = value
+
   def map[A, B](initial: Id[A])(func: A => B): Id[B] = func(initial)
+
   def flatMap[A, B](initial: Id[A])(func: A => Id[B]): Id[B] = func(initial)
 
-  def sumSq[F[_]: Monad](ma: F[Int], mb: F[Int]): F[Int] = for {
+  def sumSq[F[_] : Monad](ma: F[Int], mb: F[Int]): F[Int] = for {
     a <- ma
     b <- mb
   } yield a * a + b * b

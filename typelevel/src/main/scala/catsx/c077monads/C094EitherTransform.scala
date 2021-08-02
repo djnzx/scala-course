@@ -1,6 +1,6 @@
-package catsx
+package catsx.c077monads
 
-import cats.syntax.either._
+import cats.implicits._
 
 object C094EitherTransform extends App {
   /**

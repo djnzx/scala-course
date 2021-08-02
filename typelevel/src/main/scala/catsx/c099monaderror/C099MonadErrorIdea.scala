@@ -1,4 +1,4 @@
-package catsx
+package catsx.c099monaderror
 
 import cats.Monad
 
