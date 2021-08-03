@@ -100,6 +100,7 @@ object Dependencies {
     val cirisRefined   = ciris("ciris-refined")
 
     val http4sServer  = http4s("http4s-blaze-server")
+    val http4sTesting = http4s("http4s-testing")
     val http4sDsl     = http4s("http4s-dsl")
     val http4sClient  = http4s("http4s-blaze-client")
     val http4sCirce   = http4s("http4s-circe")
