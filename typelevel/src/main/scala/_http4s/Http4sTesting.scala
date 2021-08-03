@@ -1,5 +1,6 @@
 package _http4s
 
+import cats.Id
 import cats.effect.IO
 import org.http4s.implicits.http4sLiteralsSyntax
 import org.http4s.{Method, Request}
