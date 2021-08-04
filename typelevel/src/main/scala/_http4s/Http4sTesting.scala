@@ -9,7 +9,7 @@ import org.scalatest.matchers.should.Matchers
 
 class Http4sTesting extends AnyFunSpec with Matchers {
 
-  def runQuery[A](routes: HttpRoutes[IO])(rq: Request[IO])(result: Option[Either[DecodeFailure, A]])(implicit d: EntityDecoder[IO, A]) =
+  def runTest[A](routes: HttpRoutes[IO])(rq: Request[IO])(result: Option[Either[DecodeFailure, A]])(implicit d: EntityDecoder[IO, A]) =
     routes(rq)             // PartialFunction[Request[IO], IO[Response[IO]]]
       .value
       .unsafeRunSync()     // run handler
@@ -29,20 +29,18 @@ class Http4sTesting extends AnyFunSpec with Matchers {
       val rq: Request[IO] = Request(Method.GET, uri)
       val exp = "Hello, Jim."
 
-      runQuery(serviceRoutes)(rq)(exp.asRight.some)
+      runTest(serviceRoutes)(rq)(exp.asRight.some)
     }
 
     it("GET with QueryParam") {
-      val uri = uri"twice".withQueryParam("x", 3)
-      val rq: Request[IO] = Request(Method.GET, uri)
+      val rq: Request[IO] = Twice.request[IO]
       val exp = "6"
 
-      runQuery(serviceRoutes)(rq)(exp.asRight.some)
+      runTest(serviceRoutes)(rq)(exp.asRight.some)
     }
 
     /** TODO: */
     it("POST with entity in Request and entity in Response") {
-
     }
 
     /** TODO */
@@ -53,7 +51,7 @@ class Http4sTesting extends AnyFunSpec with Matchers {
       val uri = uri"unhandled"
       val rq: Request[IO] = Request(Method.GET, uri)
 
-      runQuery[String](serviceRoutes)(rq)(none)
+      runTest[String](serviceRoutes)(rq)(none)
     }
 
   }
