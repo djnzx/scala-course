@@ -10,7 +10,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 lazy val commonSettings = Seq(
   scalaVersion := vScala,
   organization := "org.alexr",
-  version      := "21.05.28",
+  version      := "21.08.04",
 
   javacOptions  ++= Seq(
     "-source", "11",
@@ -42,29 +42,6 @@ lazy val commonSettings = Seq(
     Libraries.fansi,
   ),
 )
-
-lazy val whole = (project in file("."))
-  .settings(commonSettings)
-  .settings(
-    name := "scala-course",
-  )
-  .aggregate(
-    algorithms,
-    scala_plain,
-    fp_red,
-    lihaoyi,
-    typesafe,
-    typelevel,
-    mix,
-    degoes,
-    dotty,
-    sparkx,
-  )
-//  .enablePlugins(BuildInfoPlugin)
-//  .settings(
-//    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
-//    buildInfoPackage := "learn"
-//  )
 
 lazy val scala_plain = (project in file("scala_plain"))
   .enablePlugins(ScalaxbPlugin)
@@ -126,14 +103,14 @@ lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      pf.lihaoyi         %% "upickle"      % "1.3.8", // http://www.lihaoyi.com/upickle
-      pf.lihaoyi         %% "ujson"        % "1.2.0",
-      pf.lihaoyi         %% "os-lib"       % "0.7.1", // https://github.com/lihaoyi/os-lib
-      pf.lihaoyi         %% "scalatags"    % "0.9.1",
-      pf.lihaoyi         %% "requests"     % "0.6.5",
-      pf.lihaoyi         %% "geny"         % "0.6.2",
-      pf.lihaoyi         %% "fastparse"    % "2.3.0", // https://www.lihaoyi.com/fastparse/
-      "com.atlassian.commonmark" % "commonmark"                % "0.15.0",
+      pf.lihaoyi %% "upickle"   % "1.4.0", // http://www.lihaoyi.com/upickle
+      pf.lihaoyi %% "ujson"     % "1.4.0",
+      pf.lihaoyi %% "os-lib"    % "0.7.8", // https://github.com/lihaoyi/os-lib
+      pf.lihaoyi %% "scalatags" % "0.9.4",
+      pf.lihaoyi %% "requests"  % "0.6.9",
+      pf.lihaoyi %% "geny"      % "0.6.10",
+      pf.lihaoyi %% "fastparse" % "2.3.2", // https://www.lihaoyi.com/fastparse/
+      "com.atlassian.commonmark" % "commonmark" % "0.15.0",
     )
   )
 
@@ -298,6 +275,32 @@ lazy val mix = (project in file("mix"))
 lazy val sparkx = (project in file("sparkx"))
   .settings(commonSettings)
 
+val zio1v = "1.0.10"
+lazy val zio1 = (project in file("zio1"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      pf.zio %% "zio"          % zio1v,
+      pf.zio %% "zio-streams"  % zio1v,
+      pf.zio %% "zio-test"     % zio1v,
+      pf.zio %% "zio-test-sbt" % zio1v % Test
+    ),
+    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
+  )
+
+val zio2v = "2.0.0-M1"
+lazy val zio2 = (project in file("zio2"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      pf.zio %% "zio"          % zio2v,
+      pf.zio %% "zio-streams"  % zio2v,
+      pf.zio %% "zio-test"     % zio2v,
+      pf.zio %% "zio-test-sbt" % zio2v % Test
+    ),
+    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
+  )
+
 /**
   * John A. De Goes Project ZIO
   * https://zio.dev
@@ -336,8 +339,7 @@ lazy val dotty = (project in file("dotty"))
 
 lazy val ping = inputKey[Unit]("Will ping the server")
 ping := {
-  println("pinging ACT backend server...")
-  val x = spaceDelimited("<arg>").parsed
+  println("pinging server...")
+  val x: Seq[String] = spaceDelimited("<arg>").parsed
   println(x)
-  (Test / test).toTask.value
 }

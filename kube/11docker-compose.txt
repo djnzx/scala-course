@@ -1,5 +1,0 @@
-docker-compose up          // run
-docker-compose up -d       // run in detached mode
-docker-compose up --build  // build and run
-docker-compose down
-docker-compose ps
