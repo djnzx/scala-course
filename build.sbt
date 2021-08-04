@@ -206,7 +206,6 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.fs2reactive,
       // HTTP
       Libraries.http4sServer,
-      Libraries.http4sTesting,
       Libraries.http4sDsl,
       Libraries.http4sClient,
       Libraries.http4sCirce,
