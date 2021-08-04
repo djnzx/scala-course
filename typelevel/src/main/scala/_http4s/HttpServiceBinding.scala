@@ -2,7 +2,7 @@ package _http4s
 
 import cats.effect.Effect
 import cats.implicits.{catsSyntaxApplicativeId, toFunctorOps}
-import org.http4s.dsl.io._
+import org.http4s.dsl.io.{QueryParamDecoderMatcher, _}
 import org.http4s.{HttpRoutes, Request, Response}
 
 class HttpServiceBinding[F[_]: Effect] {
@@ -17,12 +17,16 @@ class HttpServiceBinding[F[_]: Effect] {
       r.pure[F]
   }
 
+  object ParamX extends QueryParamDecoderMatcher[Int]("x")
+
   /** partial function Tq => Rs lifted to Rq => Option[Rs] */
   val httpBinding: HttpRoutes[F] = HttpRoutes.of[F] {
     /** http://localhost:8080/hello/Jim */
     case GET -> Root / "hello" / name => service.core(name).map { x => ok.withEntity(x) }
     /** http://localhost:8080/hello2/Jackson */
     case GET -> Root / "hello2" / name => service.core2(name).map { x => ok.withEntity(x) }
+      /**  */
+    case GET -> Root / "twice" :? ParamX(x) => service.twice(x).map { x => ok.withEntity(x.toString) }
   }
 
 }
