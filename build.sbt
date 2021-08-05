@@ -277,7 +277,9 @@ lazy val sparkx = (project in file("sparkx"))
 
 val zio1v = "1.0.10"
 lazy val zio1 = (project in file("zio1"))
-  .settings(commonSettings)
+  .settings(
+    commonSettings
+  )
   .settings(
     libraryDependencies ++= Seq(
       pf.zio %% "zio"          % zio1v,
