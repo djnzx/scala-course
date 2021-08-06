@@ -1,8 +1,8 @@
-package catsx
+package catsx.c101eval
 
 import cats.Eval
 
-object C108TraverseDefer extends App {
+object C108SafeFoldWithDefer extends App {
 
   /**
     * scala library implementation
@@ -12,22 +12,24 @@ object C108TraverseDefer extends App {
     * foldRight means: from Left to Right ( --> )
     */
 
-  // classic non-tail-recursive solution
+  /**
+    * O(N)
+    * classic non-tail-recursive solution
+    * not stack-safe
+    */
   def foldRightNTR[A, B](as: List[A], acc: B)(f: (A, B) => B): B = as match {
-    case Nil  => acc
-    case h::t => {
+    case Nil => acc
+    case h :: t =>
       // recursive list decompose
       val b_from_tail: B = foldRightNTR(t, acc)(f)
-      // applying function on the bak way
+      // applying function on the back way
       f(h, b_from_tail)
-      // this approach consumes stack
-    }
   }
 
   // tail-recursive solution
   def foldRightTR[A, B](as: List[A], acc: B)(f: (A, B) => B): B = as match {
-    case Nil  => acc
-    case h::t => {
+    case Nil => acc
+    case h :: t => {
       // apply function to the first element (head)
       val newAcc: B = f(h, acc)
       // running the same folding by applying to the residual elements (tail) and new accumulator
@@ -37,8 +39,8 @@ object C108TraverseDefer extends App {
 
   // classic non-tail-recursive solution based on EVAL
   def foldRightEval[A, B](as: List[A], acc: Eval[B])(f: (A, Eval[B]) => Eval[B]): Eval[B] = as match {
-    case Nil  => acc
-    case h::t => Eval.defer(f(h, foldRightEval(t, acc)(f) ))
+    case Nil => acc
+    case h :: t => Eval.defer(f(h, foldRightEval(t, acc)(f)))
   }
 
   /**
@@ -81,8 +83,8 @@ object C108TraverseDefer extends App {
   println(foldRightViaEval(data, acc0)(gt1)) // false
 
   // will break in runtime (StackOverflowError)
-//  println(foldRightNTR(data, acc0)(f0)) // true
-//  println(foldRightNTR(data, acc0)(f1)) // false
+  //  println(foldRightNTR(data, acc0)(f0)) // true
+  //  println(foldRightNTR(data, acc0)(f1)) // false
 
 
 }
