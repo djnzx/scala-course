@@ -26,21 +26,23 @@ object C108SafeFoldWithDefer extends App {
       f(h, b_from_tail)
   }
 
-  // tail-recursive solution
+  /**
+    * tail-recursive solution
+    * but tail recursive implementation can't be generalized
+    */
   def foldRightTR[A, B](as: List[A], acc: B)(f: (A, B) => B): B = as match {
     case Nil => acc
-    case h :: t => {
+    case h :: t =>
       // apply function to the first element (head)
       val newAcc: B = f(h, acc)
       // running the same folding by applying to the residual elements (tail) and new accumulator
       foldRightTR(t, newAcc)(f)
-    }
   }
 
   // classic non-tail-recursive solution based on EVAL
   def foldRightEval[A, B](as: List[A], acc: Eval[B])(f: (A, Eval[B]) => Eval[B]): Eval[B] = as match {
     case Nil => acc
-    case h :: t => Eval.defer(f(h, foldRightEval(t, acc)(f)))
+    case h :: t => Eval.defer { f(h, foldRightEval(t, acc)(f)) }
   }
 
   /**
@@ -53,16 +55,6 @@ object C108SafeFoldWithDefer extends App {
   def fToEval[A, B](f: (A, B) => B): (A, Eval[B]) => Eval[B] =
     (a: A, eb: Eval[B]) => eb.map(b => f(a, b))
 
-  /**
-    * syntax 2
-    * mapping
-    * f: (A, B) => B
-    * to
-    * g: (A, Eval[B]) => Eval[B]
-    */
-  def fToEval2[A, B](f: (A, B) => B): (A, Eval[B]) => Eval[B] =
-    (a: A, eb: Eval[B]) => eb.map(f(a, _))
-
   def foldRightViaEval[A, B](as: List[A], acc: B)(f: (A, B) => B): B =
     foldRightEval(as, Eval.now(acc))(fToEval(f)).value
 
@@ -74,17 +66,16 @@ object C108SafeFoldWithDefer extends App {
   val acc0 = true
 
   val data = (1 to 10_000).toList
-  // will work
+  // works, because of tail recursion
   println(foldRightTR(data, acc0)(gt0)) // true
   println(foldRightTR(data, acc0)(gt1)) // false
 
-  // will work, because Eval Defer
+  // works, because of Eval.defer
   println(foldRightViaEval(data, acc0)(gt0)) // true
   println(foldRightViaEval(data, acc0)(gt1)) // false
 
   // will break in runtime (StackOverflowError)
   //  println(foldRightNTR(data, acc0)(f0)) // true
   //  println(foldRightNTR(data, acc0)(f1)) // false
-
 
 }
