@@ -1,9 +1,7 @@
-package catsx
+package catsx.c113writer
 
 import cats.data.Writer
-import cats.instances.vector._
-import cats.syntax.applicative._
-import cats.syntax.writer._
+import cats.implicits.{catsSyntaxApplicativeId, catsSyntaxWriterId}
 
 import scala.annotation.tailrec
 
@@ -13,14 +11,14 @@ object C113WriterExercise3 extends App {
 
   // idiomatic implementation
   def factr1(n: Int): Logged[Int] = for {
-    r <- if (n==1) 1.pure[Logged] else factr1(n-1).map(_ * n)
+    r <- if (n == 1) 1.pure[Logged] else factr1(n - 1).map(_ * n)
     _ <- Vector(s"$n! = $r").tell
   } yield r
 
   // my naive implementation
   def factr2(n: Int): Logged[Int] = {
-    if (n==1) Writer(Vector("1! = 1"), 1)
-    else factr2(n-1).mapBoth((log, value) => {
+    if (n == 1) Writer(Vector("1! = 1"), 1)
+    else factr2(n - 1).mapBoth((log, value) => {
       val r = value * n
       (log.appended(s"$n! = $r"), r)
     })
@@ -36,7 +34,7 @@ object C113WriterExercise3 extends App {
     else facttr(n, cur + 1,
       for {
         r <- acc.map(_ * (cur + 1))
-        _ <- Vector(s"${cur+1}! = $r").tell
+        _ <- Vector(s"${cur + 1}! = $r").tell
       } yield r
     )
 

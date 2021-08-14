@@ -7,14 +7,10 @@ import zio._
   * 5. https://www.youtube.com/watch?v=1t0GPFumFkE
   * 6. https://www.youtube.com/watch?v=epTKGRuxbOE
   * 7. https://www.youtube.com/watch?v=FOStEDZAZWs
+  * 8. https://www.youtube.com/watch?v=WjjdlhvOS7Y
   * -XSource:3
   * -Ysafe-init
   */
-
-object ourConsole {
-  def putStrLn(line: => String) = ZIO.succeed(println(line))
-  def getStrLn = ZIO.succeed(scala.io.StdIn.readLine())
-}
 
 object Z1App extends App {
 
@@ -23,11 +19,11 @@ object Z1App extends App {
   val z5 = ZIO.succeed(5)
 
   val program = for {
-    _ <- ourConsole.putStrLn("-" * 50)
-    _ <- ourConsole.putStrLn("What is your name?")
-    name <- ourConsole.getStrLn
-    _ <- ourConsole.putStrLn(s"Hi, $name!")
-    _ <- ourConsole.putStrLn("-" * 50).debug(trace)
+    _ <- badConsole.putStrLn("-" * 50)
+    _ <- badConsole.putStrLn("What is your name?")
+    name <- badConsole.getStrLn
+    _ <- badConsole.putStrLn(s"Hi, $name!")
+    _ <- badConsole.putStrLn("-" * 50).debug(trace)
   } yield ()
 
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] =

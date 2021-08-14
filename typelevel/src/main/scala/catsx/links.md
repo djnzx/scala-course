@@ -1,0 +1,2 @@
+- [pdf](https://www.scalawithcats.com/dist/scala-with-cats.pdf)
+- [html](https://www.scalawithcats.com/dist/scala-with-cats.html)
