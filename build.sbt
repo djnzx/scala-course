@@ -52,6 +52,7 @@ lazy val scala_plain = (project in file("scala_plain"))
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.7.3",
       "org.scala-lang"             %  "scala-reflect"               % vScala,
       "org.scalaxb" %% "scalaxb" % "1.8.0",
+      "com.google.cloud" % "google-cloud-logging" % "3.0.1",
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
       Libraries.scalactic,
