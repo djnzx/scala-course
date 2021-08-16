@@ -1,5 +1,7 @@
 package catsx.c119state
 
+import cats.data.State
+
 object C123StateCalcExample extends App {
 
   sealed trait Cx
@@ -13,5 +15,16 @@ object C123StateCalcExample extends App {
   val entered = "1 2 + 3 *"
     .split(" ")
     .flatMap(parse)
+
+  def doOp(a: Int, b: Int, op: String) = op match {
+    case "+" => a + b
+    case "-" => a - b
+    case "*" => a * b
+    case "/" => a / b
+  }
+
+  type CalcState[A] = State[List[Cx], A]
+
+  def evalOne(sym: Cx): CalcState[Int] = ???
 
 }
