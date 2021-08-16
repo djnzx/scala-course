@@ -1,20 +1,23 @@
 package google_logging
 
 import com.google.cloud.MonitoredResource
-import com.google.cloud.logging.{LogEntry, Logging, LoggingOptions, Severity}
-import com.google.cloud.logging.Payload.StringPayload
+import com.google.cloud.logging.{LogEntry, Logging, LoggingOptions, Payload, Severity}
+import com.google.cloud.logging.Payload.{JsonPayload, StringPayload}
+import com.google.protobuf.Struct
 
-import java.util.Collections
+import java.util.{Collections, UUID}
+import scala.jdk.CollectionConverters.MapHasAsJava
+import scala.language.implicitConversions
 
 /**
   * TODO: 1. how to ENABLE fluentd COLLECTOR in Google Cloud
-  * TODO: 2. how / where to SPECIFY connection details from my app to the Google Cloud Collector Engine
-  * TODO: 3. what else dependencies I need to have in classpath?
-  *  alongside with "com.google.cloud" % "google-cloud-logging" % "3.0.1"
-  * TODO: 4. how to setup REPRESENTATION LAYER (Grafana, standard google cloud, etc)
-  * TODO: 5. how to QUERY LOGS collected
-  * TODO: 6. IMPLEMENT Scala wrapper
-  * TODO: 7. IMPLEMENT Scala "lifter" from standard strings being written to the Console to structured LogEntries
+  * TODO: 2. create innocent service which will log all http requests to test that functionality
+  * TODO: 3. how / where to SPECIFY connection details from my app to the Google Cloud Collector Engine
+  * TODO: 4. what else dependencies I need to have in classpath? alongside with "com.google.cloud" % "google-cloud-logging" % "3.0.1"
+  * TODO: 5. how to setup REPRESENTATION LAYER (Grafana, standard google cloud, etc)
+  * TODO: 6. how to QUERY LOGS collected
+  * TODO: 7. IMPLEMENT convenient Scala wrapper (facade)
+  * TODO: 8. IMPLEMENT Scala "lifter" from standard strings being written to the Console to structured LogEntries
   *
   * related docs:
   * https://cloud.google.com/logging/docs/structured-logging
@@ -28,24 +31,32 @@ object LoggingApplication extends App {
 
   case class MyDetails(serviceName: String, dcId: String)
 
-  // The name of the log to write to
+  // TODO: what that ???
   val logName = "my-log"
 
-  // The data to write to the log
-  val text = "Hello, world!"
+  val jsonPayload: Payload[Struct] = JsonPayload.of(Map(
+    "service" -> "ingest",
+    "dcId" -> UUID.randomUUID().toString
+  ).asJava)
 
-  val entry = LogEntry
-    .newBuilder(StringPayload.of(text))
-    .setSeverity(Severity.ERROR)
-    .setLogName(logName)
-    .setResource(
-      MonitoredResource
-        .newBuilder("global")
-        .build
-    )
+  // The data to write to the log
+  val textPayload: Payload[String] = StringPayload.of(
+    "Hello, world!"
+  )
+
+  // TODO: what that ???
+  val resource = MonitoredResource
+    .newBuilder("global")
     .build
 
-  logging.write(Collections.singleton(entry))
+  val entry: LogEntry = LogEntry
+    .newBuilder(jsonPayload)
+    .setSeverity(Severity.ERROR)
+    .setLogName(logName)
+    .setResource(resource)
+    .build
 
-  System.out.printf("Logged: %s%n", text)
+  implicit def oneToMany(e: LogEntry) = Collections.singleton(e)
+
+  logging.write(entry)
 }
