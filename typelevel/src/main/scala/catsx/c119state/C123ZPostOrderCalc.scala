@@ -1,13 +1,12 @@
-package catsx
+package catsx.c119state
 
-import cats.{Eval, Monoid}
 import cats.data.State
-import cats.instances.int._
-import cats.syntax.applicative._
+import cats.implicits.catsSyntaxApplicativeId
+import cats.{Eval, Monoid}
 
 import scala.annotation.tailrec
 
-object C123PostOrderCalc extends App {
+object C123ZPostOrderCalc extends App {
   type CalcBuffer = List[Int]
   type CalcState[A] = State[CalcBuffer, A]
 
@@ -17,13 +16,15 @@ object C123PostOrderCalc extends App {
 
   // eval operation (pop, pop, operation, push)
   def operator(f: (Int, Int) => Int): CalcState[Int] =
-    State[CalcBuffer, Int] { old => old match {
-      case o1 :: o2 :: tail => {
-        val r = f(o1, o2)
-        (r :: tail, r)
+    State[CalcBuffer, Int] { old =>
+      old match {
+        case o1 :: o2 :: tail => {
+          val r = f(o1, o2)
+          (r :: tail, r)
+        }
+        case _ => sys.error("Parse Fail!")
       }
-      case _ => sys.error("Parse Fail!")
-    }}
+    }
 
   // eval one symbol: operation or operand
   def evalOne(sym: String): CalcState[Int] = sym match {
@@ -57,7 +58,7 @@ object C123PostOrderCalc extends App {
   def evalAll_tr(input: List[String], state: CalcState[Int]): CalcState[Int] =
     input match {
       case Nil => state
-      case h::t => evalAll_tr(t, evalOne(h))
+      case h :: t => evalAll_tr(t, evalOne(h))
     }
 
   val test2: CalcState[Int] = for {
