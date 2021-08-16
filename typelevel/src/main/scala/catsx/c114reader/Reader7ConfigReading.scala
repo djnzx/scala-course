@@ -1,8 +1,8 @@
-package catsx.reader
+package catsx.c114reader
 
 import cats.data.Reader
 
-object ReaderConfig extends App {
+object Reader7ConfigReading extends App {
   
   case class Config(port: Int, threshold: Double)
   

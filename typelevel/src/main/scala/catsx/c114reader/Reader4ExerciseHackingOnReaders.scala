@@ -1,9 +1,9 @@
-package catsx.reader
+package catsx.c114reader
 
 import cats.data.Reader
 import cats.implicits.catsSyntaxApplicativeId
 
-object ExerciseHackingOnReaders extends App {
+object Reader4ExerciseHackingOnReaders extends App {
 
   final case class Db(
     usernames: Map[Int, String],
@@ -13,10 +13,10 @@ object ExerciseHackingOnReaders extends App {
   type DbReader[A] = Reader[Db, A]
 
   def findUsername(userId: Int): DbReader[Option[String]] =
-    Reader(_.usernames.get(userId))
+    Reader(db => db.usernames.get(userId))
 
   def checkPassword(username: String, password: String): DbReader[Boolean] =
-    Reader(_.passwords.get(username).contains(password))
+    Reader(db => db.passwords.get(username).contains(password))
 
   def checkLogin(userId: Int, password: String): DbReader[Boolean] =
     for {
@@ -33,4 +33,14 @@ object ExerciseHackingOnReaders extends App {
       fact <- oUser.map(user => checkPassword(user, password)).getOrElse(false.pure[DbReader])
     } yield fact
 
+  val users = Map(1 -> "dade", 2 -> "kate", 3 -> "margo")
+  val passwords = Map("dade" -> "zerocool", "kate" -> "acidburn", "margo" -> "secret")
+
+  val db = Db(users, passwords)
+
+  val r1 = checkLogin(1, "zerocool").run(db)
+  val r2 = checkLogin(2, "zerocool").run(db)
+
+  assert(r1 == true)
+  assert(r2 == false)
 }

@@ -1,6 +1,6 @@
-package catsx.reader
+package catsx.c114reader
 
-object ReaderRepoExample extends App {
+object Reader9RepoExample extends App {
 
   /** here is an classical API example */
   trait StockRepo {

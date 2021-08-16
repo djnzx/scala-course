@@ -1,9 +1,7 @@
-package catsx
+package catsx.c113writer
 
 import cats.Monoid
 import cats.data.Writer
-import cats.instances.int._
-import cats.instances.vector._
 
 object C113WriterSum extends App {
   type Logged[A] = Writer[Vector[String], Int]
@@ -17,10 +15,10 @@ object C113WriterSum extends App {
   // function takes writer and number, and returns the new writer with the new data
   val addAndLog: (Logged[Int], Int) => Logged[Int] =
     (w: Logged[Int], n: Int) => w.mapBoth((log, acc) => {
-    val newAcc = acc + n
-    val newLog = log.appended(s"$acc + $n = $newAcc")
-    (newLog, newAcc)
-  })
+      val newAcc = acc + n
+      val newLog = log.appended(s"$acc + $n = $newAcc")
+      (newLog, newAcc)
+    })
 
   // initial data
   val data: List[Int] = 1 to 5 toList

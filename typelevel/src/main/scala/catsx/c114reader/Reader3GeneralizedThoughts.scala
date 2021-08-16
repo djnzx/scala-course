@@ -1,10 +1,10 @@
-package catsx.reader
+package catsx.c114reader
 
 import cats.{Id, ~>}
 import cats.data.{Kleisli, Reader, ReaderT}
 import cats.implicits._
 
-object ReaderExperiments extends App {
+object Reader3GeneralizedThoughts extends App {
 
   /** basic function */
   val r1: Reader[Int, Int] = Reader[Int, Int](_ + 1)

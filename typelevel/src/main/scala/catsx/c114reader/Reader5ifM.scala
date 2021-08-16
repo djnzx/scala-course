@@ -1,11 +1,11 @@
-package catsx.reader
+package catsx.c114reader
 
 import cats.Monad
 import cats.data.Reader
 import cats.implicits.catsStdInstancesForList
 import pprint.{pprintln => println}
 
-object Ex1 extends App {
+object Reader5ifM extends App {
 
   def first =
     Reader { x: Int => Monad[List].ifM(List(true, true))(x * 10 :: x * 100 :: Nil, Nil) }
