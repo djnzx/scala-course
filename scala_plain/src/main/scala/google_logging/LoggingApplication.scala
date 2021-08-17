@@ -10,14 +10,21 @@ import scala.jdk.CollectionConverters.MapHasAsJava
 import scala.language.implicitConversions
 
 /**
-  * TODO: 1. how to ENABLE fluentd COLLECTOR in Google Cloud
-  * TODO: 2. create innocent service which will log all http requests to test that functionality
-  * TODO: 3. how / where to SPECIFY connection details from my app to the Google Cloud Collector Engine
-  * TODO: 4. what else dependencies I need to have in classpath? alongside with "com.google.cloud" % "google-cloud-logging" % "3.0.1"
-  * TODO: 5. how to setup REPRESENTATION LAYER (Grafana, standard google cloud, etc)
-  * TODO: 6. how to QUERY LOGS collected
-  * TODO: 7. IMPLEMENT convenient Scala wrapper (facade)
-  * TODO: 8. IMPLEMENT Scala "lifter" from standard strings being written to the Console to structured LogEntries
+  * Since we are in the Google Cloud,
+  * probably it will be better to use Google Log Collector
+  *
+  * TODO: 1. ENABLE Google Cloud structured logs COLLECTOR (fluentd, ...)
+  * TODO: 2. CREATE a few dummy services which will log all HTTP requests and forward them to each other to test that functionality
+  * TODO: 3. CONNECT to Google Cloud log collector. Authentication.
+  * TODO: 4. clarify DEPENDENCIES list. (alongside with "com.google.cloud" % "google-cloud-logging" % "3.0.1")
+  * TODO: 5. QUERY LOGS collected
+  * TODO: 6. DEFINE the GognitOpsLogEntry data structure. What data needs to be logged
+  * TODO: 7. IMPLEMENT the mapper GognitOpsLogEntry = GoogleCloudLogEntry
+  * TODO: 8. IMPLEMENT convenient Scala wrapper (facade) to avoid even one extra call
+  * TODO: 9. IMPLEMENT convenient Scala "lifter" to keep using our logging in a structured way, but not detailed
+  * TODO: 10. setup REPRESENTATION LAYER (Grafana, standard google cloud, etc)
+  * TODO: 11. metrics
+  * TODO: 12. alerts
   *
   * related docs:
   * https://cloud.google.com/logging/docs/structured-logging
