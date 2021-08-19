@@ -15,7 +15,7 @@ class C123PostOrderCalcSpec extends AnyFunSpec with Matchers {
       val state = List(1, 2, 3)
       val fn: CalcState[Int] = evalOne("100")
       val state2: List[Int] = fn.runS(state).value
-      state2 shouldEqual List(100,1,2,3)
+      state2 shouldEqual List(100, 1, 2, 3)
     }
 
     it("eval one number to a value") {
@@ -51,10 +51,13 @@ class C123PostOrderCalcSpec extends AnyFunSpec with Matchers {
   }
 
   describe("composition") {
+
     /** possible ways to declare "empty" state function */
     val emptyState: CalcState[Int] = 0.pure[CalcState]
     val emptyState1: CalcState[Int] = implicitly[Monoid[Int]].empty.pure[CalcState]
-    val emptyState2: CalcState[Int] = State[CalcStack, Int] { s => (s, 0) }
+    val emptyState2: CalcState[Int] = State[CalcStack, Int] { s =>
+      (s, 0)
+    }
 
     val userInput = "1 2 + 3 * 1000 *"
       .split(" ")
