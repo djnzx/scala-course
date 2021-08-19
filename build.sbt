@@ -14,10 +14,10 @@ lazy val commonSettings = Seq(
   organization := "org.alexr",
   version := "21.08.04",
   javacOptions ++= Seq(
-    "-source",
-    "11",
-    "-target",
-    "11",
+//    "-source",
+//    "11",
+//    "-target",
+//    "11",
   ),
   // https://docs.scala-lang.org/overviews/compiler-options/index.html#Warning_Settings
   // http://eed3si9n.com/stricter-scala-with-xlint-xfatal-warnings-and-scalafix
@@ -42,7 +42,16 @@ lazy val commonSettings = Seq(
   ),
 )
 
+/** protobuf experiments */
+lazy val pbx = (project in file("pbx"))
+  .enablePlugins(ScalaxbPlugin)
+  .settings(commonSettings)
+
+/** google cloud logging experiments */
 lazy val lxp = (project in file("lxp"))
+  .settings(commonSettings)
+
+lazy val plain2 = (project in file("plain2"))
   .settings(commonSettings)
 
 lazy val scala_plain = (project in file("scala_plain"))
