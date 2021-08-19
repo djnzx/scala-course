@@ -9,7 +9,6 @@ lazy val vScala = "2.13.6"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-
 lazy val commonSettings = Seq(
   scalaVersion := vScala,
   organization := "org.alexr",
@@ -45,15 +44,6 @@ lazy val commonSettings = Seq(
 
 lazy val lxp = (project in file("lxp"))
   .settings(commonSettings)
-  .settings(
-    libraryDependencies ++= Seq(
-      "com.google.cloud" % "google-cloud-logging" % "3.0.1",
-      "com.google.cloud" % "google-cloud-logging-logback" % "0.121.8-alpha",
-      "ch.qos.logback" % "logback-classic" % "1.2.3",
-      "org.slf4j" % "slf4j-api" % "1.7.30",
-      "org.slf4j" % "jcl-over-slf4j" % "1.7.30",
-    ),
-  )
 
 lazy val scala_plain = (project in file("scala_plain"))
   .enablePlugins(ScalaxbPlugin)
@@ -74,8 +64,7 @@ lazy val scala_plain = (project in file("scala_plain"))
     ),
   )
 
-/**
-  * some algorithms
+/** some algorithms
   * implementations
   */
 lazy val algorithms = (project in file("algorithms"))
@@ -86,8 +75,7 @@ lazy val algorithms = (project in file("algorithms"))
     ),
   )
 
-/**
-  * FP in Scala (RED Book)
+/** FP in Scala (RED Book)
   * Mostly plain Scala
   * only a few libraries involved
   */
@@ -101,8 +89,7 @@ lazy val fp_red = (project in file("fp_red"))
     ),
   )
 
-/**
-  * Project to investigate Li Haoyi libraries
+/** Project to investigate Li Haoyi libraries
   * https://www.lihaoyi.com
   * https://www.handsonscala.com
   * https://github.com/lihaoyi
@@ -126,8 +113,7 @@ lazy val lihaoyi = (project in file("lihaoyi"))
     ),
   )
 
-/**
-  * Lightbend (Typesafe) Stack:
+/** Lightbend (Typesafe) Stack:
   *
   * Akka,
   * Akka-Streams,
@@ -161,56 +147,9 @@ lazy val typesafe = (project in file("typesafe"))
     ),
   )
 
-/**
-  * Typelevel (FP) stack:
-  *
-  * Cats, Cats Effects
-  * Fs2, Http4s,
-  * Circe, Ciris,
-  * Shapeless,
-  * Doobie,
-  * Scalacheck,
-  * PureConfig
-  *
-  * https://typelevel.org
-  */
 lazy val typelevel = (project in file("typelevel"))
   .settings(commonSettings)
-  .settings(
-    libraryDependencies ++= Seq(
-      CompilerPlugins.betterMonadicFor,
-      CompilerPlugins.contextApplied,
-      CompilerPlugins.kindProjector,
-      // CATS
-      Libraries.cats,
-      Libraries.catsLaws,
-      Libraries.catsEffect,
-      Libraries.catsMtlCore,
-      "dev.profunktor" %% "console4cats" % "0.8.1",
-      // FS2
-      Libraries.fs2core,
-      Libraries.fs2reactive,
-      // HTTP
-      Libraries.http4sServer,
-      Libraries.http4sDsl,
-      Libraries.http4sClient,
-      Libraries.http4sCirce,
-      Libraries.http4sJwtAuth,
-      // Serialization
-      Libraries.circeCore,
-      Libraries.circeGeneric,
-      Libraries.circeGenericEx,
-      Libraries.circeParser,
-      Libraries.circeRefined,
-      // @newtype annotation
-      Libraries.newtype,
-      // refined types
-      Libraries.refinedCore,
-      // shapeless
-      Libraries.shapeless,
-      "com.github.fd4s" %% "fs2-kafka" % "1.7.0",
-    ),
-  )
+
 lazy val co = (project in file("co"))
   .settings(commonSettings)
   .settings(
@@ -252,8 +191,7 @@ lazy val co = (project in file("co"))
     ),
   )
 
-/**
-  * a lot of dirty, mixed code
+/** a lot of dirty, mixed code
   * Needs to be polished
   */
 lazy val mix = (project in file("mix"))
@@ -309,8 +247,7 @@ lazy val zio2 = (project in file("zio2"))
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
   )
 
-/**
-  * John A. De Goes Project ZIO
+/** John A. De Goes Project ZIO
   * https://zio.dev
   * https://ziverge.com
   */
@@ -336,8 +273,7 @@ lazy val degoes = (project in file("degoes"))
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
   )
 
-/**
-  * Dotty experiments
+/** Dotty experiments
   */
 lazy val dotty = (project in file("dotty"))
 //initialCommands in console := "import scalaz._, Scalaz._"
