@@ -1,4 +1,4 @@
-package org.alexr.lx
+package org.alexr.lcx
 
 import com.google.cloud.logging.Payload
 import com.google.cloud.logging.Payload.JsonPayload

@@ -1,4 +1,4 @@
-package org.alexr.lx
+package org.alexr.lcx
 
 import com.google.cloud.MonitoredResource
 import com.google.cloud.logging._
@@ -40,7 +40,7 @@ object Main {
       .setResource(resource)
       .build
 
-    logging.write(entry)
-    Thread.sleep(1000)
+//    logging.write(entry)
+//    Thread.sleep(1000)
   }
 }

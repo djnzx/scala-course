@@ -44,11 +44,12 @@ lazy val commonSettings = Seq(
 
 /** protobuf experiments */
 lazy val pbx = (project in file("pbx"))
-  .enablePlugins(ScalaxbPlugin)
   .settings(commonSettings)
+  .settings(
+  )
 
 /** google cloud logging experiments */
-lazy val lxp = (project in file("lxp"))
+lazy val lcx = (project in file("lcx"))
   .settings(commonSettings)
 
 lazy val plain2 = (project in file("plain2"))
@@ -67,9 +68,6 @@ lazy val scala_plain = (project in file("scala_plain"))
       Libraries.scalaTestPlus,
       Libraries.scalactic,
 //      "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf",
-    ),
-    Compile / PB.targets := Seq(
-      scalapb.gen() -> (Compile / sourceManaged).value / "scalapb",
     ),
   )
 
