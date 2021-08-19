@@ -1,15 +1,14 @@
 package monoid
 
 import cats.Monoid
-import cats.implicits.{catsKernelStdGroupForInt, catsKernelStdMonoidForList, catsKernelStdMonoidForString, catsKernelStdMonoidForVector}
+import cats.implicits.catsKernelStdGroupForInt
+import cats.implicits.catsKernelStdMonoidForList
+import cats.implicits.catsKernelStdMonoidForString
+import cats.implicits.catsKernelStdMonoidForVector
 
 object LoggingExample extends App {
-  /**
-    * we want to implement abstract logger
-    */
 
-  /**
-    * our function
+  /** our function
     * does the business
     * an returns a tuple of
     * two values (value, log_item)
@@ -33,9 +32,9 @@ object LoggingExample extends App {
 
   /** this is an implementation */
   def collectTo[A, B, C](as: List[(A, B)])(f: B => C)(implicit ma: Monoid[A], mc: Monoid[C]): (A, C) =
-    as.foldLeft((ma.empty, mc.empty)) { case ((sum, list), (a, b)) => {
+    as.foldLeft((ma.empty, mc.empty)) { case ((sum, list), (a, b)) =>
       (ma.combine(sum, a), mc.combine(list, f(b)))
-    }}
+    }
 
   /** collect just to string */
   val r1: (Int, String) = collectTo(data)(identity)
@@ -45,7 +44,6 @@ object LoggingExample extends App {
 
   /** collect to vector */
   val r3: (Int, Vector[String]) = collectTo(data)(Vector(_))
-
 
   val intSumMonoid: Monoid[Int] = Monoid[Int]
   val stringCSMonoid: Monoid[String] = new Monoid[String] {
