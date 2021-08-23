@@ -6,9 +6,7 @@ import cats.data.ValidatedNel
 import cats.effect.ExitCode
 import cats.effect.IO
 import cats.effect.IOApp
-import cats.implicits.catsSyntaxApplicativeId
-import cats.implicits.toBifunctorOps
-import cats.implicits.toSemigroupKOps
+import cats.implicits._
 import org.http4s._
 import org.http4s.circe.jsonEncoderOf
 import org.http4s.dsl.Http4sDsl
@@ -28,7 +26,14 @@ object UriExperiments extends IOApp {
   case class Director(firstNme: String, lastName: String)
 //  implicit val yearDecoder: QueryParamDecoder[Year] = QueryParamDecoder[Int].map(y => Year.of(y))
   implicit val yearDecoder: QueryParamDecoder[Year] =
-    QueryParamDecoder[Int].emap(y => Try(Year.of(y)).toEither.leftMap(e => ParseFailure(e.getMessage, e.getMessage)))
+    QueryParamDecoder[Int]
+      .emap { y =>
+        Try { Year.of(y) }
+          .toEither
+          .leftMap { e =>
+            ParseFailure(e.getMessage, e.getMessage)
+          }
+      }
 
   object IdParamMatcher extends QueryParamDecoderMatcher[Int]("id")
   object YearParamMatcher extends OptionalQueryParamDecoderMatcher[Year]("year")
