@@ -39,9 +39,9 @@ object UriExperiments extends IOApp {
       case _               => None
     }
   }
-  implicit def intEncoder[F[_]]: EntityEncoder[F, Int] = ???
-  implicit def strEncoder[F[_]]: EntityEncoder[F, String] = ???
-  implicit def uuidEncoder[F[_]]: EntityEncoder[F, UUID] = ???
+  implicit def intEncoder[F[_]]: EntityEncoder[F, Int] = jsonEncoderOf[F, Int]
+  implicit def strEncoder[F[_]]: EntityEncoder[F, String] = jsonEncoderOf[F, String]
+  implicit def uuidEncoder[F[_]]: EntityEncoder[F, UUID] = jsonEncoderOf[F, UUID]
 
   def routes1[F[_]: Monad: Defer]: HttpRoutes[F] = {
     val dsl = Http4sDsl[F]
