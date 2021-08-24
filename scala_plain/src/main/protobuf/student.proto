@@ -1,8 +1,0 @@
-syntax = "proto2";
-
-package pbx;
-
-message Student {
-  required int32 id = 1;
-  required string name = 2;
-}
