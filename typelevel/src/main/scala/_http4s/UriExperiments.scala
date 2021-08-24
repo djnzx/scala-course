@@ -21,7 +21,7 @@ import java.util.UUID
 import scala.concurrent.duration.DurationInt
 import scala.util.Try
 
-object UriExperiments extends IOApp {
+object UriExperiments extends App {
 
   case class Director(firstNme: String, lastName: String)
 //  implicit val yearDecoder: QueryParamDecoder[Year] = QueryParamDecoder[Int].map(y => Year.of(y))
@@ -96,6 +96,33 @@ object UriExperiments extends IOApp {
     (uri"a" / "path2").withQueryParam("id", id),
   )
 
+  object RequestUriSyntax {
+
+    implicit class UriAddParentSyntax(private val uri: Uri) extends AnyVal {
+      def prepend(parentUri: Uri): Uri = parentUri.resolve(uri)
+    }
+
+    implicit class RequestUriAddParentSyntax[F[_]](private val rq: Request[F]) extends AnyVal {
+      def prependUri(parentUri: Uri): Request[F] = rq.withUri(rq.uri.prepend(parentUri))
+    }
+
+  }
+
+  /** 1. we have a request */
+  val rq111: Request[IO] = rq1(111) // uri=path1?id=111
+
+  /** 2. we have a parent URI */
+  val parentUri = uri"parent/"
+
+  /** 3.1. without syntax - we need to write: */
+  val rq111a = rq111.withUri(parentUri.resolve(rq111.uri)) // uri=parent/path1?id=111
+
+  /** 3.2 having one import in scope we have the way more clean syntax */
+  import RequestUriSyntax.RequestUriAddParentSyntax
+  val rq111b = rq111.prependUri(parentUri) // uri=parent/path1?id=111
+
+  println(rq111a)
+  println(rq111b)
 //  val r =
 //    routes1(rq1(33))
 //      // actually run
@@ -115,18 +142,18 @@ object UriExperiments extends IOApp {
 //
 //  println(r2)
 
-  override def run(args: List[String]): IO[ExitCode] = {
+//  override def run(args: List[String]): IO[ExitCode] = {
+//
+//    val router: HttpApp[IO] = Router(
+//      "/api" -> routes1[IO],
+//    ).orNotFound
+//
+//    BlazeServerBuilder[IO](executionContext)
+//      .bindHttp(8080, "localhost")
+//      .withHttpApp(router)
+//      .resource
+//      .use(_ => IO.never.timeout(10.seconds))
+//      .as(ExitCode.Success)
 
-    val router: HttpApp[IO] = Router(
-      "/api" -> routes1[IO],
-    ).orNotFound
-
-    BlazeServerBuilder[IO](executionContext)
-      .bindHttp(8080, "localhost")
-      .withHttpApp(router)
-      .resource
-      .use(_ => IO.never.timeout(10.seconds))
-      .as(ExitCode.Success)
-
-  }
+//  }
 }
