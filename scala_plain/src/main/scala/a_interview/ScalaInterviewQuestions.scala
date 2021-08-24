@@ -4,10 +4,10 @@ import scala.collection.mutable.ArrayBuffer
 
 object ScalaInterviewQuestions extends App {
 
-  val f1 = (1 to 10).filter(_%2==0)
+  val f1 = (1 to 10).filter(_ % 2 == 0)
   val f2 = (1 to 10).flatMap {
-    case x if x%2 == 0 => Some(x)
-    case _ => None
+    case x if x % 2 == 0 => Some(x)
+    case _               => None
   }
   println(f1)
   println(f2)
@@ -17,11 +17,9 @@ object ScalaInterviewQuestions extends App {
     def switch(s: String) = {
       if (s == "red") {
         ???
-      }
-      else if (s == "yellow") {
+      } else if (s == "yellow") {
         ???
-      }
-      else if (s == "green") {
+      } else if (s == "green") {
         ???
       }
     }
@@ -36,15 +34,15 @@ object ScalaInterviewQuestions extends App {
     val plus2: Int => Int = _ + 2
 
     sealed trait Color { def s }
-    case object Red extends Color { val s  = "red" }
-    case object Yellow extends Color { val s  = "yellow" }
-    case object Green extends Color { val s = "green"}
+    case object Red extends Color { val s = "red" }
+    case object Yellow extends Color { val s = "yellow" }
+    case object Green extends Color { val s = "green" }
 
     def switch(color: Color) = color match {
-      case Red => ???
+      case Red    => ???
       case Yellow => ???
-      case Green => ???
-      case _ => ???
+      case Green  => ???
+      case _      => ???
     }
 
   }
@@ -70,10 +68,10 @@ object ScalaInterviewQuestions extends App {
     val abc4 = abc3[Int, String] _ // -
 
     // 3
-    val x1 = List(1,2,3)
-    val x2 = ArrayBuffer(1,2,3)
-    var x3 = List(1,2,3)
-    var x4 = ArrayBuffer(1,2,3)
+    val x1 = List(1, 2, 3)
+    val x2 = ArrayBuffer(1, 2, 3)
+    var x3 = List(1, 2, 3)
+    var x4 = ArrayBuffer(1, 2, 3)
 
     // 4. monad
 
@@ -82,12 +80,18 @@ object ScalaInterviewQuestions extends App {
     }
 
     val x = for {
-      a <- List(1,2,3)
+      a <- List(1, 2, 3)
       if a > 1
-      b <- List("a","b")
+      b <- List("a", "b")
     } yield (a, b)
 
     // 5. unapply
+
+    case class Check(f: Int => Boolean, msg: Int => String) {
+      def unapply(x: Int): Option[String] = Option.when(f(x))(msg(x))
+    }
+    object Even1 extends Check(_ % 2 == 0, x => s"$x is Even")
+    object Odd1 extends Check(_ % 2 != 0, x => s"$x is Odd")
 
     object Even {
       def unapply(x: Int): Option[String] =
@@ -99,8 +103,10 @@ object ScalaInterviewQuestions extends App {
     }
 
     def go(x: Int): String = x match {
-      case Even(msg) => msg
-      case Odd(msg) => msg
+      case Even(msg)  => msg
+      case Odd(msg)   => msg
+      case Even1(msg) => msg
+      case Odd1(msg)  => msg
     }
 
     go(4) // 4 is even
