@@ -1,10 +1,13 @@
-package pb
+package protox
 
-import tutorial.addressbook.{AddressBook, Person}
+import tutorial.addressbook.AddressBook
+import tutorial.addressbook.Person
 
-import java.io.{FileNotFoundException, FileInputStream, FileOutputStream}
-import scala.util.Try
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import scala.io.StdIn
+import scala.util.Try
 import scala.util.Using
 
 object AddressBookMain extends App {
@@ -12,10 +15,9 @@ object AddressBookMain extends App {
   def readFromFile(): AddressBook =
     Using(new FileInputStream("addressbook.pb")) { fileInputStream =>
       AddressBook.parseFrom(fileInputStream)
-    }.recover {
-      case _: FileNotFoundException =>
-        println("No address book found. Will create a new file.")
-        AddressBook()
+    }.recover { case _: FileNotFoundException =>
+      println("No address book found. Will create a new file.")
+      AddressBook()
     }.get
   // end: readFromFile
 
@@ -57,7 +59,7 @@ object AddressBookMain extends App {
       id = id,
       name = name,
       email = if (email.nonEmpty) Some(email) else None,
-      phones = phones
+      phones = phones,
     )
   }
 
@@ -66,7 +68,7 @@ object AddressBookMain extends App {
     val addressBook = readFromFile()
     // Append the new person to the people list field
     val updated = addressBook.update(
-      _.people :+= newPerson
+      _.people :+= newPerson,
     )
     Using(new FileOutputStream("addressbook.pb")) { output =>
       updated.writeTo(output)
@@ -97,4 +99,5 @@ object AddressBookMain extends App {
       addPerson()
     case _ =>
   }
+
 }
