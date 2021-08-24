@@ -10,7 +10,7 @@ object RequestUriSyntax {
   }
 
   implicit class RequestUriAddParentSyntax[F[_]](private val rq: Request[F]) extends AnyVal {
-    def prependUri(parentUri: Uri): Request[F] = rq.withUri(rq.uri.prepend(parentUri))
+    def uriPrepend(parentUri: Uri): Request[F] = rq.withUri(rq.uri.prepend(parentUri))
   }
 
 }

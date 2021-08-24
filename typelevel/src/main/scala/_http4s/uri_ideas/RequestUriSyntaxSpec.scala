@@ -6,7 +6,7 @@ import org.http4s.implicits._
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
-class RequestUriSyntaxIdeas extends AnyFunSpec with Matchers {
+class RequestUriSyntaxSpec extends AnyFunSpec with Matchers {
 
   val baseRequest: Request[IO] = Request[IO](Method.GET, uri"byName".withQueryParam("name", "Jim"))
 
@@ -27,7 +27,7 @@ class RequestUriSyntaxIdeas extends AnyFunSpec with Matchers {
     import RequestUriSyntax.RequestUriAddParentSyntax
 
     val prependedRq: Request[IO] =
-      baseRequest.prependUri(parentUri)
+      baseRequest.uriPrepend(parentUri)
 
     prependedRq.uri.renderString shouldEqual "customer/byName?name=Jim"
   }
