@@ -68,10 +68,10 @@ class HVParserSpec extends AnyFunSpec with Matchers {
     mapper("qwertyuiasdfghjk".toVector.map(_.toString)) shouldEqual "tfs".toVector.map(_.toString)
   }
 
-  it("remap columns - final implementation V2") {
-    val mapper = createMapper2(headers, interestedIn0).get
+  describe("lazy v2") {
+    it("remap columns - final implementation V2") {
+      createMapper2(headers, Seq("1", "2")) shouldEqual None
+    }
 
-    mapper(rawData) shouldEqual dataOnlySorted
-    mapper("qwertyuiasdfghjk".toVector.map(_.toString)) shouldEqual "tfs".toVector.map(_.toString)
   }
 }

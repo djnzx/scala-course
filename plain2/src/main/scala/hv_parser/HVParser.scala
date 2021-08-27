@@ -88,20 +88,21 @@ object HVParser {
       /** we found everything */
       if (req.isEmpty) return Some(found)
 
-      /** we don't have enough fields */
+      /** iterator exhausted, we don't have enough fields */
       if (it.isEmpty) return None
 
       /** next piece of data to check */
       val h = it.next
 
-      /** empty string - exhausted */
+      /** we treat empty string - as exhausted iterator */
       if (h.isBlank) return None
 
-      /** needed, add */
-      if (req.contains(h)) go(req - h, found + (h -> index), index + 1)
-
-      /** dont need */
-      else go(req, found, index + 1)
+      req.contains(h) match {
+        /** needed, add */
+        case true => go(req - h, found + (h -> index), index + 1)
+        /** dont need */
+        case false => go(req, found, index + 1)
+      }
     }
 
     /** found headers collected */
