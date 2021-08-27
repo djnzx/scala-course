@@ -1,9 +1,12 @@
 package hv_parser
 
+import scala.annotation.tailrec
+
 object HVParser {
 
   type Header = String
   type Value = String
+  type At = Int
 
   /** It finds indexes of requested columns
     *
@@ -62,5 +65,58 @@ object HVParser {
         .sortBy { case (idx, _) => idx }
         .map { case (_, data) => data }
     }
+
+  /** Second implementation based on the known size of headers length
+    * TODO: set return type to Option
+    * TODO: make it lazy in terms of headers
+    * TODO: implement checking empty string as a sign for end of the stream
+    *
+    * @param headers All the headers we have
+    * @param req All the headers we interested in
+    * @return function
+    */
+  def createMapper2(headers: Seq[Header], req: Seq[Header]): Option[IndexedSeq[Value] => Seq[Value]] = {
+
+    /** required columns with their indexes */
+    val required: Map[Header, Int] = req.zipWithIndex.toMap
+
+    val it = headers.iterator
+
+    @tailrec
+    def go(req: Set[Header], found: Map[Header, At], index: Int): Option[Map[Header, At]] = {
+
+      /** we found everything */
+      if (req.isEmpty) return Some(found)
+
+      /** we don't have enough fields */
+      if (it.isEmpty) return None
+
+      /** next piece of data to check */
+      val h = it.next
+
+      /** empty string - exhausted */
+      if (h.isBlank) return None
+
+      /** needed, add */
+      if (req.contains(h)) go(req - h, found + (h -> index), index + 1)
+
+      /** dont need */
+      else go(req, found, index + 1)
+    }
+
+    /** found headers collected */
+    val found: Option[Map[Header, At]] = go(required.keySet, Map.empty, 0)
+
+    found match {
+      case Some(ff) =>
+        Some { data: IndexedSeq[Value] =>
+          ff.map { case (header, at) => (required(header), data(at)) }
+            .toVector
+            .sortBy { case (idx, _) => idx }
+            .map { case (_, data) => data }
+        }
+      case _ => None
+    }
+  }
 
 }
