@@ -50,6 +50,19 @@ class UriExploreSpec extends AnyFunSpec with Matchers {
       parent.resolve(child).renderString shouldEqual "child"
     }
 
+    it("if child starts from `/` we take child, no matter about parent") {
+      val parent1: Uri = Uri.unsafeFromString("parent")
+      val parent2: Uri = Uri.unsafeFromString("parent/")
+      val parent3: Uri = Uri.unsafeFromString("/parent")
+      val parent4: Uri = Uri.unsafeFromString("/parent/")
+      val child: Uri = uri"/child"
+
+      parent1.resolve(child) shouldEqual child
+      parent2.resolve(child) shouldEqual child
+      parent3.resolve(child) shouldEqual child
+      parent4.resolve(child) shouldEqual child
+    }
+
     it("parent with / - combine") {
       val parent: Uri = Uri.unsafeFromString("parent/")
       val child: Uri = uri"child"
