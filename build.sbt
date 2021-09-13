@@ -157,6 +157,9 @@ lazy val typesafe = (project in file("typesafe"))
 lazy val typelevel = (project in file("typelevel"))
   .settings(commonSettings)
 
+lazy val http4s1 = (project in file("http4s1"))
+  .settings(commonSettings)
+
 lazy val co = (project in file("co"))
   .settings(commonSettings)
   .settings(
