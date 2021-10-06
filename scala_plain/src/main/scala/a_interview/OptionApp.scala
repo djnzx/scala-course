@@ -5,14 +5,14 @@ object OptionApp extends App {
   sealed trait OptionX[A] {
     def flatMap[B](f: A => OptionX[B]): OptionX[B] = this match {
       case SomeX(a) => f(a)
-      case _ => NoneX()
+      case _        => NoneX()
     }
     def map[B](f: A => B): OptionX[B] = flatMap(a => SomeX(f(a)))
     def filter(p: A => Boolean): OptionX[A] = flatMap(a => if (p(a)) SomeX(a) else NoneX())
     def flatten[AA](implicit ev: A <:< OptionX[AA]): OptionX[AA] = flatMap(identity[A])
     def getOrElse(other: => A): A = this match {
       case SomeX(a) => a
-      case _ => other
+      case _        => other
     }
   }
 
@@ -25,6 +25,7 @@ object OptionApp extends App {
   case class NoneX[A]() extends OptionX[A]
 
   val x = OptionX.some(5)
+  val n = OptionX.none[Int]
   val w = x.map(_ + 1)
   val y = x.flatMap(a => OptionX.some(a + 10))
   val z = x.filter(_ > 10)
@@ -32,9 +33,9 @@ object OptionApp extends App {
   println(y)
   println(z)
 
-  val op66:   OptionX[Int] = OptionX.some(66)
+  val op66: OptionX[Int] = OptionX.some(66)
   val opop66: OptionX[OptionX[Int]] = OptionX.some(op66)
-  val op66f:  OptionX[Int] = opop66.flatten
+  val op66f: OptionX[Int] = opop66.flatten
 
 //  OptionX.some(5).flatten
   OptionX.some(OptionX.some(5)).flatten
