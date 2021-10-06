@@ -12,6 +12,8 @@ object ScalaInterviewQuestions extends App {
   println(f1)
   println(f2)
 
+  /** 1. val / lazy val / def
+    */
   object problem_01 {
 
     def switch(s: String) = {
@@ -26,6 +28,8 @@ object ScalaInterviewQuestions extends App {
 
   }
 
+  /** 2. Nothing / Any / Unit
+    */
   object problem_01_solution {
 
     Option(5).map(_ + 5)
