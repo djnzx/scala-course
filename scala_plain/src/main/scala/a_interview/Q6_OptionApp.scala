@@ -1,6 +1,6 @@
 package a_interview
 
-object OptionApp extends App {
+object Q6_OptionApp extends App {
 
   sealed trait OptionX[A] {
     def flatMap[B](f: A => OptionX[B]): OptionX[B] = this match {

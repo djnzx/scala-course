@@ -4,14 +4,6 @@ import scala.collection.mutable.ArrayBuffer
 
 object ScalaInterviewQuestions extends App {
 
-  val f1 = (1 to 10).filter(_ % 2 == 0)
-  val f2 = (1 to 10).flatMap {
-    case x if x % 2 == 0 => Some(x)
-    case _               => None
-  }
-  println(f1)
-  println(f2)
-
   /** 1. val / lazy val / def
     */
   object problem_01 {
@@ -88,33 +80,6 @@ object ScalaInterviewQuestions extends App {
       if a > 1
       b <- List("a", "b")
     } yield (a, b)
-
-    // 5. unapply
-
-    case class Check(f: Int => Boolean, msg: Int => String) {
-      def unapply(x: Int): Option[String] = Option.when(f(x))(msg(x))
-    }
-    object Even1 extends Check(_ % 2 == 0, x => s"$x is Even")
-    object Odd1 extends Check(_ % 2 != 0, x => s"$x is Odd")
-
-    object Even {
-      def unapply(x: Int): Option[String] =
-        Option.when(x % 2 == 0)(s"$x is Even")
-    }
-    object Odd {
-      def unapply(x: Int): Option[String] =
-        if (x % 2 != 0) Some(s"$x is Odd") else None
-    }
-
-    def go(x: Int): String = x match {
-      case Even(msg)  => msg
-      case Odd(msg)   => msg
-      case Even1(msg) => msg
-      case Odd1(msg)  => msg
-    }
-
-    go(4) // 4 is even
-    go(5) // 5 is odd
 
     // recursive + tail recursive
     def len[A](xs: List[A]): Int = ???
