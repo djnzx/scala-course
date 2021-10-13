@@ -157,6 +157,17 @@ lazy val typesafe = (project in file("typesafe"))
 lazy val typelevel = (project in file("typelevel"))
   .settings(commonSettings)
 
+lazy val ce3 = (project in file("ce3"))
+  .settings(commonSettings)
+  .settings(
+    javacOptions ++= Seq(
+      "-source",
+      "11",
+      "-target",
+      "11",
+    ),
+  )
+
 lazy val http4s1 = (project in file("http4s1"))
   .settings(commonSettings)
 

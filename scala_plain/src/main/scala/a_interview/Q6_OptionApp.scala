@@ -25,9 +25,10 @@ object Q6_OptionApp extends App {
   case class NoneX[A]() extends OptionX[A]
 
   val x = OptionX.some(5)
+  val b = OptionX.some("abc")
   val n = OptionX.none[Int]
-  val w = x.map(_ + 1)
-  val y = x.flatMap(a => OptionX.some(a + 10))
+  val w = x.map(_.toString)
+  val y = w.flatMap(a => OptionX.some(a + 10))
   val z = x.filter(_ > 10)
 
   println(y)
