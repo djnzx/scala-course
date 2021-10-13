@@ -30,6 +30,7 @@ object Q6_OptionApp extends App {
   val w = x.map(_.toString)
   val y = w.flatMap(a => OptionX.some(a + 10))
   val z = x.filter(_ > 10)
+  val m = OptionX.some(OptionX.some(66)).flatten
 
   println(y)
   println(z)
