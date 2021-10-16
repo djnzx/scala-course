@@ -7,11 +7,12 @@ import cats.effect.implicits.commutativeApplicativeForParallelF
 import cats.effect.unsafe.implicits.global
 import cats.implicits.catsSyntaxTuple2Parallel
 import cats.implicits.catsSyntaxTuple2Semigroupal
+import d01.debug.DebugHelper
 
 object ParExperiments extends App {
 
-  val hello: IO[Unit] = IO(println(s"[${ Thread.sleep(2000); Thread.currentThread.getName }] Hello"))
-  val world: IO[Unit] = IO(println(s"[${ Thread.sleep(2000); Thread.currentThread.getName }] World"))
+  val hello: IO[Unit] = IO(println(s"[${ Thread.sleep(2000); Thread.currentThread.getName }] Hello")).debug
+  val world: IO[Unit] = IO(println(s"[${ Thread.sleep(2000); Thread.currentThread.getName }] World")).debug
 
   val combine = (_: Unit, _: Unit) => ()
 

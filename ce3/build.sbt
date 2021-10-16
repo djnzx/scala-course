@@ -10,6 +10,8 @@ libraryDependencies ++= Seq(
   // FS2
   "co.fs2" %% "fs2-core" % "3.1.5", // 3.2.9
   "co.fs2" %% "fs2-reactive-streams" % "3.1.5",
+  // testing
+  "org.typelevel" %% "munit-cats-effect-3" % "1.0.6",
 //  Libraries.fs2core,
 //  Libraries.fs2reactive,
 //  // HTTP
