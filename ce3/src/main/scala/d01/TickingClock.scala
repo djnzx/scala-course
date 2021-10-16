@@ -12,14 +12,20 @@ object TickingClock extends IOApp {
   val printCurrent: Long => IO[Unit] = (t: Long) => IO(println(t))
   val sleep: IO[Unit] = IO.sleep(1.second)
 
-  val tickingClock: IO[Unit] = for {
-    t <- getCurrent
-    _ <- printCurrent(t)
-    _ <- sleep
-    _ <- tickingClock
-  } yield ()
+  /** to use in for-comprehensions - everything must be lifted to IO */
+  def tickingClockN(n: Int): IO[Unit] = n match {
+    case 0 => IO { () }
+    case _ =>
+      for {
+        t <- getCurrent
+        _ <- printCurrent(t)
+        _ <- sleep
+        _ <- tickingClockN(n - 1)
+      } yield ()
+  }
 
   def run(args: List[String]): IO[ExitCode] =
-    tickingClock.as(ExitCode.Success)
+    tickingClockN(5)
+      .as(ExitCode.Success)
 
 }
