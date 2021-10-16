@@ -157,6 +157,17 @@ lazy val typesafe = (project in file("typesafe"))
 lazy val typelevel = (project in file("typelevel"))
   .settings(commonSettings)
 
+lazy val ce2 = (project in file("ce2"))
+  .settings(commonSettings)
+  .settings(
+    javacOptions ++= Seq(
+      "-source",
+      "11",
+      "-target",
+      "11",
+    ),
+  )
+
 lazy val ce3 = (project in file("ce3"))
   .settings(commonSettings)
   .settings(

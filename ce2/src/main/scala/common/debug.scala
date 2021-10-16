@@ -1,6 +1,6 @@
-package d01
+package common
 
-import cats.effect._
+import cats.effect.IO
 
 /** `import com.innerproduct.ee.debug._` to access
   * the `debug` extension methods.
