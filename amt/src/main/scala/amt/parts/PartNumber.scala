@@ -1,7 +1,7 @@
 package amt.parts
 
 sealed trait PartNumber {
-  def oem: String
+  def oemNumber: String
 }
 
 object PartNumber {
@@ -16,19 +16,19 @@ object PartNumber {
 
 }
 
-final case class PartNumberNotFound(oem: String) extends PartNumber
+final case class PartNumberNotFound(oemNumber: String) extends PartNumber
 final case class PartNumberFound(
-    oem: String,
+    oemNumber: String,
     oemOriginal: String,
-    replace: String,
+    replace: Option[String],
     description: String,
-    descriptionR: String,
+    descriptionR: Option[String],
     brand: String,
     supplier: String,
-    weight: Float,
+    weight: Option[Float],
     priceAvia: Float,
     priceCntr: Float,
-    priceCore: Float)
+    priceCore: Option[Float])
     extends PartNumber
 
 object PartNumberFound {
@@ -36,19 +36,19 @@ object PartNumberFound {
   def apply(raw: java.util.Map[String, Object]): PartNumberFound = PartNumberFound(
     raw.get("oem").asInstanceOf[String],
     raw.get("oem_original").asInstanceOf[String],
-    raw.get("replace").asInstanceOf[String],
+    Option(raw.get("replace").asInstanceOf[String]).filter(_.nonEmpty),
     raw.get("descr").asInstanceOf[String],
-    raw.get("descr_ru").asInstanceOf[String],
+    Option(raw.get("descr_ru").asInstanceOf[String]).filter(_.nonEmpty),
     raw.get("brand").asInstanceOf[String],
     raw.get("supplier").asInstanceOf[String],
     raw.get("weight").asInstanceOf[Any] match {
-      case i: Int   => i.toFloat
-      case f: Float => f
-      case _        => 0
+      case i: Int   => Some(i.toFloat).filter(_ > 0)
+      case f: Float => Some(f).filter(_ > 0)
+      case _        => None
     },
     raw.get("list_price").asInstanceOf[Float],
     raw.get("list_price_cntr").asInstanceOf[Float],
-    raw.get("core_price").asInstanceOf[Float],
+    Option(raw.get("core_price").asInstanceOf[Float]).filter(_ > 0),
   )
 
 }
