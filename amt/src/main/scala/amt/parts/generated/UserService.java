@@ -5,7 +5,7 @@
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package logistics.amt.generated;
+package amt.parts.generated;
 
 public interface UserService extends java.rmi.Remote {
 
