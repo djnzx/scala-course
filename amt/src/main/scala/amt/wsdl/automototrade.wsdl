@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:tns="https://automototrade.com/wsdl/server.php"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        name="UserService"
+        targetNamespace="https://automototrade.com/wsdl/server.php">
+    <wsdl:types>
+        <xsd:schema targetNamespace="https://automototrade.com/wsdl/server.php"/>
+    </wsdl:types>
+    <wsdl:message name="getMultPriceIn">
+        <wsdl:part name="TestQuerry" type="soap-enc:Array"/>
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getMultPriceOut">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getPartsPriceIn">
+        <wsdl:part name="OemCode" type="xsd:string"/>
+        <wsdl:part name="MakeId" type="xsd:int"/>
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getPartsPriceOut">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getPartsStatusIn">
+        <wsdl:part name="DatePeriod" type="soap-enc:Array"/>
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getPartsStatusOut">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="setOrderParamIn">
+        <wsdl:part name="ClientOrderNum" type="xsd:string"/>
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="setOrderParamOut">
+        <wsdl:part name="return" type="xsd:string"/>
+    </wsdl:message>
+    <wsdl:message name="sendOrderIn">
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="sendOrderOut">
+        <wsdl:part name="return" type="xsd:string"/>
+    </wsdl:message>
+    <wsdl:message name="insertBasket2In">
+        <wsdl:part name="PartsArray" type="soap-enc:Array"/>
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="insertBasket2Out">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getInvoiceDetailsIn">
+        <wsdl:part name="InvoiceNum" type="xsd:int"/>
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getInvoiceDetailsOut">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getInvoiceListIn">
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getInvoiceListOut">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getOrderStatusIn">
+        <wsdl:part name="ClientOrderNum" type="xsd:string"/>
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getOrderStatusOut">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getClientIdIn">
+        <wsdl:part name="Login" type="xsd:string"/>
+        <wsdl:part name="Passwd" type="xsd:string"/>
+    </wsdl:message>
+    <wsdl:message name="getClientIdOut">
+        <wsdl:part name="return" type="xsd:string"/>
+    </wsdl:message>
+    <wsdl:message name="getPriceByOemIn">
+        <wsdl:part name="OemCodes" type="soap-enc:Array"/>
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getPriceByOemOut">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getBasketDetailsIn">
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getBasketDetailsOut">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="cleanBasketIn">
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="cleanBasketOut">
+        <wsdl:part name="return" type="xsd:string"/>
+    </wsdl:message>
+    <wsdl:message name="getDetailStatusByOemIn">
+        <wsdl:part name="DatePeriod" type="soap-enc:Array"/>
+        <wsdl:part name="DetailData" type="soap-enc:Array"/>
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getDetailStatusByOemOut">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getDetailStatusByIdIn">
+        <wsdl:part name="DetailData" type="soap-enc:Array"/>
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="getDetailStatusByIdOut">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="viewBasketIn">
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="viewBasketOut">
+        <wsdl:part name="return" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="deleteFromBasketByOemIn">
+        <wsdl:part name="Oem" type="xsd:string"/>
+        <wsdl:part name="UserParam" type="soap-enc:Array"/>
+    </wsdl:message>
+    <wsdl:message name="deleteFromBasketByOemOut">
+        <wsdl:part name="return" type="xsd:string"/>
+    </wsdl:message>
+    <wsdl:portType name="UserServicePort">
+        <wsdl:operation name="getMultPrice">
+            <wsdl:documentation>@param array $TestQuerry data for oem</wsdl:documentation>
+            <wsdl:input message="tns:getMultPriceIn"/>
+            <wsdl:output message="tns:getMultPriceOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getPartsPrice">
+            <wsdl:documentation>@param string $OemCode Code</wsdl:documentation>
+            <wsdl:input message="tns:getPartsPriceIn"/>
+            <wsdl:output message="tns:getPartsPriceOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getPartsStatus">
+            <wsdl:documentation>@param array $DatePeriod period</wsdl:documentation>
+            <wsdl:input message="tns:getPartsStatusIn"/>
+            <wsdl:output message="tns:getPartsStatusOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="setOrderParam">
+            <wsdl:documentation>@param string $ClientOrderNum nomer zakaza</wsdl:documentation>
+            <wsdl:input message="tns:setOrderParamIn"/>
+            <wsdl:output message="tns:setOrderParamOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="sendOrder">
+            <wsdl:documentation>@param array $UserParam user login and passwd</wsdl:documentation>
+            <wsdl:input message="tns:sendOrderIn"/>
+            <wsdl:output message="tns:sendOrderOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="insertBasket2">
+            <wsdl:documentation>@param array $PartsArray PartsArray</wsdl:documentation>
+            <wsdl:input message="tns:insertBasket2In"/>
+            <wsdl:output message="tns:insertBasket2Out"/>
+        </wsdl:operation>
+        <wsdl:operation name="getInvoiceDetails">
+            <wsdl:documentation>@param int $InvoiceNum invoice num</wsdl:documentation>
+            <wsdl:input message="tns:getInvoiceDetailsIn"/>
+            <wsdl:output message="tns:getInvoiceDetailsOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getInvoiceList">
+            <wsdl:documentation>@param array $UserParam user login and passwd</wsdl:documentation>
+            <wsdl:input message="tns:getInvoiceListIn"/>
+            <wsdl:output message="tns:getInvoiceListOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getOrderStatus">
+            <wsdl:documentation>@param string $ClientOrderNum order num</wsdl:documentation>
+            <wsdl:input message="tns:getOrderStatusIn"/>
+            <wsdl:output message="tns:getOrderStatusOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getClientId">
+            <wsdl:documentation>@param string $Login client login</wsdl:documentation>
+            <wsdl:input message="tns:getClientIdIn"/>
+            <wsdl:output message="tns:getClientIdOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getPriceByOem">
+            <wsdl:documentation>@param array $OemCodes codes</wsdl:documentation>
+            <wsdl:input message="tns:getPriceByOemIn"/>
+            <wsdl:output message="tns:getPriceByOemOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getBasketDetails">
+            <wsdl:documentation>@param array $UserParam user login and passwd</wsdl:documentation>
+            <wsdl:input message="tns:getBasketDetailsIn"/>
+            <wsdl:output message="tns:getBasketDetailsOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="cleanBasket">
+            <wsdl:documentation>@param array $UserParam user login and passwd</wsdl:documentation>
+            <wsdl:input message="tns:cleanBasketIn"/>
+            <wsdl:output message="tns:cleanBasketOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getDetailStatusByOem">
+            <wsdl:documentation>@param array $DatePeriod period</wsdl:documentation>
+            <wsdl:input message="tns:getDetailStatusByOemIn"/>
+            <wsdl:output message="tns:getDetailStatusByOemOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="getDetailStatusById">
+            <wsdl:documentation>@param array $DetailData detail data</wsdl:documentation>
+            <wsdl:input message="tns:getDetailStatusByIdIn"/>
+            <wsdl:output message="tns:getDetailStatusByIdOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="viewBasket">
+            <wsdl:documentation>@param array $UserParam user login and passwd</wsdl:documentation>
+            <wsdl:input message="tns:viewBasketIn"/>
+            <wsdl:output message="tns:viewBasketOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="deleteFromBasketByOem">
+            <wsdl:documentation>@param string $Oem oem</wsdl:documentation>
+            <wsdl:input message="tns:deleteFromBasketByOemIn"/>
+            <wsdl:output message="tns:deleteFromBasketByOemOut"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="UserServiceBinding" type="tns:UserServicePort">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getMultPrice">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#getMultPrice"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPartsPrice">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#getPartsPrice"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPartsStatus">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#getPartsStatus"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setOrderParam">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#setOrderParam"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="sendOrder">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#sendOrder"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="insertBasket2">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#insertBasket2"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getInvoiceDetails">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#getInvoiceDetails"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getInvoiceList">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#getInvoiceList"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getOrderStatus">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#getOrderStatus"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getClientId">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#getClientId"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPriceByOem">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#getPriceByOem"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getBasketDetails">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#getBasketDetails"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="cleanBasket">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#cleanBasket"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDetailStatusByOem">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#getDetailStatusByOem"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDetailStatusById">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#getDetailStatusById"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="viewBasket">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#viewBasket"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteFromBasketByOem">
+            <soap:operation soapAction="https://automototrade.com/wsdl/server.php#deleteFromBasketByOem"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://automototrade.com/wsdl/server.php"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="UserServiceService">
+        <wsdl:port name="UserServicePort" binding="tns:UserServiceBinding">
+            <soap:address location="https://automototrade.com/wsdl/server.php"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

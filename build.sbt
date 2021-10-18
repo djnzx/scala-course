@@ -157,6 +157,26 @@ lazy val typesafe = (project in file("typesafe"))
 lazy val typelevel = (project in file("typelevel"))
   .settings(commonSettings)
 
+lazy val amt = (project in file("amt"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.apache.axis" % "axis" % "1.4", // no transitive
+      "org.apache.axis" % "axis-saaj" % "1.4", // no transitive
+      "org.apache.axis" % "axis-jaxrpc" % "1.4", // no transitive
+      "axis" % "axis-wsdl4j" % "1.5.1", // no transitive
+//      "wsdl4j" % "wsdl4j" % "1.6.3", // no transitive
+      "commons-discovery" % "commons-discovery" % "0.5", // transitive: commons-logging" % "commons-logging" % "1.1.1"
+      "javax.mail" % "mail" % "1.4.7", // transitive: "javax.activation" % "activation" % "1.1",
+    ),
+    javacOptions ++= Seq(
+      "-source",
+      "11",
+      "-target",
+      "11",
+    ),
+  )
+
 lazy val ce2 = (project in file("ce2"))
   .settings(commonSettings)
   .settings(

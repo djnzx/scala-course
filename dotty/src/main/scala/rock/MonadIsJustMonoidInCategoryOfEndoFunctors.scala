@@ -1,6 +1,6 @@
 package rock
 
-object MonadIsJustMonoindInCategoryOfEndofunctors {
+object MonadIsJustMonoidInCategoryOfEndoFunctors {
 
 
   /** monoid in a category A[_] */

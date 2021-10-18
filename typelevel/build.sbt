@@ -34,4 +34,5 @@ libraryDependencies ++= Seq(
   Libraries.shapeless,
   "com.github.fd4s" %% "fs2-kafka" % "1.7.0",
   "com.google.cloud" % "google-cloud-logging" % "3.0.1",
+  "org.scala-lang" % "scala-reflect" % "2.13.6",
 )
