@@ -1,4 +1,4 @@
-package d06
+package d06_async
 
 import cats.effect.ExitCode
 import cats.effect.IO
@@ -11,7 +11,7 @@ import scala.concurrent.Future
 import scala.util.Failure
 import scala.util.Success
 
-object FromFutureApp extends IOApp {
+object A5_AsyncFromScalaFuture extends IOApp {
 
   /** effect representation */
   val future: () => Future[Int] = () => {
@@ -19,10 +19,10 @@ object FromFutureApp extends IOApp {
     Future.successful(33)
   }
 
-  /** effect wrapped into IO */
+  /** effect wrapped into IO to suspend */
   val wrapped: IO[Future[Int]] = IO(future())
 
-  def fromFuture[A](iofa: IO[Future[A]])(implicit ec: ExecutionContext): IO[A] =
+  def fromScalaFuture[A](iofa: IO[Future[A]])(implicit ec: ExecutionContext): IO[A] =
     iofa.flatMap { fa: Future[A] =>
       IO.async[A] { cb: (Either[Throwable, A] => Unit) =>
         fa.onComplete {
@@ -33,13 +33,11 @@ object FromFutureApp extends IOApp {
     }
 
   /** remapped into IO without nested stuff */
-  val ioa: IO[Int] = fromFuture(wrapped)(Implicits.global)
-  println("==========")
-
-  val app = ioa.debug
+  val app: IO[Int] = fromScalaFuture(wrapped)(Implicits.global)
   println("==========")
 
   override def run(args: List[String]): IO[ExitCode] =
     app
+      .debug
       .as(ExitCode.Success)
 }

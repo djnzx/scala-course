@@ -1,11 +1,11 @@
-package d06
+package d06_async
 
 import cats.effect.ExitCode
 import cats.effect.IO
 import cats.effect.IOApp
 import common.debug.DebugHelper
 
-object NeverApp extends IOApp {
+object A6_NeverApp extends IOApp {
 
   val never: IO[Nothing] =
     IO.async { callback =>

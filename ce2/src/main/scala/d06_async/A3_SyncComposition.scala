@@ -1,4 +1,4 @@
-package d06
+package d06_async
 
 import cats.effect.ExitCode
 import cats.effect.IO
@@ -9,29 +9,24 @@ import scala.concurrent.Future
 import scala.util.Failure
 import scala.util.Success
 
-object SyncComposition extends IOApp {
+object A3_SyncComposition extends IOApp {
 
-  type PlainCallback[A] = Either[Throwable, A] => Unit
-
-  type Callback[A] = PlainCallback[A] => Unit
-
-  def async[A](k: Callback[A]): IO[A] = ???
-
-  def syncSum(l: Int, r: Int): IO[Int] =
-    IO.async { cb =>
-      cb(Right(l + r))
-    }
-
+  /** our API which works in terms of Future */
   trait API {
     def compute: Future[Int] = Future.successful(42)
   }
 
+  /** signature:
+    * Either[Throwable, Int] => Unit
+    * is an abstraction over Try / Success / Failure
+    */
   def doSmth[A](api: API)(implicit ec: ExecutionContext): IO[Int] = {
     IO.async[Int] { cb: (Either[Throwable, Int] => Unit) =>
       api.compute.onComplete {
         case Failure(x) => cb(Left(x))
         case Success(v) => cb(Right(v))
       }
+
     }.guarantee(IO.shift)
   }
 
