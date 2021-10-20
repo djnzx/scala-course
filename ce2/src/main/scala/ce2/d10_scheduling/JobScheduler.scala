@@ -57,9 +57,12 @@ object JobScheduler {
       zzz <- Zzz.asleep // initially sleep
       scheduler = makeScheduler(schedulerState, zzz)
       reactor = Reactor(schedulerState)
+
       onStart = (id: Job.Id) => IO(println(s"job $id started")) >> IO.unit
+
       onComplete = (id: Job.Id, exitCase: ExitCase[Throwable]) =>
         IO(println(s"job $id finished with state $exitCase")) >> zzz.wakeUp
+
       loop = (zzz.sleep *> reactor.whenAwake(onStart, onComplete)).foreverM
     } yield loop.background.as(scheduler)
 
