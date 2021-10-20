@@ -19,16 +19,6 @@ object Reactor {
   final case class Asleep() extends State
   final case class Awake() extends State
 
-  trait Zzz {
-    def sleep: IO[Unit]
-    def wakeUp: IO[Unit]
-  }
-
-  object Zzz {
-    def apply: IO[Zzz] = ???
-    def asleep: IO[Zzz] = ???
-  }
-
   def apply(stateRef: Ref[IO, JobScheduler.State])(implicit cs: ContextShift[IO]): Reactor =
     new Reactor {
 
@@ -46,7 +36,7 @@ object Reactor {
 
       def startJob(scheduled: Job.Scheduled): IO[Job.Running] = for {
         running <- scheduled.start
-        _ <- stateRef.update(_.running(running))
+        _ <- stateRef.update(_.addToRunning(running))
         _ <- registerOnComplete(running)
         _ <- onStart(running.id).attempt
       } yield running

@@ -11,6 +11,8 @@ import java.util.UUID
 sealed trait Job
 
 object Job {
+
+  /** Id wrapper */
   case class Id(value: UUID) extends AnyVal
 
   /** Scheduled */
