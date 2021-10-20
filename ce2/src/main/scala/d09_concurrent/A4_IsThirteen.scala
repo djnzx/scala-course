@@ -9,6 +9,10 @@ import scala.concurrent.duration._
 
 object A4_IsThirteen extends IOApp {
 
+  def makeRef(x: Long): IO[Ref[IO, Long]] = Ref[IO].of(x)
+
+  def makeDeferred[A]: IO[Deferred[IO, A]] = Deferred[IO, A]
+
   def beepWhen13(is13: Deferred[IO, Unit]) =
     for {
       _ <- is13.get // Calling get will block the current effect until is13 has a value
@@ -28,8 +32,8 @@ object A4_IsThirteen extends IOApp {
 
   def run(args: List[String]): IO[ExitCode] =
     for {
-      ticks <- Ref[IO].of(0L)
-      is13 <- Deferred[IO, Unit] // create a Deferred that will hold a Unit value once the condition is met
+      ticks <- makeRef(0)
+      is13 <- makeDeferred[Unit] // create a Deferred that will hold a Unit value once the condition is met
       _ <- (
         beepWhen13(is13),
         tickingClock(ticks, is13),
