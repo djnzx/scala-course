@@ -34,12 +34,15 @@ object JobScheduler {
 
     def addToRunning(job: Job.Running): State = copy(running = running + (job.id -> job))
 
-    def attempt: State = ???
+    /** move from Running => Completed */
+    def onComplete(job: Job.Completed): State =
+      copy(running = running - job.id, completed = completed :+ job)
 
-    def onComplete(id: Job.Id, exitCase: ExitCase[Throwable]): State = ???
   }
 
-  def makeScheduler(schedulerState: Ref[IO, State], zzz: Zzz): JobScheduler =
+  private def makeInitialState(n: Int): IO[Ref[IO, State]] = Ref[IO].of(JobScheduler.State(n))
+
+  private def makeScheduler(schedulerState: Ref[IO, State], zzz: Zzz): JobScheduler =
     new JobScheduler {
       override def schedule(task: IO[_]): IO[Job.Id] = for {
         job <- Job.create(task)
@@ -50,12 +53,13 @@ object JobScheduler {
 
   def resource(maxRunning: Int)(implicit cs: ContextShift[IO]): IO[Resource[IO, JobScheduler]] =
     for {
-      schedulerState <- Ref[IO].of(JobScheduler.State(maxRunning))
-      zzz <- Zzz.asleep
+      schedulerState <- makeInitialState(maxRunning)
+      zzz <- Zzz.asleep // initially sleep
       scheduler = makeScheduler(schedulerState, zzz)
       reactor = Reactor(schedulerState)
-      onStart = (id: Job.Id) => IO.unit
-      onComplete = (id: Job.Id, exitCase: ExitCase[Throwable]) => zzz.wakeUp
+      onStart = (id: Job.Id) => IO(println(s"job $id started")) >> IO.unit
+      onComplete = (id: Job.Id, exitCase: ExitCase[Throwable]) =>
+        IO(println(s"job $id finished with state $exitCase")) >> zzz.wakeUp
       loop = (zzz.sleep *> reactor.whenAwake(onStart, onComplete)).foreverM
     } yield loop.background.as(scheduler)
 
