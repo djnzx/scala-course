@@ -1,1 +1,0 @@
-### Structured Logging in Google Cloud experiments
