@@ -27,14 +27,11 @@ object P26 {
   def combinations[A](n: Int, as: List[A]): List[List[A]] = n match {
     case 0 => List(List.empty)
     case n =>
-      // generate
       tails(as) { case h :: t =>
-        val c1 = combinations(n - 1, t)
-        // attach head
-        c1.map(la => h :: la)
+        combinations(n - 1, t)
+          .map(la => h :: la)
       }
   }
-
 }
 
 class P26Spec extends ASpec {
