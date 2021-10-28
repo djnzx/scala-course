@@ -6,8 +6,8 @@ import org.scalatest.matchers.should.Matchers
 
 abstract class ASpec extends AnyFunSpec with Matchers with BeforeAndAfterAll {
 
-  def println[A](a: A) = pprint.pprintln(a)
-  
+  def println[A](a: A): Unit = pprint.pprintln(a)
+
   def runAll[A, B](data: Seq[(A, B)], f: A => B, debug: Boolean = false): Unit =
     for {
       (in, out) <- data
