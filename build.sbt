@@ -223,6 +223,15 @@ lazy val dotty = (project in file("dotty"))
     description := "Example sbt project that compiles using Scala 3",
   )
 
+lazy val s3fs = (project in file("s3fs"))
+  .settings(
+    scalaVersion := "3.0.2",
+    libraryDependencies += "co.fs2" %% "fs2-core" % "3.1.3", // 3.2.1 ?
+    initialCommands := s"""
+    import fs2._, cats.effect._, cats.effect.unsafe.implicits.global
+  """,
+  )
+
 /** FP in Scala (RED Book) Mostly plain Scala only a few libraries involved */
 lazy val fp_red = (project in file("fp_red"))
   .settings(
