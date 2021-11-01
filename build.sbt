@@ -110,7 +110,7 @@ lazy val ce3 = (project in file("ce3"))
     commonSettings,
     addCompilerPlugin(CompilerPlugins.betterMonadicFor),
     addCompilerPlugin(CompilerPlugins.contextApplied),
-    addCompilerPlugin(CompilerPlugins.kindProjector),
+//    addCompilerPlugin(CompilerPlugins.kindProjector),
     libraryDependencies ++= Seq(
       // CATS
       "org.typelevel" %% "cats-core" % "2.6.1",
