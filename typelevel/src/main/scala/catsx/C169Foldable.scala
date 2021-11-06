@@ -54,9 +54,14 @@ object C169Foldable extends App {
   val combined3 = fl.foldMap(data)(n => s"[$n]")
   println(combined3)
 
+  /** plain Scala2 syntax */
   val ff: Foldable[({
-    type λ[α] = List[Vector[α]]
-  })#λ] = Foldable[List] compose Foldable[Vector]
+    type x[α] = List[Vector[α]]
+  })#x] = Foldable[List] compose Foldable[Vector]
+
+  /** Kind Projector Plugin */
+  val ff2: Foldable[Lambda[α => List[Vector[α]]]] = Foldable[List] compose Foldable[Vector]
+  val ff3: Foldable[λ[α => List[Vector[α]]]] = Foldable[List] compose Foldable[Vector]
 
   val dataComposed = List(Vector(1,2,3), Vector(4,5,6))
   val combined4 = ff.combineAll(dataComposed)

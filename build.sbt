@@ -1,48 +1,30 @@
 import Dependencies.Libraries
 
-import Dependencies.Versions
+import Versions._
 import Dependencies.pf
 import Dependencies.Libraries.CompilerPlugins
-import Dependencies.Versions.zio1v
-import Dependencies.Versions.zio2v
 import sbt.Def.spaceDelimited
 import sbt.Keys._
-
-lazy val vScala = "2.13.6"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val commonSettings = Seq(
   scalaVersion := vScala,
   organization := "org.alexr",
-  version := "21.11.01",
-  javacOptions ++= Seq(
-    "-source",
-    "11",
-    "-target",
-    "11",
-  ),
+  version := "21.11.06",
+  javacOptions ++= CompilerOptions.javacOptions,
   // https://docs.scala-lang.org/overviews/compiler-options/index.html#Warning_Settings
   // http://eed3si9n.com/stricter-scala-with-xlint-xfatal-warnings-and-scalafix
-  scalacOptions ++= CompilerOptions.scalac,
-  scalacOptions --= Seq(
-    "-Xfatal-warnings",
-  ),
-  resolvers ++= Seq(
-    Resolver.mavenLocal,
-    Resolver.mavenCentral,
-//    Resolver.typesafeRepo("releases"),
-//    Resolver.sonatypeRepo("releases"),
-//    Resolver.sonatypeRepo("snapshots"),
-    Repos.artima,
-  ),
-  libraryDependencies ++= Seq(
-//    Libraries.scalaTest,
-    Libraries.scalaTestFunSpec,
-    Libraries.scalaTestShould,
-    Libraries.pprint,
-    Libraries.fansi,
-  ),
+  scalacOptions ++= CompilerOptions.scalacOptions,
+  // temporary
+  scalacOptions -= ScalacOpts.warningsAsFatals,
+  resolvers ++= Resolvers.all,
+  libraryDependencies ++=
+    Seq(
+      Libraries.pprint,
+      Libraries.fansi,
+    ) ++
+      Libraries.scalaTest,
 )
 
 /** some algorithms implementations */
@@ -59,14 +41,14 @@ lazy val amt = (project in file("amt"))
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
-      "org.apache.axis" % "axis" % "1.4", // no transitive
-      "org.apache.axis" % "axis-saaj" % "1.4", // no transitive
+      "org.apache.axis" % "axis"        % "1.4", // no transitive
+      "org.apache.axis" % "axis-saaj"   % "1.4", // no transitive
       "org.apache.axis" % "axis-jaxrpc" % "1.4", // no transitive
-      "axis" % "axis-wsdl4j" % "1.5.1", // no transitive
+      "axis"            % "axis-wsdl4j" % "1.5.1", // no transitive
       // "wsdl4j" % "wsdl4j" % "1.6.3", // no transitive
       // just to avoid warnings in runtime
       "commons-discovery" % "commons-discovery" % "0.5", // transitive: commons-logging" % "commons-logging" % "1.1.1"
-      "javax.mail" % "mail" % "1.4.7", // transitive: "javax.activation" % "activation" % "1.1",
+      "javax.mail"        % "mail"              % "1.4.7", // transitive: "javax.activation" % "activation" % "1.1",
     ),
   )
 
@@ -76,8 +58,6 @@ lazy val ce2 = (project in file("ce2"))
     commonSettings,
     addCompilerPlugin(CompilerPlugins.kindProjector),
     libraryDependencies ++= {
-      val vCats = "2.6.1"
-      val vCatsEffects = "2.5.4"
       val vCatsTagless = "0.11"
       val vFs2 = "2.5.10"
       val vHttp4s = "0.21.4"
@@ -86,20 +66,20 @@ lazy val ce2 = (project in file("ce2"))
       val vLogback = "1.2.3"
 
       Seq(
-        "org.typelevel" %% "cats-core" % vCats,
-        "org.typelevel" %% "cats-effect" % vCatsEffects,
-        "org.typelevel" %% "cats-effect-laws" % vCatsEffects,
-        "co.fs2" %% "fs2-core" % vFs2,
-        "co.fs2" %% "fs2-reactive-streams" % vFs2,
-        "io.circe" %% "circe-generic" % vCirce,
-        "org.http4s" %% "http4s-blaze-server" % vHttp4s,
-        "org.http4s" %% "http4s-blaze-client" % vHttp4s,
-        "org.http4s" %% "http4s-circe" % vHttp4s,
-        "org.http4s" %% "http4s-dsl" % vHttp4s,
-        "org.typelevel" %% "cats-tagless-macros" % vCatsTagless,
-        "org.scalameta" %% "munit-scalacheck" % vMunit,
-        "org.typelevel" %% "munit-cats-effect-2" % "1.0.6",
-        "ch.qos.logback" % "logback-classic" % vLogback,
+        "org.typelevel" %% "cats-core"            % cats,
+        "org.typelevel" %% "cats-effect"          % catsEffect2,
+        "org.typelevel" %% "cats-effect-laws"     % catsEffect2,
+        "co.fs2"        %% "fs2-core"             % vFs2,
+        "co.fs2"        %% "fs2-reactive-streams" % vFs2,
+        "io.circe"      %% "circe-generic"        % vCirce,
+        "org.http4s"    %% "http4s-blaze-server"  % vHttp4s,
+        "org.http4s"    %% "http4s-blaze-client"  % vHttp4s,
+        "org.http4s"    %% "http4s-circe"         % vHttp4s,
+        "org.http4s"    %% "http4s-dsl"           % vHttp4s,
+        "org.typelevel" %% "cats-tagless-macros"  % vCatsTagless,
+        "org.scalameta" %% "munit-scalacheck"     % vMunit,
+        "org.typelevel" %% "munit-cats-effect-2"  % "1.0.6",
+        "ch.qos.logback" % "logback-classic"      % vLogback,
       )
     },
   )
@@ -113,10 +93,10 @@ lazy val ce3 = (project in file("ce3"))
 //    addCompilerPlugin(CompilerPlugins.kindProjector),
     libraryDependencies ++= Seq(
       // CATS
-      "org.typelevel" %% "cats-core" % "2.6.1",
-      "org.typelevel" %% "cats-effect" % "3.2.9",
+      "org.typelevel" %% "cats-core"   % cats,
+      "org.typelevel" %% "cats-effect" % catsEffect3,
       // FS2
-      "co.fs2" %% "fs2-core" % "3.1.5", // 3.2.9
+      "co.fs2" %% "fs2-core"             % "3.1.5", // 3.2.9
       "co.fs2" %% "fs2-reactive-streams" % "3.1.5",
       // testing
       "org.typelevel" %% "munit-cats-effect-3" % "1.0.6",
@@ -128,7 +108,7 @@ lazy val co = (project in file("co"))
   .settings(commonSettings)
   .settings(
     scalacOptions -= "-Ymacro-annotations",
-    scalaVersion := "2.12.13",
+    scalaVersion := vScala212,
     libraryDependencies ++= Seq(
       CompilerPlugins.betterMonadicFor,
       CompilerPlugins.contextApplied,
@@ -177,9 +157,9 @@ lazy val degoes = (project in file("degoes"))
       Libraries.zio1("zio-test-sbt"),
       Libraries.zio1("zio-test-magnolia"),
       Libraries.zio1("zio-streams"),
-      pf.zio %% "zio-interop-cats" % "2.2.0.1",
-      pf.zio %% "zio-kafka" % "0.13.0",
-      "com.github.pureconfig" %% "pureconfig" % "0.14.0",
+      pf.zio                  %% "zio-interop-cats" % "2.2.0.1",
+      pf.zio                  %% "zio-kafka"        % "0.13.0",
+      "com.github.pureconfig" %% "pureconfig"       % "0.14.0",
       Libraries.sqlPg,
       Libraries.doobieCore,
       Libraries.doobiePg,
@@ -192,12 +172,10 @@ lazy val degoes = (project in file("degoes"))
 lazy val zio1 = (project in file("zio1"))
   .settings(
     commonSettings,
-  )
-  .settings(
     libraryDependencies ++= Seq(
-      pf.zio %% "zio" % zio1v,
-      pf.zio %% "zio-streams" % zio1v,
-      pf.zio %% "zio-test" % zio1v,
+      pf.zio %% "zio"          % zio1v,
+      pf.zio %% "zio-streams"  % zio1v,
+      pf.zio %% "zio-test"     % zio1v,
       pf.zio %% "zio-test-sbt" % zio1v % Test,
     ),
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
@@ -205,28 +183,28 @@ lazy val zio1 = (project in file("zio1"))
 
 /** ZIO v.2 */
 lazy val zio2 = (project in file("zio2"))
-  .settings(commonSettings)
   .settings(
+    commonSettings,
     libraryDependencies ++= Seq(
-      pf.zio %% "zio" % zio2v,
-      pf.zio %% "zio-streams" % zio2v,
-      pf.zio %% "zio-test" % zio2v,
+      pf.zio %% "zio"          % zio2v,
+      pf.zio %% "zio-streams"  % zio2v,
+      pf.zio %% "zio-test"     % zio2v,
       pf.zio %% "zio-test-sbt" % zio2v % Test,
     ),
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
   )
 
 /** Dotty experiments */
-lazy val dotty = (project in file("dotty"))
+lazy val plain3 = (project in file("plain3"))
   .settings(
-    scalaVersion := "3.0.1",
+    scalaVersion := vScala31,
     description := "Example sbt project that compiles using Scala 3",
   )
 
 lazy val s3fs = (project in file("s3fs"))
   .settings(
-    scalaVersion := "3.0.2",
-    libraryDependencies += "co.fs2" %% "fs2-core" % "3.1.3", // 3.2.1 ?
+    scalaVersion := vScala31,
+    libraryDependencies += "co.fs2" %% "fs2-core" % fs2ce3,
     initialCommands := s"""
     import fs2._, cats.effect._, cats.effect.unsafe.implicits.global
   """,
@@ -278,13 +256,13 @@ lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      pf.lihaoyi %% "upickle" % "1.4.0", // http://www.lihaoyi.com/upickle
-      pf.lihaoyi %% "ujson" % "1.4.0",
-      pf.lihaoyi %% "os-lib" % "0.7.8", // https://github.com/lihaoyi/os-lib
-      pf.lihaoyi %% "scalatags" % "0.9.4",
-      pf.lihaoyi %% "requests" % "0.6.9",
-      pf.lihaoyi %% "geny" % "0.6.10",
-      pf.lihaoyi %% "fastparse" % "2.3.2", // https://www.lihaoyi.com/fastparse/
+      pf.lihaoyi                %% "upickle"    % "1.4.0", // http://www.lihaoyi.com/upickle
+      pf.lihaoyi                %% "ujson"      % "1.4.0",
+      pf.lihaoyi                %% "os-lib"     % "0.7.8", // https://github.com/lihaoyi/os-lib
+      pf.lihaoyi                %% "scalatags"  % "0.9.4",
+      pf.lihaoyi                %% "requests"   % "0.6.9",
+      pf.lihaoyi                %% "geny"       % "0.6.10",
+      pf.lihaoyi                %% "fastparse"  % "2.3.2", // https://www.lihaoyi.com/fastparse/
       "com.atlassian.commonmark" % "commonmark" % "0.15.0",
     ),
   )
@@ -297,15 +275,15 @@ lazy val mix = (project in file("mix"))
     libraryDependencies ++= Seq(
       CompilerPlugins.kindProjector,
       CompilerPlugins.betterMonadicFor,
-      "io.getquill" %% "quill-jdbc" % "3.5.1",
+      "io.getquill" %% "quill-jdbc"  % "3.5.1",
       "org.flywaydb" % "flyway-core" % "6.4.2",
       Libraries.http4sServer, // URI
       Libraries.sqlPg,
       Libraries.jsoup,
       //      "org.typelevel" %% "simulacrum" % "1.0.0",
-      "com.github.mpilquist" %% "simulacrum" % "0.19.0",
-      "org.scalaz" %% "scalaz-core" % "7.3.2",
-      "com.propensive" %% "contextual" % "1.2.1",
+      "com.github.mpilquist" %% "simulacrum"  % "0.19.0",
+      "org.scalaz"           %% "scalaz-core" % "7.3.2",
+      "com.propensive"       %% "contextual"  % "1.2.1",
       Libraries.refinedCore,
       Libraries.refinedScalaz,
       "org.scalaz" %% "scalaz-deriving-jsonformat" % "2.0.0-M5",
@@ -322,15 +300,15 @@ lazy val pbx = (project in file("pbx"))
     ),
   )
 
-lazy val scala_plain = (project in file("scala_plain"))
-  .enablePlugins(ScalaxbPlugin)
+lazy val plain2 = (project in file("plain2"))
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.3",
-      "com.softwaremill.quicklens" %% "quicklens" % "1.7.3",
-      "org.scala-lang" % "scala-reflect" % vScala,
-      "org.scalaxb" %% "scalaxb" % "1.8.0",
+      "org.scala-lang.modules"     %% "scala-parallel-collections" % "1.0.3",
+      "com.softwaremill.quicklens" %% "quicklens"                  % "1.7.3",
+      "org.scala-lang"              % "scala-reflect"              % vScala,
+      "org.scalaxb"                %% "scalaxb"                    % "1.8.0",
+      Libraries.scalaTestWhole,
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
       Libraries.scalactic,
@@ -373,8 +351,8 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.refinedCore,
       // shapeless
       Libraries.shapeless,
-      "com.github.fd4s" %% "fs2-kafka" % "1.7.0",
-      "org.scala-lang" % "scala-reflect" % vScala,
+      "com.github.fd4s" %% "fs2-kafka"            % "1.7.0",
+      "org.scala-lang"   % "scala-reflect"        % vScala,
       "com.google.cloud" % "google-cloud-logging" % "3.0.1",
     ),
   )
@@ -411,16 +389,15 @@ lazy val typesafe = (project in file("typesafe"))
 lazy val sparkx = (project in file("sparkx"))
   .settings(
     commonSettings,
-    scalaVersion := "2.12.15",
-//    scalaVersion := "2.11.12",
+    scalaVersion := vScala212,
+//    scalaVersion := vScala211,
     scalacOptions -= ScalacOpts.macroAnnotations,
     libraryDependencies ++= Seq(
       "org.apache.spark" %% "spark-core" % "2.4.7",
-      "org.apache.spark" %% "spark-sql" % "2.4.7",
+      "org.apache.spark" %% "spark-sql"  % "2.4.7",
     ),
   )
 
-//initialCommands in console := "import scalaz._, Scalaz._"
 //addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
 //addCommandAlias("check", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html

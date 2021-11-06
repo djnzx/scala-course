@@ -12,7 +12,7 @@ object C024Eq extends App {
     */
   val r1: List[Option[Int]] = List(1, 2, 3).map(x => Option(x)).filter(x => x == 1)
   // will not compile
-  //  val r2: List[Option[Int]] = List(1, 2, 3).map(x => Option(x)).filter(x => x === 1)
+//    val r2: List[Option[Int]] = List(1, 2, 3).map(x => Option(x)).filter(x => x === 1)
 
   {
     val b1 = 1 === 1 // trur

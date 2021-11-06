@@ -7,22 +7,22 @@ type classes:
  - Show[A]          .show
  - Eq[A]            .eq       === =!=
  - Semigroup[A]     .combine  |+|
- - Monoid[A]        .empty 
+ - Monoid[A]        .empty + .combine
  - Functor[A]       .map
+ - Monad[A]         .flatMap
  - Contravariant[A]
  - Or[A, B]
- - Monad[A]         .flatMap
- - Id[A]
+ - Id[A]            identity wrapper
  - MonadError[F[_], E] raiseError handleError ensure
  - ApplicativeError
  - Eval: eager, lazy, memoized
  - Writer[W, A]      / .tell / .writer
  - Reader[A, B] = f: A => B
    - chaining -> andThan
-   - parallel -> mapN, fltMap
+   - parallel -> mapN, parMapN, flatMap
  - State[S, A]
  - Semigroupal[F[_]]  .mapN imapN
- - Validated[A]
+ - Validated[A]      .valid, .invalid, .mapN
  - Apply[A]          .ap
  - Applicative[A]    .pure
  - Foldable[A]
