@@ -16,14 +16,14 @@ class CustomEqualitySpec extends AnyFunSpec with Matchers {
 
   it("precision 0.01") {
     implicit val p = precision(0.01)
-    1.005 === 1.006 shouldEqual true
-    1 === 1.02 shouldEqual false
+    1.005 shouldEqual 1.006
+    1 should not equal 1.02
   }
 
   it("precision 0.001") {
     implicit val p = precision(0.001)
-    1.001 === 1.0015 shouldEqual true
-    1 === 1.002 shouldEqual false
+    1.001 shouldEqual 1.0015
+    1 should not equal 1.002
   }
 
 }
