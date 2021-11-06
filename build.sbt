@@ -31,9 +31,6 @@ lazy val commonSettings = Seq(
 lazy val algorithms = (project in file("algorithms"))
   .settings(
     commonSettings,
-    libraryDependencies ++= Seq(
-      Libraries.scalactic,
-    ),
   )
 
 /** AMT WSDL experiments */
@@ -105,8 +102,8 @@ lazy val ce3 = (project in file("ce3"))
 
 /** cognitOps experiments area */
 lazy val co = (project in file("co"))
-  .settings(commonSettings)
   .settings(
+    commonSettings,
     scalacOptions -= "-Ymacro-annotations",
     scalaVersion := vScala212,
     libraryDependencies ++= Seq(
@@ -147,8 +144,8 @@ lazy val co = (project in file("co"))
 
 /** John A. De Goes Project ZIO https://zio.dev https://ziverge.com */
 lazy val degoes = (project in file("degoes"))
-  .settings(commonSettings)
   .settings(
+    commonSettings,
     libraryDependencies ++= Seq(
       "io.lemonlabs" %% "scala-uri" % "1.5.1",
       // ZIO
@@ -217,7 +214,6 @@ lazy val fp_red = (project in file("fp_red"))
     libraryDependencies ++= Seq(
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
-      Libraries.scalactic,
     ),
   )
 
@@ -225,9 +221,7 @@ lazy val fp_red = (project in file("fp_red"))
 lazy val http4s1 = (project in file("http4s1"))
   .settings(
     commonSettings, {
-      lazy val http4sVersion = "1.0.0-M25"
-
-      def http4s(artifact: String) = "org.http4s" %% artifact % http4sVersion
+      def http4s(artifact: String) = "org.http4s" %% artifact % "1.0.0-M25"
 
       libraryDependencies ++= Seq(
         http4s("http4s-core"),
@@ -253,8 +247,8 @@ lazy val lcx = (project in file("lcx"))
   * +request +ujson: upickle vs ujson +api_macros
   */
 lazy val lihaoyi = (project in file("lihaoyi"))
-  .settings(commonSettings)
   .settings(
+    commonSettings,
     libraryDependencies ++= Seq(
       pf.lihaoyi                %% "upickle"    % "1.4.0", // http://www.lihaoyi.com/upickle
       pf.lihaoyi                %% "ujson"      % "1.4.0",
@@ -269,9 +263,8 @@ lazy val lihaoyi = (project in file("lihaoyi"))
 
 /** a lot of dirty, mixed code Needs to be polished */
 lazy val mix = (project in file("mix"))
-  .settings(commonSettings)
   .settings(
-    // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
+    commonSettings, // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
     libraryDependencies ++= Seq(
       CompilerPlugins.kindProjector,
       CompilerPlugins.betterMonadicFor,
@@ -301,8 +294,8 @@ lazy val pbx = (project in file("pbx"))
   )
 
 lazy val plain2 = (project in file("plain2"))
-  .settings(commonSettings)
   .settings(
+    commonSettings,
     libraryDependencies ++= Seq(
       "org.scala-lang.modules"     %% "scala-parallel-collections" % "1.0.3",
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.7.3",
@@ -311,7 +304,6 @@ lazy val plain2 = (project in file("plain2"))
       Libraries.scalaTestWhole,
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
-      Libraries.scalactic,
 //      "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf",
     ),
   )
@@ -351,8 +343,8 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.refinedCore,
       // shapeless
       Libraries.shapeless,
-      "com.github.fd4s" %% "fs2-kafka"            % "1.7.0",
       "org.scala-lang"   % "scala-reflect"        % vScala,
+      "com.github.fd4s" %% "fs2-kafka"            % "1.7.0",
       "com.google.cloud" % "google-cloud-logging" % "3.0.1",
     ),
   )
@@ -364,8 +356,8 @@ lazy val typelevel = (project in file("typelevel"))
   * https://www.lightbend.com
   */
 lazy val typesafe = (project in file("typesafe"))
-  .settings(commonSettings)
   .settings(
+    commonSettings,
     libraryDependencies ++= Seq(
       // untyped - old examples
       Libraries.akka("akka-actor"),

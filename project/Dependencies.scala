@@ -88,7 +88,8 @@ object Dependencies {
 
     // Test
     val scalaCheck = "org.scalacheck" %% "scalacheck" % Versions.scalaCheck
-    val scalactic = "org.scalactic"   %% "scalactic"  % Versions.scalaTest
+    // scalactic transitively comes from "scalatest-core"
+    // val scalactic_ = "org.scalactic" %% "scalactic" % Versions.scalaTest
 
     val scalaTestWhole = "org.scalatest" %% "scalatest" % Versions.scalaTest
 
