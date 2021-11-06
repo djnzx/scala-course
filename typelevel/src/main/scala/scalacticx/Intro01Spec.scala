@@ -25,7 +25,7 @@ class Intro01Spec extends AnyFunSpec with Matchers {
   }
 
   it("norm 1") {
-    implicit val c = lowerCased
+    implicit val c: Uniformity[String] = lowerCased
     "WHISPER".norm shouldEqual "whisper"
   }
 
