@@ -59,8 +59,8 @@ object MonadIsJustMonoidInCategoryOfEndoFunctors {
     def map[A, B](fa: F[A])(f: A => B): F[B]
   }
 
-  given functorList: Functor[List] with {
-    def map[A, B](fa: List[A])(f: A => B): List[B] = fa.map(f)
+  implicit val functorList: Functor[List] = new Functor[List] {
+    override def map[A, B](fa: List[A])(f: A => B): List[B] = fa.map(f)
   }
 
   /** functor transformation */
@@ -96,9 +96,18 @@ object MonadIsJustMonoidInCategoryOfEndoFunctors {
   /** same type composition */
   type SameTypeComposition[F[_], A] = HigherKindTypeComposition[F, F, A]
 
-  // doesn't work
+  // what actually we need, doesn't work
 //  trait MonoidInCategoryOfFunctorsX[F[_]: Functor] extends MonoidInCategoryK2[F, FunctorNaturalTransformation, Id, F[F[_]]]
-  // type lambda syntax
+
+  // Scala 2 - two lines syntax
+//  type FF[A] = F[F[A]]
+//  trait MonoidInCategoryOfFunctorsS2A[F[_]: Functor] extends MonoidInCategoryK2[F, FunctorNaturalTransformation, Id, FF[A]] {}
+
+  // Scala 2 - one line syntax
+  trait MonoidInCategoryOfFunctorsS2[F[_]: Functor] extends MonoidInCategoryK2[F, FunctorNaturalTransformation, Id, ({type x[A] = F[F[A]]})#x] {}
+
+
+  // Scala 3 type lambda syntax
   trait MonoidInCategoryOfFunctors[F[_]: Functor] extends MonoidInCategoryK2[F, FunctorNaturalTransformation, Id, [A] =>> F[F[A]]] {
     type FunctorProduct[A] = F[F[A]]
 
