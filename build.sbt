@@ -50,10 +50,12 @@ lazy val amt = (project in file("amt"))
   )
 
 /** Cats Effects 2.x */
-lazy val ce2 = (project in file("ce2"))
+lazy val ce2 = project
+  .in(file("ce2"))
   .settings(
     commonSettings,
     addCompilerPlugin(CompilerPlugins.kindProjector),
+    addCompilerPlugin(CompilerPlugins.betterMonadicFor),
     libraryDependencies ++= {
       val vCatsTagless = "0.11"
       val vFs2 = "2.5.10"
@@ -77,6 +79,7 @@ lazy val ce2 = (project in file("ce2"))
         "org.scalameta" %% "munit-scalacheck"     % vMunit,
         "org.typelevel" %% "munit-cats-effect-2"  % "1.0.6",
         "ch.qos.logback" % "logback-classic"      % vLogback,
+        "com.kubukoz"   %% "debug-utils"          % "1.1.3",
       )
     },
   )
@@ -137,6 +140,7 @@ lazy val co = (project in file("co"))
       Libraries.refinedCore,
       // shapeless
       Libraries.shapeless,
+
       //      "com.cognitops.common" %% "common-json"  % "8.13-SNAPSHOT",
       //      "com.cognitops.common" %% "common-utils" % "8.13-SNAPSHOT",
     ),

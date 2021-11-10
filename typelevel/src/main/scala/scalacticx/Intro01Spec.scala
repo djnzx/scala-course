@@ -30,7 +30,7 @@ class Intro01Spec extends AnyFunSpec with Matchers {
   }
 
   it("equality 1") {
-    implicit val strEquality: NormalizingEquality[String] = decided by defaultEquality[String] afterBeing lowerCased
+    implicit val eq: NormalizingEquality[String] = decided by defaultEquality[String] afterBeing lowerCased
 
     "Hello" shouldEqual "hello"
     "normalized" shouldEqual "NORMALIZED"
