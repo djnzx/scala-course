@@ -204,12 +204,21 @@ object RecursionEvolution {
   /** abstracting over pattern matching */
   object step8 {
 
-    /** decompose source structure into something mappable */
+    /** how to decompose source structure into something mappable */
     def projectList[A] = (xs: List[A]) =>
       xs match {
         case Nil    => None
         case h :: t => Some((h, t))
       }
+
+    /** how to represent current element */
+    val mapper: Int => String = _.toString
+
+    /** algebra definition, how to fold that to the value */
+    val algebra: Option[(Int, String)] => String = {
+      case None         => "nil"
+      case Some((a, r)) => mapper(a) + " :: " + r
+    }
 
     object step81 extends Problems {
 
@@ -300,14 +309,7 @@ object RecursionEvolution {
         step(xs)
       }
 
-      val mapper: Int => String = _.toString
-
-      val op: Option[(Int, String)] => String = {
-        case None         => "nil"
-        case Some((a, r)) => mapper(a) + " :: " + r
-      }
-
-      val traverseForToString: List[Int] => String = fold(op, projectList)
+      val traverseForToString: List[Int] => String = fold(algebra, projectList)
 
       override def asString(xs: List[Int]): String = traverseForToString(xs)
 
@@ -324,14 +326,7 @@ object RecursionEvolution {
         step(xs)
       }
 
-      val mapper: Int => String = _.toString
-
-      val op: Option[(Int, String)] => String = {
-        case None         => "nil"
-        case Some((a, r)) => mapper(a) + " :: " + r
-      }
-
-      val traverseForToString: List[Int] => String = fold(op, projectList)
+      val traverseForToString: List[Int] => String = fold(algebra, projectList)
 
       override def asString(xs: List[Int]): String = traverseForToString(xs)
 
@@ -345,27 +340,19 @@ object RecursionEvolution {
       override def map[X, Y](fa: Option[X])(f: X => Y): Option[Y] = fa.map(f)
     }
 
-    val mapper: Int => String = _.toString
-
     /** eliminating Option and introducing Functor from signature */
     object step86 extends Problems {
 
       def fold[A, R, F[_]](op: F[(A, R)] => R, project: List[A] => F[(A, List[A])])(implicit F: Functor[F]) =
         (xs: List[A]) => {
 
-          def step(tail: List[A]): R =
-            op(F.map(project(tail)) { case (h, t) => (h, step(t)) })
+          def step(tail: List[A]): R = op(F.map(project(tail)) { case (h, t) => (h, step(t)) })
 
           step(xs)
         }
 
-      val op: Option[(Int, String)] => String = {
-        case None         => "nil"
-        case Some((a, r)) => mapper(a) + " :: " + r
-      }
-
       /** implementation */
-      val traverseForToString: List[Int] => String = fold(op, projectList[Int])
+      val traverseForToString: List[Int] => String = fold(algebra, projectList[Int])
 
       /** problem solution */
       override def asString(xs: List[Int]): String = traverseForToString(xs)
@@ -389,12 +376,6 @@ object RecursionEvolution {
 
       val projector: List[Int] => Option[(Int, List[Int])] = projectList[Int]
 
-      /** algebra definition */
-      val algebra: Option[(Int, String)] => String = {
-        case None         => "nil"
-        case Some((a, r)) => mapper(a) + " :: " + r
-      }
-
       /** implementation */
       val traverseForToString: List[Int] => String = cata(projector, algebra)
 
@@ -403,109 +384,6 @@ object RecursionEvolution {
 
     }
 
-  }
-
-  import step8.Functor
-
-  // ----------------------------------------------
-
-  def cata0[A, R, F[_], S[_]](
-      algebra: F[R] => R,
-      project: S[A] => F[S[A]],
-    )(
-      implicit F: Functor[F],
-    ): S[A] => R = xs => {
-
-    def step(tail: S[A]): R = {
-      val projected: F[S[A]] = project(tail)
-      val fr: F[R] = F.map(projected) { z => step(z) }
-      val r: R = algebra(fr)
-      r
-    }
-
-    step(xs)
-  }
-
-  // ----------------------------------------------
-
-  def listAlgebra = (a: Option[(String, String)]) =>
-    a match {
-      case None         => "nil"
-      case Some((a, b)) => s"$a :: $b"
-    }
-
-  def representValue = (i: Int) => i.toString
-
-  /** binary tree application, A - type of node value */
-  sealed trait Tree[+A]
-  case class Node[A](left: Tree[A], value: A, right: Tree[A]) extends Tree[A]
-  case object Leaf extends Tree[Nothing]
-
-  /** functor for tree, how to process it */
-  implicit val ft: Functor[Tree] = new Functor[Tree] {
-    override def map[X, Y](fa: Tree[X])(f: X => Y): Tree[Y] = fa match {
-      case Node(left, a, right) => Node(map(left)(f), f(a), map(right)(f))
-      case Leaf                 => Leaf
-    }
-  }
-
-  /** functor pattern, A - is a Tree... */
-  sealed trait TreeF[+T]
-  case class NodeF[T, A](left: T, value: A, right: T) extends TreeF[T]
-  case object LeafF extends TreeF[Nothing]
-
-  /** projection for tree, how to decompose it */
-  def projectTree[A]: Tree[A] => TreeF[Tree[A]] = {
-    case Node(l, v, r) => NodeF(l, v, r)
-    case Leaf          => LeafF
-  }
-
-  implicit val ftf: Functor[TreeF] = new Functor[TreeF] {
-    override def map[X, Y](ftf: TreeF[X])(f: X => Y): TreeF[Y] = ftf match {
-      case LeafF          => LeafF
-      case NodeF(l, v, r) => NodeF(f(l), v, f(r))
-    }
-  }
-
-  /** algebra for tree, how to count */
-  def treeHeightAlgebra: TreeF[Int] => Int = {
-    case LeafF          => 0
-    case NodeF(l, _, r) => 1 + (l max r)
-  }
-
-  def height[A] = cata0[A, Int, TreeF, Tree](
-    treeHeightAlgebra,
-    projectTree,
-  )
-
-}
-
-class RecursionEvolutionSpec2 extends AnyFunSpec with Matchers {
-
-  import RecursionEvolution._
-
-  describe("tree") {
-
-    val tree0 = Leaf
-    val tree1 = Node(Leaf, 22, Leaf)
-    val tree2 = Node(Leaf, 22, Node(Leaf, 33, Leaf))
-    val tree3 = Node(Leaf, 22, Node(Leaf, 33, Node(Leaf, 44, Leaf)))
-
-    it("0") {
-      height(tree0) shouldEqual 0
-    }
-
-    it("1") {
-      height(tree1) shouldEqual 1
-    }
-
-    it("2") {
-      height(tree2) shouldEqual 2
-    }
-
-    it("3") {
-      height(tree3) shouldEqual 3
-    }
   }
 
 }
