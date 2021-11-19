@@ -305,6 +305,7 @@ lazy val plain2 = (project in file("plain2"))
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.7.3",
       "org.scala-lang"              % "scala-reflect"              % vScala,
       "org.scalaxb"                %% "scalaxb"                    % "1.8.0",
+      "io.vavr"                     % "vavr"                       % "1.0.0-alpha-3",
       Libraries.scalaTestWhole,
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
