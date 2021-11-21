@@ -5,7 +5,6 @@ import cats.implicits.catsSyntaxEitherId
 import cats.implicits.catsSyntaxTuple2Semigroupal
 import cats.Applicative
 import cats.~>
-
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -57,6 +56,7 @@ object CombineEithersInApplicativeWay {
       (to(e1), to(e2)).mapN(f),
     )
 
+  // TODO: implement it in terms if Parallel[M[_]]
 }
 
 object Implicits {
@@ -74,9 +74,9 @@ object Implicits {
 
 class CombineEithersInApplicativeWaySpec extends AnyFunSpec with Matchers {
 
-  import TypeAliases._
   import CombineEithersInApplicativeWay._
   import Implicits._
+  import TypeAliases._
 
   val v1 = 10.asRight[LS]
   val v2 = true.asRight[LS]
