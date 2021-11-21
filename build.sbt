@@ -279,7 +279,10 @@ lazy val typelevel = (project in file("typelevel"))
   .settings(
     commonSettings,
     /** treat non-exhaustive matches as fatal */
-    scalacOptions += ScalacOpts.matchShouldBeExhaustive,
+    scalacOptions ++= Seq(
+      ScalacOpts.matchShouldBeExhaustive,
+      ScalacOpts.lintDeprecation,
+    ),
     libraryDependencies ++= Seq(
       CompilerPlugins.betterMonadicFor,
       CompilerPlugins.contextApplied,

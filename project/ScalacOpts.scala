@@ -13,6 +13,7 @@ object ScalacOpts {
   /** Emit warning and location for usages of deprecated APIs.
     */
   val deprecation = "-deprecation"
+  val lintDeprecation = "-Xlint:deprecation"
 
   /** Enable additional warnings where generated code depends on assumptions.
     */

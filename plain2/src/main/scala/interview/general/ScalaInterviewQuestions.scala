@@ -25,7 +25,9 @@ object ScalaInterviewQuestions extends App {
   object problem_01_solution {
 
     Option(5).map(_ + 5)
-    val _ = 5 + 5
+    locally {
+      val _ = 5 + 5
+    }
 
     val plus2: Int => Int = _ + 2
 

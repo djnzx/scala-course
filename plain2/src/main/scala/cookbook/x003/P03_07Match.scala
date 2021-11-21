@@ -9,7 +9,7 @@ object P03_07Match extends App {
     case 4 => println("Thursday")
     case 5 => println("Friday")
     case 6 => println("Saturday")
-    case 6 => println("Sunday")
+    case 7 => println("Sunday")
     case _ => println("not a day ;(")
   }
 }

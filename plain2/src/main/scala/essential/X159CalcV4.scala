@@ -1,8 +1,6 @@
 package essential
 
-/**
-  * algebraic datatype
-  * abstract syntax tree
+/** algebraic datatype abstract syntax tree
   */
 object X159CalcV4 extends App {
   sealed trait YEither[+L, +R] {
@@ -25,16 +23,17 @@ object X159CalcV4 extends App {
 
   sealed trait Expression {
     def lift2(l: Expression, r: Expression, f: (Double, Double) => YEither[String, Double]): YEither[String, Double] =
-      l.eval.flatMap { left => r.eval.flatMap { right => f(left, right) }}
+      l.eval.flatMap { left => r.eval.flatMap { right => f(left, right) } }
     def lift1(e: Expression, f: Double => YEither[String, Double]): YEither[String, Double] =
       e.eval.flatMap { value => f(value) }
     def eval: YEither[String, Double] = this match {
-      case Number(value) => Success(value)
-      case Addition(l, r) => lift2(l, r, (a, b) => Success(a + b))
-      case Subtraction(l, r) => lift2(l, r, (a, b) => Success(a - b))
+      case Number(value)        => Success(value)
+      case Addition(l, r)       => lift2(l, r, (a, b) => Success(a + b))
+      case Subtraction(l, r)    => lift2(l, r, (a, b) => Success(a - b))
       case Multiplication(l, r) => lift2(l, r, (a, b) => Success(a * b))
-      case Division(l, r) => lift2(l, r, (a, b) => if (b!=0) Success(a / b) else Failure("Division by zero"))
-      case SquareRoot(va) => lift1(va, v => if (v>=0) Success(Math.sqrt(v)) else Failure("Square root of negative"))
+      case Division(l, r)       => lift2(l, r, (a, b) => if (b != 0) Success(a / b) else Failure("Division by zero"))
+      case SquareRoot(va)   => lift1(va, v => if (v >= 0) Success(Math.sqrt(v)) else Failure("Square root of negative"))
+      case NumberOpt(value) => ???
     }
   }
   final case class Number(value: Double) extends Expression
@@ -46,7 +45,7 @@ object X159CalcV4 extends App {
   final case class SquareRoot(value: Expression) extends Expression
 
   assert(Addition(SquareRoot(Number(-1.0)), Number(2.0)).eval == Failure("Square root of negative"))
-  assert(Addition(SquareRoot(Number(4.0)), Number(2.0)).eval == Success (4.0))
+  assert(Addition(SquareRoot(Number(4.0)), Number(2.0)).eval == Success(4.0))
   assert(Division(Number(4), Number(0)).eval == Failure("Division by zero"))
 
   val a: Expression = Addition(Subtraction(Number(6), Number(3)), Number(3))

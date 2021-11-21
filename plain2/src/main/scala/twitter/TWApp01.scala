@@ -28,11 +28,11 @@ object TWApp01 extends App {
     case Calculator("HP", "20B") => "financial"
     case Calculator("HP", "48G") => "scientific"
     case Calculator("HP", "30B") => "business"
-    case Calculator(b, m) => "Calculator: %s %s is of unknown type".format(b, m)
-    case Calculator(_, _) => "Calculator of unknown type"
-    case Calculator(_, _) => "Calculator of unknown type".format(calc)
-    case cc @ Calculator(_, _) => "Calculator: %s of unknown type".format(cc)
-    case _ => "Calculator of unknown type"
+    case Calculator(b, m)        => "Calculator: %s %s is of unknown type".format(b, m)
+//    case Calculator(_, _) => "Calculator of unknown type"
+//    case Calculator(_, _)      => "Calculator of unknown type".format(calc)
+//    case cc @ Calculator(_, _) => "Calculator: %s of unknown type".format(cc)
+//    case _                     => "Calculator of unknown type"
   }
 
   val one: PartialFunction[Int, String] = { case 1 => "one" }

@@ -6,7 +6,7 @@ object P03_07Match_wann extends App {
   val dayOfWeek = (d: Int) => {
     (d: @switch) match {
       case 1 => "Monday"
-      case t => "Tuesday"
+//      case t @ _ => "Tuesday"
       case 3 => "Wednesday"
       case 4 => "Thursday"
       case 5 => "Friday"
