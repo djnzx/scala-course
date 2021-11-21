@@ -14,9 +14,10 @@ object UnApplyApp extends App {
     case Duration(8, HOURS) => "every eight hours"
     case Duration(1, DAYS)  => "daily"
     case Duration(7, DAYS)  => "weekly"
-    case _                   => "invalid"
+    case _                  => "invalid"
+
   }
 
-  println(represent(Config(2 * 60 * 60)))  // "every two hours"
+  println(represent(Config(2 * 60 * 60))) // "every two hours"
   println(represent(Config(24 * 60 * 60))) // "daily"
 }

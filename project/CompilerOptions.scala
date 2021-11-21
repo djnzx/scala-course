@@ -1,7 +1,9 @@
 import ScalacOpts._
 
 /** https://docs.scala-lang.org/overviews/compiler-options/index.html
+  * https://docs.scala-lang.org/overviews/compiler-options/index.html#Warning_Settings
   * https://blog.ssanj.net/posts/2019-06-14-scalac-2.13-options-and-flags.html
+  * http://eed3si9n.com/stricter-scala-with-xlint-xfatal-warnings-and-scalafix
   */
 object CompilerOptions {
 

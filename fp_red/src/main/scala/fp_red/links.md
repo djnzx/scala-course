@@ -1,3 +1,0 @@
-- [red book - 10](https://livebook.manning.com/book/functional-programming-in-scala/chapter-10/)
-- [original location](https://github.com/fpinscala/fpinscala)
-- [my clone](https://github.com/alexr007/fpinscala/tree/master/exercises/src/main/scala/fpinscala)

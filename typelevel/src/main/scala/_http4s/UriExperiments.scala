@@ -57,9 +57,9 @@ object UriExperiments extends IOApp {
       case GET -> Root / "path1" :? YearParamMatcherValidate(year) =>
         val x: Option[ValidatedNel[ParseFailure, Year]] = year
         ???
-      case GET -> Root / "path1" :? IdParamMatcher(id) +& YearParamMatcher(year) => Ok.apply(id)
-      case GET -> Root / "path2" / UUIDVar(movieId) :? IdParamMatcher(id)        => Response[F](Ok).withEntity(movieId).pure[F]
-      case GET -> Root / "path2" / UUIDVar(movieId) :? IdParamMatcher(id)        => NotFound(id)
+//      case GET -> Root / "path1" :? IdParamMatcher(id) +& YearParamMatcher(year) => Ok.apply(id)
+      case GET -> Root / "path2" / UUIDVar(movieId) :? IdParamMatcher(id) => Response[F](Ok).withEntity(movieId).pure[F]
+      case GET -> Root / "path2" / UUIDVar(movieId) :? IdParamMatcher(id) => NotFound(id)
     }
   }
 

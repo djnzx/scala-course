@@ -11,8 +11,15 @@ object C123PostOrderCalcTyped {
   final case class Num(v: Int) extends Cx
   final case class Op(name: String) extends Cx
 
+  sealed trait OpType
+  case object Plus extends OpType
+  case object Minus extends OpType
+  case object Mul extends OpType
+  case object Div extends OpType
+
   def parse(s: String): Option[Cx] =
-    s.toIntOption.map(Num)
+    s.toIntOption
+      .map(Num)
       .orElse(Option.when("+-*/".contains(s))(Op(s)))
 
   val input: List[Cx] = "1 2 + 3 *"
@@ -47,6 +54,7 @@ object C123PostOrderCalcTyped {
     case Op("*") => handleOperator(_ * _)
     case Op("/") => handleOperator(_ / _)
     case Num(v)  => handleNumber(v)
+    case Op(_)   => sys.error("non covered!")
   }
 
   @tailrec

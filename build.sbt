@@ -11,12 +11,9 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 lazy val commonSettings = Seq(
   scalaVersion := vScala,
   organization := "org.alexr",
-  version := "21.11.06",
+  version := "21.11.21",
   javacOptions ++= CompilerOptions.javacOptions,
-  // https://docs.scala-lang.org/overviews/compiler-options/index.html#Warning_Settings
-  // http://eed3si9n.com/stricter-scala-with-xlint-xfatal-warnings-and-scalafix
   scalacOptions ++= CompilerOptions.scalacOptions,
-  // temporary
   scalacOptions -= ScalacOpts.warningsAsFatals,
   resolvers ++= Resolvers.all,
   libraryDependencies ++=
@@ -317,6 +314,8 @@ lazy val plain2 = (project in file("plain2"))
 lazy val typelevel = (project in file("typelevel"))
   .settings(
     commonSettings,
+    /** treat non-exhaustive matches as fatal */
+    scalacOptions += ScalacOpts.matchShouldBeExhaustive,
     libraryDependencies ++= Seq(
       CompilerPlugins.betterMonadicFor,
       CompilerPlugins.contextApplied,
