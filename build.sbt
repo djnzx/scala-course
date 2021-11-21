@@ -1,15 +1,13 @@
-import Dependencies.Libraries
-
-import Versions._
-import Dependencies.pf
-import Dependencies.Libraries.CompilerPlugins
-import sbt.Def.spaceDelimited
 import sbt.Keys._
+
+import sbt.Def.spaceDelimited
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
+lazy val v = Versions
+
 lazy val commonSettings = Seq(
-  scalaVersion := vScala,
+  scalaVersion := v.vScala,
   organization := "org.alexr",
   version := "21.11.21",
   javacOptions ++= CompilerOptions.javacOptions,
@@ -24,16 +22,15 @@ lazy val commonSettings = Seq(
       Libraries.scalaTest,
 )
 
-/** some algorithms implementations */
 lazy val algorithms = (project in file("algorithms"))
   .settings(
     commonSettings,
   )
 
-/** AMT WSDL experiments */
 lazy val amt = (project in file("amt"))
   .settings(
     commonSettings,
+    description := "AMT WSDL experiments",
     libraryDependencies ++= Seq(
       "org.apache.axis" % "axis"        % "1.4", // no transitive
       "org.apache.axis" % "axis-saaj"   % "1.4", // no transitive
@@ -46,57 +43,46 @@ lazy val amt = (project in file("amt"))
     ),
   )
 
-/** Cats Effects 2.x */
 lazy val ce2 = project
   .in(file("ce2"))
   .settings(
     commonSettings,
-    addCompilerPlugin(CompilerPlugins.kindProjector),
-    addCompilerPlugin(CompilerPlugins.betterMonadicFor),
-    libraryDependencies ++= {
-      val vCatsTagless = "0.11"
-      val vFs2 = "2.5.10"
-      val vHttp4s = "0.21.4"
-      val vCirce = "0.13.0"
-      val vMunit = "0.7.8"
-      val vLogback = "1.2.3"
-
-      Seq(
-        "org.typelevel" %% "cats-core"            % cats,
-        "org.typelevel" %% "cats-effect"          % catsEffect2,
-        "org.typelevel" %% "cats-effect-laws"     % catsEffect2,
-        "co.fs2"        %% "fs2-core"             % vFs2,
-        "co.fs2"        %% "fs2-reactive-streams" % vFs2,
-        "io.circe"      %% "circe-generic"        % vCirce,
-        "org.http4s"    %% "http4s-blaze-server"  % vHttp4s,
-        "org.http4s"    %% "http4s-blaze-client"  % vHttp4s,
-        "org.http4s"    %% "http4s-circe"         % vHttp4s,
-        "org.http4s"    %% "http4s-dsl"           % vHttp4s,
-        "org.typelevel" %% "cats-tagless-macros"  % vCatsTagless,
-        "org.scalameta" %% "munit-scalacheck"     % vMunit,
-        "org.typelevel" %% "munit-cats-effect-2"  % "1.0.6",
-        "ch.qos.logback" % "logback-classic"      % vLogback,
-        "com.kubukoz"   %% "debug-utils"          % "1.1.3",
-      )
-    },
+    description := "Cats Effects 2",
+    libraryDependencies ++= Seq(
+      CompilerPlugins.kindProjector,
+      CompilerPlugins.contextApplied,
+      CompilerPlugins.betterMonadicFor,
+      "org.typelevel" %% "cats-core"            % v.cats,
+      "org.typelevel" %% "cats-effect"          % v.catsEffect2,
+      "org.typelevel" %% "cats-effect-laws"     % v.catsEffect2,
+      "co.fs2"        %% "fs2-core"             % v.fs2ce2,
+      "co.fs2"        %% "fs2-reactive-streams" % v.fs2ce2,
+      "io.circe"      %% "circe-generic"        % v.circe,
+      "org.http4s"    %% "http4s-blaze-server"  % v.http4sCe2,
+      "org.http4s"    %% "http4s-blaze-client"  % v.http4sCe2,
+      "org.http4s"    %% "http4s-circe"         % v.http4sCe2,
+      "org.http4s"    %% "http4s-dsl"           % v.http4sCe2,
+      "org.typelevel" %% "cats-tagless-macros"  % "0.11",
+      "org.scalameta" %% "munit-scalacheck"     % "0.7.8",
+      "org.typelevel" %% "munit-cats-effect-2"  % "1.0.6",
+      "ch.qos.logback" % "logback-classic"      % v.logback,
+      "com.kubukoz"   %% "debug-utils"          % "1.1.3",
+    ),
   )
 
-/** Cats Effects 3.x */
 lazy val ce3 = (project in file("ce3"))
   .settings(
+    description := "Cats Effects 3",
     commonSettings,
-    addCompilerPlugin(CompilerPlugins.betterMonadicFor),
-    addCompilerPlugin(CompilerPlugins.contextApplied),
-//    addCompilerPlugin(CompilerPlugins.kindProjector),
     libraryDependencies ++= Seq(
-      // CATS
-      "org.typelevel" %% "cats-core"   % cats,
-      "org.typelevel" %% "cats-effect" % catsEffect3,
-      // FS2
-      "co.fs2" %% "fs2-core"             % "3.1.5", // 3.2.9
-      "co.fs2" %% "fs2-reactive-streams" % "3.1.5",
-      // testing
-      "org.typelevel" %% "munit-cats-effect-3" % "1.0.6",
+      CompilerPlugins.kindProjector,
+      CompilerPlugins.contextApplied,
+      CompilerPlugins.betterMonadicFor,
+      "org.typelevel" %% "cats-core"            % v.cats,
+      "org.typelevel" %% "cats-effect"          % v.catsEffect3,
+      "co.fs2"        %% "fs2-core"             % v.fs2ce3,
+      "co.fs2"        %% "fs2-reactive-streams" % v.fs2ce3,
+      "org.typelevel" %% "munit-cats-effect-3"  % "1.0.6",
     ),
   )
 
@@ -105,41 +91,19 @@ lazy val co = (project in file("co"))
   .settings(
     commonSettings,
     scalacOptions -= "-Ymacro-annotations",
-    scalaVersion := vScala212,
+    scalaVersion := v.vScala212,
     libraryDependencies ++= Seq(
       CompilerPlugins.betterMonadicFor,
       CompilerPlugins.contextApplied,
       CompilerPlugins.kindProjector,
-      // Cats
-      Libraries.cats,
-      Libraries.catsLaws,
-      Libraries.catsEffect,
-      Libraries.catsMtlCore,
-      "dev.profunktor" %% "console4cats" % "0.8.1",
-      // fs2
-      Libraries.fs2core,
-      Libraries.fs2reactive,
-      // http4s
-      Libraries.http4sServer,
-      Libraries.http4sDsl,
-      Libraries.http4sClient,
-      Libraries.http4sCirce,
-      Libraries.http4sJwtAuth,
-      // Serialization
-      Libraries.circeCore,
-      Libraries.circeGeneric,
-      Libraries.circeGenericEx,
-      Libraries.circeParser,
-      Libraries.circeRefined,
-      // @newtype annotation
-      Libraries.newtype,
-      // refined types
-      Libraries.refinedCore,
-      // shapeless
-      Libraries.shapeless,
-
-      //      "com.cognitops.common" %% "common-json"  % "8.13-SNAPSHOT",
-      //      "com.cognitops.common" %% "common-utils" % "8.13-SNAPSHOT",
+      "org.http4s" %% "http4s-blaze-server"  % "0.21.31",
+      "org.http4s" %% "http4s-dsl"           % "0.21.31",
+      "org.http4s" %% "http4s-circe"         % "0.21.31",
+      "org.http4s" %% "http4s-blaze-client"  % "0.21.31",
+      "io.circe"   %% "circe-core"           % "0.13.0",
+      "io.circe"   %% "circe-parser"         % "0.13.0",
+      "io.circe"   %% "circe-generic"        % "0.13.0",
+      "io.circe"   %% "circe-generic-extras" % "0.13.0",
     ),
   )
 
@@ -166,52 +130,51 @@ lazy val degoes = (project in file("degoes"))
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
   )
 
-/** ZIO v.1 */
 lazy val zio1 = (project in file("zio1"))
   .settings(
     commonSettings,
+    description := "ZIO v1",
     libraryDependencies ++= Seq(
-      pf.zio %% "zio"          % zio1v,
-      pf.zio %% "zio-streams"  % zio1v,
-      pf.zio %% "zio-test"     % zio1v,
-      pf.zio %% "zio-test-sbt" % zio1v % Test,
+      pf.zio %% "zio"          % v.zio1v,
+      pf.zio %% "zio-streams"  % v.zio1v,
+      pf.zio %% "zio-test"     % v.zio1v,
+      pf.zio %% "zio-test-sbt" % v.zio1v % Test,
     ),
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
   )
 
-/** ZIO v.2 */
 lazy val zio2 = (project in file("zio2"))
   .settings(
     commonSettings,
+    description := "ZIO v2",
     libraryDependencies ++= Seq(
-      pf.zio %% "zio"          % zio2v,
-      pf.zio %% "zio-streams"  % zio2v,
-      pf.zio %% "zio-test"     % zio2v,
-      pf.zio %% "zio-test-sbt" % zio2v % Test,
+      pf.zio %% "zio"          % v.zio2v,
+      pf.zio %% "zio-streams"  % v.zio2v,
+      pf.zio %% "zio-test"     % v.zio2v,
+      pf.zio %% "zio-test-sbt" % v.zio2v % Test,
     ),
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
   )
 
-/** Dotty experiments */
 lazy val plain3 = (project in file("plain3"))
   .settings(
-    scalaVersion := vScala31,
+    scalaVersion := v.vScala31,
     description := "Example sbt project that compiles using Scala 3",
   )
 
 lazy val s3fs = (project in file("s3fs"))
   .settings(
-    scalaVersion := vScala31,
-    libraryDependencies += "co.fs2" %% "fs2-core" % fs2ce3,
+    scalaVersion := v.vScala31,
+    libraryDependencies += "co.fs2" %% "fs2-core" % v.fs2ce3,
     initialCommands := s"""
     import fs2._, cats.effect._, cats.effect.unsafe.implicits.global
   """,
   )
 
-/** FP in Scala (RED Book) Mostly plain Scala only a few libraries involved */
 lazy val fp_red = (project in file("fp_red"))
   .settings(
     commonSettings,
+    description := "FP in Scala (RED Book) Mostly plain Scala only a few libraries involved",
     libraryDependencies ++= Seq(
       Libraries.scalaCheck,
       Libraries.scalaTestPlus,
@@ -222,7 +185,7 @@ lazy val fp_red = (project in file("fp_red"))
 lazy val http4s1 = (project in file("http4s1"))
   .settings(
     commonSettings, {
-      def http4s(artifact: String) = "org.http4s" %% artifact % "1.0.0-M25"
+      def http4s(artifact: String) = "org.http4s" %% artifact % v.http4s1
 
       libraryDependencies ++= Seq(
         http4s("http4s-core"),
@@ -298,9 +261,10 @@ lazy val plain2 = (project in file("plain2"))
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
+      CompilerPlugins.kindProjector,
       "org.scala-lang.modules"     %% "scala-parallel-collections" % "1.0.3",
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.7.3",
-      "org.scala-lang"              % "scala-reflect"              % vScala,
+      "org.scala-lang"              % "scala-reflect"              % v.vScala,
       "org.scalaxb"                %% "scalaxb"                    % "1.8.0",
       "io.vavr"                     % "vavr"                       % "1.0.0-alpha-3",
       Libraries.scalaTestWhole,
@@ -320,22 +284,19 @@ lazy val typelevel = (project in file("typelevel"))
       CompilerPlugins.betterMonadicFor,
       CompilerPlugins.contextApplied,
       CompilerPlugins.kindProjector,
-      // CATS
       Libraries.cats,
       Libraries.catsLaws,
       Libraries.catsEffect,
       Libraries.catsMtlCore,
       "dev.profunktor" %% "console4cats" % "0.8.1",
-      // FS2
       Libraries.fs2core,
       Libraries.fs2reactive,
-      // HTTP
+      "com.github.fd4s" %% "fs2-kafka" % "1.7.0",
       Libraries.http4sServer,
       Libraries.http4sDsl,
       Libraries.http4sClient,
       Libraries.http4sCirce,
       Libraries.http4sJwtAuth,
-      // Serialization
       Libraries.circeCore,
       Libraries.circeGeneric,
       Libraries.circeGenericEx,
@@ -347,21 +308,15 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.refinedCore,
       // shapeless
       Libraries.shapeless,
-      "org.scala-lang"   % "scala-reflect"        % vScala,
-      "com.github.fd4s" %% "fs2-kafka"            % "1.7.0",
+      "org.scala-lang"   % "scala-reflect"        % v.vScala,
       "com.google.cloud" % "google-cloud-logging" % "3.0.1",
     ),
   )
 
-/** Lightbend (Typesafe) Stack:
-  *
-  * Akka, Akka-Streams, Akka-Http Play, Lagom, Slick
-  *
-  * https://www.lightbend.com
-  */
 lazy val typesafe = (project in file("typesafe"))
   .settings(
     commonSettings,
+    description := "Lightbend (Typesafe) Stack: Akka, Akka-Streams, Akka-Http Play, Lagom, Slick (https://www.lightbend.com)",
     libraryDependencies ++= Seq(
       // untyped - old examples
       Libraries.akka("akka-actor"),
@@ -370,7 +325,7 @@ lazy val typesafe = (project in file("typesafe"))
       Libraries.akkaHttp("akka-http"),
       Libraries.akkaHttp("akka-http-spray-json"),
       // play JSON
-      s"${pf.typesafe}.play" %% "play-json" % Versions.play,
+      s"${pf.typesafe}.play" %% "play-json" % v.play,
       // Slick
       Libraries.slickCore,
       Libraries.slickHikari,
@@ -385,12 +340,15 @@ lazy val typesafe = (project in file("typesafe"))
 lazy val sparkx = (project in file("sparkx"))
   .settings(
     commonSettings,
-    scalaVersion := vScala212,
-//    scalaVersion := vScala211,
+    scalaVersion := v.vScala213,
+//    scalaVersion := v.scala212,
+//    scalaVersion := v.scala211,
     scalacOptions -= ScalacOpts.macroAnnotations,
     libraryDependencies ++= Seq(
-      "org.apache.spark" %% "spark-core" % "2.4.7",
-      "org.apache.spark" %% "spark-sql"  % "2.4.7",
+//      "org.apache.spark" %% "spark-core" % "2.4.7", // 2.11 / 2.12
+//      "org.apache.spark" %% "spark-sql"  % "2.4.7", // 2.11 / 2.12
+      "org.apache.spark" %% "spark-core" % "3.2.0", // 2.12 / 2.13
+      "org.apache.spark" %% "spark-sql"  % "3.2.0", // 2.12 / 2.13
     ),
   )
 
