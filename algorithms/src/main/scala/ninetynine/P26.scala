@@ -27,9 +27,11 @@ object P26 {
   def combinations[A](n: Int, as: List[A]): List[List[A]] = n match {
     case 0 => List(List.empty)
     case n =>
-      tails(as) { case h :: t =>
-        combinations(n - 1, t)
-          .map(la => h :: la)
+      tails(as) {
+        case h :: t =>
+          combinations(n - 1, t)
+            .map(la => h :: la)
+        case Nil => sys.error("impossible by design")
       }
   }
 }
