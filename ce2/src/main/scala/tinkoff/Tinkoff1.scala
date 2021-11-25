@@ -22,6 +22,7 @@ object Tinkoff1 {
         case (x :: t, None)                     => go(t, Some(x, 1), acc)
         case (x :: t, Some((n, cnt))) if x == n => go(t, Some(n, cnt + 1), acc)
         case (x :: t, Some(nc))                 => go(t, Some(x, 1), nc +: acc)
+        case _                                  => ???
       }
 
     go(xs, None, Seq.empty) reverse

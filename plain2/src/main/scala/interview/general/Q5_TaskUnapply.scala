@@ -33,6 +33,7 @@ class TaskUnapplySpec extends AnyFunSpec with Matchers with Syntax2 {
   def go(x: Int): String = x match {
     case Even(msg) => msg
     case Odd(msg)  => msg
+    case _         => "another"
   }
 
   it("5") {

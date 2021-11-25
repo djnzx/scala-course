@@ -7,37 +7,75 @@ import cats.implicits._
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
+import scala.util.chaining.scalaUtilChainingOps
+
 /** На вход Seq[Future[String]] Получить Future[(Seq[String], Seq[Throwable]) - результат агрегации выполненых Future и
   * исключений
   */
 object Tinkoff2 extends App {
 
-  def repack(data: Seq[Either[Throwable, String]]): (Seq[String], Seq[Throwable]) =
-    data.foldLeft((Seq.empty[String], Seq.empty[Throwable])) {
-      case ((ss, ts), Left(t))  => (ss, t +: ts)
-      case ((ss, ts), Right(s)) => (s +: ss, ts)
-    }
+  object common {
 
-  /** the problem is, that
-    * {{{
-    *   Future[A]
-    * }}}
-    * is actually
-    * {{{
-    *   Future[Either[Throwable, A]]
-    * }}}
-    */
-  def refine[A](fa: Future[A])(implicit ec: ExecutionContext): Future[Either[Throwable, A]] =
-    fa.map(Right(_)).recover(Left(_))
+    /** make Throwable explicit */
+    def refine[A](fa: Future[A])(implicit ec: ExecutionContext): Future[Either[Throwable, A]] =
+      fa.map(Right(_)).recover(Left(_))
 
-  def sequence(xs: Seq[Future[String]])(implicit ec: ExecutionContext): Future[(Seq[String], Seq[Throwable])] =
-    xs.traverse(refine).map(repack)
+    /** repack results */
+    def repack[A](data: Seq[Either[Throwable, A]]): (Seq[A], Seq[Throwable]) =
+      data.foldLeft((Seq.empty[A], Seq.empty[Throwable])) {
+        case ((ss, ts), Left(t))  => (ss, t +: ts)
+        case ((ss, ts), Right(s)) => (s +: ss, ts)
+      }
 
+  }
+
+  object ImplementationCats {
+    import common._
+
+    def sequenceFutureCats[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+      xs.map(refine)
+        .sequence
+        .map(repack)
+
+    def sequenceCats[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+      xs.traverse(refine)
+        .map(repack)
+
+  }
+
+  object ImplementationPlain {
+
+    import common._
+
+    def map2[A, B, C](fa: Future[A], fb: Future[B])(f: (A, B) => C)(implicit ec: ExecutionContext): Future[C] = for {
+      a <- fa
+      b <- fb
+    } yield f(a, b)
+
+    def sequencePlain[A](
+        xs: Seq[Future[A]],
+      )(
+        implicit ec: ExecutionContext,
+      ): Future[Seq[A]] =
+      xs.foldLeft(Future.successful(Seq.empty[A])) { (fs, f) =>
+        map2(fs, f)(_ :+ _)
+      }
+
+    def sequenceCombined[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext): Future[(Seq[A], Seq[Throwable])] =
+      xs.map(refine)
+        .pipe(sequencePlain)
+        .map(repack)
+
+  }
+
+  def impl[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+//    ImplementationCats.sequenceCats[A](xs)
+    ImplementationPlain.sequenceCombined[A](xs)
 }
 
 class Tinkoff2Spec extends AnyFunSpec with Matchers {
 
-  import Tinkoff2.sequence
+  import Tinkoff2.{impl => sequence}
   import scala.concurrent.duration.DurationInt
   import scala.concurrent.ExecutionContext.Implicits.global
 
