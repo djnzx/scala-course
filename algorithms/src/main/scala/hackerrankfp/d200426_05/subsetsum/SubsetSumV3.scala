@@ -1,25 +1,26 @@
 package hackerrankfp.d200426_05.subsetsum
 
-/**
-  * https://www.hackerrank.com/challenges/subset-sum/problem
-  */
+/** https://www.hackerrank.com/challenges/subset-sum/problem */
 object SubsetSumV3 {
   import scala.collection.Searching
 
   def calcSubSums(xs: Seq[Int]) = xs
-    .foldLeft(List(0L)) { case (rh::rt, x) => (rh + x)::rh::rt }
+    .foldLeft(List(0L)) {
+      case (rh :: rt, x) => (rh + x) :: rh :: rt
+      case _             => ???
+    }
     .reverse
     .toArray
 
   def findSize(xs: Array[Long], value: Long) = xs.search(value) match {
-    case Searching.Found(index) => index
+    case Searching.Found(index)       => index
     case Searching.InsertionPoint(ip) => if (ip >= xs.length) -1 else ip
   }
 
   def process(xs: Array[Int], test: Seq[Long]) = {
     val xss: Array[Int] = xs.sorted(Ordering.Int.reverse)
     val subSums: Array[Long] = calcSubSums(xss)
-    
+
     test.map { findSize(subSums, _) }
   }
 
@@ -38,12 +39,15 @@ object SubsetSumV3 {
 
   def processFile(name: String, process: (=> String) => Unit): Unit = {
     val file = new java.io.File(this.getClass.getClassLoader.getResource(name).getFile)
-    scala.util.Using(
-      scala.io.Source.fromFile(file)
-    ) { src =>
-      val it = src.getLines().map(_.trim)
-      process(it.next())
-    }.fold(_ => ???, identity)
+    scala
+      .util
+      .Using(
+        scala.io.Source.fromFile(file),
+      ) { src =>
+        val it = src.getLines().map(_.trim)
+        process(it.next())
+      }
+      .fold(_ => ???, identity)
   }
   implicit class StringToOps(s: String) {
     def splitToIntArray: Array[Int] = s.split(" ").map(_.toInt)

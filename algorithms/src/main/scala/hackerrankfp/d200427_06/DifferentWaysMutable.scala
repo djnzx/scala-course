@@ -2,10 +2,7 @@ package hackerrankfp.d200427_06
 
 import scala.collection.mutable
 
-/**
-  * https://www.hackerrank.com/challenges/different-ways-fp/problem
-  * with mutable Map
-  * scala.collection.mutable.Map
+/** https://www.hackerrank.com/challenges/different-ways-fp/problem with mutable Map scala.collection.mutable.Map
   */
 object DifferentWaysMutable {
   type BD = java.math.BigDecimal
@@ -15,16 +12,16 @@ object DifferentWaysMutable {
   val cache: mutable.Map[II, BD] = mutable.Map[II, BD]()
 
   def count(n: Int, k: Int): BD =
-    if (k==0) bd1
-    else if (k==n) bd1
+    if (k == 0) bd1
+    else if (k == n) bd1
     else {
-      if (!cache.contains((n,k))) {
-        val a = count(n-1, k-1)
-        val b = count(n-1, k)
+      if (!cache.contains((n, k))) {
+        val a = count(n - 1, k - 1)
+        val b = count(n - 1, k)
         val c = a.add(b)
-        cache.put((n,k), c)
+        cache.put((n, k), c)
       }
-      cache((n,k))
+      cache((n, k))
     }
 
   def process(cases: List[II]): List[Int] =
@@ -33,11 +30,14 @@ object DifferentWaysMutable {
   def body(readLine: => String): Unit = {
     val N: Int = readLine.toInt
 
-    def readCase: (Int, Int) = readLine.split(" ").map(_.toInt) match { case Array(a, b) => (a, b) }
+    def readCase: (Int, Int) = readLine.split(" ").map(_.toInt) match {
+      case Array(a, b) => (a, b)
+      case _           => ???
+    }
     @scala.annotation.tailrec
     def addLines(n: Int, acc: List[(Int, Int)]): List[(Int, Int)] = n match {
       case 0 => acc.reverse
-      case _ => addLines(n-1, readCase::acc)
+      case _ => addLines(n - 1, readCase :: acc)
     }
     val points = addLines(N, Nil)
     val r = process(points) mkString ("\n")
@@ -51,12 +51,14 @@ object DifferentWaysMutable {
 
   val fname = "src/main/scala/hackerrankfp/d200427_06/differentways.txt"
   def main_file(p: Array[String]): Unit = {
-    scala.util.Using(
-      scala.io.Source.fromFile(new java.io.File(fname))
-    ) { src =>
-      val it = src.getLines().map(_.trim)
-      body { it.next() }
-    }
+    scala
+      .util
+      .Using(
+        scala.io.Source.fromFile(new java.io.File(fname)),
+      ) { src =>
+        val it = src.getLines().map(_.trim)
+        body { it.next() }
+      }
   }
 
 }

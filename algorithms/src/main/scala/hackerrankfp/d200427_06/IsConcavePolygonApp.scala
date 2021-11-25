@@ -1,10 +1,9 @@
 package hackerrankfp.d200427_06
 
-/**
-  * https://www.hackerrank.com/challenges/lambda-march-concave-polygon/problem
-  */
+/** https://www.hackerrank.com/challenges/lambda-march-concave-polygon/problem */
 object IsConcavePolygonApp {
-  import scala.math.{atan2, toDegrees}
+  import scala.math.atan2
+  import scala.math.toDegrees
   def sq(x: Double): Double = x * x
 
   implicit class StringToOps(s: String) {
@@ -23,14 +22,14 @@ object IsConcavePolygonApp {
 
   /** line from a to b */
   case class Line(a: Pt, b: Pt) {
-    /**
-      * a bit of math:
+
+    /** a bit of math:
       * https://math.stackexchange.com/questions/274712/calculate-on-which-side-of-a-straight-line-is-a-given-point-located
       * sign = (x-x1)(y2-y1)-(y-y1)(x2-x1)
       */
     def sign(pt: Pt): Double = {
       val r = (pt.x - b.x) * (a.y - b.y) - (a.x - b.x) * (pt.y - b.y)
-      if (r>0) 1 else if (r<0) -1 else 0
+      if (r > 0) 1 else if (r < 0) -1 else 0
     }
     def isPtAtLeft(pt: Pt): Boolean = sign(pt) > 0
     def isPtAtRight(pt: Pt): Boolean = sign(pt) < 0
@@ -39,13 +38,13 @@ object IsConcavePolygonApp {
 
   private def centroid(points: List[Pt]): Pt = {
     val cnt = points.length
-    val sum = points.reduce { (p1, p2) => Pt(p1.x+p2.x, p1.y+p2.y) }
-    Pt(sum.x/cnt, sum.y/cnt)
+    val sum = points.reduce { (p1, p2) => Pt(p1.x + p2.x, p1.y + p2.y) }
+    Pt(sum.x / cnt, sum.y / cnt)
   }
 
-  private def sort(pts: List[Pt]): List[Pt] = if (pts.length <= 3) pts else {
-    def angle = (dx: Double, dy: Double) =>
-      (toDegrees(atan2(dx, dy)) + 360) % 360
+  private def sort(pts: List[Pt]): List[Pt] = if (pts.length <= 3) pts
+  else {
+    def angle = (dx: Double, dy: Double) => (toDegrees(atan2(dx, dy)) + 360) % 360
     val c = centroid(pts)
 
     pts.sortWith { (a, b) =>
@@ -59,11 +58,12 @@ object IsConcavePolygonApp {
     val sign = Line(ps(0), ps(1)).sign(ps(2))
 
     def doCheck(px: List[Pt], acc: (Boolean, Double)): Boolean = px match {
-      case _::_::Nil => true
-      case a::b::c::tail => {
-        val sign = Line(a,b).sign(c)
-        if (sign == acc._2) doCheck(b::c::tail, (true, sign)) else false
-      }
+      case Nil           => ???
+      case _ :: _ :: Nil => true
+      case a :: b :: c :: tail =>
+        val sign = Line(a, b).sign(c)
+        if (sign == acc._2) doCheck(b :: c :: tail, (true, sign)) else false
+      case _ => ???
     }
 
     !doCheck(ps, (true, sign))
@@ -82,7 +82,7 @@ object IsConcavePolygonApp {
     @scala.annotation.tailrec
     def addLines(n: Int, acc: List[Pt]): List[Pt] = n match {
       case 0 => acc.reverse
-      case _ => addLines(n-1, readPoint::acc)
+      case _ => addLines(n - 1, readPoint :: acc)
     }
     val points = addLines(N, Nil)
     val r = process(points)
@@ -96,12 +96,14 @@ object IsConcavePolygonApp {
 
   val fname = "src/main/scala/hackerrankfp/d200427_06/isconcave.txt"
   def main_file(p: Array[String]): Unit = {
-    scala.util.Using(
-      scala.io.Source.fromFile(new java.io.File(fname))
-    ) { src =>
-      val it = src.getLines().map(_.trim)
-      body { it.next() }
-    }
+    scala
+      .util
+      .Using(
+        scala.io.Source.fromFile(new java.io.File(fname)),
+      ) { src =>
+        val it = src.getLines().map(_.trim)
+        body { it.next() }
+      }
   }
 
 }

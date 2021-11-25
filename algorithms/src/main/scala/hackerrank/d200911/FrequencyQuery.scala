@@ -1,9 +1,7 @@
 package hackerrank.d200911
 
-/**
-  * https://www.hackerrank.com/challenges/frequency-queries/problem
-  * one test case Terminated due to timeout :(
-  * 36.67 / 40
+/** https://www.hackerrank.com/challenges/frequency-queries/problem one test case Terminated due to timeout :( 36.67 /
+  * 40
   */
 class FrequencyQuery {
 
@@ -19,7 +17,7 @@ class FrequencyQuery {
     }
 
     def dec(map: Map[Int, Int], key: Int) = map.updatedWith(key) {
-      case None   => None
+      case None    => None
       case Some(1) => None
       case Some(v) => Some(v - 1)
     }
@@ -34,15 +32,15 @@ class FrequencyQuery {
         case Array(1, x) => Inc(x)
         case Array(2, x) => Dec(x)
         case Array(3, n) => Query(n)
+        case _           => ???
       })
-      .foldLeft((Map.empty[Int, Int], List.empty[Int])) {
-        case ((map, out), cmd) => cmd match {
-          case Inc(x) => (inc(map, x), out)
-          case Dec(x) => (dec(map, x), out)
+      .foldLeft((Map.empty[Int, Int], List.empty[Int])) { case ((map, out), cmd) =>
+        cmd match {
+          case Inc(x)   => (inc(map, x), out)
+          case Dec(x)   => (dec(map, x), out)
           case Query(n) => (map, query(map, n) :: out)
         }
-      } 
-    match {
+      } match {
       case (_, l) => l.reverse.toArray
     }
   }

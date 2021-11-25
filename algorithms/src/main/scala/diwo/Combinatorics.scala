@@ -1,9 +1,8 @@
 package diwo
 
 object Combinatorics {
-  
-  /**
-    * Combinatorics and math stuff:
+
+  /** Combinatorics and math stuff:
     * {{{
     *               n!
     * C(n, k) = -----------
@@ -22,16 +21,20 @@ object Combinatorics {
     assert(!(n < 0 || k < 0 || n < k), "Wrong input")
     nUntilK(n, k) / fact(n - k)
   }
-    
-  private def tails[A](la: Seq[A])(f: Seq[A] => Seq[Seq[A]]): Seq[Seq[A]] = la match {
-    case Nil    => Seq.empty
+
+  private def tails[A](la: List[A])(f: List[A] => List[List[A]]): List[List[A]] = la match {
+    case Nil    => List.empty
     case _ :: t => f(la) ++ tails(t)(f)
   }
-  
+
   /** generic combinations */
-  def allCombN[A](n: Int, as: Seq[A]): Seq[Seq[A]] = n match {
-    case 0 => Seq(Seq.empty)
-    case _ => tails(as) { case h :: t => allCombN(n - 1, t).map(h +: _) }
+  def allCombN[A](n: Int, as: List[A]): List[List[A]] = n match {
+    case 0 => List(List.empty)
+    case _ =>
+      tails(as) {
+        case h :: t => allCombN(n - 1, t).map(h +: _)
+        case _      => ???
+      }
   }
 
 }

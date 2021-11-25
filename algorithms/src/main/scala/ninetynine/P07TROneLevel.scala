@@ -3,24 +3,24 @@ package ninetynine
 import tools.spec.ASpec
 import scala.annotation.tailrec
 
-/**
-  * Flatten a nested list structure
-  * 
-  * tail recursive implementation
-  * flatten only one level
+/** Flatten a nested list structure
+  *
+  * tail recursive implementation flatten only one level
   */
 object P07TROneLevel {
-  
+
   def flatten(xsa: List[Any]): List[Any] = {
     @tailrec
     def flatten(xs: List[Any], acc: List[Any]): List[Any] = xs match {
       case Nil => acc
-      case h::t => h match {
-        case n: Int       => flatten(t, acc :+ n)
-        case l: List[Any] => flatten(t, acc ++ l)
-      }
+      case h :: t =>
+        h match {
+          case n: Int       => flatten(t, acc :+ n)
+          case l: List[Any] => flatten(t, acc ++ l)
+          case _            => ???
+        }
     }
-    
+
     flatten(xsa, Nil)
   }
 
@@ -28,10 +28,10 @@ object P07TROneLevel {
 
 class P07TROneLevelSpec extends ASpec {
   import P07TROneLevel._
-  
+
   it("1") {
     val data: List[Any] = List(List(1, 1), 2, List(3, List(5, 8)))
     flatten(data) shouldEqual List(1, 1, 2, 3, List(5, 8))
   }
-  
+
 }

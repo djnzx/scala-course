@@ -1,8 +1,6 @@
 package hackerrankfp.d200427_06
 
-/**
-  * https://www.hackerrank.com/challenges/different-ways-fp/problem
-  * with Immutable Map Plain Scala
+/** https://www.hackerrank.com/challenges/different-ways-fp/problem with Immutable Map Plain Scala
   */
 object DifferentWaysImmutablePlain {
   case class NK(n: Int, k: Int)
@@ -13,33 +11,40 @@ object DifferentWaysImmutablePlain {
   val cache0: Cache = Map[NK, BD]()
 
   def count(nk: NK, cache: Cache): (BD, Cache) = {
-    val newCache = if (cache.contains(nk)) cache
-    else if (nk.k==0 || nk.k==nk.n) cache + (nk -> bd1)
-    else {
-      val (a, nc2) = count(NK(nk.n-1, nk.k-1), cache)
-      val (b, nc3) = count(NK(nk.n-1, nk.k),   nc2)
-      val c = a.add(b)
-      nc3 + (nk -> c)
-    }
+    val newCache =
+      if (cache.contains(nk)) cache
+      else if (nk.k == 0 || nk.k == nk.n) cache + (nk -> bd1)
+      else {
+        val (a, nc2) = count(NK(nk.n - 1, nk.k - 1), cache)
+        val (b, nc3) = count(NK(nk.n - 1, nk.k), nc2)
+        val c = a.add(b)
+        nc3 + (nk -> c)
+      }
     (newCache(nk), newCache)
   }
 
   case class Step(list: List[Int], cache: Cache)
   def process(cases: List[NK]): List[Int] =
-    cases.foldLeft( Step(List.empty, cache0) ) { (acc, a) =>
-      count(a, acc.cache) match { case (rbd, newCache) =>
-        Step(rbd.remainder(t8p7).intValueExact :: acc.list, newCache)
+    cases
+      .foldLeft(Step(List.empty, cache0)) { (acc, a) =>
+        count(a, acc.cache) match {
+          case (rbd, newCache) =>
+            Step(rbd.remainder(t8p7).intValueExact :: acc.list, newCache)
+        }
       }
-    }.list//.reverse
+      .list // .reverse
 
   def body(readLine: => String): Unit = {
     val N: Int = readLine.toInt
 
-    def readCase: NK = readLine.split(" ").map(_.toInt) match { case Array(a, b) => NK(a, b) }
+    def readCase: NK = readLine.split(" ").map(_.toInt) match {
+      case Array(a, b) => NK(a, b)
+      case _           => ???
+    }
     @scala.annotation.tailrec
     def addLines(n: Int, acc: List[NK]): List[NK] = n match {
-      case 0 => acc//.reverse
-      case _ => addLines(n-1, readCase::acc)
+      case 0 => acc // .reverse
+      case _ => addLines(n - 1, readCase :: acc)
     }
     val points = addLines(N, Nil)
     val r = process(points) mkString "\n"
@@ -53,12 +58,14 @@ object DifferentWaysImmutablePlain {
 
   val fname = "src/main/scala/hackerrankfp/d200427_06/differentways.txt"
   def main_file(p: Array[String]): Unit = {
-    scala.util.Using(
-      scala.io.Source.fromFile(new java.io.File(fname))
-    ) { src =>
-      val it = src.getLines().map(_.trim)
-      body { it.next() }
-    }
+    scala
+      .util
+      .Using(
+        scala.io.Source.fromFile(new java.io.File(fname)),
+      ) { src =>
+        val it = src.getLines().map(_.trim)
+        body { it.next() }
+      }
   }
 
 }

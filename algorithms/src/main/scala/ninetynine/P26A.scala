@@ -12,10 +12,15 @@ object P26A {
     n match {
       case 0 => List(List.empty)
       case n =>
-        tails(as) {
-          case Nil    => sys.error("shouldn't be there by design")
-          case h :: t => combinations(n - 1, t).map(h :: _)
+        as match {
+          case Nil => sys.error("B must be >= than List")
+          case _ =>
+            tails(as) {
+              case Nil    => ???
+              case h :: t => combinations(n - 1, t).map(h :: _)
+            }
         }
+
     }
 }
 

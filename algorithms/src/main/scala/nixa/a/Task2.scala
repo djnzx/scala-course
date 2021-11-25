@@ -4,6 +4,7 @@ import scala.collection.immutable
 
 object Task2 {
   def numberOfTokens(expLim: Int, commands: Array[Array[Int]]): Int = {
+
     /** Domain representation */
     sealed trait Command
     case class Create(tk: Int, time: Int) extends Command
@@ -12,8 +13,10 @@ object Task2 {
       def parse(cmd: Array[Int]): Command = cmd match {
         case Array(0, tk, tm) => Create(tk, tm)
         case Array(1, tk, tm) => Refresh(tk, tm)
+        case _                => ???
       }
     }
+
     /** State representation */
     type MII = immutable.Map[Int, Int]
     case class State(map: MII, max: Int) {
@@ -25,18 +28,21 @@ object Task2 {
 
       def refresh(token: Int, time: Int): State =
         map.get(token) match {
-          case None                => withMax(time)       // if token isn't found -> just update the time only
-          case Some(x) if time < x => update(token, time) // if found and can be updated -> update map + time 
-          case Some(_)             => withMap(map - token).withMax(time) // else -> remove token and update the time   
+          case None                => withMax(time) // if token isn't found -> just update the time only
+          case Some(x) if time < x => update(token, time) // if found and can be updated -> update map + time
+          case Some(_)             => withMap(map - token).withMax(time) // else -> remove token and update the time
         }
     }
+
     /** fold initial value */
     val zero = State(immutable.Map.empty, 0)
+
     /** fold function */
     def process(mm: State, cmd: Command): State = cmd match {
-      case Create (tk, time) => mm.update(tk, time)
+      case Create(tk, time)  => mm.update(tk, time)
       case Refresh(tk, time) => mm.refresh(tk, time)
     }
+
     /** The task */
     commands
       .map(Command.parse)

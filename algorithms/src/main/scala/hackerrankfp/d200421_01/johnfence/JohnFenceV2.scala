@@ -1,15 +1,15 @@
 package hackerrankfp.d200421_01.johnfence
 
-import java.io.File
+import hackerrankfp.d200421_01.johnfence.JohnFenceV1.src
 
-import tools.Timed.{printTimed, timed}
+import java.io.File
+import tools.Timed.printTimed
+import tools.Timed.timed
 
 import scala.collection.mutable
 import scala.io.BufferedSource
 
-/**
-  * 28s
-  */
+/** 28s */
 object JohnFenceV2 extends App {
   def readLine = scala.io.StdIn.readLine()
 
@@ -22,12 +22,14 @@ object JohnFenceV2 extends App {
     process.get(height).exists { _.exists { a: Area => (a.l <= idx) && (idx <= a.r) } }
 
   def extendFrom(fence: Vector[Int], height: Int, idx: Int): Int = {
-    if (isVisited(height, idx)) 0 else {
+    if (isVisited(height, idx)) 0
+    else {
       val zero = (true, 0)
-      val foldFn: ((Boolean, Int), Int) => (Boolean, Int) = (acc, h) => acc match {
-        case (true, extend) => if (height <= fence(h)) (true, extend + 1) else (false, extend)
-        case (false, extend) => (false, extend)
-      }
+      val foldFn: ((Boolean, Int), Int) => (Boolean, Int) = (acc, h) =>
+        acc match {
+          case (true, extend)  => if (height <= fence(h)) (true, extend + 1) else (false, extend)
+          case (false, extend) => (false, extend)
+        }
       val to_l = Range.inclusive(idx - 1, 0, -1).foldLeft(zero) { foldFn }._2
       val to_r = Range.inclusive(idx + 1, fence.length - 1, 1).foldLeft(zero) { foldFn }._2
 
@@ -40,7 +42,8 @@ object JohnFenceV2 extends App {
 
   def calcFence(fence: Vector[Int]): Int = {
     fence.zipWithIndex.foldLeft(0) { (acc, el) =>
-      scala.math.max(acc, extendFrom(fence, el._1, el._2))}
+      scala.math.max(acc, extendFrom(fence, el._1, el._2))
+    }
   }
   //  platform
   //  val _ = readLine
@@ -49,14 +52,20 @@ object JohnFenceV2 extends App {
   //  local
   val src: BufferedSource =
     scala.io.Source.fromFile(new File("algorithms/src/main/scala/hackerrankfp/d200421_01/test2big"))
-  val _ = src.getLines().take(1).next()
+  locally {
+    val _ = src.getLines().take(1).next()
+  }
   val fence = src.getLines().map(_.trim).next().split(" ").map(_.toInt).toVector
-  printTimed(calcFence(Vector(
-    1,2,3,4,5,6,6,4,3,4,5,6,7,8,6,4,2
-  )))
+  printTimed(
+    calcFence(
+      Vector(
+        1, 2, 3, 4, 5, 6, 6, 4, 3, 4, 5, 6, 7, 8, 6, 4, 2,
+      ),
+    ),
+  )
   println(process)
   println(process.size)
 //  process.foreach { case (h: Int, a: Set[Area]) => println(s"h:$h, s:${a.size}") }
-  val t = process.foldLeft(0) {case (acc, (h, a: Set[Area])) => acc + a.size }
+  val t = process.foldLeft(0) { case (acc, (h, a: Set[Area])) => acc + a.size }
   println(t)
 }

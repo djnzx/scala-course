@@ -1,8 +1,6 @@
 package hackerrank.d200911
 
-/**
-  * https://www.hackerrank.com/challenges/frequency-queries/problem
-  * 40 / 40
+/** https://www.hackerrank.com/challenges/frequency-queries/problem 40 / 40
   */
 object FrequencyQuery2 {
 
@@ -16,28 +14,29 @@ object FrequencyQuery2 {
       case Array(1, x) => Inc(x)
       case Array(2, x) => Dec(x)
       case Array(3, n) => Query(n)
+      case _           => ???
     })
 
   val inc_fn: Option[Int] => Option[Int] = {
     case None    => Some(1)
     case Some(v) => Some(v + 1)
   }
-  
-  val dec_fn:  Option[Int] => Option[Int] = {
+
+  val dec_fn: Option[Int] => Option[Int] = {
     case None | Some(1) => None
     case Some(v)        => Some(v - 1)
   }
-  
+
   def inc(map: Map[Int, Int], key: Int) = map.updatedWith(key)(inc_fn)
   def dec(map: Map[Int, Int], key: Int) = map.updatedWith(key)(dec_fn)
 
   def incq(qmap: Map[Int, Int], cnt: Int) = qmap
     .updatedWith(cnt)(dec_fn)
-    .updatedWith(cnt+1)(inc_fn)
+    .updatedWith(cnt + 1)(inc_fn)
 
   def decq(qmap: Map[Int, Int], cnt: Int) = qmap
     .updatedWith(cnt)(dec_fn)
-    .updatedWith(cnt-1)(inc_fn)
+    .updatedWith(cnt - 1)(inc_fn)
 
   def query(qmap: Map[Int, Int], cnt: Int) = qmap.contains(cnt) match {
     case true => 1
@@ -45,8 +44,8 @@ object FrequencyQuery2 {
   }
 
   def fold(cmds: Array[Cmd]) = cmds
-    .foldLeft((Map.empty[Int, Int], Map.empty[Int, Int], List.empty[Int])) {
-      case ((map, qmap, out), cmd) => cmd match {
+    .foldLeft((Map.empty[Int, Int], Map.empty[Int, Int], List.empty[Int])) { case ((map, qmap, out), cmd) =>
+      cmd match {
         case Inc(x) =>
           val nx = map.getOrElse(x, 0)
           (inc(map, x), incq(qmap, nx), out)
@@ -59,8 +58,7 @@ object FrequencyQuery2 {
     }
 
   def freqQuery(queries: Array[Array[Int]]): Array[Int] =
-    fold(toCommands(queries))
-    match {
+    fold(toCommands(queries)) match {
       case (_, _, l) => l.reverse.toArray
     }
 
