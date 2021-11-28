@@ -287,16 +287,33 @@ object ExpressionsV2CombinedHR {
       def emod: Int = i %% P
     }
 
-    /** calculates 1/x === x^p-2^ */
-    def inv(x: Int): Int = (1 to P2)
-      .foldLeft(1) { (a, _) =>
-        modMul(a, x)
+    def modInverse(b: Int, m: Int): Int = {
+      val (gcd, x, _) = gcdExtended(b, m)
+      if (gcd != 1) -1 // if b and m are not co-prime
+      else (x % m + m) % m // m is added to handle negative x
+    }
+
+    def gcdExtended(a: Int, b: Int): (Int, Int, Int) =
+      if (a == 0) (b, 0, 1) // Base Case
+      else {
+        val (gcd, x1, y1) = gcdExtended(b % a, a);
+
+        val x2 = y1 - (b / a) * x1
+        val y2 = x1
+
+        (gcd, x2, y2)
       }
+
+    def modDivide(a: Int, b: Int, m: Int): Int = {
+      val inv: Int = modInverse(b, m)
+      if (inv == -1) -1
+      else (inv * a % m) % m
+    }
 
     def modAdd(a: Int, b: Int): Int = (a.emod + b.emod).emod
     def modSub(a: Int, b: Int): Int = (a.emod - b.emod).emod
     def modMul(a: Int, b: Int): Int = (a.emod * b.emod).emod
-    def modDiv(a: Int, b: Int): Int = modMul(a, inv(b)).emod
+    def modDiv(a: Int, b: Int): Int = modMul(a, modDivide(1, b, P))
 
     def evalNode(node: Expr): Int = node match {
       case Value(x) => x
@@ -430,47 +447,28 @@ object ExpressionsV2CombinedHR {
 
 }
 
-object GCD {
-
-  @tailrec
-  def gcd(x: Int, y: Int): Int = {
-    val r = x % y
-    if (r == 0) y
-    else gcd(y, r)
-  }
-
-}
-
 class DivSpec extends AnyFunSpec with Matchers {
 
   import ExpressionsV2CombinedHR.Domain._
 
-  describe("gcd") {
-    import GCD._
-
-    it("1a") {
-      gcd(5, 7) shouldEqual 1
-    }
-
-    it("1b") {
-      gcd(6, 12) shouldEqual 6
-    }
-
-    it("1c") {
-      gcd(12, 6) shouldEqual 6
-    }
-
-    it("1d") {
-      gcd(24, 36) shouldEqual 12
-    }
-
-    it("1e") {
-      gcd(1053, 325) shouldEqual 13
-    }
+  it("01") {
+    modDiv(1, 10) shouldEqual 700000005
   }
 
-  it("0") {
-    inv(10) shouldEqual 700000005
+  it("02") {
+    modMul(2, 700000005) shouldEqual 400000003
+  }
+
+  it("03") {
+    modMul(1, -400000003) shouldEqual 600000004
+  }
+
+  it("04") {
+    modDiv(1, 600000004) shouldEqual 1000000002
+  }
+
+  it("05") {
+    modMul(4, 1000000002) shouldEqual 999999987
   }
 
 }
