@@ -9,6 +9,14 @@ object ExpressionParser {
   import Domain._
   import ParserImpl._
 
+  /** fold sequence, right associative */
+  def foldListRightAssoc(ex: Expr, ops: List[(Op2, Expr)]): Expr = ops match {
+    case Nil            => ex
+    case (op, ex2) :: t => BinOp(op, ex, foldListRightAssoc(ex2, t))
+  }
+
+  val foldRA: ((Expr, List[(Op2, Expr)])) => Expr = (foldListRightAssoc _).tupled
+
   def fold(xs: (Op2, List[(Char, Op2)])): Expr = ???
 
   /** plain chars */
@@ -23,25 +31,47 @@ object ExpressionParser {
   // FIXME: implement via Parser.flatMap
   val unPlusOrMinus: Parser[Op1] = plusOrMinus.map(Op1.unapply).map(_.get)
 
-  /** plain implementation #1 */
-  val plainValueWithUnary2: Parser[Expr] = plainValue | (unPlusOrMinus ** plainValue)
-    .map { case (op, ex) =>
-      UnOp(op, ex)
-    }
+  /** implementation #2 */
+  val plainValueWithUnary2: Parser[Expr] = plainValue | (unPlusOrMinus ** plainValue).map { case (op, ex) =>
+    UnOp(op, ex)
+  }
 
-  val plainValueWithUnary3: Parser[Expr] = (unPlusOrMinus.opt ** plainValue)
-    .map {
-      case (Some(op), ex) => UnOp(op, ex)
-      case (None, ex)     => ex
-    }
+  /** implementation #3 */
+  val plainValueWithUnary3: Parser[Expr] = (unPlusOrMinus.opt ** plainValue).map {
+    case (Some(op), ex) => UnOp(op, ex)
+    case (None, ex)     => ex
+  }
 
-  val biPlusOrMinus: Parser[Op2] = plusOrMinus.map(Op2.unapply).map(_.get)
+  /** non recursive sequence of +, - */
+  def plainLowPri: Parser[Expr] =
+    (plainValueWithUnary3 ** (biPlusOrMinus ** plainValueWithUnary3).many) map foldRA
+
+  /** non recursive sequence of *, / */
+  def plainMidPri: Parser[Expr] =
+    (plainValueWithUnary3 ** (biMulOrDiv ** plainValueWithUnary3).many) map foldRA
+
+  /** parsing binary operation - high priority */
   val biMulOrDiv: Parser[Op2] = mulOrDiv.map(Op2.unapply).map(_.get)
 
-  def parens: Parser[Expr] = surround(char('('), char(')'))(addSub)
-  def block: Parser[Expr] = plainValue | parens
-  def addSub: Parser[Expr] = (biMulOrDiv ** (plusOrMinus ** biMulOrDiv).many).map(fold)
-  def wholeCombination: Parser[Expr] = root(addSub)
+  /** parsing binary operation - low priority */
+  val biPlusOrMinus: Parser[Op2] = plusOrMinus.map(Op2.unapply).map(_.get)
+
+  /** parsing whatever between parens */
+  def parens(p: Parser[Expr]): Parser[Expr] = surround(char('('), char(')'))(p)
+
+  /** treat everything wrapped into braces as unit */
+  def hiPri: Parser[Expr] = plainValueWithUnary3 | parens(lowPri)
+
+  /** MP - recursive */
+  def midPri: Parser[Expr] =
+    (hiPri ** (biMulOrDiv ** hiPri).many) map foldRA
+
+  /** LP - recursive */
+  def lowPri: Parser[Expr] =
+    (midPri ** (biPlusOrMinus ** midPri).many) map foldRA
+
+  def wholeCombination: Parser[Expr] = root(lowPri)
+
 }
 
 class ExpressionParserSpec extends AnyFunSpec with Matchers {
@@ -79,12 +109,30 @@ class ExpressionParserSpec extends AnyFunSpec with Matchers {
 
     it("opt - nonOpt") {
       val mayBeNeg: Parser[Option[Char]] = char('-').opt
-      val mayBeNegNonOpt: Parser[Char] = mayBeNeg.nonOpt
-
       run(mayBeNeg)("") shouldEqual Right(None)
       run(mayBeNeg)("-") shouldEqual Right(Some('-'))
     }
 
+  }
+
+  describe("plain sequences") {
+    it("plainLowPrio: +, -") {
+      val p = run(plainLowPri)
+      p("1+2-5-4").map(evalNode) shouldEqual Right(2)
+    }
+
+    it("plainMidPrio: *, /") {
+      val p = run(plainMidPri)
+      p("8/6/3").map(evalNode) shouldEqual Right(4)
+      p("-8/-6/-3").map(evalNode) shouldEqual Right(-4)
+    }
+  }
+
+  describe("recursive things") {
+    val p = run(wholeCombination)
+    val r = p("(1+3-2)*8/4/-2")
+    pprint.pprintln(r)
+    r.map(evalNode) shouldEqual Right(-8)
   }
 
 }
