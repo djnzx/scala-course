@@ -43,6 +43,7 @@ object Euclidean {
   }
 
   /** https://www.geeksforgeeks.org/modular-division/ */
+  /** http://www.doc.ic.ac.uk/~mrh/330tutor/ch03.html */
   def gcdExtended(a: Int, b: Int): (Int, Int, Int) =
     if (a == 0) (b, 0, 1) // Base Case
     else {
