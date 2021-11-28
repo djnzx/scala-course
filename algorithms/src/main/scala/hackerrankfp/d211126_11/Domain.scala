@@ -1,8 +1,9 @@
-package hackerrankfp.d221126
+package hackerrankfp.d211126_11
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
+/** domain representation only: Operation and Expression */
 object Domain {
 
   sealed trait Op
@@ -39,25 +40,6 @@ object Domain {
   final case class UnOp(op: Op1, e: Expr) extends Expr
   final case class Neg(ex: Expr) extends Expr
   final case class BinOp(op: Op2, l: Expr, r: Expr) extends Expr
-
-  val MODULO: Int = 1000000007 // 10^9 + 7
-
-  def evalNode(node: Expr): Int = node match {
-    case Value(x) => x
-    case Neg(ex)  => -evalNode(ex)
-    case UnOp(op, ex: Expr) =>
-      op match {
-        case Minus => -evalNode(ex)
-        case Plus  => +evalNode(ex)
-      }
-    case BinOp(op, l: Expr, r: Expr) =>
-      op match {
-        case Add => (evalNode(l) + evalNode(r)) % MODULO
-        case Sub => evalNode(l) - evalNode(r)
-        case Mul => (evalNode(l) * evalNode(r)) % MODULO
-        case Div => evalNode(l) / evalNode(r)
-      }
-  }
 
 }
 
@@ -112,16 +94,6 @@ class DomainSpec extends AnyFunSpec with Matchers {
     for {
       (in, out) <- testData
     } Op2.unapply(in) shouldEqual out
-  }
-
-  it("eval") {
-    val ex = BinOp(
-      Add,
-      Neg(Value(3)),
-      BinOp(Mul, Value(2), Value(4)),
-    )
-
-    evalNode(ex) shouldEqual 5
   }
 
 }

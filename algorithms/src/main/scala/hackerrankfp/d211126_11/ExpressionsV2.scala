@@ -1,4 +1,4 @@
-package hackerrankfp.d221126
+package hackerrankfp.d211126_11
 
 import scala.util.Try
 import scala.util.Using
@@ -8,6 +8,7 @@ object ExpressionsV2 {
 
   import hackerrankfp.d200612_10.Parsers._
   import Domain._
+  import Evaluation.evalNode
 
   import scala.util.chaining.scalaUtilChainingOps
   val exprParser: Parser[Expr] = ExpressionParser.wholeCombination

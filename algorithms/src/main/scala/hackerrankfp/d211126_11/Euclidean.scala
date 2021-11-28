@@ -1,8 +1,8 @@
-package hackerrankfp.d221126
+package hackerrankfp.d211126_11
 
-import hackerrankfp.d221126.Euclidean.gcdExtended
-import hackerrankfp.d221126.Euclidean.modDivide
-import hackerrankfp.d221126.Euclidean.modInverse
+import hackerrankfp.d211126_11.Euclidean.gcdExtended
+import hackerrankfp.d211126_11.Euclidean.modDivide
+import hackerrankfp.d211126_11.Euclidean.modInverse
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 

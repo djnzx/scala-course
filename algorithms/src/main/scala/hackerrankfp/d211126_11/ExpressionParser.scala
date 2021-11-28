@@ -1,4 +1,4 @@
-package hackerrankfp.d221126
+package hackerrankfp.d211126_11
 
 import hackerrankfp.d200612_10.Parsers
 import org.scalatest.funspec.AnyFunSpec
@@ -76,6 +76,7 @@ object ExpressionParser {
 
 class ExpressionParserSpec extends AnyFunSpec with Matchers {
 
+  import Evaluation._
   import Domain._
   import Parsers._
   import ParserImpl._
@@ -129,10 +130,22 @@ class ExpressionParserSpec extends AnyFunSpec with Matchers {
   }
 
   describe("recursive things") {
-    val p = run(wholeCombination)
-    val r = p("(1+3-2)*8/4/-2")
-    pprint.pprintln(r)
-    r.map(evalNode) shouldEqual Right(-8)
+    it("1") {
+      val p = run(wholeCombination)
+      val r = p("(1+3-2)*8/4/-2")
+
+      r shouldEqual Right(
+        BinOp(
+          op = Mul,
+          l = BinOp(op = Add, l = Value(x = 1), r = BinOp(op = Sub, l = Value(x = 3), r = Value(x = 2))),
+          r = BinOp(
+            op = Div,
+            l = Value(x = 8),
+            r = BinOp(op = Div, l = Value(x = 4), r = UnOp(op = Minus, e = Value(x = 2))),
+          ),
+        ),
+      )
+    }
   }
 
 }
