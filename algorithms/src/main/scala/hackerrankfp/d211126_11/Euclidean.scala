@@ -42,6 +42,7 @@ object Euclidean {
     else (x % m + m) % m // m is added to handle negative x
   }
 
+  /** https://www.geeksforgeeks.org/modular-division/ */
   def gcdExtended(a: Int, b: Int): (Int, Int, Int) =
     if (a == 0) (b, 0, 1) // Base Case
     else {
