@@ -12,9 +12,8 @@ trait Shop { _: Tool with Hammer =>
   val c = a + b
 }
 
-/** what will be printed: 0, 1, 2, 3 ?
-  */
-object ShopApp extends App {
+/** what will be printed: 0, 1, 2, 3 ? */
+object Q7_ShopApp extends App {
   val shop = new Tool with Shop with Hammer
   println(shop.c)
 }

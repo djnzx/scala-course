@@ -12,8 +12,8 @@ object P26A {
     case 0 => List(List.empty)
     case n =>
       tails(as) {
-        case Nil    => List.empty
         case h :: t => combinations(n - 1, t).map(h :: _)
+        case Nil    => sys.error("not supposed to be here")
       }
   }
 
