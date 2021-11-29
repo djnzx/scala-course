@@ -8,26 +8,21 @@ object P26A {
       case _ :: t => f(xs) ::: tails(t)(f)
     }
 
-  def combinations[A](n: Int, as: List[A]): List[List[A]] =
-    n match {
-      case 0 => List(List.empty)
-      case n =>
-        as match {
-          case Nil => sys.error("B must be >= than List")
-          case _ =>
-            tails(as) {
-              case Nil    => ???
-              case h :: t => combinations(n - 1, t).map(h :: _)
-            }
-        }
+  def combinations[A](n: Int, as: List[A]): List[List[A]] = n match {
+    case 0 => List(List.empty)
+    case n =>
+      tails(as) {
+        case Nil    => List.empty
+        case h :: t => combinations(n - 1, t).map(h :: _)
+      }
+  }
 
-    }
 }
 
 object P26ARunner extends App {
   import P26A._
 
 //  pprint.pprintln(tails("ABC".toList)(List(_)))
-  pprint.pprintln(combinations(25, "ABCD".toList))
+  pprint.pprintln(combinations(2, "ABCD".toList))
 //  pprint.pprintln(combinations(3, "ABCDE".toList))
 }
