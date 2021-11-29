@@ -12,20 +12,19 @@ import scala.annotation.tailrec
   */
 object Tinkoff1 {
 
-  def pack[A](xs: Seq[A]): Seq[(A, Int)] = {
+  def pack[A](xs: List[A]): List[(A, Int)] = {
 
     @tailrec
-    def go(tail: Seq[A], cur: Option[(A, Int)], acc: Seq[(A, Int)]): Seq[(A, Int)] =
+    def go(tail: List[A], cur: Option[(A, Int)], acc: List[(A, Int)]): List[(A, Int)] =
       (tail, cur) match {
         case (Nil, None)                        => acc
         case (Nil, Some(nc))                    => nc +: acc
         case (x :: t, None)                     => go(t, Some(x, 1), acc)
         case (x :: t, Some((n, cnt))) if x == n => go(t, Some(n, cnt + 1), acc)
         case (x :: t, Some(nc))                 => go(t, Some(x, 1), nc +: acc)
-        case _                                  => ???
       }
 
-    go(xs, None, Seq.empty) reverse
+    go(xs, None, List.empty) reverse
   }
 
   def unpack[A](xs: Seq[(A, Int)]): Seq[A] =
@@ -35,8 +34,8 @@ object Tinkoff1 {
 
 class Tinkoff1Spec extends AnyFunSpec with Matchers {
 
-  val unpacked = Seq(1, 2, 2, 3, 4, 3, 3, 3)
-  val packed = Seq((1, 1), (2, 2), (3, 1), (4, 1), (3, 3))
+  val unpacked = List(1, 2, 2, 3, 4, 3, 3, 3)
+  val packed = List((1, 1), (2, 2), (3, 1), (4, 1), (3, 3))
 
   import Tinkoff1._
 
