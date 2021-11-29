@@ -26,7 +26,7 @@ object P26 {
 
   def combinations[A](n: Int, as: List[A]): List[List[A]] = n match {
     case 0 => List(List.empty)
-    case n => tails(as) { la => combinations(n - 1, la.tail).map(la.head :: _) }
+    case _ => tails(as) { la => combinations(n - 1, la.tail).map(la.head :: _) }
   }
 
 }

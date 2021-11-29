@@ -78,6 +78,30 @@ object P49Plain {
   }
 }
 
+object P49Memo {
+
+  import scala.collection.mutable
+  private val cache = mutable.Map(0 -> List(""))
+  val variants = List("0", "1")
+
+  def grayMemoized(n: Int): List[String] = {
+    if (!cache.contains(n)) {
+      val prev = grayMemoized(n - 1)
+      val curr = variants.flatMap(d => prev.map(d + _))
+      cache.addOne(n -> curr)
+    }
+
+    cache(n)
+  }
+
+}
+
+object P49Runner extends App {
+  import P49Memo._
+
+  pprint.pprintln(grayMemoized(4))
+}
+
 class P49Spec extends ASpec {
   val data = Seq(
     0 -> List(""),
