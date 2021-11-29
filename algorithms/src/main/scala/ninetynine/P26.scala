@@ -26,14 +26,15 @@ object P26 {
 
   def combinations[A](n: Int, as: List[A]): List[List[A]] = n match {
     case 0 => List(List.empty)
-    case n =>
-      tails(as) {
-        case h :: t =>
-          combinations(n - 1, t)
-            .map(la => h :: la)
-        case Nil => sys.error("impossible by design")
-      }
+    case n => tails(as) { la => combinations(n - 1, la.tail).map(la.head :: _) }
   }
+
+}
+
+object P26Runner extends App {
+  import P26._
+
+  pprint.pprintln(combinations(2, "ABCD".toList))
 }
 
 class P26Spec extends ASpec {
@@ -41,10 +42,10 @@ class P26Spec extends ASpec {
 
   it("1") {
     val data = Seq(
-      (1, "abc") -> Seq("a", "b", "c"),
-      (2, "abc") -> Seq("ab", "ac", "bc"),
-      (3, "abc") -> Seq("abc"),
-      (3, "abcd") -> Seq("abc", "abd", "acd", "bcd"),
+      (1, "abc")   -> Seq("a", "b", "c"),
+      (2, "abc")   -> Seq("ab", "ac", "bc"),
+      (3, "abc")   -> Seq("abc"),
+      (3, "abcd")  -> Seq("abc", "abd", "acd", "bcd"),
       (4, "abcde") -> Seq("abcd", "abce", "abde", "acde", "bcde"),
       (3, "abcde") -> Seq("abc", "abd", "abe", "acd", "ace", "ade", "bcd", "bce", "bde", "cde"),
     )
@@ -53,11 +54,4 @@ class P26Spec extends ASpec {
       ((n, in), out) <- data
     } combinations(n, in.toList) shouldEqual out.map(_.toList)
   }
-}
-
-object P26Runner extends App {
-  import P26._
-
-  pprint.pprintln(combinations(2, "ABCD".toList))
-  pprint.pprintln(combinations(3, "ABCDE".toList))
 }
