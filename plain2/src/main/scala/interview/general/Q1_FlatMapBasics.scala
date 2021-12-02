@@ -1,6 +1,6 @@
 package interview.general
 
-object Q1_flatMapBasics {
+object Q1_FlatMapBasics extends App {
 
   val x = (1 to 10).filter(_ % 2 == 0)
   val f2 = (1 to 10).flatMap {
