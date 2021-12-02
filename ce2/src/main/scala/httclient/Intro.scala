@@ -13,6 +13,9 @@ import org.http4s.implicits._
 
 object Intro extends IOApp {
 
+  def putStrLn(s: String): IO[Unit] =
+    IO(println(s))
+
   def fetchStatus[F[_]](c: Client[F], uri: Uri): F[Status] =
     c.status(Request[F](Method.GET, uri = uri))
 
@@ -24,9 +27,8 @@ object Intro extends IOApp {
 
   override def run(args: List[String]): IO[ExitCode] =
     result
-      .flatMap { s =>
-        IO { println(s) }
-      }
+      .map(_.toString)
+      .flatMap { s => putStrLn(s) }
       .as(ExitCode.Success)
 
 }
