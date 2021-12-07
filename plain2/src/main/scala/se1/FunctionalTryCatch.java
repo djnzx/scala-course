@@ -24,6 +24,19 @@ public class FunctionalTryCatch {
     };
   }
 
+  static <A, B, C> BiFunction<A, B, C> makeSafeGen(
+    BiFunction<A, B, C> unSafe,
+    Function<Exception, C> handler
+  ) {
+    return (a, b) -> {
+      try {
+        return unSafe.apply(a, b);
+      } catch (Exception ex) {
+        return handler.apply(ex);
+      }
+    };
+  }
+
   public static void main(String[] args) {
     int r1 = div(20,5); // 4
 //    int r2 = div(20,0); // Exception

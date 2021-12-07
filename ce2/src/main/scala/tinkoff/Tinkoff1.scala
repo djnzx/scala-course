@@ -34,8 +34,8 @@ object Tinkoff1 {
 
 class Tinkoff1Spec extends AnyFunSpec with Matchers {
 
-  val unpacked = List(1, 2, 2, 3, 4, 3, 3, 3)
-  val packed = List((1, 1), (2, 2), (3, 1), (4, 1), (3, 3))
+  val unpacked = List(1, 2, 2, 3, 4, 3, 3, 3, 1, 1)
+  val packed = List((1, 1), (2, 2), (3, 1), (4, 1), (3, 3), (1, 2))
 
   import Tinkoff1._
 
