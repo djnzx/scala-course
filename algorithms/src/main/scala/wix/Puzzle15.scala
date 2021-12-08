@@ -1,6 +1,6 @@
-package puzzle15
+package wix
 
-import puzzle15.Board.TBoard
+import wix.Board.TBoard
 
 import scala.util.Random
 
@@ -86,23 +86,29 @@ class BoardImpl(board: TBoard) extends Board {
 }
 
 object BoardTest extends App {
+  // shuffled representation
   val b1 = Board()
+  // solved representation
   val b2 = Board.solved
 
+  // isDone
   b1.printMe()
   println(b1.isDone)
   b2.printMe()
   println(b2.isDone)
 
+  // validations
   println(b2.validate(4, -5)) // Left(CellNotOnTheBoard(4,-5))
   println(b2.validate(3, 3)) // Left(CellIsEmpty(3,3))
   println(b2.validate(2, 2)) // Left(CellHasNoAdjacentFree(2,2))
   println(b2.validate(2, 3)) // Right((3,3))
   println(b2.validate(3, 2)) // Right((3,3))
-  val b3 = b2.move(3, 2)
-  b3.foreach(b3 => {
-    b3.printMe()
-    val b4 = b3.move(3, 1)
-    b4.foreach(_.printMe())
-  })
+
+  // moves
+  b2.move(3, 2)
+    .foreach { b3 =>
+      b3.printMe()
+      b3.move(3, 1)
+        .foreach(_.printMe())
+    }
 }
