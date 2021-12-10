@@ -1,4 +1,4 @@
-package tinkoff
+package tkf
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext
@@ -12,7 +12,7 @@ import scala.util.chaining.scalaUtilChainingOps
 /** На вход Seq[Future[String]] Получить Future[(Seq[String], Seq[Throwable]) - результат агрегации выполненых Future и
   * исключений
   */
-object Tinkoff2 extends App {
+object Tkf2 extends App {
 
   object common {
 
@@ -73,9 +73,9 @@ object Tinkoff2 extends App {
     ImplementationPlain.sequenceCombined[A](xs)
 }
 
-class Tinkoff2Spec extends AnyFunSpec with Matchers {
+class Tkf2Spec extends AnyFunSpec with Matchers {
 
-  import Tinkoff2.{impl => sequence}
+  import Tkf2.{impl => sequence}
   import scala.concurrent.duration.DurationInt
   import scala.concurrent.ExecutionContext.Implicits.global
 
