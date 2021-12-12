@@ -1,7 +1,6 @@
 package udemy.scala_advanced.lectures.part1as
 
-/** Created by Daniel.
-  */
+/** Created by Daniel. */
 object AdvancedPatternMatching extends App {
 
   val numbers = List(1)
@@ -32,12 +31,14 @@ object AdvancedPatternMatching extends App {
   val bob = new Person("Bob", 25)
   val greeting = bob match {
     case Person(n, a) => s"Hi, my name is $n and I am $a yo."
+    case _            => ???
   }
 
   println(greeting)
 
   val legalStatus = bob.age match {
     case Person(status) => s"My legal status is $status"
+    case _              => ???
   }
 
   println(legalStatus)

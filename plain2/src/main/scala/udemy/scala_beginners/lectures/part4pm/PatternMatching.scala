@@ -2,8 +2,7 @@ package udemy.scala_beginners.lectures.part4pm
 
 import scala.util.Random
 
-/** Created by Daniel.
-  */
+/** Created by Daniel. */
 object PatternMatching extends App {
 
   // switch on steroids
@@ -86,6 +85,7 @@ object PatternMatching extends App {
 
       maybeShowParentheses(e1) + " * " + maybeShowParentheses(e2)
     }
+    case _ => ???
   }
 
   println(show(Sum(Number(2), Number(3))))

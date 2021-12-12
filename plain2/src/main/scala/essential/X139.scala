@@ -1,21 +1,21 @@
 package essential
 
 object X139 extends App {
-  case class Pair[A,B](a: A, b: B)
+  case class Pair[A, B](a: A, b: B)
 
   def x: Boolean => Any = (b: Boolean) => if (b) 123 else "abc"
 
-  trait XEither[A, B] {
+  sealed trait XEither[A, B] {
     def fold[C](fa: A => C, fb: B => C): C = this match {
-      case XLeft(l) => fa(l)
+      case XLeft(l)  => fa(l)
       case XRight(r) => fb(r)
     }
     def map[C](fn: B => C): XEither[A, C] = this match {
-      case XLeft(l) => XLeft(l)
+      case XLeft(l)  => XLeft(l)
       case XRight(r) => XRight(fn(r))
     }
     def flatMap[C](fn: B => XEither[A, C]): XEither[A, C] = this match {
-      case XLeft(l) => XLeft(l)
+      case XLeft(l)  => XLeft(l)
       case XRight(r) => fn(r)
     }
   }
@@ -23,7 +23,7 @@ object X139 extends App {
   case class XRight[A, B](value: B) extends XEither[A, B]
 
   def is(input: Boolean): XEither[Int, String] =
-    if(input) {
+    if (input) {
       XLeft[Int, String](123)
     } else {
       XRight[Int, String]("abc")

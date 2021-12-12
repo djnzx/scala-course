@@ -3,15 +3,18 @@ package ipv4
 import scala.util.Try
 
 object IPv4 {
+
   /** IP address representation */
   case class IP(a: Int, b: Int, c: Int, d: Int)
+
   /** syntax to manipulate with IP parts */
   implicit class IPSyntax(private val ip: IP) extends AnyVal {
     import ip._
-    def a8  = Set(d)        // last 1
-    def a16 = Map(c -> a8)  // last 2
+    def a8 = Set(d) // last 1
+    def a16 = Map(c -> a8) // last 2
     def a24 = Map(b -> a16) // last 3
   }
+
   /** parser */
   object IP {
     private def isLen4(a: Array[_]) = a.length == 4
@@ -20,9 +23,12 @@ object IPv4 {
       .filter(isLen4)
       .map(_.flatMap(x => x.toIntOption))
       .filter(isLen4)
-      .map(_.filter(x => x >=0 && x <= 255))
+      .map(_.filter(x => x >= 0 && x <= 255))
       .filter(isLen4)
-      .map { case Array(a, b, c, d) => IP(a, b, c, d) }
+      .flatMap {
+        case Array(a, b, c, d) => Some(IP(a, b, c, d))
+        case _                 => None
+      }
   }
 
   type IPS = Map[Int, Map[Int, Map[Int, Set[Int]]]]
@@ -39,7 +45,8 @@ object IPv4 {
 
     /** contains by IP */
     def contains(ip: IP): Boolean =
-      map.get(ip.a)
+      map
+        .get(ip.a)
         .flatMap(_.get(ip.b))
         .flatMap(_.get(ip.c))
         .exists(_.contains(ip.d))
@@ -62,14 +69,16 @@ object IPv4 {
     /** core function to combine map with IP given */
     private def combine(map: IPS, ip: IP) =
       map.updatedWith(ip.a) {
-        case None     => Some(ip.a24)
-        case Some(ma) => Some(ma.updatedWith(ip.b) {
-          case None     => Some(ip.a16)
-          case Some(mb) => Some(mb.updatedWith(ip.c) {
-            case None     => Some(ip.a8)
-            case Some(mc) => Some(mc ++ ip.a8)
+        case None => Some(ip.a24)
+        case Some(ma) =>
+          Some(ma.updatedWith(ip.b) {
+            case None => Some(ip.a16)
+            case Some(mb) =>
+              Some(mb.updatedWith(ip.c) {
+                case None     => Some(ip.a8)
+                case Some(mc) => Some(mc ++ ip.a8)
+              })
           })
-        })
       }
 
     private def processToMap(map: IPS, ip: String) =
