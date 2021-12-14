@@ -4,12 +4,14 @@ class Persn(name: String, age: Int) {
   // v1
   def equals1(obj: Any): Boolean = obj match {
     case that: Persn => obj.isInstanceOf[Persn] && this.hashCode == that.hashCode
-    case _ => false
+    case _           => false
   }
 
   // v2
   def equals2(obj: Any): Boolean = obj match {
     case that: Persn => obj.isInstanceOf[Persn] && this.hashCode == that.hashCode
+    case _           => ???
+
   }
 
   override def equals(obj: Any): Boolean =

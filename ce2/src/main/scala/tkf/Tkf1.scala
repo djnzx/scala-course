@@ -1,4 +1,4 @@
-package tinkoff
+package tkf
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
@@ -10,7 +10,7 @@ import scala.annotation.tailrec
   * Ответ выдать в виде Seq[(Int, Int)] (число из последовательности и число последовательных повторений) 2)
   * восстановаить исходную последовательность из сжатой
   */
-object Tinkoff1 {
+object Tkf1 {
 
   def pack[A](xs: List[A]): List[(A, Int)] = {
 
@@ -32,12 +32,12 @@ object Tinkoff1 {
 
 }
 
-class Tinkoff1Spec extends AnyFunSpec with Matchers {
+class Tkf1Spec extends AnyFunSpec with Matchers {
 
   val unpacked = List(1, 2, 2, 3, 4, 3, 3, 3, 1, 1)
   val packed = List((1, 1), (2, 2), (3, 1), (4, 1), (3, 3), (1, 2))
 
-  import Tinkoff1._
+  import Tkf1._
 
   it("pack") {
     pack(unpacked) shouldEqual packed

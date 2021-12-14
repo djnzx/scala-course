@@ -21,8 +21,9 @@ object MacroConcat {
 
     val initialLength = constantParts.map(_.length).sum
 
-    val (valDeclarations, lenNames, arguments) = args.zipWithIndex.map {
-      case (e, index) =>
+    val (valDeclarations, lenNames, arguments) = args
+      .zipWithIndex
+      .map { case (e, index) =>
         val name = TermName("__local" + index)
         e.actualType match {
           case tt if tt.typeSymbol.asClass.isPrimitive =>
@@ -37,7 +38,8 @@ object MacroConcat {
                }"""
             (List(expr), List(name), Ident(name))
         }
-    }.unzip3
+      }
+      .unzip3
 
     val allParts = getAllPartsForAppend(c)(constantParts, arguments)
 
@@ -45,13 +47,14 @@ object MacroConcat {
 
     val plusLenExpr = lengthSum(c)(initialLength, lenNames.flatten.toList)
 
-    val newStringBuilderAndAppendExpr = newStringBuilderWithAppends(c)(q"new java.lang.StringBuilder($plusLenExpr)", allParts.reverse)
+    val newStringBuilderAndAppendExpr =
+      newStringBuilderWithAppends(c)(q"new java.lang.StringBuilder($plusLenExpr)", allParts.reverse)
 
     val stats = valDeclarations.flatten.toList :+
       q"$newStringBuilderAndAppendExpr.toString"
 
     c.Expr(
-      q"..$stats"
+      q"..$stats",
     )
   }
 
@@ -66,8 +69,9 @@ object MacroConcat {
 
     var initialLength = constantParts.map(_.length).sum
 
-    val (valDeclarations, lenNames, arguments: Seq[c.universe.Tree]) = args.zipWithIndex.map {
-      case (e, index) =>
+    val (valDeclarations, lenNames, arguments: Seq[c.universe.Tree]) = args
+      .zipWithIndex
+      .map { case (e, index) =>
         val name = TermName("__local" + index)
         e.actualType match {
           case tt if tt.typeSymbol.asClass.isPrimitive =>
@@ -92,7 +96,8 @@ object MacroConcat {
                }"""
             (List(expr), List(name), Ident(name))
         }
-    }.unzip3
+      }
+      .unzip3
 
     val allParts = getAllPartsForAppend(c)(constantParts, arguments)
 
@@ -107,7 +112,7 @@ object MacroConcat {
       q"$stringBuilderWithAppends.toString"
 
     c.Expr(
-      q"..$stats"
+      q"..$stats",
     )
   }
 
@@ -118,10 +123,14 @@ object MacroConcat {
       if (s.isEmpty) Nil else List(Literal(Constant(s)))
     }
 
-    rawParts.zipAll(arguments, null, null).flatMap {
-      case (raw, null) => nilOrConst(raw)
-      case (raw, arg) if raw != null => nilOrConst(raw) :+ arg
-    }.toList
+    rawParts
+      .zipAll(arguments, null, null)
+      .flatMap {
+        case (raw, null)               => nilOrConst(raw)
+        case (raw, arg) if raw != null => nilOrConst(raw) :+ arg
+        case _                         => ???
+      }
+      .toList
   }
 
   private def extractConstantPartsAndTreatEscapes(c: whitebox.Context): List[String] = {
@@ -129,22 +138,30 @@ object MacroConcat {
 
     val rawParts = c.prefix.tree match {
       case Apply(_, List(Apply(_, list))) => list
+      case _                              => ???
     }
 
     rawParts.map {
-      case Literal(Constant(rawPart: String)) => StringContext.treatEscapes(rawPart)
+      case Literal(Constant(rawPart: String)) =>
+        StringContext.treatEscapes(rawPart)
+      case _ => ???
     }
   }
 
-  private def newStringBuilderWithAppends(c: whitebox.Context)
-                                         (newStringBuilderExpr: c.universe.Tree,
-                                          expressions: List[c.universe.Tree]): c.universe.Tree = {
+  private def newStringBuilderWithAppends(
+      c: whitebox.Context,
+    )(newStringBuilderExpr: c.universe.Tree,
+      expressions: List[c.universe.Tree],
+    ): c.universe.Tree = {
     import c.universe._
 
     if (expressions.isEmpty) {
       newStringBuilderExpr
     } else {
-      Apply(Select(newStringBuilderWithAppends(c)(newStringBuilderExpr, expressions.tail), TermName("append")), List(expressions.head))
+      Apply(
+        Select(newStringBuilderWithAppends(c)(newStringBuilderExpr, expressions.tail), TermName("append")),
+        List(expressions.head),
+      )
     }
   }
 
@@ -154,7 +171,10 @@ object MacroConcat {
     if (names.isEmpty) {
       Literal(Constant(const))
     } else {
-      Apply(Select(Select(Ident(names.head), TermName("length")), TermName("$plus")), List(lengthSum(c)(const, names.tail)))
+      Apply(
+        Select(Select(Ident(names.head), TermName("length")), TermName("$plus")),
+        List(lengthSum(c)(const, names.tail)),
+      )
     }
   }
 

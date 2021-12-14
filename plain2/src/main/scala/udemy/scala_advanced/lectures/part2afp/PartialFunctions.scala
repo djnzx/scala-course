@@ -1,8 +1,6 @@
 package udemy.scala_advanced.lectures.part2afp
 
-/**
-  * Created by Daniel.
-  */
+/** Created by Daniel. */
 object PartialFunctions extends App {
 
   val aFunction = (x: Int) => x + 1 // Function1[Int, Int] === Int => Int
@@ -15,11 +13,12 @@ object PartialFunctions extends App {
 
   class FunctionNotApplicableException extends RuntimeException
 
-  val aNicerFussyFunction = (x: Int) => x match {
-    case 1 => 42
-    case 2 => 56
-    case 5 => 999
-  }
+  val aNicerFussyFunction = (x: Int) =>
+    x match {
+      case 1 => 42
+      case 2 => 56
+      case 5 => 999
+    }
   //  {1,2,5} => Int
 
   val aPartialFunction: PartialFunction[Int, Int] = {
@@ -39,8 +38,8 @@ object PartialFunctions extends App {
   println(lifted(2))
   println(lifted(98))
 
-  val pfChain = aPartialFunction.orElse[Int, Int] {
-    case 45 => 67
+  val pfChain = aPartialFunction.orElse[Int, Int] { case 45 =>
+    67
   }
 
   println(pfChain(2))
@@ -50,10 +49,11 @@ object PartialFunctions extends App {
 
   val aTotalFunction: Int => Int = {
     case 1 => 99
+    case _ => ???
   }
 
   // HOFs accept partial functions as well
-  val aMappedList = List(1,2,3).map {
+  val aMappedList = List(1, 2, 3).map {
     case 1 => 42
     case 2 => 78
     case 3 => 1000
@@ -64,12 +64,10 @@ object PartialFunctions extends App {
     Note: PF can only have ONE parameter type
    */
 
-  /**
-    * Exercises
+  /** Exercises
     *
-    * 1 - construct a PF instance yourself (anonymous class)
-    * 2 - dumb chatbot as a PF
-  */
+    * 1 - construct a PF instance yourself (anonymous class) 2 - dumb chatbot as a PF
+    */
 
   val aManualFussyFunction = new PartialFunction[Int, Int] {
     override def apply(x: Int): Int = x match {
@@ -83,8 +81,8 @@ object PartialFunctions extends App {
   }
 
   val chatbot: PartialFunction[String, String] = {
-    case "hello" => "Hi, my name is HAL9000"
-    case "goodbye" => "Once you start talking to me, there is no return, human!"
+    case "hello"    => "Hi, my name is HAL9000"
+    case "goodbye"  => "Once you start talking to me, there is no return, human!"
     case "call mom" => "Unable to find your phone without your credit card"
   }
 
