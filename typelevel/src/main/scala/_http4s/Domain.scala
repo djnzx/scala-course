@@ -1,10 +1,14 @@
 package _http4s
 
-import cats.effect.{ExitCase, Sync}
-import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
-import io.circe.{Decoder, Encoder}
-import org.http4s.circe.{jsonEncoderOf, jsonOf}
-import org.http4s.{EntityDecoder, EntityEncoder}
+import cats.effect.Sync
+import io.circe.generic.semiauto.deriveDecoder
+import io.circe.generic.semiauto.deriveEncoder
+import io.circe.Decoder
+import io.circe.Encoder
+import org.http4s.circe.jsonEncoderOf
+import org.http4s.circe.jsonOf
+import org.http4s.EntityDecoder
+import org.http4s.EntityEncoder
 
 object Domain {
 
@@ -14,7 +18,7 @@ object Domain {
     implicit val encoder: Encoder[Student] = deriveEncoder
     implicit val decoder: Decoder[Student] = deriveDecoder
     implicit def entityEncoder[F[_]]: EntityEncoder[F, Student] = jsonEncoderOf
-    implicit def entityDecoder[F[_] : Sync]: EntityDecoder[F, Student] = jsonOf
+    implicit def entityDecoder[F[_]: Sync]: EntityDecoder[F, Student] = jsonOf
   }
 
 }
