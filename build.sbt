@@ -54,6 +54,7 @@ lazy val ce2 = project
       CompilerPlugins.contextApplied,
       CompilerPlugins.betterMonadicFor,
       "org.typelevel" %% "cats-core"              % v.cats,
+      "org.typelevel" %% "cats-free"              % v.cats,
       "org.typelevel" %% "cats-effect"            % v.catsEffect2,
       "org.typelevel" %% "cats-effect-laws"       % v.catsEffect2,
       "co.fs2"        %% "fs2-core"               % v.fs2ce2,
