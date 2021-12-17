@@ -1,7 +1,9 @@
 package akkatyped.x00b
 
-import akka.actor.typed.{ActorRef, ActorSystem}
-import akka.actor.typed.scaladsl.{ActorContext, Behaviors}
+import akka.actor.typed.ActorRef
+import akka.actor.typed.ActorSystem
+import akka.actor.typed.scaladsl.ActorContext
+import akka.actor.typed.scaladsl.Behaviors
 
 sealed trait Event
 
@@ -38,6 +40,7 @@ object MediatorActor {
       case (_, Shutdown) =>
         println("Simple. Shutting down")
         Behaviors.stopped
+
       case (Some(a), Finish) =>
         println("Simple. Stopping")
         a ! FinishMe(ctx.self)
@@ -48,6 +51,7 @@ object MediatorActor {
         val adder = ctx.spawn(AdderActor(), "adder")
         adder ! AdderRq(n, ctx.self)
         apply(Some(adder))
+
       case (Some(a), Go(n)) =>
         println(s"Simple: $n")
         a ! AdderRq(n, ctx.self)
@@ -56,12 +60,16 @@ object MediatorActor {
       case (_, AdderRs(n)) =>
         println(s"Simple:Response got: $n")
         Behaviors.same
+
+      case _ => ???
     }
   }
 }
 
 object RootActor {
-  def apply(mediator: Option[ActorRef[EventMediator]]): Behaviors.Receive[EventRoot] = Behaviors.receive { (ctx: ActorContext[EventRoot], msg: EventRoot) =>
+  def apply(
+      mediator: Option[ActorRef[EventMediator]],
+    ): Behaviors.Receive[EventRoot] = Behaviors.receive { (ctx: ActorContext[EventRoot], msg: EventRoot) =>
     (mediator, msg) match {
       case (Some(h), Terminate) =>
         println("Root. Terminate")
@@ -78,6 +86,8 @@ object RootActor {
         println(s"Root. Just($n) got. Send Go. ")
         h ! Go(n)
         apply(mediator)
+
+      case _ => ???
     }
   }
 }
@@ -89,4 +99,3 @@ object AkkaAdderApp extends App {
 
   root ! Terminate
 }
-

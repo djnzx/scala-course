@@ -65,11 +65,14 @@ lazy val ce2 = project
       "org.http4s"    %% "http4s-circe"           % v.http4sCe2,
       "org.http4s"    %% "http4s-dsl"             % v.http4sCe2,
       "org.http4s"    %% "http4s-jdk-http-client" % "0.3.7",
-      "org.typelevel" %% "cats-tagless-macros"    % "0.11",
-      "org.scalameta" %% "munit-scalacheck"       % "0.7.8",
-      "org.typelevel" %% "munit-cats-effect-2"    % "1.0.6",
-      "ch.qos.logback" % "logback-classic"        % v.logback,
-      "com.kubukoz"   %% "debug-utils"            % "1.1.3",
+      Libraries.doobieCore,
+      Libraries.doobiePg,
+      Libraries.sqlPgDriver,
+      "org.typelevel" %% "cats-tagless-macros" % "0.11",
+      "org.scalameta" %% "munit-scalacheck"    % "0.7.8",
+      "org.typelevel" %% "munit-cats-effect-2" % "1.0.6",
+      "ch.qos.logback" % "logback-classic"     % v.logback,
+      "com.kubukoz"   %% "debug-utils"         % "1.1.3",
     ),
   )
 
@@ -132,7 +135,7 @@ lazy val degoes = (project in file("degoes"))
       pf.zio                  %% "zio-interop-cats" % "2.2.0.1",
       pf.zio                  %% "zio-kafka"        % "0.13.0",
       "com.github.pureconfig" %% "pureconfig"       % "0.14.0",
-      Libraries.sqlPg,
+      Libraries.sqlPgDriver,
       Libraries.doobieCore,
       Libraries.doobiePg,
       Libraries.doobieHikari,
@@ -211,7 +214,7 @@ lazy val lcx = (project in file("lcx"))
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
-      "com.google.cloud" % "google-cloud-logging" % "3.0.1",
+      "com.google.cloud" % "google-cloud-logging" % "3.5.1",
     ),
   )
 
@@ -224,14 +227,14 @@ lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
-      pf.lihaoyi                %% "upickle"    % "1.4.0", // http://www.lihaoyi.com/upickle
-      pf.lihaoyi                %% "ujson"      % "1.4.0",
-      pf.lihaoyi                %% "os-lib"     % "0.7.8", // https://github.com/lihaoyi/os-lib
-      pf.lihaoyi                %% "scalatags"  % "0.9.4",
-      pf.lihaoyi                %% "requests"   % "0.6.9",
-      pf.lihaoyi                %% "geny"       % "0.6.10",
-      pf.lihaoyi                %% "fastparse"  % "2.3.2", // https://www.lihaoyi.com/fastparse/
-      "com.atlassian.commonmark" % "commonmark" % "0.15.0",
+      pf.lihaoyi                %% "upickle"    % "1.4.3", // http://www.lihaoyi.com/upickle
+      pf.lihaoyi                %% "ujson"      % "1.4.3",
+      pf.lihaoyi                %% "os-lib"     % "0.8.0", // https://github.com/lihaoyi/os-lib
+      pf.lihaoyi                %% "scalatags"  % "0.11.0",
+      pf.lihaoyi                %% "requests"   % "0.7.0",
+      pf.lihaoyi                %% "geny"       % "0.7.0",
+      pf.lihaoyi                %% "fastparse"  % "2.2.3", // https://www.lihaoyi.com/fastparse/
+      "com.atlassian.commonmark" % "commonmark" % "0.17.0",
     ),
   )
 
@@ -245,7 +248,7 @@ lazy val mix = (project in file("mix"))
       "io.getquill" %% "quill-jdbc"  % "3.5.1",
       "org.flywaydb" % "flyway-core" % "6.4.2",
       Libraries.http4sServer, // URI
-      Libraries.sqlPg,
+      Libraries.sqlPgDriver,
       Libraries.jsoup,
       //      "org.typelevel" %% "simulacrum" % "1.0.0",
       "com.github.mpilquist" %% "simulacrum"  % "0.19.0",

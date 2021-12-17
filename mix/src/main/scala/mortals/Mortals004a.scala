@@ -7,24 +7,20 @@ import eu.timepit.refined.boolean.And
 import eu.timepit.refined.collection.MaxSize
 
 object Mortals004a {
-  /**
-    * `final case class` also known as products
-    * `sealed abstract class` also known as coproducts (Either)
-    * `case object` and Int, Double, String (etc) - values
-    * 
-    * We prefer abstract class to trait 
-    * in order to get better binary compatibility 
-    * and to discourage trait mixing.
-    * 
-    * product:   ABC = a AND b AND c
-    * coproduct: XYZ = x XOR y XOR z
+
+  /** `final case class` also known as products `sealed abstract class` also known as coproducts (Either) `case object`
+    * and Int, Double, String (etc) - values
+    *
+    * We prefer abstract class to trait in order to get better binary compatibility and to discourage trait mixing.
+    *
+    * product: ABC = a AND b AND c coproduct: XYZ = x XOR y XOR z
     */
 
   // values
   case object A
   type B = String
   type C = Int
-  
+
   // product
   final case class ABC(a: A.type, b: B, c: C)
 
@@ -37,11 +33,12 @@ object Mortals004a {
   sealed abstract class Foo
   final case class Bar(flag: Boolean) extends Foo
   final case object Baz extends Foo
-  def thing(foo: Foo) = foo match { 
+  def thing(foo: Foo) = foo match {
     case Bar(_) => true
+    case Baz    => ???
   }
 
-  type |:[L,R] = Either[L, R]
+  type |:[L, R] = Either[L, R]
   type Accepted = String |: Long |: Boolean
   // or
   sealed abstract class Accepted2
@@ -49,20 +46,18 @@ object Mortals004a {
   final case class AcceptedLong(value: Long) extends Accepted2
   final case class AcceptedBoolean(value: Boolean) extends Accepted2
   // https://github.com/propensive/totalitarian
-  
+
   import eu.timepit.refined
   import refined.api.Refined
   import refined.numeric.Positive
   import refined.collection.NonEmpty
-  
+
   final case class Person1(
-    name: Refined[String, NonEmpty],
-    age: Refined[Int, Positive]
-  )
+      name: Refined[String, NonEmpty],
+      age: Refined[Int, Positive])
   final case class Person2(
-    name: String Refined NonEmpty,
-    age: Int Refined Positive
-  )
+      name: String Refined NonEmpty,
+      age: Int Refined Positive)
 
   // Prefer Coproduct over Product
   // good, but will create an instance every time
@@ -70,10 +65,9 @@ object Mortals004a {
     def sin: Double = java.lang.Math.sin(x)
   }
   // better, will not create instance every time
-  implicit final class DoubleOps2(private val x: Double) extends AnyVal { 
+  implicit final class DoubleOps2(private val x: Double) extends AnyVal {
     def sin: Double = java.lang.Math.sin(x)
   }
-  
 
 //  EXCEPTION DURING MACRO EXTRACTION
 //  import simulacrum._
@@ -82,9 +76,9 @@ object Mortals004a {
 //    @op("<") def lt(x: T, y: T): Boolean = compare(x, y) < 0
 //    @op(">") def gt(x: T, y: T): Boolean = compare(x, y) > 0
 //  }
-//  @typeclass trait Numeric[T] extends Ordering[T] { 
+//  @typeclass trait Numeric[T] extends Ordering[T] {
 //    @op("+") def plus(x: T, y: T): T
-//    @op("*") def times(x: T, y: T): T 
+//    @op("*") def times(x: T, y: T): T
 //    @op("unary_-") def negate(x: T): T
 //    def zero: T
 //    def abs(x: T): T = if (lt(x, zero)) negate(x) else x
@@ -110,35 +104,29 @@ object Mortals004a {
 //    } }
 //}
 
-  /**
-    * https://github.com/scala/bug/issues/9670
+  /** https://github.com/scala/bug/issues/9670 */
+  /** Avoid using java.net.URL at all costs: it uses DNS to resolve the hostname part when performing toString, equals
+    * or hashCode.
     */
-  /**
-    * Avoid using java.net.URL at all costs:
-    * it uses DNS to resolve the hostname part when performing 
-    * toString, equals or hashCode.
-    */
-    
+
   // https://kwark.github.io/refined-in-practice/#16
-    
+
   type Name = NonEmpty And MaxSize[10]
-  
+
   sealed abstract class UrlEncoded
   object UrlEncoded {
     private[this] val valid: Pattern = Pattern.compile("\\A(\\p{Alnum}++|[-.*_+=&]++|%\\p{XDigit}{2})*\\z")
     implicit def urlValidate: Validate.Plain[String, UrlEncoded] = Validate.fromPredicate(
-      s => valid.matcher(s).find(), identity,
-      new UrlEncoded {}
+      s => valid.matcher(s).find(),
+      identity,
+      new UrlEncoded {},
     )
   }
 
-  /**
-    * implicit resolution:
-    * 
-    * • local scope, including scoped imports (e.g. the block or method)
-    * • outer scope, including scoped imports (e.g. members in the class) • ancestors (e.g. members in the super class)
-    * • the current package object
-    * • ancestor package objects (when using nested packages)
-    * • the file’s imports
+  /** implicit resolution:
+    *
+    * • local scope, including scoped imports (e.g. the block or method) • outer scope, including scoped imports (e.g.
+    * members in the class) • ancestors (e.g. members in the super class) • the current package object • ancestor
+    * package objects (when using nested packages) • the file’s imports
     */
 }

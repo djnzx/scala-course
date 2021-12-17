@@ -49,8 +49,8 @@ object Libraries {
   val slickCore = slick("slick")
   val slickHikari = slick("slick-hikaricp")
 
-  val sqlPg = "org.postgresql" % "postgresql" % Versions.sqlPg
-  val sqlH2 = "com.h2database" % "h2"         % Versions.sqlH2
+  val sqlPgDriver = "org.postgresql" % "postgresql" % Versions.sqlPg
+  val sqlH2 = "com.h2database"       % "h2"         % Versions.sqlH2
 
   val http4sJwtAuth = "dev.profunktor"      %% "http4s-jwt-auth"     % Versions.http4sJwtAuth
   val redis4catsEffects = "dev.profunktor"  %% "redis4cats-effects"  % Versions.redis4cats

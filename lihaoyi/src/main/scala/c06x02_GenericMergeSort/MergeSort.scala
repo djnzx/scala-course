@@ -12,7 +12,8 @@ object MergeSort extends App {
         val takeLeft = (leftIdx < sortedLeft.length, rightIdx < sortedRight.length) match {
           case (true, false) => true
           case (false, true) => false
-          case (true, true) => Ordering[T].lt(sortedLeft(leftIdx), sortedRight(rightIdx))
+          case (true, true)  => Ordering[T].lt(sortedLeft(leftIdx), sortedRight(rightIdx))
+          case _             => ???
         }
         if (takeLeft) {
           output += sortedLeft(leftIdx)

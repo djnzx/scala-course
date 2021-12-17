@@ -1,7 +1,8 @@
 package fp_red.red15.generalized
 
 import fp_red.red13.IO0.fahrenheitToCelsius
-import fp_red.red13.{IO, unsafePerformIO}
+import fp_red.red13.IO
+import fp_red.red13.unsafePerformIO
 import fp_red.red15.ideas.MonadCatch
 
 object GeneralizedStreamTransducers {
@@ -32,7 +33,7 @@ that all resources get released, even in the event of exceptions.
 
    */
 
-  trait Process[F[_], O] {
+  sealed trait Process[F[_], O] {
 
     import Process._
 
@@ -44,9 +45,10 @@ that all resources get released, even in the event of exceptions.
     def map[O2](f: O => O2): Process[F, O2] = this match {
       case Await(req, recv) =>
         Await(req, recv andThen (_ map f))
-      case Emit(h, t) => Try {
-        Emit(f(h), t map f)
-      }
+      case Emit(h, t) =>
+        Try {
+          Emit(f(h), t map f)
+        }
       case Halt(err) => Halt(err)
     }
 
@@ -67,16 +69,18 @@ that all resources get released, even in the event of exceptions.
 
     def asFinalizer: Process[F, O] = this match {
       case Emit(h, t) => Emit(h, t.asFinalizer)
-      case Halt(e) => Halt(e)
-      case Await(req, recv) => await(req) {
-        case Left(Kill) => this.asFinalizer
-        //        case x => recv(x)
-      }
+      case Halt(e)    => Halt(e)
+      case Await(req, recv) =>
+        await(req) {
+          case Left(Kill) =>
+            this.asFinalizer
+          case x => recv(x)
+        }
     }
 
     def onHalt(f: Throwable => Process[F, O]): Process[F, O] = this match {
-      case Halt(e) => Try(f(e))
-      case Emit(h, t) => Emit(h, t.onHalt(f))
+      case Halt(e)          => Try(f(e))
+      case Emit(h, t)       => Emit(h, t.onHalt(f))
       case Await(req, recv) => Await(req, recv andThen (_.onHalt(f)))
     }
 
@@ -86,7 +90,7 @@ that all resources get released, even in the event of exceptions.
      */
     def flatMap[O2](f: O => Process[F, O2]): Process[F, O2] =
       this match {
-        case Halt(err) => Halt(err)
+        case Halt(err)  => Halt(err)
         case Emit(o, t) => Try(f(o)) ++ t.flatMap(f)
         case Await(req, recv) =>
           Await(req, recv andThen (_ flatMap f))
@@ -101,10 +105,10 @@ that all resources get released, even in the event of exceptions.
       // implies `this` has produced no values during an iteration
       val trimmed = cycle |> window2 |> (takeWhile {
         case (Some(None), None) => false
-        case _ => true
+        case _                  => true
       })
       trimmed.map(_._2).flatMap {
-        case None => Halt(End)
+        case None    => Halt(End)
         case Some(o) => emit(o)
       }
     }
@@ -118,10 +122,10 @@ that all resources get released, even in the event of exceptions.
     def runLog(implicit F: MonadCatch[F]): F[IndexedSeq[O]] = {
       def go(cur: Process[F, O], acc: IndexedSeq[O]): F[IndexedSeq[O]] =
         cur match {
-          case Emit(h, t) => go(t, acc :+ h)
-          case Halt(End) => F.unit(acc)
-          case Halt(err) => F.fail(err)
-          //          case Await(req,recv) => F.flatMap (F.attempt(req)) { e => go(Try(recv(e)), acc) }
+          case Emit(h, t)       => go(t, acc :+ h)
+          case Halt(End)        => F.unit(acc)
+          case Halt(err)        => F.fail(err)
+          case Await(req, recv) => F.flatMap(F.attempt(req)) { e => go(Try(recv(e)), acc) }
         }
 
       go(this, IndexedSeq())
@@ -141,23 +145,25 @@ that all resources get released, even in the event of exceptions.
      */
     def |>[O2](p2: Process1[O, O2]): Process[F, O2] = {
       p2 match {
-        case Halt(e) => this.kill onHalt { e2 => Halt(e) ++ Halt(e2) }
+        case Halt(e)    => this.kill onHalt { e2 => Halt(e) ++ Halt(e2) }
         case Emit(h, t) => Emit(h, this |> t)
-        case Await(req, recv) => this match {
-          //          case Halt(err) => Halt(err) |> recv(Left(err))
-          case Emit(h, t) => t |> Try(recv(Right(h)))
-          //          case Await(req0,recv0) => await(req0)(recv0 andThen (_ |> p2))
-        }
+        case Await(req, recv) =>
+          this match {
+            case Halt(err)          => Halt(err) |> recv(Left(err))
+            case Emit(h, t)         => t |> Try(recv(Right(h)))
+            case Await(req0, recv0) => await(req0)(recv0 andThen (_ |> p2))
+          }
       }
     }
 
     @annotation.tailrec
     final def kill[O2]: Process[F, O2] = this match {
-      case Await(req, recv) => recv(Left(Kill)).drain.onHalt {
-        case Kill => Halt(End) // we convert the `Kill` exception back to normal termination
-        case e => Halt(e)
-      }
-      case Halt(e) => Halt(e)
+      case Await(req, recv) =>
+        recv(Left(Kill)).drain.onHalt {
+          case Kill => Halt(End) // we convert the `Kill` exception back to normal termination
+          case e    => Halt(e)
+        }
+      case Halt(e)    => Halt(e)
       case Emit(h, t) => t.kill
     }
 
@@ -166,8 +172,8 @@ that all resources get released, even in the event of exceptions.
       this |> p2
 
     final def drain[O2]: Process[F, O2] = this match {
-      case Halt(e) => Halt(e)
-      case Emit(h, t) => t.drain
+      case Halt(e)          => Halt(e)
+      case Emit(h, t)       => t.drain
       case Await(req, recv) => Await(req, recv andThen (_.drain))
     }
 
@@ -193,67 +199,70 @@ that all resources get released, even in the event of exceptions.
      */
     def tee[O2, O3](p2: Process[F, O2])(t: Tee[O, O2, O3]): Process[F, O3] = {
       t match {
-        //        case Halt(e) => this.kill onComplete p2.kill onComplete Halt(e)
-        case Emit(h, t) => Emit(h, (this tee p2) (t))
-        case Await(side, recv) => side.get match {
-          case Left(isO) => this match {
-            case Halt(e) => p2.kill onComplete Halt(e)
-            case Emit(o, ot) => (ot tee p2) (Try(recv(Right(o))))
-            case Await(reqL, recvL) =>
-              ???
-            //              await(reqL)(recvL andThen (this2 => this2.tee(p2)(t)))
+        case Halt(e)    => this.kill onComplete p2.kill onComplete Halt(e)
+        case Emit(h, t) => Emit(h, (this tee p2)(t))
+        case Await(side, recv) =>
+          side.get match {
+            case Left(isO) =>
+              this match {
+                case Halt(e)     => p2.kill onComplete Halt(e)
+                case Emit(o, ot) => (ot tee p2)(Try(recv(Right(o))))
+                case Await(reqL, recvL) =>
+                  ???
+                //              await(reqL)(recvL andThen (this2 => this2.tee(p2)(t)))
+              }
+            case Right(isO2) =>
+              p2 match {
+                case Halt(e)      => this.kill onComplete Halt(e)
+                case Emit(o2, ot) => (this tee ot)(Try(recv(Right(o2))))
+                case Await(reqR, recvR) =>
+                  ???
+                //              await(reqR)(recvR andThen (p3 => this.tee(p3)(t)))
+              }
           }
-          case Right(isO2) => p2 match {
-            case Halt(e) => this.kill onComplete Halt(e)
-            case Emit(o2, ot) => (this tee ot) (Try(recv(Right(o2))))
-            case Await(reqR, recvR) =>
-              ???
-            //              await(reqR)(recvR andThen (p3 => this.tee(p3)(t)))
-          }
-        }
       }
     }
 
     def zipWith[O2, O3](p2: Process[F, O2])(f: (O, O2) => O3): Process[F, O3] =
-      (this tee p2) (Process.zipWith(f))
+      (this tee p2)(Process.zipWith(f))
 
     def zip[O2](p2: Process[F, O2]): Process[F, (O, O2)] =
       zipWith(p2)((_, _))
 
     def to[O2](sink: Sink[F, O]): Process[F, Unit] =
       join {
-        (this zipWith sink) ((o, f) => f(o))
+        (this zipWith sink)((o, f) => f(o))
       }
 
     def through[O2](p2: Channel[F, O, O2]): Process[F, O2] =
       join {
-        (this zipWith p2) ((o, f) => f(o))
+        (this zipWith p2)((o, f) => f(o))
       }
   }
 
   object Process {
     case class Await[F[_], A, O](
-                                  req: F[A],
-                                  recv: Either[Throwable, A] => Process[F, O]) extends Process[F, O]
+        req: F[A],
+        recv: Either[Throwable, A] => Process[F, O])
+        extends Process[F, O]
 
     case class Emit[F[_], O](
-                              head: O,
-                              tail: Process[F, O]) extends Process[F, O]
+        head: O,
+        tail: Process[F, O])
+        extends Process[F, O]
 
     case class Halt[F[_], O](err: Throwable) extends Process[F, O]
 
     def emit[F[_], O](
-                       head: O,
-                       tail: Process[F, O] = Halt[F, O](End)): Process[F, O] =
+        head: O,
+        tail: Process[F, O] = Halt[F, O](End),
+      ): Process[F, O] =
       Emit(head, tail)
 
     def await[F[_], A, O](req: F[A])(recv: Either[Throwable, A] => Process[F, O]): Process[F, O] =
       Await(req, recv)
 
-    /**
-      * Helper function to safely produce `p`, or gracefully halt
-      * with an error if an exception is thrown.
-      */
+    /** Helper function to safely produce `p`, or gracefully halt with an error if an exception is thrown. */
     def Try[F[_], O](p: => Process[F, O]): Process[F, O] =
       try p
       catch {
@@ -277,7 +286,7 @@ that all resources get released, even in the event of exceptions.
     def TryAwait[F[_], O](p: => Process[F, O])(fallback: Process[F, O], cleanup: Process[F, O]): Process[F, O] =
       try p
       catch {
-        case End => fallback
+        case End          => fallback
         case e: Throwable => cleanup ++ Halt(e)
       }
 
@@ -308,8 +317,8 @@ that all resources get released, even in the event of exceptions.
       def go(cur: Process[IO, O], acc: IndexedSeq[O]): IndexedSeq[O] =
         cur match {
           case Emit(h, t) => go(t, acc :+ h)
-          case Halt(End) => acc
-          case Halt(err) => throw err
+          case Halt(End)  => acc
+          case Halt(err)  => throw err
           case Await(req, recv) =>
             val next =
               try recv(Right(unsafePerformIO(req)(E)))
@@ -328,13 +337,14 @@ that all resources get released, even in the event of exceptions.
      * See the definition in the body of `Process`.
      */
 
-    import java.io.{BufferedReader, FileReader}
+    import java.io.BufferedReader
+    import java.io.FileReader
 
     val p: Process[IO, String] =
       await(IO(new BufferedReader(new FileReader("lines.txt")))) {
         case Right(b) =>
           lazy val next: Process[IO, String] = await(IO(b.readLine)) {
-            case Left(e) => await(IO(b.close))(_ => Halt(e))
+            case Left(e)     => await(IO(b.close))(_ => Halt(e))
             case Right(line) => Emit(line, next)
           }
           next
@@ -347,17 +357,21 @@ that all resources get released, even in the event of exceptions.
      * `R` (like a file handle) that we want to ensure is released.
      * See `lines` below for an example use.
      */
-    def resource[R, O](acquire: IO[R])(
-      use: R => Process[IO, O])(
-                        release: R => Process[IO, O]): Process[IO, O] =
+    def resource[R, O](
+        acquire: IO[R],
+      )(use: R => Process[IO, O],
+      )(release: R => Process[IO, O],
+      ): Process[IO, O] =
       eval(acquire) flatMap { r => use(r).onComplete(release(r)) }
 
     /*
      * Like `resource`, but `release` is a single `IO` action.
      */
-    def resource_[R, O](acquire: IO[R])(
-      use: R => Process[IO, O])(
-                         release: R => IO[Unit]): Process[IO, O] =
+    def resource_[R, O](
+        acquire: IO[R],
+      )(use: R => Process[IO, O],
+      )(release: R => IO[Unit],
+      ): Process[IO, O] =
       resource(acquire)(use)(release andThen (eval_[IO, Unit, O]))
 
     /*
@@ -374,20 +388,21 @@ that all resources get released, even in the event of exceptions.
         def step = if (iter.hasNext) Some(iter.next) else None
 
         lazy val lines: Process[IO, String] = eval(IO(step)).flatMap {
-          case None => Halt(End)
+          case None       => Halt(End)
           case Some(line) => Emit(line, lines)
         }
         lines
-      } { src => eval_ {
-        IO(src.close)
-      }
+      } { src =>
+        eval_ {
+          IO(src.close)
+        }
       }
 
     /* Exercise 11: Implement `eval`, `eval_`, and use these to implement `lines`. */
     def eval[F[_], A](a: F[A]): Process[F, A] =
       await[F, A, A](a) {
         case Left(err) => Halt(err)
-        case Right(a) => Emit(a, Halt(End))
+        case Right(a)  => Emit(a, Halt(End))
       }
 
     /* Evaluate the action purely for its effects. */
@@ -418,13 +433,18 @@ that all resources get released, even in the event of exceptions.
     /* Some helper functions to improve type inference. */
 
     def await1[I, O](
-                      onReceive: I => Process1[I, O],
-                      fallback:    => Process1[I, O] = halt1[I, O]): Process1[I, O] =
-      Await(Get[I], (e: Either[Throwable, I]) => e match {
-        case Left(End) => fallback
-        case Left(err) => Halt(err)
-        case Right(i) => Try(onReceive(i))
-      })
+        onReceive: I => Process1[I, O],
+        fallback: => Process1[I, O] = halt1[I, O],
+      ): Process1[I, O] =
+      Await(
+        Get[I],
+        (e: Either[Throwable, I]) =>
+          e match {
+            case Left(End) => fallback
+            case Left(err) => Halt(err)
+            case Right(i)  => Try(onReceive(i))
+          },
+      )
 
     def emit1[I, O](h: O, tl: Process1[I, O] = halt1[I, O]): Process1[I, O] =
       emit(h, tl)
@@ -446,12 +466,14 @@ that all resources get released, even in the event of exceptions.
     def takeWhile[I](f: I => Boolean): Process1[I, I] =
       await1(i =>
         if (f(i)) emit(i, takeWhile(f))
-        else halt1)
+        else halt1,
+      )
 
     def dropWhile[I](f: I => Boolean): Process1[I, I] =
       await1(i =>
         if (f(i)) dropWhile(f)
-        else emit(i, id))
+        else emit(i, id),
+      )
 
     def id[I]: Process1[I, I] =
       await1((i: I) => emit(i, id))
@@ -504,28 +526,25 @@ little diagram of two inputs being combined into one output.
     def haltT[I, I2, O]: Tee[I, I2, O] =
       Halt[T[I, I2]#f, O](End)
 
-    def awaitL[I, I2, O](recv: I => Tee[I, I2, O],
-                         fallback: => Tee[I, I2, O] = haltT[I, I2, O]): Tee[I, I2, O] =
+    def awaitL[I, I2, O](recv: I => Tee[I, I2, O], fallback: => Tee[I, I2, O] = haltT[I, I2, O]): Tee[I, I2, O] =
       await[T[I, I2]#f, I, O](L) {
         case Left(End) => fallback
         case Left(err) => Halt(err)
-        case Right(a) => Try(recv(a))
+        case Right(a)  => Try(recv(a))
       }
 
-    def awaitR[I, I2, O](recv: I2 => Tee[I, I2, O],
-                         fallback: => Tee[I, I2, O] = haltT[I, I2, O]): Tee[I, I2, O] =
+    def awaitR[I, I2, O](recv: I2 => Tee[I, I2, O], fallback: => Tee[I, I2, O] = haltT[I, I2, O]): Tee[I, I2, O] =
       await[T[I, I2]#f, I2, O](R) {
         case Left(End) => fallback
         case Left(err) => Halt(err)
-        case Right(a) => Try(recv(a))
+        case Right(a)  => Try(recv(a))
       }
 
     def emitT[I, I2, O](h: O, tl: Tee[I, I2, O] = haltT[I, I2, O]): Tee[I, I2, O] =
       emit(h, tl)
 
     def zipWith[I, I2, O](f: (I, I2) => O): Tee[I, I2, O] =
-      awaitL[I, I2, O](i =>
-        awaitR(i2 => emitT(f(i, i2)))) repeat
+      awaitL[I, I2, O](i => awaitR(i2 => emitT(f(i, i2)))) repeat
 
     def zip[I, I2]: Tee[I, I2, (I, I2)] = zipWith((_, _))
 
@@ -537,8 +556,7 @@ little diagram of two inputs being combined into one output.
 
     /* Alternate pulling values from the left and the right inputs. */
     def interleaveT[I]: Tee[I, I, I] =
-      awaitL[I, I, I](i =>
-        awaitR(i2 => emitT(i) ++ emitT(i2))) repeat
+      awaitL[I, I, I](i => awaitR(i2 => emitT(i) ++ emitT(i2))) repeat
 
     /*
 
@@ -576,12 +594,12 @@ definition of `to` in `Process` for an example of how to feed a
     //    import fpinscala.iomonad.IO0.fahrenheitToCelsius
 
     val converter: Process[IO, Unit] =
-      lines("fahrenheit.txt").
-        filter(line => !line.startsWith("#") && !line.trim.isEmpty).
-        map(line => fahrenheitToCelsius(line.toDouble).toString).
-        pipe(intersperse("\n")).
-        to(fileW("celsius.txt")).
-        drain
+      lines("fahrenheit.txt")
+        .filter(line => !line.startsWith("#") && !line.trim.isEmpty)
+        .map(line => fahrenheitToCelsius(line.toDouble).toString)
+        .pipe(intersperse("\n"))
+        .to(fileW("celsius.txt"))
+        .drain
 
     /*
 
@@ -600,10 +618,10 @@ channel which returns a value other than `Unit`.
      * responsible for knowing how to obtain a `Connection`.
      */
 
-    import java.sql.{Connection, PreparedStatement}
+    import java.sql.Connection
+    import java.sql.PreparedStatement
 
-    def query(conn: IO[Connection]):
-    Channel[IO, Connection => PreparedStatement, Map[String, Any]] =
+    def query(conn: IO[Connection]): Channel[IO, Connection => PreparedStatement, Map[String, Any]] =
       resource_ {
         conn
       } { conn =>
@@ -622,13 +640,14 @@ channel which returns a value other than `Unit`.
 
             lazy val rows: Process[IO, Map[String, Any]] =
               eval(IO(step)).flatMap {
-                case None => Halt(End)
+                case None      => Halt(End)
                 case Some(row) => Emit(row, rows)
               }
             rows
-          } { p => IO {
-            p._1.close
-          }
+          } { p =>
+            IO {
+              p._1.close
+            }
           } // close the ResultSet
         }
       } { c => IO(c.close) }
@@ -643,9 +662,7 @@ channel which returns a value other than `Unit`.
     val convertAll: Process[IO, Unit] = (for {
       out <- fileW("celsius.txt").once
       file <- lines("fahrenheits.txt")
-      _ <- lines(file).
-        map(line => fahrenheitToCelsius(line.toDouble)).
-        flatMap(celsius => out(celsius.toString))
+      _ <- lines(file).map(line => fahrenheitToCelsius(line.toDouble)).flatMap(celsius => out(celsius.toString))
     } yield ()) drain
 
     /*
@@ -654,10 +671,7 @@ channel which returns a value other than `Unit`.
      */
     val convertMultisink: Process[IO, Unit] = (for {
       file <- lines("fahrenheits.txt")
-      _ <- lines(file).
-        map(line => fahrenheitToCelsius(line.toDouble)).
-        map(_ toString).
-        to(fileW(file + ".celsius"))
+      _ <- lines(file).map(line => fahrenheitToCelsius(line.toDouble)).map(_ toString).to(fileW(file + ".celsius"))
     } yield ()) drain
 
     /*

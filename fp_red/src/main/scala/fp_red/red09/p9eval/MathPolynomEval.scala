@@ -15,12 +15,13 @@ object MathPolynomEval {
     }
 
     def evalNode(node: Expr[Polynom]): Polynom = node match {
-      case Value(x) => x
-      case BiOp(op, l:Expr[Polynom], r:Expr[Polynom]) => evalOp(op, l,  r)
+      case Value(x)                                     => x
+      case BiOp(op, l: Expr[Polynom], r: Expr[Polynom]) => evalOp(op, l, r)
+      case _                                            => ???
     }
 
     evalNode(root)
-    
+
   }
-  
+
 }

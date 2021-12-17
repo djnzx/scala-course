@@ -10,13 +10,14 @@ class MonomParserSpec extends AnyFunSpec with Matchers {
   describe("Monom") {
     val R = Reference
     import R._
-    
+
     import MonomParser.{R => _, _}
 
     describe("experiments: x^p") {
       val xp = char('x') ** (char('^') *> digitsSigned).many.map {
-        case Nil => 1
+        case Nil      => 1
         case h :: Nil => h.toInt
+        case _        => ???
       }
       it("x^p: x") {
         R.run(xp)("x") shouldBe Right(('x', 1))

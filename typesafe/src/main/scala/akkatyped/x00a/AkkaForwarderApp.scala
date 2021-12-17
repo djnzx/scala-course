@@ -1,7 +1,9 @@
 package akkatyped.x00a
 
-import akka.actor.typed.{ActorRef, ActorSystem}
-import akka.actor.typed.scaladsl.{ActorContext, Behaviors}
+import akka.actor.typed.ActorRef
+import akka.actor.typed.ActorSystem
+import akka.actor.typed.scaladsl.ActorContext
+import akka.actor.typed.scaladsl.Behaviors
 
 sealed trait Message
 case object Finish extends Message
@@ -19,7 +21,9 @@ object SimpleActor {
 }
 
 object RootBehavior {
-  def apply(handler: Option[ActorRef[Message]]): Behaviors.Receive[Message] = Behaviors.receive { (ctx: ActorContext[Message], msg: Message) =>
+  def apply(
+      handler: Option[ActorRef[Message]],
+    ): Behaviors.Receive[Message] = Behaviors.receive { (ctx: ActorContext[Message], msg: Message) =>
     (handler, msg) match {
       case (None, Just(n)) =>
         println(s"Root. Just($n) Simple initialization")
@@ -34,6 +38,7 @@ object RootBehavior {
         println("Root. Shutdown")
         h ! Finish
         Behaviors.stopped
+      case _ => ???
     }
   }
 }
@@ -45,4 +50,3 @@ object AkkaForwarderApp extends App {
 
   root ! Finish
 }
-

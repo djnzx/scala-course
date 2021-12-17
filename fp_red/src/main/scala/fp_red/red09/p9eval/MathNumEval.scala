@@ -11,14 +11,16 @@ object MathNumEval {
       case '-' => evalNode(l) - evalNode(r)
       case '*' => evalNode(l) * evalNode(r)
       case '/' => evalNode(l) / evalNode(r)
+      case _   => ???
     }
 
     def evalNode(node: Expr[Int]): Int = node match {
-      case Value(x) => x
-      case BiOp(op, l:Expr[Int], r:Expr[Int]) => evalOp(op, l,  r)
+      case Value(x)                             => x
+      case BiOp(op, l: Expr[Int], r: Expr[Int]) => evalOp(op, l, r)
+      case _                                    => ???
     }
 
     evalNode(root)
   }
-  
+
 }

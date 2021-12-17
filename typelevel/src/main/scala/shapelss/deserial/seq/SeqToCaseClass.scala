@@ -8,8 +8,7 @@ import shapeless.{:: => :#:}
 
 import scala.collection.immutable.::
 
-/** Seq[String] based implementation (without delimiter and parsing) Either-based result
-  */
+/** Seq[String] based implementation (without delimiter and parsing) Either-based result */
 object SeqToCaseClass {
 
   type Result[+A] = Either[DecodeError, A]
@@ -37,6 +36,7 @@ object SeqToCaseClass {
     private def head[A](as: Iterable[A]): Result[A] = as match {
       case Nil    => Left(DeSequenceIsEmpty)
       case h :: _ => Right(h)
+      case _      => sys.error("designed for list...")
     }
 
     private def take(ss: Iterable[String]): (Iterable[String], Iterable[String]) = ss match {

@@ -83,7 +83,7 @@ class PlaygroundSpec extends AnyFunSpec with Matchers {
             Stream() shouldBe Empty
           }
         }
-        
+
         describe("non-empty, headOption") {
           it("1") {
             Empty.headOption shouldBe None
@@ -104,6 +104,7 @@ class PlaygroundSpec extends AnyFunSpec with Matchers {
           it("6") {
             (Stream(1, 2, 3, 4) match {
               case Cons(h, _) => h()
+              case Empty      => ???
             }) shouldBe 1
           }
         }
@@ -111,7 +112,7 @@ class PlaygroundSpec extends AnyFunSpec with Matchers {
     }
     describe("laziness") {
       import Laziness._
-      
+
       it("should print 'hi' twice") {
         lazyTwice(true, { println("hi"); 1 + 41 }) shouldBe 84
       }
