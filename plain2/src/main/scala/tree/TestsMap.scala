@@ -3,7 +3,7 @@ package tree
 import Domain._
 import Implementations._
 
-object Tests extends App {
+object TestsMap extends App {
 
   val t1 = Branch(
     Branch(Leaf(1), Leaf(2)),
