@@ -23,6 +23,20 @@ object Writer2App extends App {
 
   countAndSayPlain(5)
 
+  /** lifters:
+    * --------
+    *   - apply
+    *   - value
+    *   - tell
+    *
+    * modifiers:
+    * ----------
+    *   - map
+    *   - mapWritten
+    *   - mapBoth
+    *   - bimap
+    *   - reset (log)
+    */
   // describe
   def countAndSayFp(n: Int): Writer[Vector[String], Unit] = n match {
     case 0 =>
@@ -46,7 +60,7 @@ object Writer2App extends App {
   }
 
   //
-  val (r, _) = countAndSayFp(5).run
-  val s = r.mkString("\n")
+  val (log, _) = countAndSayFp(5).run
+  val s = log.mkString("\n")
   println(s)
 }
