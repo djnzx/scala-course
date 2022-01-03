@@ -1,7 +1,9 @@
 package app
 
-import io.circe.{Decoder, Encoder}
-import io.circe.generic.extras.semiauto.{deriveEnumerationDecoder, deriveEnumerationEncoder}
+import io.circe.Decoder
+import io.circe.Encoder
+import io.circe.generic.extras.semiauto.deriveEnumerationDecoder
+import io.circe.generic.extras.semiauto.deriveEnumerationEncoder
 
 sealed trait Fruit
 

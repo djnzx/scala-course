@@ -53,18 +53,24 @@ lazy val ce2 = project
       CompilerPlugins.kindProjector,
       CompilerPlugins.contextApplied,
       CompilerPlugins.betterMonadicFor,
-      "org.typelevel" %% "cats-core"              % v.cats,
-      "org.typelevel" %% "cats-free"              % v.cats,
-      "org.typelevel" %% "cats-effect"            % v.catsEffect2,
-      "org.typelevel" %% "cats-effect-laws"       % v.catsEffect2,
-      "co.fs2"        %% "fs2-core"               % v.fs2ce2,
-      "co.fs2"        %% "fs2-reactive-streams"   % v.fs2ce2,
-      "io.circe"      %% "circe-generic"          % v.circe,
-      "org.http4s"    %% "http4s-blaze-server"    % v.http4sCe2,
-      "org.http4s"    %% "http4s-blaze-client"    % v.http4sCe2,
-      "org.http4s"    %% "http4s-circe"           % v.http4sCe2,
-      "org.http4s"    %% "http4s-dsl"             % v.http4sCe2,
-      "org.http4s"    %% "http4s-jdk-http-client" % "0.3.7",
+      "org.typelevel" %% "cats-core"            % v.cats,
+      "org.typelevel" %% "cats-free"            % v.cats,
+      "org.typelevel" %% "cats-effect"          % v.catsEffect2,
+      "org.typelevel" %% "cats-effect-laws"     % v.catsEffect2,
+      "co.fs2"        %% "fs2-core"             % v.fs2ce2,
+      "co.fs2"        %% "fs2-reactive-streams" % v.fs2ce2,
+      Libraries.circeGeneric, // generic derivation
+      Libraries.circeGenericEx, // adt support
+      Libraries.circeParser, // pain parser to Map
+//      Libraries.circeShapes,
+      "io.circe"   %% "circe-generic"          % v.circe,
+      "io.circe"   %% "circe-generic-extras"   % v.circe,
+      "io.circe"   %% "circe-parser"           % v.circe,
+      "org.http4s" %% "http4s-blaze-server"    % v.http4sCe2,
+      "org.http4s" %% "http4s-blaze-client"    % v.http4sCe2,
+      "org.http4s" %% "http4s-circe"           % v.http4sCe2,
+      "org.http4s" %% "http4s-dsl"             % v.http4sCe2,
+      "org.http4s" %% "http4s-jdk-http-client" % "0.3.7",
       Libraries.doobieCore,
       Libraries.doobiePg,
       Libraries.sqlPgDriver,
@@ -73,6 +79,7 @@ lazy val ce2 = project
       "org.typelevel" %% "munit-cats-effect-2" % "1.0.6",
       "ch.qos.logback" % "logback-classic"     % v.logback,
       "com.kubukoz"   %% "debug-utils"         % "1.1.3",
+      Libraries.newtype,
     ),
   )
 
@@ -99,7 +106,6 @@ lazy val ce3 = (project in file("ce3"))
     ),
   )
 
-/** cognitOps experiments area */
 lazy val co = (project in file("co"))
   .settings(
     commonSettings,
@@ -109,14 +115,12 @@ lazy val co = (project in file("co"))
       CompilerPlugins.betterMonadicFor,
       CompilerPlugins.contextApplied,
       CompilerPlugins.kindProjector,
-      "org.http4s" %% "http4s-blaze-server"  % "0.21.31",
-      "org.http4s" %% "http4s-dsl"           % "0.21.31",
-      "org.http4s" %% "http4s-circe"         % "0.21.31",
-      "org.http4s" %% "http4s-blaze-client"  % "0.21.31",
-      "io.circe"   %% "circe-core"           % "0.13.0",
-      "io.circe"   %% "circe-parser"         % "0.13.0",
-      "io.circe"   %% "circe-generic"        % "0.13.0",
-      "io.circe"   %% "circe-generic-extras" % "0.13.0",
+      "org.http4s" %% "http4s-blaze-server" % "0.21.31",
+      "org.http4s" %% "http4s-dsl"          % "0.21.31",
+      "org.http4s" %% "http4s-circe"        % "0.21.31",
+      Libraries.circeGeneric, // generic derivation
+      Libraries.circeGenericEx, // enum support
+      Libraries.circeParser, // pain parser to Map
     ),
   )
 

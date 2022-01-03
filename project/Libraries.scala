@@ -36,6 +36,7 @@ object Libraries {
   val circeGenericEx = circe("circe-generic-extras")
   val circeParser = circe("circe-parser")
   val circeRefined = circe("circe-refined")
+  val circeShapes = circe("circe-shapes")
 
   val cirisCore = ciris("ciris")
   val cirisEnum = ciris("ciris-enumeratum")

@@ -1,0 +1,46 @@
+#### 200 - just test OK
+GET http://localhost:8080/
+
+#### 200 - just test OK
+GET https://am.kiev.ua:443
+
+#### 404 - NotFound
+GET http://localhost:8080/whatever
+
+#### 400 - BadRequest handled by ourselves
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "title": "A
+}
+
+#### 403 Forbidden (service implementation - error message)
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "user": "1",
+  "pass": "A"
+}
+
+
+#### 200 OK (service implementation - authorized - token provided)
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "user": "jim",
+  "pass": "123"
+}
+
+#### 200 OK HTTPS (service implementation - authorized - token provided)
+POST https://am.kiev.ua/login
+Content-Type: application/json
+
+{
+  "user": "jim",
+  "pass": "123"
+}
+
+

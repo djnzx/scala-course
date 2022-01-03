@@ -12,6 +12,9 @@ addDependencyTreePlugin
 /** Metals (https://scalacenter.github.io/bloop/docs/build-tools/sbt) */
 addSbtPlugin("ch.epfl.scala" % "sbt-bloop" % "1.4.11")
 
+/** NativePackager (https://github.com/sbt/sbt-native-packager) */
+addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.9.1")
+
 // https://github.com/spray/sbt-revolver
 //addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
 
@@ -22,7 +25,7 @@ addSbtPlugin("ch.epfl.scala" % "sbt-bloop" % "1.4.11")
 //addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.10.0")
 
 /** XML binding (https://github.com/eed3si9n/scalaxb, https://scalaxb.org/sbt-scalaxb) */
-addSbtPlugin("org.scalaxb" % "sbt-scalaxb" % "1.8.2")
+addSbtPlugin("org.scalaxb" % "sbt-scalaxb" % "1.8.3")
 
 /** ProtoBuf (https://github.com/thesamet/sbt-protoc) */
 addSbtPlugin("com.thesamet" % "sbt-protoc" % "1.0.0")
