@@ -12,7 +12,7 @@ object Versions {
   // Cats & Effect
   val cats = "2.7.0"
   val catsEffect2 = "2.5.4"
-  val catsEffect3 = "3.2.9"
+  val catsEffect3 = "3.3.3"
 
   // FS2
   val fs2ce2 = "2.5.10"

@@ -95,3 +95,24 @@ I thought I knew Scala...
 - SBT Plugins mastering
   - [sbt-plugin](https://github.com/alexr007/sbt-first-plugin)
   - [sbp-plugin-usage](https://github.com/alexr007/sbt-plugin-usage)
+
+### 2022 notes
+- stopped doing Java for 5 years
+- stopped doing Spark for 2 years
+- deep dive to pure FP. Typelevel stack
+- goals. new library / new thing / new approach every week - no exceptions!
+- week 0 / Jan
+    - doobie recap
+    - nginx as a proxy to scala app (docker-compose)
+- week 1
+    - cats 2. recap
+    - cats effects 3. recap
+- week 2
+    - tapir 0.19.3
+    - 
+- week 3
+    - 
+    - 
+- week 2
+    - 
+    - 

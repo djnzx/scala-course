@@ -1,7 +1,7 @@
 package catsx.c114reader
 
 import cats.data.Reader
-import tools.Timed.printTimed
+import utils.Timed.printTimed
 
 object Reader2ChainingMapAndThan extends App {
 
@@ -25,17 +25,17 @@ object Reader2ChainingMapAndThan extends App {
 
   println("running map:")
   printTimed(
-    r12a(100) == 202
+    r12a(100) == 202,
   )
 
   println("running andThen:")
   printTimed(
-    r12b(100) == 202
+    r12b(100) == 202,
   )
 
   println("running flatMap:")
   printTimed(
-    r12c(100) == (101, 200)
+    r12c(100) == (101, 200),
   )
 
 }

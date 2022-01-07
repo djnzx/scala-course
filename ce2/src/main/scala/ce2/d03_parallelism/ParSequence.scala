@@ -2,7 +2,6 @@ package ce2.d03_parallelism
 
 import cats.effect._
 import cats.implicits._
-import cats.implicits._
 import ce2.common.debug.DebugHelper
 
 object ParSequence extends IOApp {
