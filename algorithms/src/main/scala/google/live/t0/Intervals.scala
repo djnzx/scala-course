@@ -7,7 +7,7 @@ object Intervals extends App {
   val pairs = indexes.map(i => (points(i - 1), points(i)))
   val pairsAndCount = pairs.map { case p @ (a, b) =>
     p -> src.count { case (x, y) =>
-      val m = (a + b) / 2
+      val m = (a.toDouble + b) / 2
       (m >= x) && (m <= y)
     }
   }
