@@ -50,8 +50,8 @@ object Versions {
   val shapeless = "2.3.7"
 
   // testing
-  val scalaCheck = "1.15.4"
   val scalaTest = "3.2.10"
+  val scalaCheck = "1.15.4"
   val scalaTestPlus = "3.2.10.0"
 
   // compiler plugins

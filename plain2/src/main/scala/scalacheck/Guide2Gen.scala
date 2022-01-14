@@ -1,10 +1,10 @@
 package scalacheck
 
 import java.util.UUID
-
 import org.scalacheck.Gen
+import scalacheck.Guide2Gen.Operation.represent
 
-object Guide2Gen extends App {
+object Guide2Gen {
 
   /** generators know, HOW generate the values */
   val gInt: Gen[Int] = Gen.choose(-100, 100)
@@ -23,7 +23,7 @@ object Guide2Gen extends App {
   val s2: Gen[String] = Gen.oneOf(Seq("Marta", "Kerry", "Jacky"))
 
   val gList: Gen[List[Int]] = Gen.choose(1, 5).map(n => List(n, n * 10, n * 100))
-  val gList1: Gen[List[Int]] = Gen.listOf(Gen.choose(-100, 100))
+  val gList1: Gen[List[Int]] = Gen.listOf(Gen.choose(-100, 100)) // random length < 100
   val gList2: Gen[List[Int]] = Gen.listOfN(5, Gen.choose(-100, 100))
 
   /** because if monad - composition, any logic */
@@ -33,7 +33,7 @@ object Guide2Gen extends App {
     c <- Gen.uuid
   } yield (a, b, c)
 
-  /** can write my own construction to create generator */
+  /** can write own construction to create generator */
   val genMy: Gen[String] = for {
     a <- Gen.choose(0, 100)
     b = a * 2
@@ -44,6 +44,14 @@ object Guide2Gen extends App {
   object Operation extends Enumeration {
     type Operation = Value
     val ADD, SUB, MUL, DIV = Value
+
+    val represent: Operation => String = {
+      case ADD => "+"
+      case SUB => "-"
+      case MUL => "*"
+      case DIV => "/"
+      case _   => ???
+    }
   }
 
   /** own type - Calculator */
@@ -58,12 +66,11 @@ object Guide2Gen extends App {
         case Operation.DIV => a / b
         case _             => ???
       }
-      s"$a + $b = $r"
+      s"$a ${represent(op)} $b = $r"
     }
   }
 
-  /** own, frequency based generator Operation.MUL - twice as often
-    */
+  /** own, frequency based generator Operation.MUL - twice as often */
   val genOp: Gen[Operation.Value] = Gen.frequency(
     5 -> Operation.ADD,
     1 -> Operation.SUB,

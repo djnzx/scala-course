@@ -1,15 +1,16 @@
 package fp_red.red08
 
-import org.scalacheck.{Gen, Prop}
+import org.scalacheck.Gen
+import org.scalacheck.Prop
 import org.scalacheck.Prop.forAll
 
 object ScalaCheckExperiments extends App {
   // this thing ONLY KNOWS how to generate list of int with size<=100
-  val intList: Gen[List[Int]] = Gen.listOf(Gen.choose(0,100))
+  val intList: Gen[List[Int]] = Gen.listOf(Gen.choose(0, 100))
 
   // this is PROPERTY (DESCRIPTION) which will be tested later
   val prop: Prop =
-      forAll(intList) { ns: List[Int] => ns.reverse.reverse == ns } &&
+    forAll(intList) { ns: List[Int] => ns.reverse.reverse == ns } &&
       forAll(intList) { ns: List[Int] => ns.headOption == ns.reverse.lastOption }
 
   def filter[A](la: List[A])(p: A => Boolean): List[A] = la.filter(p)
