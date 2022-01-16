@@ -1,22 +1,22 @@
 package google2.t0
 
-/**   - GooZgleX Mail
-  *   - GaeZgilX Mloo
-  */
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
+
 object Alphabetize extends App {
 
-  // calculate indexes of lowercase letters
-  def calculateUppercaseIndexes(s: String): Set[Int] =
-    s.indices.filter(i => s(i).isUpper || s(i) == ' ').toSet
-
   def alphabetize(origin: String): String = {
-    val uppercaseIndexes: Set[Int] = calculateUppercaseIndexes(origin)
-    val lowercaseSorted: String = origin.filter(_.isLower).sorted
+    val L = origin.length
+    val toSort = (c: Char) => c.isLower
+    val toSave = (c: Char) => !toSort(c)
 
-    def reconstruct(outcome: List[Char], index: Int, used: Int): String = {
-      if (index == origin.length) outcome.reverse.mkString
-      else if (uppercaseIndexes.contains(index)) reconstruct(origin(index) :: outcome, index + 1, used)
-      else reconstruct(lowercaseSorted(used) :: outcome, index + 1, used + 1)
+    val sorted: String = origin.filter(toSort).sorted
+    val saved: Set[Int] = origin.indices.filter(i => toSave(origin(i))).toSet
+
+    def reconstruct(outcome: List[Char], constructed: Int, used: Int): String = constructed match {
+      case `L`                    => outcome.reverse.mkString
+      case i if saved.contains(i) => reconstruct(origin(i) :: outcome, i + 1, used)
+      case i                      => reconstruct(sorted(used) :: outcome, i + 1, used + 1)
     }
 
     reconstruct(Nil, 0, 0)
@@ -25,5 +25,22 @@ object Alphabetize extends App {
   val s = "GooZgleX Mail"
   pprint.pprintln(s)
   pprint.pprintln(alphabetize(s))
+
+}
+
+class AlphabetizeSpec extends AnyFunSpec with Matchers {
+  import Alphabetize._
+
+  it("alphabetize") {
+    val io = Map(
+      "Google Mail"           -> "Gaegil Mloo",
+      "GooZgleX Mail"         -> "GaeZgilX Mloo",
+      "Don't worry, Be Happy" -> "Dae'n ooppr, Br Htwyy",
+    )
+
+    for {
+      (in, out) <- io
+    } yield alphabetize(in) shouldEqual out
+  }
 
 }
