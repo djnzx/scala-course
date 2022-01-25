@@ -3,7 +3,7 @@ package google2.t0
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
-object Alphabetize extends App {
+object Alphabetize {
 
   def alphabetize(origin: String): String = {
     val L = origin.length
@@ -21,10 +21,6 @@ object Alphabetize extends App {
 
     reconstruct(Nil, 0, 0)
   }
-
-  val s = "GooZgleX Mail"
-  pprint.pprintln(s)
-  pprint.pprintln(alphabetize(s))
 
 }
 
