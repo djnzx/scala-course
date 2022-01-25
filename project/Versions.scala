@@ -22,7 +22,7 @@ object Versions {
   val http4sCe2 = "0.21.31"
 //  val http4sCe2 = "0.22.7"
   val http4sCe3 = "0.23.6"
-  val http4s1 = "1.0.0-M27"
+  val http4s1 = "1.0.0-M30" // 2021, Dec
 
   // Json
   val circe = "0.14.1"
@@ -38,7 +38,7 @@ object Versions {
   val refined = "0.9.27"
   val redis4cats = "0.9.6"
   val skunk = "0.0.7"
-  val doobie = "0.13.4"
+  val doobie = "0.13.4" // 1.0.0-RC2, 2022, Jan
   val squants = "1.6.0"
   val logback = "1.2.3"
   val zio1v = "1.0.3"

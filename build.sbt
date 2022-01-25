@@ -198,19 +198,22 @@ lazy val fp_red = (project in file("fp_red"))
     ),
   )
 
+def http4s1mod(artifact: String) = "org.http4s" %% artifact % v.http4s1
+
 /** http4s v1 */
 lazy val http4s1 = (project in file("http4s1"))
   .settings(
-    commonSettings, {
-      def http4s(artifact: String) = "org.http4s" %% artifact % v.http4s1
-
-      libraryDependencies ++= Seq(
-        http4s("http4s-core"),
-        http4s("http4s-dsl"),
-        http4s("http4s-blaze-server"),
-        http4s("http4s-circe"),
-      )
-    },
+    commonSettings,
+    libraryDependencies ++= Seq(
+      http4s1mod("http4s-core"),
+      http4s1mod("http4s-dsl"),
+      http4s1mod("http4s-blaze-server"),
+      http4s1mod("http4s-circe"),
+//      Libraries.circeCore,
+//      Libraries.circeGeneric,
+//      Libraries.circeGenericEx,
+//      Libraries.circeParser,
+    ),
   )
 
 /** google cloud logging */
