@@ -10,6 +10,7 @@ import scala.concurrent.duration._
 import cats.syntax.parallel._
 import utils.DebugWrapper
 
+/** will open when particular number registered, pass all of them and start collecting another */
 object CyclicBarriers extends IOApp.Simple {
 
   /*
@@ -60,7 +61,8 @@ object CBarrier {
     signal <- Deferred[IO, Unit]
     state <- Ref[IO].of(State(count, signal))
   } yield new CBarrier {
-    override def await = Deferred[IO, Unit].flatMap { newSignal =>
+    // cool pattern. if we need smth we introduce it and flatMap it
+    override def await = Deferred[IO, Unit].flatMap { newSignal: Deferred[IO, Unit] =>
       state.modify {
         case State(1, signal) => State(count, newSignal) -> signal.complete(()).void
         case State(n, signal) => State(n - 1, signal)    -> signal.get

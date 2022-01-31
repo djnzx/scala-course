@@ -23,7 +23,7 @@ import scala.util.Random
   *   - 1. many workers, each of them does .release in the end and main thread await, until all finish
   *   - 2. many processes await to start and one process releases all
   */
-object CountdownLatches extends IOApp.Simple {
+object C5CountdownLatches extends IOApp.Simple {
 
   def announcer(latch: CountDownLatch[IO]): IO[Unit] = for {
     _ <- IO("Starting race shortly...").debug >> IO.sleep(2.seconds)
