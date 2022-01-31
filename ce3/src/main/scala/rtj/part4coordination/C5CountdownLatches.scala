@@ -1,29 +1,29 @@
 package rtj.part4coordination
 
-import cats.effect.kernel.Deferred
-import cats.effect.std.CountDownLatch
 import cats.effect.IO
 import cats.effect.IOApp
-import cats.effect.Ref
 import cats.effect.Resource
-
-import scala.concurrent.duration._
+import cats.effect.std.CountDownLatch
 import cats.syntax.parallel._
 import cats.syntax.traverse._
 import utils.DebugWrapper
 
 import java.io.File
 import java.io.FileWriter
+import scala.concurrent.duration._
 import scala.io.Source
 import scala.util.Random
 
+/**   - CDLatches are a coordination primitive initialized with a count.
+  *   - All fibers calling await() on the C5CDLatch are (semantically) blocked.
+  *   - When the internal count of the latch reaches 0 (via release() calls from other fibers), all waiting fibers are
+  *     unblocked.
+  *
+  * There are two main use cases:
+  *   - 1. many workers, each of them does .release in the end and main thread await, until all finish
+  *   - 2. many processes await to start and one process releases all
+  */
 object CountdownLatches extends IOApp.Simple {
-
-  /*
-    CDLatches are a coordination primitive initialized with a count.
-    All fibers calling await() on the CDLatch are (semantically) blocked.
-    When the internal count of the latch reaches 0 (via release() calls from other fibers), all waiting fibers are unblocked.
-   */
 
   def announcer(latch: CountDownLatch[IO]): IO[Unit] = for {
     _ <- IO("Starting race shortly...").debug >> IO.sleep(2.seconds)
@@ -83,7 +83,7 @@ object CountdownLatches extends IOApp.Simple {
     }
   }
 
-  def createFileDownloaderTask(id: Int, latch: CDLatch, filename: String, destFolder: String): IO[Unit] = for {
+  def createFileDownloaderTask(id: Int, latch: C5CDLatch, filename: String, destFolder: String): IO[Unit] = for {
     _ <- IO(s"[task $id] downloading chunk...").debug
     _ <- IO.sleep((Random.nextDouble() * 1000).toInt.millis)
     chunk <- FileServer.getFileChunk(id)
@@ -94,14 +94,14 @@ object CountdownLatches extends IOApp.Simple {
 
   /*
     - call file server API and get the number of chunks (n)
-    - start a CDLatch
+    - start a C5CDLatch
     - start n fibers which download a chunk of the file (use the file server's download chunk API)
     - block on the latch until each task has finished
     - after all chunks are done, stitch the files together under the same file on disk
    */
   def downloadFile(filename: String, destFolder: String): IO[Unit] = for {
     n <- FileServer.getNumChunks
-    latch <- CDLatch(n)
+    latch <- C5CDLatch(n)
     _ <- IO(s"Download started on $n fibers.").debug
     _ <- (0 until n).toList.parTraverse(id => createFileDownloaderTask(id, latch, filename, destFolder))
     _ <- latch.await
@@ -111,37 +111,4 @@ object CountdownLatches extends IOApp.Simple {
   } yield ()
 
   override def run = downloadFile("myScalafile.txt", "cats-effect/src/main/resources")
-}
-
-/** Exercise: implement your own CDLatch with Ref and Deferred. */
-
-abstract class CDLatch {
-  def await: IO[Unit]
-  def release: IO[Unit]
-}
-
-object CDLatch {
-  sealed trait State
-  case object Done extends State
-  case class Live(remainingCount: Int, signal: Deferred[IO, Unit]) extends State
-
-  def apply(count: Int): IO[CDLatch] = for {
-    signal <- Deferred[IO, Unit]
-    state <- Ref[IO].of[State](Live(count, signal))
-  } yield new CDLatch {
-
-    override def await = state.get.flatMap { s =>
-      if (s == Done) IO.unit // continue, the latch is dead
-      else signal.get // block here
-    }
-
-    override def release = state
-      .modify {
-        case Done            => Done                -> IO.unit
-        case Live(1, signal) => Done                -> signal.complete(()).void
-        case Live(n, signal) => Live(n - 1, signal) -> IO.unit
-      }
-      .flatten
-      .uncancelable
-  }
 }

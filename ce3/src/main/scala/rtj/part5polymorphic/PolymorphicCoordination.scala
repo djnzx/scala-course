@@ -85,7 +85,7 @@ object PolymorphicCoordination extends IOApp.Simple {
   }
 
   /** Exercises:
-    *   1. Generalize racePair 2. Generalize the Mutex concurrency primitive for any F
+    *   1. Generalize racePair 2. Generalize the C3Mutex1 concurrency primitive for any F
     */
   type RaceResult[F[_], A, B] = Either[
     (Outcome[F, Throwable, A], Fiber[F, Throwable, B]), // (winner result, loser fiber)

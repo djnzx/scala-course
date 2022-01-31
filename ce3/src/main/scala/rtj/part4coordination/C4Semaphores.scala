@@ -8,7 +8,13 @@ import utils._
 import scala.concurrent.duration._
 import scala.util.Random
 
-object C3Semaphores extends IOApp.Simple {
+/**   - Semaphore is a Mutex with counter
+  *   - Semaphore(1) = Mutex
+  *   - additionally it has:
+  *   - acquireN
+  *   - releaseN
+  */
+object C4Semaphores extends IOApp.Simple {
 
   val semaphore: IO[Semaphore[IO]] = Semaphore[IO](2) // 2 total permits
 
