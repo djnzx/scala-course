@@ -9,7 +9,7 @@ import cats.effect.Sync
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-object PolymorphicSync extends IOApp.Simple {
+object Polymorphic5Sync extends IOApp.Simple {
 
   val aDelayedIO = IO.delay { // "suspend" computations in IO
     println("I'm an effect!")
@@ -56,6 +56,7 @@ object PolymorphicSync extends IOApp.Simple {
   }
 
   import cats.syntax.functor._ // map extension method
+
   object Console {
     def make[F[_]](implicit sync: Sync[F]): F[Console[F]] = sync.pure((System.in, System.out)).map { case (in, out) =>
       new Console[F] {
@@ -65,6 +66,7 @@ object PolymorphicSync extends IOApp.Simple {
         def readLine(): F[String] = {
           val bufferedReader = new BufferedReader(new InputStreamReader(in))
           sync.blocking(bufferedReader.readLine())
+//          sync.interruptible(bufferedReader.readLine())
 
           /*
             There's a potential problem hanging one of the threads from the blocking thread pool

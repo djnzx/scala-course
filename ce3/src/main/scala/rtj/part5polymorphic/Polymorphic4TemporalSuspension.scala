@@ -10,7 +10,7 @@ import utils._
 
 import scala.concurrent.duration._
 
-object PolymorphicTemporalSuspension extends IOApp.Simple {
+object Polymorphic4TemporalSuspension extends IOApp.Simple {
 
   // Temporal - time-blocking effects
   trait MyTemporal[F[_]] extends Concurrent[F] {

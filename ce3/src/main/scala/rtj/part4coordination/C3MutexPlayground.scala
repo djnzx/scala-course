@@ -23,7 +23,7 @@ object C3MutexPlayground extends IOApp.Simple {
 
   def demoNonLockingTasks(): IO[List[Int]] = (1 to 10).toList.parTraverse(id => createNonLockingTask(id))
 
-  def createLockingTask(id: Int, mutex: C3Mutex2[IO]): IO[Int] = for {
+  def createLockingTask(id: Int, mutex: C3Mutex1): IO[Int] = for {
     _ <- IO(s"[task $id] waiting for permission...").debug
     _ <- mutex.acquire // blocks if the mutex has been acquired by some other fiber
     // critical section
@@ -36,12 +36,12 @@ object C3MutexPlayground extends IOApp.Simple {
   } yield res
 
   def demoLockingTasks() = for {
-    mutex <- C3Mutex2.create[IO]
+    mutex <- C3Mutex1.create
     results <- (1 to 10).toList.parTraverse(id => createLockingTask(id, mutex))
   } yield results
   // only one task will proceed at one time
 
-  def createCancellingTask(id: Int, mutex: C3Mutex2[IO]): IO[Int] = {
+  def createCancellingTask(id: Int, mutex: C3Mutex1): IO[Int] = {
     if (id % 2 == 0) createLockingTask(id, mutex)
     else
       for {
@@ -57,7 +57,7 @@ object C3MutexPlayground extends IOApp.Simple {
   }
 
   def demoCancellingTasks() = for {
-    mutex <- C3Mutex2.create[IO]
+    mutex <- C3Mutex1.create
     results <- (1 to 10).toList.parTraverse(id => createCancellingTask(id, mutex))
   } yield results
 

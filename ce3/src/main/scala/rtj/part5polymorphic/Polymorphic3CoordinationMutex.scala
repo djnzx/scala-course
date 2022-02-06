@@ -1,38 +1,28 @@
-package rtj.part4coordination
+package rtj.part5polymorphic
 
 import cats.effect.kernel.Deferred
-import cats.effect.kernel.Outcome.Canceled
-import cats.effect.kernel.Outcome.Errored
-import cats.effect.kernel.Outcome.Succeeded
 import cats.effect.Concurrent
-import cats.effect.IO
-import cats.effect.IOApp
 import cats.effect.Ref
-
-import scala.util.Random
-import scala.concurrent.duration._
-import cats.syntax.parallel._
 
 import scala.collection.immutable.Queue
 import cats.syntax.flatMap._
 import cats.syntax.functor._
 import cats.effect.syntax.monadCancel._
-import utils._
 
-/** generic mutex after the polymorphic concurrent exercise */
-abstract class C3Mutex2[F[_]] {
+/** generic version of mutex implemented in previous chapter */
+abstract class Polymorphic3CoordinationMutex[F[_]] {
   def acquire: F[Unit]
   def release: F[Unit]
 }
 
-object C3Mutex2 {
+object Polymorphic3CoordinationMutex {
   type Signal[F[_]] = Deferred[F, Unit]
   case class State[F[_]](locked: Boolean, waiting: Queue[Signal[F]])
 
   def unlocked[F[_]]: State[F] = State[F](locked = false, Queue())
   def createSignal[F[_]](implicit concurrent: Concurrent[F]): F[Signal[F]] = concurrent.deferred[Unit]
 
-  def create[F[_]](implicit concurrent: Concurrent[F]): F[C3Mutex2[F]] =
+  def create[F[_]](implicit concurrent: Concurrent[F]): F[Polymorphic3CoordinationMutex[F]] =
     concurrent
       .ref(unlocked)
       .map { initialState =>
@@ -41,8 +31,12 @@ object C3Mutex2 {
         createMutexWithCancellation(stateCoercedType)
       }
 
-  def createMutexWithCancellation[F[_]](state: Ref[F, State[F]])(implicit concurrent: Concurrent[F]): C3Mutex2[F] =
-    new C3Mutex2[F] {
+  def createMutexWithCancellation[F[_]](
+      state: Ref[F, State[F]],
+    )(
+      implicit concurrent: Concurrent[F],
+    ): Polymorphic3CoordinationMutex[F] =
+    new Polymorphic3CoordinationMutex[F] {
       override def acquire: F[Unit] = concurrent.uncancelable { poll =>
         createSignal.flatMap { signal =>
           val cleanup = state.modify { case State(locked, queue) =>

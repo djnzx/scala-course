@@ -6,7 +6,7 @@ import utils.DebugWrapper
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 
-object PolymorphicAsync extends IOApp.Simple {
+object Polymorphic6Async extends IOApp.Simple {
 
   // Async - asynchronous computations, "suspended" in F
   trait MyAsync[F[_]] extends Sync[F] with Temporal[F] {
@@ -74,8 +74,8 @@ object PolymorphicAsync extends IOApp.Simple {
   def firstEffect[F[_]: Concurrent, A](a: A): F[A] = Concurrent[F].pure(a)
   def secondEffect[F[_]: Sync, A](a: A): F[A] = Sync[F].pure(a)
 
-  import cats.syntax.flatMap._
-  import cats.syntax.functor._ // flatMap extension method
+  import cats.syntax.flatMap._ // flatMap extension method
+  import cats.syntax.functor._ // map extension method
 
   def tupledEffect[F[_]: Async, A](a: A): F[(A, A)] = for {
     first <- firstEffect(a)
