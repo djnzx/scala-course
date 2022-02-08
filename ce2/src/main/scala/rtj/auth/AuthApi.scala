@@ -9,10 +9,12 @@ import org.http4s.circe.jsonEncoderOf
 import org.http4s.circe.jsonOf
 import org.http4s.EntityDecoder
 import org.http4s.EntityEncoder
+import io.circe.parser.decode
 
 import java.util.UUID
 
-object AuthApi {
+/** ADT deserialization */
+object AuthApi extends App {
 
   case class AuthRequest(user: String, pass: String)
   object AuthRequest extends AutoDerivation {
@@ -49,5 +51,18 @@ object AuthApi {
     implicit def enityEncoder[F[_]]: EntityEncoder[F, AuthResponse] = jsonEncoderOf
     implicit def entityDecoder[F[_]: Sync]: EntityDecoder[F, AuthResponse] = jsonOf
   }
+
+  val r1: AuthResponse = AuthSuccess(UUID.randomUUID())
+  val r2: AuthResponse = AuthFailed("bad credentials")
+  val s1 = r1.asJson.noSpaces
+  val s2 = r2.asJson.noSpaces
+  pprint.pprintln(s1)
+  pprint.pprintln(s2)
+  val x1 = decode[AuthResponse](s1)
+  val x2 = decode[AuthResponse](s2)
+  val x3 = decode[AuthResponse]("bad content")
+  pprint.pprintln(x1)
+  pprint.pprintln(x2)
+  pprint.pprintln(x3)
 
 }
