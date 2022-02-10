@@ -3,12 +3,21 @@ package interview.general;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class JavaInterviewQuestion {
+
+  int min(List<Integer> xs) {
+    throw new IllegalArgumentException();
+  }
+
+  int div(int a, int b) {
+    return a / b;
+  }
 
   public static void main(String[] args) {
 
@@ -21,9 +30,16 @@ public class JavaInterviewQuestion {
         .collect(Collectors.toList());
 
     // Why Optional // 2 + 4 + 6 + 8
-    Optional<Integer> reduced = IntStream.range(1, 10).boxed()
+
+    BinaryOperator<Integer> adder = (a, b) -> a + b;
+
+    Optional<Integer> reduced1 = IntStream.range(1, 10).boxed()
         .filter(x -> x % 2 == 0)
-        .reduce((a, b) -> a + b);
+        .reduce(adder);
+
+    Integer reduced2 = IntStream.range(1, 10).boxed()
+        .filter(x -> x % 2 == 0)
+        .reduce(0, adder);
 
     List<Integer> a1 = IntStream.range(1, 10).boxed()
       .filter(p)
