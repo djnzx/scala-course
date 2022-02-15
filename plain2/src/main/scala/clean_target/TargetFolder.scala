@@ -10,17 +10,14 @@ object TargetFolder {
   }
 
   def remove(file: File): Unit = {
-    print(file.toString)
-
     val chunks = file.toPath.toString.split("/")
     val toDelete = chunks.take(chunks.length - 1) :+ "target"
     val toDeleteF = new File(toDelete.mkString("/", "/", ""))
 
-    val suffix = if (toDeleteF.exists && toDeleteF.isDirectory) {
+    if (toDeleteF.exists && toDeleteF.isDirectory) {
       deleteDirWithFiles(toDeleteF)
-      " - REMOVING TARGET"
-    } else ""
-    println(suffix)
+      println(s"${file.toString} - REMOVING TARGET")
+    }
   }
 
 }

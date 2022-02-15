@@ -4,10 +4,10 @@ import java.io.File
 
 object CleanTargetApp extends App {
 
-  val filesToDetect = Set("pom.xml", "build.sbt", "gradlew.bat")
+  val suffixesToDetect = Set("pom.xml", "build.sbt", "gradlew.bat", "/src")
   val rootFolder = "/Users/alexr/dev"
 
-  def filter(f: File) = filesToDetect.exists { suffix => f.toString.toLowerCase.endsWith(suffix) }
+  def filter(f: File) = suffixesToDetect.exists { suffix => f.toString.toLowerCase.endsWith(suffix) }
 
   def validateRootPath(root: String) = {
     val path = new File(root)
