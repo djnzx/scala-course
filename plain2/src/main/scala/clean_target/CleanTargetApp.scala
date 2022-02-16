@@ -4,7 +4,7 @@ import java.io.File
 
 object CleanTargetApp extends App {
 
-  val suffixesToDetect = Set("pom.xml", "build.sbt", "gradlew.bat", "/src")
+  val suffixesToDetect = Set("pom.xml", "build.sbt", "gradlew.bat", "/src", "/project")
   val rootFolder = "/Users/alexr/dev"
 
   def filter(f: File) = suffixesToDetect.exists { suffix => f.toString.toLowerCase.endsWith(suffix) }
@@ -18,7 +18,8 @@ object CleanTargetApp extends App {
   val root: File = validateRootPath(rootFolder)
   println(root)
 
-  new RecursiveFolderCrawler(filter, TargetFolder.remove)
-    .scan(root)
+  def callback(file: File): Unit = if (filter(file)) TargetFolder.remove(file) else ()
+
+  new RecursiveFolderCrawler(callback).scan(root)
 
 }

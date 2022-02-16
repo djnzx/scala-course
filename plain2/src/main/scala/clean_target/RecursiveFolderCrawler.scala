@@ -2,10 +2,10 @@ package clean_target
 
 import java.io.File
 
-class RecursiveFolderCrawler(filter: File => Boolean, processor: File => Unit) {
+class RecursiveFolderCrawler(callback: File => Unit) {
 
   private def scanr(file: File, level: Int): Unit = {
-    if (filter(file)) processor(file)
+    callback(file)
     if (file.isDirectory) file.listFiles.foreach(f => scanr(f, level + 1))
   }
 
