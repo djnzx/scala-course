@@ -321,6 +321,7 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.http4sJwtAuth,
       Libraries.circeCore,
       Libraries.circeGeneric,
+//      Libraries.circeDerivation,
       Libraries.circeGenericEx,
       Libraries.circeParser,
       Libraries.circeRefined,

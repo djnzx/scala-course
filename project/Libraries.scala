@@ -33,6 +33,7 @@ object Libraries {
 
   val circeCore = circe("circe-core")
   val circeGeneric = circe("circe-generic")
+  val circeDerivation = "io.circe" %% "circe-derivation" % "0.13.0-M5"
   val circeGenericEx = circe("circe-generic-extras")
   val circeParser = circe("circe-parser")
   val circeRefined = circe("circe-refined")
