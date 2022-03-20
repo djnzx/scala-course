@@ -8,6 +8,7 @@ import cats.effect.IOApp
 import cats.implicits.toTraverseOps
 import fs2._
 
+/** https://blog.kebab-ca.se/chapters/fs2/pulls.html */
 object A5StatefulTransform extends IOApp.Simple {
 
   val random: IO[Random[IO]] = Random.scalaUtilRandom[IO]
