@@ -26,6 +26,7 @@ object Libraries {
   val catsRetry = "com.github.cb372" %% "cats-retry"    % Versions.catsRetry
 
   val fs2core = fs2("fs2-core")
+  val fs2io = fs2("fs2-io")
   val fs2reactive = fs2("fs2-reactive-streams")
 
   val scalazCore = scalaz("scalaz-core")
@@ -97,6 +98,6 @@ object Libraries {
   // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
   val silencerAnnotation = "com.github.ghik" % "silencer-lib" % Versions.silencer % Provided cross CrossVersion.full
 
-  val pprint: ModuleID = pf.lihaoyi %% "pprint" % "0.6.4"
-  val fansi: ModuleID = pf.lihaoyi  %% "fansi"  % "0.2.12"
+  val pprint: ModuleID = pf.lihaoyi %% "pprint" % "0.7.2"
+  val fansi: ModuleID = pf.lihaoyi  %% "fansi"  % "0.3.1"
 }

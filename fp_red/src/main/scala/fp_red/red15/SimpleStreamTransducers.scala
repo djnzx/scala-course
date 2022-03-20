@@ -78,12 +78,12 @@ object SimpleStreamTransducers {
     def ++(p: => Process[A, B]): Process[A, B] = this match {
       case Halt()      => p
       case Emit(h, t)  => Emit(h, t ++ p)
-      case Await(recv) => Await(recv andThen (_ ++ p))
+      case Await(recv) => Await(recv andThen (pab => pab ++ p))
     }
     def flatMap[O2](f: B => Process[A, O2]): Process[A, O2] = this match {
       case Halt()      => Halt()
       case Emit(h, t)  => f(h) ++ t.flatMap(f)
-      case Await(recv) => Await(recv andThen (_ flatMap f))
+      case Await(recv) => Await(recv andThen (pab => pab flatMap f))
     }
 
     /** Exercise 5: Implement `|>`. Let the types guide your implementation. */
@@ -99,8 +99,7 @@ object SimpleStreamTransducers {
           }
       }
 
-    /** Feed `in` to this `Process`. Uses a tail recursive loop as long as `this` is in the `Await` state.
-      */
+    /** Feed `in` to this `Process`. Uses a tail recursive loop as long as `this` is in the `Await` state. */
     def feed(in: Seq[A]): Process[A, B] = {
 
       @tailrec
@@ -183,16 +182,14 @@ object SimpleStreamTransducers {
     def lift[I, O](f: I => O): Process[I, O] =
       liftOne(f).repeat
 
-    /** transducer can do way more than map: insert, delete, filter, ...
-      */
+    /** transducer can do way more than map: insert, delete, filter, ... */
     def filter[I](f: I => Boolean): Process[I, I] =
       Await[I, I] {
         case Some(i) if f(i) => emitOne(i)
         case _               => Halt()
       }.repeat
 
-    /** A helper function to await an element or fall back to another process if there is no input.
-      */
+    /** A helper function to await an element or fall back to another process if there is no input. */
     def await[I, O](f: I => Process[I, O], fallback: Process[I, O] = Halt[I, O]()): Process[I, O] =
       Await[I, O] {
         case Some(i) => f(i)
@@ -230,8 +227,7 @@ object SimpleStreamTransducers {
     def count[I]: Process[I, Int] =
       lift { _: I => 1.0 } |> sum |> lift(_.toInt)
 
-    /** Implement `mean`. This is an explicit recursive definition. We'll factor out a generic combinator shortly.
-      */
+    /** Implement `mean`. This is an explicit recursive definition. We'll factor out a generic combinator shortly. */
     def mean: Process[Double, Double] = {
 
       def go(sum: Double, count: Double): Process[Double, Double] =
@@ -321,7 +317,7 @@ object SimpleStreamTransducers {
       *   - initial state
       * @param f
       *   - function to fold the state with source element of type A to produce the Stream of type B and state in the
-      *   end
+      *     end
       * @param rf
       *   - function to process the state after chunk processing
       * @tparam S
@@ -420,8 +416,7 @@ object SimpleStreamTransducers {
         case Await(recv) => recv(oa)
       }
 
-    /** Using zip, we can then define `mean`. Again, this definition operates in a single pass.
-      */
+    /** Using zip, we can then define `mean`. Again, this definition operates in a single pass. */
     val mean2 = (sum zip count) |> lift { case (s, n) => s / n }
 
     /** Exercise 6: Implement `zipWithIndex`.
@@ -444,8 +439,7 @@ object SimpleStreamTransducers {
     def existsResult[I](f: I => Boolean) =
       exists(f) |> takeThrough(!_) |> dropWhile(!_) |> echo.orElse(emitOne(false))
 
-    /** Like `takeWhile`, but includes the first element that tests false.
-      */
+    /** Like `takeWhile`, but includes the first element that tests false. */
     def takeThrough[I](f: I => Boolean): Process[I, I] =
       takeWhile(f) ++ echo
 

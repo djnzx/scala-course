@@ -6,7 +6,7 @@ object Versions {
   lazy val vScala212 = "2.12.15" // Sep, 2021
   lazy val vScala213 = "2.13.8" // Jan, 2022
   lazy val vScala30 = "3.0.2"
-  lazy val vScala31 = "3.1.0"
+  lazy val vScala31 = "3.1.1"
   lazy val vScala = vScala213
 
   // Cats & Effect
@@ -16,7 +16,7 @@ object Versions {
 
   // FS2
   val fs2ce2 = "2.5.10"
-  val fs2ce3 = "3.2.4"
+  val fs2ce3 = "3.2.5"
 
   // Http4s
   val http4sCe2 = "0.21.31"

@@ -178,13 +178,53 @@ lazy val plain3 = (project in file("plain3"))
     description := "Example sbt project that compiles using Scala 3",
   )
 
-lazy val s3fs = (project in file("s3fs"))
+lazy val initCommands = s"""
+    import fs2._, cats.effect._, cats.effect.unsafe.implicits.global
+  """
+
+/** FS2 - Scala 3 - CatEffects 2 */
+lazy val fs2s3ce2 = (project in file("fs2s3ce2"))
   .settings(
     scalaVersion := v.vScala31,
-    libraryDependencies += "co.fs2" %% "fs2-core" % v.fs2ce3,
-    initialCommands := s"""
-    import fs2._, cats.effect._, cats.effect.unsafe.implicits.global
-  """,
+    libraryDependencies ++= Seq(
+      "co.fs2" %% "fs2-core" % v.fs2ce2,
+      Libraries.pprint,
+    ),
+    initialCommands := initCommands,
+  )
+
+/** FS2 - Scala 3 - CatEffects 3 */
+lazy val fs2s3ce3 = (project in file("fs2s3ce3"))
+  .settings(
+    scalaVersion := v.vScala31,
+    libraryDependencies ++= Seq(
+      "co.fs2" %% "fs2-core" % v.fs2ce3,
+      Libraries.pprint,
+    ),
+    initialCommands := initCommands,
+  )
+
+/** FS2 - Scala 2 - CatEffects 2 */
+lazy val fs2s2ce2 = (project in file("fs2s2ce2"))
+  .settings(
+    scalaVersion := v.vScala213,
+    libraryDependencies ++= Seq(
+      "co.fs2" %% "fs2-core" % v.fs2ce2,
+      Libraries.pprint,
+    ),
+    initialCommands := initCommands,
+  )
+
+/** FS2 - Scala 2 - CatEffects 3 */
+lazy val fs2s2ce3 = (project in file("fs2s2ce3"))
+  .settings(
+    scalaVersion := v.vScala213,
+    libraryDependencies ++= Seq(
+      "co.fs2" %% "fs2-core" % v.fs2ce3,
+      "co.fs2" %% "fs2-io"   % v.fs2ce3,
+      Libraries.pprint,
+    ),
+    initialCommands := initCommands,
   )
 
 lazy val fp_red = (project in file("fp_red"))
@@ -312,6 +352,7 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.catsMtlCore,
       "dev.profunktor" %% "console4cats" % "0.8.1",
       Libraries.fs2core,
+      Libraries.fs2io,
       Libraries.fs2reactive,
       "com.github.fd4s" %% "fs2-kafka" % "1.7.0",
       Libraries.http4sServer,
