@@ -8,7 +8,9 @@ import cats.effect.IOApp
 import cats.implicits.toTraverseOps
 import fs2._
 
-/** https://blog.kebab-ca.se/chapters/fs2/pulls.html */
+/**   - https://blog.kebab-ca.se/chapters/fs2/pulls.html
+  *   - https://gist.github.com/dsebban/dbe7c8df5e31dead36e0dda1f0108714
+  */
 object A5StatefulTransform extends IOApp.Simple {
 
   val random: IO[Random[IO]] = Random.scalaUtilRandom[IO]
@@ -55,7 +57,7 @@ object A5StatefulTransform extends IOApp.Simple {
 
     // sum is no more than N
     def processV2(buf: List[O], sIn: Stream[F, O]): Pull[F, List[O], Unit] =
-      sIn.pull.uncons1.flatMap {
+      sIn.pull.uncons1.flatMap { // here we match Option[(O, Stream[O])]
         /** buffer is ready, emit buffer and start collecting again */
         case Some((x, tail)) if no.toInt(buf.sum) + no.toInt(x) > n => Pull.output1(buf) >> processV2(List(x), tail)
         /** buffer is not ready, keep collecting */
