@@ -205,19 +205,15 @@ that all resources get released, even in the event of exceptions.
           side.get match {
             case Left(isO) =>
               this match {
-                case Halt(e)     => p2.kill onComplete Halt(e)
-                case Emit(o, ot) => (ot tee p2)(Try(recv(Right(o))))
-                case Await(reqL, recvL) =>
-                  ???
-                //              await(reqL)(recvL andThen (this2 => this2.tee(p2)(t)))
+                case Halt(e)            => p2.kill onComplete Halt(e)
+                case Emit(o, ot)        => (ot tee p2)(Try(recv(Right(o))))
+                case Await(reqL, recvL) => await(reqL)(recvL andThen (this2 => this2.tee(p2)(t)))
               }
             case Right(isO2) =>
               p2 match {
-                case Halt(e)      => this.kill onComplete Halt(e)
-                case Emit(o2, ot) => (this tee ot)(Try(recv(Right(o2))))
-                case Await(reqR, recvR) =>
-                  ???
-                //              await(reqR)(recvR andThen (p3 => this.tee(p3)(t)))
+                case Halt(e)            => this.kill onComplete Halt(e)
+                case Emit(o2, ot)       => (this tee ot)(Try(recv(Right(o2))))
+                case Await(reqR, recvR) => await(reqR)(recvR andThen (p3 => this.tee(p3)(t)))
               }
           }
       }
