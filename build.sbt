@@ -366,6 +366,7 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.circeGenericEx,
       Libraries.circeParser,
       Libraries.circeRefined,
+      "io.circe" %% "circe-shapes" % v.circe,
       // @newtype annotation
       Libraries.newtype,
       // refined types
