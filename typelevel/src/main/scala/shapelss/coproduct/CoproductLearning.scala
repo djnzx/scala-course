@@ -18,6 +18,7 @@ import shapeless.ops.coproduct.Inject
 
 import java.util.UUID
 
+/** https://gist.github.com/n4to4/3f7dbea65a6c1d6fc6aa84dcac0cf0a8 */
 object CoproductLearning {
 
   /** representation, all encoders, decoders packed respectively */
