@@ -4,6 +4,7 @@ import cats.implicits.toFunctorOps
 import io.circe.Decoder
 import io.circe.DecodingFailure
 import io.circe.Encoder
+import io.circe.HCursor
 import io.circe.generic.AutoDerivation
 import io.circe.syntax.EncoderOps
 import org.scalatest.funspec.AnyFunSpec
@@ -26,7 +27,7 @@ object CoproductLearning {
   case object QuotaExceeded extends AutoDerivation
   case object WrongData {
     implicit val e: Encoder[WrongData.type] = _ => "WrongData".asJson
-    implicit val d: Decoder[WrongData.type] = c =>
+    implicit val d: Decoder[WrongData.type] = (c: HCursor) =>
       c.value
         .asString
         .filter(_ == "WrongData")
@@ -39,9 +40,11 @@ object CoproductLearning {
 
   /** type builder */
   object R {
+
+    /** manual lifter */
     def apply[A](t: A)(implicit inj: Inject[R, A]): R = inj(t)
 
-    /** auto lifter for everything can be kifter */
+    /** auto lifter for everything can be lifted */
     implicit def autoLiftMembers[A](a: A)(implicit inj: Inject[R, A]): R = inj(a)
   }
 
