@@ -100,7 +100,7 @@ I thought I knew Scala...
 - stopped doing Java for 5 years
 - stopped doing Spark for 2 years
 - deep dive to pure FP. Typelevel stack
-- goals. new library / new thing / new approach every week - no exceptions!
+- goals. new library / new thing / new knowledge every week
 - week 0 / Jan
     - doobie recap
     - nginx as a proxy to scala app (docker-compose)
@@ -109,10 +109,3 @@ I thought I knew Scala...
     - cats effects 3. recap
 - week 2
     - tapir 0.19.3
-    - 
-- week 3
-    - 
-    - 
-- week 2
-    - 
-    - 
