@@ -8,7 +8,7 @@ import shapeless._
 import shapeless.union._
 import shapeless.syntax.singleton._
 
-object Coproduct2 extends App {
+object CoproductDeepDive extends App {
 
   object model {
     case class A(a: String)
