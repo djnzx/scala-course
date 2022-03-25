@@ -1,0 +1,1 @@
+[entry point to dive](https://akmetiuk.com/posts/2016-10-09-dissecting-shapeless-poly.html)

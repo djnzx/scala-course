@@ -29,6 +29,7 @@ object CoproductFolding extends App {
   val e2: E = Coproduct[E](BadAge(-3))
   val e2a: E = E(BadAge(-3))
 
+  /** actually it becomes a function: (E) => String , since Poly1 is a function A => B */
   object eCoproductFolder extends Poly1 {
 
     /** how to fold BadName */
@@ -37,6 +38,11 @@ object CoproductFolding extends App {
     /** how to fold BadAge */
     implicit def age = at[BadAge](badAgeMapper)
   }
+
+  val eCoproductFolder2: Poly1 = Poly1
+    .at[BadName](badNameMapper)
+    .at[BadAge](badAgeMapper)
+    .build
 
   val r1: String = e1.fold(eCoproductFolder)
   val r2: String = e2.fold(eCoproductFolder)
