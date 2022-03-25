@@ -34,11 +34,11 @@ object Libraries {
 
   val circeCore = circe("circe-core")
   val circeGeneric = circe("circe-generic")
-  val circeDerivation = "io.circe" %% "circe-derivation" % "0.13.0-M5"
   val circeGenericEx = circe("circe-generic-extras")
   val circeParser = circe("circe-parser")
   val circeRefined = circe("circe-refined")
   val circeShapes = circe("circe-shapes")
+  val circeTesting = circe("circe-testing")
 
   val cirisCore = ciris("ciris")
   val cirisEnum = ciris("ciris-enumeratum")
@@ -98,6 +98,7 @@ object Libraries {
   // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
   val silencerAnnotation = "com.github.ghik" % "silencer-lib" % Versions.silencer % Provided cross CrossVersion.full
 
-  val pprint: ModuleID = pf.lihaoyi %% "pprint" % "0.7.2"
-  val fansi: ModuleID = pf.lihaoyi  %% "fansi"  % "0.3.1"
+  val fansi: ModuleID = pf.lihaoyi      %% "fansi"      % "0.3.1"
+  val pprint: ModuleID = pf.lihaoyi     %% "pprint"     % "0.7.2"
+  val sourcecode: ModuleID = pf.lihaoyi %% "sourcecode" % "0.2.8"
 }

@@ -1,4 +1,4 @@
-package _circe
+package circex
 
 import cats.implicits.catsSyntaxOptionId
 import io.circe.Decoder

@@ -14,12 +14,13 @@ lazy val commonSettings = Seq(
   scalacOptions ++= CompilerOptions.scalacOptions,
   scalacOptions -= ScalacOpts.warningsAsFatals,
   resolvers ++= Resolvers.all,
-  libraryDependencies ++=
-    Seq(
-      Libraries.pprint,
-      Libraries.fansi,
-    ) ++
-      Libraries.scalaTest,
+  libraryDependencies ++= Seq(
+    Libraries.pprint,
+    Libraries.fansi,
+    Libraries.sourcecode,
+    Libraries.scalaCheck,
+    Libraries.scalaTestPlus,
+  ) ++ Libraries.scalaTest,
 )
 
 lazy val algorithms = (project in file("algorithms"))
@@ -102,6 +103,19 @@ lazy val ce3 = (project in file("ce3"))
       "com.softwaremill.sttp.tapir" %% "tapir-core"          % "0.19.1",
       "com.softwaremill.sttp.tapir" %% "tapir-json-circe"    % "0.19.1",
       "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % "0.19.1",
+    ),
+  )
+
+lazy val circex = (project in file("circex"))
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      Libraries.circeParser, // => "circe-core", "circe-jawn" => "circe-numbers"
+      Libraries.circeGenericEx, // => "circe-generic" => "circe-core"
+      Libraries.circeShapes,
+      Libraries.circeTesting,
+//      Libraries.circeRefined,
+      Libraries.shapeless,
     ),
   )
 
@@ -362,7 +376,6 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.http4sJwtAuth,
       Libraries.circeCore,
       Libraries.circeGeneric,
-//      Libraries.circeDerivation,
       Libraries.circeGenericEx,
       Libraries.circeParser,
       Libraries.circeRefined,

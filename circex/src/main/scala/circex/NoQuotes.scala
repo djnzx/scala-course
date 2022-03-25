@@ -1,12 +1,10 @@
-package _circe
+package circex
 
-import io.circe.syntax.EncoderOps
 import io.circe.Decoder
 import io.circe.Encoder
 import io.circe.Error
 import io.circe.Json
-
-import scala.util.chaining.scalaUtilChainingOps
+import io.circe.syntax.EncoderOps
 
 /** no-quotes helper methods to use in parameter parsing / encoding */
 object NoQuotes {

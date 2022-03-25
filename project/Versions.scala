@@ -35,7 +35,7 @@ object Versions {
   val http4sJwtAuth = "0.0.7"
   val log4cats = "1.0.1"
   val newtype = "0.4.4"
-  val refined = "0.9.27"
+  val refined = "0.9.28"
   val redis4cats = "0.9.6"
   val skunk = "0.0.7"
   val doobie = "0.13.4" // 1.0.0-RC2, 2022, Jan
@@ -47,7 +47,7 @@ object Versions {
   val sqlH2 = "1.4.200"
   val scalaz = "7.2.30"
   val jsoup = "1.13.1"
-  val shapeless = "2.3.7"
+  val shapeless = "2.3.8" // 2022+Feb
 
   // testing
   val scalaTest = "3.2.10"
