@@ -1,13 +1,12 @@
-package shapelss
+package shapelss.book
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
-import shapeless._
 import pprint.{pprintln => println}
+import shapeless._
 
-/** https://books.underscore.io/shapeless-guide/shapeless-guide.html#sec:representations
-  */
-object Chapter2Adt extends App {
+/** https://books.underscore.io/shapeless-guide/shapeless-guide.html#sec:representations */
+object C02Adt extends App {
 
   object ClassicAdtApproach {
 
@@ -111,10 +110,10 @@ object Chapter2Adt extends App {
 
 }
 
-class Chapter2AdtSpec extends AnyFunSpec with Matchers {
+class C02AdtSpec extends AnyFunSpec with Matchers {
 
   it("1") {
-    import Chapter2Adt.GenericsEncodings._
+    import C02Adt.GenericsEncodings._
 
     println(gen)
     println(r3) // Inr(tail = Inl(head = Rectangle(width = 3.0, height = 4.0)))

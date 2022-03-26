@@ -1,4 +1,4 @@
-import $ivy.`com.chuusai:shapeless_2.13:2.3.7`
+import $ivy.`com.chuusai:shapeless_2.13:2.3.8`
 
 import shapeless._
 import labelled._

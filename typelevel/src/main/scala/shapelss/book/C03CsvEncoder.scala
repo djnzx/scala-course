@@ -1,11 +1,16 @@
-package shapelss
+package shapelss.book
 
-import shapeless._
-import pprint.{pprintln => println}
+import shapeless.::
+import shapeless.Generic
+import shapeless.HList
+import shapeless.HNil
+import shapeless.the
+import scala.reflect.runtime.universe._
 
-/** https://books.underscore.io/shapeless-guide/shapeless-guide.html#sec:generic
-  */
-object Chapter03 extends App {
+import java.util.Date
+
+/** https://books.underscore.io/shapeless-guide/shapeless-guide.html#sec:generic */
+object C03CsvEncoder extends App {
 
   trait CsvEncoder[A] {
     def encode(value: A): List[String]
@@ -65,26 +70,41 @@ object Chapter03 extends App {
       def encode(value: A): List[String] = func(value)
     }
 
-  implicit val stringEncoder: CsvEncoder[String] =
-    createEncoder(str => List(str))
+  implicit val stringEncoder: CsvEncoder[String] = createEncoder(str => List(str))
 
-  implicit val intEncoder: CsvEncoder[Int] =
-    createEncoder(num => List(num.toString))
+  implicit val intEncoder: CsvEncoder[Int] = createEncoder(num => List(num.toString))
 
-  implicit val booleanEncoder: CsvEncoder[Boolean] =
-    createEncoder(bool => List(if (bool) "yes" else "no"))
+  implicit val booleanEncoder: CsvEncoder[Boolean] = createEncoder(bool => List(if (bool) "yes" else "no"))
 
-  implicit val hnilEncoder: CsvEncoder[HNil] =
-    createEncoder(hnil => Nil)
+  implicit val hnilEncoder: CsvEncoder[HNil] = createEncoder(hnil => Nil)
 
   implicit def hlistEncoder[H, T <: HList](
       implicit hEncoder: CsvEncoder[H],
       tEncoder: CsvEncoder[T],
     ): CsvEncoder[H :: T] =
-    createEncoder { case h :: t =>
-      hEncoder.encode(h) ++ tEncoder.encode(t)
-    }
+    createEncoder { case h :: t => hEncoder.encode(h) ++ tEncoder.encode(t) }
 
+  /** to create this - hlistEncoder runs recursively 3 times */
   val reprEncoder: CsvEncoder[String :: Int :: Boolean :: HNil] = implicitly
+
+  println(
+    reprEncoder.encode("abc" :: 123 :: true :: HNil),
+  )
+
+  implicit def genericEncoder[A, R](
+      implicit
+      gen: Generic[A] { type Repr = R },
+      enc: CsvEncoder[R],
+    ): CsvEncoder[A] = createEncoder(a => enc.encode(gen.to(a)))
+
+  case class Foo(bar: String, baz: Int) // must be case class !
+//  implicit def anyToGeneric[A] = Generic[A]
+  implicit val gFoo = Generic[Foo]
+  writeCsv(List(Foo("abc", 123)))
+
+  case class Booking(room: String, date: Date)
+  implicit val dateEncoder: CsvEncoder[Date] = createEncoder(d => List(d.toString))
+  writeCsv(List(Booking("QWE", new Date())))
+  pprint.pprintln(reify(CsvEncoder[Int]))
 
 }
