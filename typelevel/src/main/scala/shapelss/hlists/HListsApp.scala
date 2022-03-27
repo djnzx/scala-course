@@ -20,5 +20,4 @@ object HListsApp extends App {
   }
 
   printR(hList)
-
 }

@@ -84,8 +84,6 @@ object UseCase extends App {
     .at[WrongData.type](foldWd)
     .build
 
-  val x = Generic[R].to(r1)
-
   pprint.pprintln(s1)
   pprint.pprintln(s2)
   pprint.pprintln(s3)
