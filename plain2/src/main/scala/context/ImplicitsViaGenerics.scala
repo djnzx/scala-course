@@ -9,14 +9,20 @@ object ImplicitsViaGenerics extends App {
     def format(s: String): String
   }
 
-  trait UpperCase {
+  trait UpperCase
+  object UpperCase {
+
+    /** it can be packed into object */
     implicit val instance: Formatter[UpperCase] = toUpper
   }
-  object UpperCase extends UpperCase
 
   trait LowerCase {
+
+    /** it can be packed into trait */
     implicit val instance: Formatter[LowerCase] = toLower
   }
+
+  /** and pulled to object */
   object LowerCase extends LowerCase
 
   case class Data(x: String) {
