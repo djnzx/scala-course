@@ -12,4 +12,10 @@ object C173Traversable extends App {
     "lambda.ibm.com",
   )
 
+  val r: (List[Int], List[Int]) = (1 to 10)
+    .toList
+    .partitionMap(x => Either.cond(x % 2 == 0, x, x))
+
+  pprint.pprintln(r)
+
 }

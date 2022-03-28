@@ -29,7 +29,7 @@ object Tkf2 extends App {
 
   }
 
-  object ImplementationCats {
+  object ImplementationCatsV1 {
     import common._
 
     def sequenceFutureCats[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
@@ -40,6 +40,15 @@ object Tkf2 extends App {
     def sequenceCats[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
       xs.traverse(refine)
         .map(repack)
+
+  }
+
+  object ImplementationCatsV2 {
+    import common.refine
+
+    def sequenceCats[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+      xs.traverse(refine)
+        .map(_.partitionEither(_.swap))
 
   }
 
@@ -69,8 +78,8 @@ object Tkf2 extends App {
   }
 
   def impl[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
-//    ImplementationCats.sequenceCats[A](xs)
-    ImplementationPlain.sequenceCombined[A](xs)
+    ImplementationCatsV2.sequenceCats[A](xs)
+//    ImplementationPlain.sequenceCombined[A](xs)
 }
 
 class Tkf2Spec extends AnyFunSpec with Matchers {
