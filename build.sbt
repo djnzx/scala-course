@@ -231,11 +231,16 @@ lazy val fs2s2ce2 = (project in file("fs2s2ce2"))
 
 /** FS2 - Scala 2 - CatEffects 3 */
 lazy val fs2s2ce3 = (project in file("fs2s2ce3"))
+  .settings(commonSettings)
   .settings(
     scalaVersion := v.vScala213,
     libraryDependencies ++= Seq(
-      "co.fs2" %% "fs2-core" % v.fs2ce3,
-      "co.fs2" %% "fs2-io"   % v.fs2ce3,
+      "co.fs2"   %% "fs2-core"             % v.fs2ce3,
+      "co.fs2"   %% "fs2-io"               % v.fs2ce3,
+      "io.circe" %% "circe-fs2"            % "0.14.0",
+      "io.circe" %% "circe-parser"         % v.circe,
+      "io.circe" %% "circe-generic-extras" % v.circe,
+//      "co.fs2" %% "fs2-scodec"           % v.fs2ce3,
       Libraries.pprint,
     ),
     initialCommands := initCommands,
