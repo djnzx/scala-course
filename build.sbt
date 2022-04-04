@@ -391,8 +391,9 @@ lazy val typelevel = (project in file("typelevel"))
       Libraries.refinedCore,
       // shapeless
       Libraries.shapeless,
-      "org.scala-lang"   % "scala-reflect"        % v.vScala,
-      "com.google.cloud" % "google-cloud-logging" % "3.0.1",
+      "org.scala-lang"     % "scala-reflect"        % v.vScala,
+      "com.google.cloud"   % "google-cloud-logging" % "3.0.1",
+      "org.mongodb.scala" %% "mongo-scala-driver"   % "4.5.1",
     ),
   )
 
