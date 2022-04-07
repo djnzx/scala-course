@@ -12,7 +12,7 @@ object Versions {
   // Cats & Effect
   val cats = "2.7.0"
   val catsEffect2 = "2.5.4"
-  val catsEffect3 = "3.3.3"
+  val catsEffect3 = "3.3.8"
 
   // FS2
   val fs2ce2 = "2.5.10"
@@ -21,7 +21,7 @@ object Versions {
   // Http4s
   val http4sCe2 = "0.21.31"
 //  val http4sCe2 = "0.22.7"
-  val http4sCe3 = "0.23.6"
+  val http4sCe3 = "0.23.11"
   val http4s1 = "1.0.0-M30" // 2021, Dec
 
   // Json

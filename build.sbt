@@ -95,14 +95,16 @@ lazy val ce3 = (project in file("ce3"))
       "org.typelevel"               %% "cats-core"           % v.cats,
       "org.typelevel"               %% "cats-effect"         % v.catsEffect3,
       "co.fs2"                      %% "fs2-core"            % v.fs2ce3,
-      "org.typelevel"               %% "munit-cats-effect-3" % "1.0.6",
+      "org.typelevel"               %% "munit-cats-effect-3" % "1.0.7",
       "org.http4s"                  %% "http4s-blaze-server" % v.http4sCe3,
       "org.http4s"                  %% "http4s-blaze-client" % v.http4sCe3,
       "org.http4s"                  %% "http4s-circe"        % v.http4sCe3,
       "org.http4s"                  %% "http4s-dsl"          % v.http4sCe3,
-      "com.softwaremill.sttp.tapir" %% "tapir-core"          % "0.19.1",
-      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"    % "0.19.1",
-      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % "0.19.1",
+      "com.softwaremill.sttp.tapir" %% "tapir-core"          % "0.20.1",
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"    % "0.20.1",
+      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % "0.20.1",
+      "org.typelevel"               %% "log4cats-core"       % "2.2.0",
+      "org.typelevel"               %% "log4cats-slf4j"      % "2.2.0",
     ),
   )
 
@@ -392,7 +394,7 @@ lazy val typelevel = (project in file("typelevel"))
       // shapeless
       Libraries.shapeless,
       "org.scala-lang"     % "scala-reflect"        % v.vScala,
-      "com.google.cloud"   % "google-cloud-logging" % "3.0.1",
+      "com.google.cloud"   % "google-cloud-logging" % "3.7.2",
       "org.mongodb.scala" %% "mongo-scala-driver"   % "4.5.1",
     ),
   )

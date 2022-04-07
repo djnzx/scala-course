@@ -1,8 +1,12 @@
 package httpfs3
 
-import cats.effect.{ExitCode, IO, IOApp}
-import cats.syntax.semigroupk._
-import org.http4s.{Header, HttpApp, HttpRoutes, Response}
+import cats.effect.ExitCode
+import cats.effect.IO
+import cats.effect.IOApp
+import org.http4s.Header
+import org.http4s.HttpApp
+import org.http4s.HttpRoutes
+import org.http4s.Response
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
@@ -22,7 +26,6 @@ object ServerApp extends IOApp {
     "/c" -> ServerRoutes.routeC[IO],
     "/d" -> dWrapped,
   ).orNotFound
-
 
   val context: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 

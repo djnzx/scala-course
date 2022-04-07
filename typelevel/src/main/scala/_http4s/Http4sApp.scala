@@ -1,7 +1,11 @@
 package _http4s
 
-import cats.effect.{ExitCode, IO, IOApp}
-import org.http4s.{HttpApp, HttpRoutes, HttpService}
+import cats.effect.ExitCode
+import cats.effect.IO
+import cats.effect.IOApp
+import org.http4s.HttpApp
+import org.http4s.HttpRoutes
+import org.http4s.HttpService
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
@@ -14,15 +18,16 @@ object Http4sApp extends IOApp {
   val service = new HttpServiceBinding[IO]
   val coreRoutes: HttpRoutes[IO] = service.httpBinding
   val coreRoutes0: HttpRoutes[IO] = HttpRoutes.of(service.httpBinding0)
+
   /** wire to the whole routes
-    *{{{
-    *  HttpApp[F[_]] = Http[F, F]
-    *  Http[F[_], G[_]] = Kleisli[F, Request[G], Response[G]]
-    *}}}
+    * {{{
+    *   HttpApp[F[_]] = Http[F, F]
+    *   Http[F[_], G[_]] = Kleisli[F, Request[G], Response[G]]
+    * }}}
     */
   val allRoutes: HttpApp[IO] = Router(
-    "/" -> coreRoutes,
-    "/0" -> coreRoutes0
+    "/"  -> coreRoutes,
+    "/0" -> coreRoutes0,
   ).orNotFound
 
   /** stream */
