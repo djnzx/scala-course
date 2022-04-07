@@ -1,8 +1,12 @@
 package http4middle
 
+import cats.data.Kleisli
+import cats.data.OptionT
 import cats.effect.IO
 import cats.effect.IOApp
 import org.http4s.HttpRoutes
+import org.http4s.Request
+import org.http4s.Response
 import org.http4s.blaze.server.BlazeServerBuilder
 import org.http4s.implicits._
 import org.http4s.server.Router
@@ -33,14 +37,13 @@ object Http4sApp extends IOApp.Simple {
     implicit0(logger: Logger[IO]) <- Slf4jLogger.create[IO]
 
     middleware = LoggerMiddleware[IO]
-    logged = middleware(allRoutes)
-
-    wholeApp = logged.orNotFound
+    loggedRoutes: Kleisli[OptionT[IO, *], Request[IO], Response[IO]] = middleware(allRoutes)
+    wholeAppRoutes: Kleisli[IO, Request[IO], Response[IO]] = loggedRoutes.orNotFound
     _ <- logger.info("starting...")
     _ <- BlazeServerBuilder[IO]
       .withExecutionContext(ec)
       .bindHttp(8080, "localhost")
-      .withHttpApp(wholeApp)
+      .withHttpApp(wholeAppRoutes)
       .serve
       .compile
       .drain
