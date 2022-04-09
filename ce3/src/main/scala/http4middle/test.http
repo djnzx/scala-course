@@ -1,0 +1,5 @@
+###
+GET http://localhost:8080/hello/Jim%20Bim
+
+###
+GET http://localhost:8080/hello2?name=Jim Bim

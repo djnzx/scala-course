@@ -1,15 +1,13 @@
 package http4middle
 
+import cats._
 import cats.implicits._
-import cats.Applicative
-import cats.Defer
-import cats.Functor
-import cats.Monad
-import cats.effect.Sync
+import cats.effect._
 import org.http4s._
-import org.http4s.circe.CirceEntityCodec.circeEntityEncoder
+import org.http4s.circe.CirceEntityDecoder
+import org.http4s.circe.CirceEntityEncoder
 import org.http4s.dsl.io._
-import org.http4s.implicits.http4sLiteralsSyntax
+import org.http4s.implicits._
 
 /** these names make sense only in terms of this service. we shouldn't to expose them to kind of common and we event
   * shouldn't be able to use them outside
@@ -36,7 +34,7 @@ object Twice {
   )
 }
 
-class HttpServiceBinding[F[_]: Monad: Functor: Sync] {
+class HttpServiceBinding[F[_]: Monad: Functor: Sync] extends CirceEntityEncoder with CirceEntityDecoder {
 
   val service: ServiceImplementation[F] = new ServiceImplementation[F]
   def ok[A](a: A)(implicit ea: EntityEncoder[F, A]): Response[F] = Response[F](status = Ok).withEntity(a)
@@ -47,10 +45,14 @@ class HttpServiceBinding[F[_]: Monad: Functor: Sync] {
     r.pure[F]
   }
 
+  object NameParamMatcher extends QueryParamDecoderMatcher[String]("name")
+
   /** partial function Tq => Rs lifted to Rq => Option[Rs] */
   val httpBinding: HttpRoutes[F] = HttpRoutes.of[F] {
     /** http://localhost:8080/hello/Jim */
     case GET -> Root / "hello" / name =>
+      F.delay(println("S: Inside the service")) >> service.core(name).map { x => ok(x) }
+    case GET -> Root / "hello2" :? NameParamMatcher(name) =>
       F.delay(println("S: Inside the service")) >> service.core(name).map { x => ok(x) }
     /** http://localhost:8080/hello2/Jackson */
     case GET -> Root / "hello2" / name => service.core2(name).map { x => ok(x) }
