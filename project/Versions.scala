@@ -22,7 +22,7 @@ object Versions {
   val http4sCe2 = "0.21.31"
 //  val http4sCe2 = "0.22.7"
   val http4sCe3 = "0.23.11"
-  val http4s1 = "1.0.0-M30" // 2021, Dec
+  val http4s1 = "1.0.0-M32"
 
   // Json
   val circe = "0.14.1"

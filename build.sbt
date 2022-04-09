@@ -260,7 +260,13 @@ lazy val fp_red = (project in file("fp_red"))
 
 def http4s1mod(artifact: String) = "org.http4s" %% artifact % v.http4s1
 
-/** http4s v1 */
+/**   - http4s: 1.0.0-M32
+  *   - fs2: 3.2.5
+  *   - CE: 3.3.7
+  *   - cats: 2.7.0
+  *   - circe-core: 0.15.0-M1
+  *   - kafka: 2.5.0-M3
+  */
 lazy val http4s1 = (project in file("http4s1"))
   .settings(
     commonSettings,
@@ -268,11 +274,11 @@ lazy val http4s1 = (project in file("http4s1"))
       http4s1mod("http4s-core"),
       http4s1mod("http4s-dsl"),
       http4s1mod("http4s-blaze-server"),
+      http4s1mod("http4s-blaze-client"),
       http4s1mod("http4s-circe"),
-//      Libraries.circeCore,
-//      Libraries.circeGeneric,
-//      Libraries.circeGenericEx,
-//      Libraries.circeParser,
+      Libraries.circeGenericEx,
+      Libraries.circeParser,
+      "com.github.fd4s" %% "fs2-kafka" % "2.5.0-M3",
     ),
   )
 

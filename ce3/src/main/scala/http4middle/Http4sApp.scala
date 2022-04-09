@@ -22,12 +22,6 @@ object Http4sApp extends IOApp.Simple {
   val coreRoutes: HttpRoutes[IO] = service.httpBinding
   val coreRoutes0: HttpRoutes[IO] = HttpRoutes.of(service.httpBinding0)
 
-  /** wire to the whole routes
-    * {{{
-    *   HttpApp[F[_]] = Http[F, F]
-    *   Http[F[_], G[_]] = Kleisli[F, Request[G], Response[G]]
-    * }}}
-    */
   val allRoutes = Router(
     "/"  -> coreRoutes,
     "/0" -> coreRoutes0,
