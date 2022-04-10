@@ -8,7 +8,7 @@ import org.http4s._
 import org.http4s.blaze.client.BlazeClientBuilder
 import org.http4s.implicits.http4sLiteralsSyntax
 
-object ConsumeOneByOneSyncPrint extends IOApp.Simple {
+object ConsumeOneByOne1SyncFetchSyncPrint extends IOApp.Simple {
   val rq = Request[IO](uri = uri"http://localhost:8080/s")
 
   def oneByOne = BlazeClientBuilder[IO]
