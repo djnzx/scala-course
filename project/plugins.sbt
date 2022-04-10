@@ -22,7 +22,7 @@ addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.9.1")
 //addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.10")
 
 // https://github.com/sbt/sbt-buildinfo
-//addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.10.0")
+addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.11.0")
 
 /** XML binding (https://github.com/eed3si9n/scalaxb, https://scalaxb.org/sbt-scalaxb) */
 addSbtPlugin("org.scalaxb" % "sbt-scalaxb" % "1.8.3")

@@ -12,7 +12,6 @@ import org.http4s.implicits.http4sLiteralsSyntax
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
-import scala.concurrent.ExecutionContextExecutorService
 
 object ConsumeOneByOne3AsyncFetchAsyncPrint extends IOApp.Simple {
   val rq = Request[IO](uri = uri"http://localhost:8080/s")

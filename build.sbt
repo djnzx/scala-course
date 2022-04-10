@@ -1,6 +1,7 @@
 import sbt.Keys._
 
 import sbt.Def.spaceDelimited
+import sbtbuildinfo.BuildInfoOption
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
@@ -268,8 +269,12 @@ def http4s1mod(artifact: String) = "org.http4s" %% artifact % v.http4s1
   *   - kafka: 2.5.0-M3
   */
 lazy val http4s1 = (project in file("http4s1"))
+  .enablePlugins(BuildInfoPlugin)
   .settings(
     commonSettings,
+    buildInfoPackage := "alexr",
+    buildInfoOptions ++= Seq(BuildInfoOption.BuildTime, BuildInfoOption.ToMap),
+    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion /*, libraryDependencies */ ),
     libraryDependencies ++= Seq(
       http4s1mod("http4s-core"),
       http4s1mod("http4s-dsl"),
