@@ -1,15 +1,16 @@
-package clean_target
+package crawler
 
 import java.io.File
+import scala.sys.process.Process
 
-object TargetFolder {
+object TargetOps {
 
   def deleteDirWithFiles(file: File): Unit = {
     Option(file.listFiles).foreach(_.foreach(deleteDirWithFiles))
     file.delete
   }
 
-  def remove(file: File): Unit = {
+  def removeRecursively(file: File): Unit = {
     val chunks = file.toPath.toString.split("/")
     val toDelete = chunks.take(chunks.length - 1) :+ "target"
     val toDeleteF = new File(toDelete.mkString("/", "/", ""))
@@ -19,5 +20,7 @@ object TargetFolder {
       println(s"${file.toString} - REMOVING TARGET")
     }
   }
+
+  def rmRF(file: File): Unit = Process(s"rm -rf ${file.toString}") !!
 
 }
