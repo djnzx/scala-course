@@ -45,7 +45,7 @@ object LoggerMiddleware {
    * AuthMiddleware[F[_], T] = Middleware[OptionT[F, *], AuthedRequest[F, T], Response[F], Request[F], Response[F]]
    */
 
-  def apply0[F[_]: Sync: Monad](pre: Request[F] => F[Unit], post: Response[F] => F[Unit]): HttpMiddleware[F] =
+  def apply0[F[_]: Sync](pre: Request[F] => F[Unit], post: Response[F] => F[Unit]): HttpMiddleware[F] =
     handler =>
       Kleisli { request: Request[F] =>
         val core: F[Option[Response[F]]] = handler.run(request).value
@@ -57,7 +57,38 @@ object LoggerMiddleware {
         OptionT(combined)
       }
 
-  def apply[F[_]: Sync: Monad](pre: Request[F] => F[Unit], post: Response[F] => F[Unit]): HttpMiddleware[F] =
+  def apply[F[_]: Sync](
+      pre: Request[F] => F[Unit],
+      postHandled: Response[F] => F[Unit],
+      postNotHandled: => F[Unit],
+    ): HttpMiddleware[F] =
+    (handler: Kleisli[OptionT[F, *], Request[F], Response[F]]) =>
+      Kleisli { request: Request[F] =>
+        val x = for {
+          _ <- pre(request)
+          rsOpt <- handler(request).value
+          _ <- rsOpt.fold(postNotHandled)(postHandled)
+        } yield rsOpt
+
+        OptionT(x)
+      }
+
+  def apply4[F[_]: Sync](
+      pre: Request[F] => F[Unit],
+      postHandled: Response[F] => F[Unit],
+      postNotHandled: => F[Unit],
+    ): HttpMiddleware[F] =
+    handler =>
+      Kleisli { request: Request[F] =>
+        val preF: F[Unit] = pre(request)
+        val originalResponseF: F[Option[Response[F]]] = handler(request).value
+        val originalResponsePostF: F[Option[Response[F]]] =
+          originalResponseF.flatTap(_.fold(postNotHandled)(rs => postHandled(rs)))
+        val full: F[Option[Response[F]]] = preF *> originalResponsePostF
+        OptionT(full)
+      }
+
+  def apply3[F[_]: Sync](pre: Request[F] => F[Unit], postHandled: Response[F] => F[Unit]): HttpMiddleware[F] =
     handler =>
       Kleisli { request: Request[F] =>
 //        OptionT(pre(request).map(_.some))
@@ -66,10 +97,10 @@ object LoggerMiddleware {
           //       A => OptionT[F, B]
           .flatMap(_ => handler.run(request))
           //          f: A => F[B]
-          .semiflatTap(rs => post(rs))
+          .semiflatTap(rs => postHandled(rs))
       }
 
-  def apply1[F[_]: Sync: Monad](pre: Request[F] => F[Unit], post: Response[F] => F[Unit]): HttpMiddleware[F] =
+  def apply1[F[_]: Sync](pre: Request[F] => F[Unit], post: Response[F] => F[Unit]): HttpMiddleware[F] =
     (originalHandler: Kleisli[OptionT[F, *], Request[F], Response[F]]) => // will be given later
       Kleisli { request: Request[F] =>
         val preF: F[Unit] = pre(request)
@@ -80,7 +111,7 @@ object LoggerMiddleware {
         OptionT(full)
       }
 
-  def apply2[F[_]: Sync: Monad](pre: Request[F] => F[Unit], post: Response[F] => F[Unit]): HttpMiddleware[F] =
+  def apply2[F[_]: Sync](pre: Request[F] => F[Unit], post: Response[F] => F[Unit]): HttpMiddleware[F] =
     handler =>
       Kleisli { request: Request[F] =>
         // before lifted to OptionT[F, Unit]
@@ -94,13 +125,16 @@ object LoggerMiddleware {
   def logRequest[F[_]: Sync](rq: Request[F]): F[Unit] =
     Sync[F].delay(println(s"L: Before: $rq"))
 
-  def logResponse[F[_]: Sync: Monad](rs: Response[F]): F[Unit] = for {
+  def logResponseHandled[F[_]: Sync](rs: Response[F]): F[Unit] = for {
     _ <- F.delay(println(s"L: After: $rs"))
     body <- rs.body.through(text.utf8.decode).compile.string
     _ <- F.delay(println(s"Body: $body"))
   } yield ()
 
+  def logRequestNotHandled[F[_]: Sync]: F[Unit] =
+    Sync[F].delay(println(s"L: After, not handled:"))
+
   def apply[F[_]: Sync: Monad]: HttpMiddleware[F] =
-    apply(logRequest[F] _, logResponse[F] _)
+    apply(logRequest[F], logResponseHandled[F], logRequestNotHandled[F])
 
 }
