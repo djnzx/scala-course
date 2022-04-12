@@ -34,7 +34,7 @@ class MongoConnector[F[_]: Async: ContextShift](
       )
     }
 
-  def queryMany[T](metaName: String)(f: MongoDatabase => Observable[T]): F[List[T]] =
+  def queryMany[T](f: MongoDatabase => Observable[T]): F[List[T]] =
     withDBFuture(f(_).toFuture()).map(_.toList)
 
 }
