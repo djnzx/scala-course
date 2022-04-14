@@ -3,11 +3,14 @@ package http4middle
 import cats.Monad
 import cats.data.Kleisli
 import cats.data.OptionT
+import cats.effect.IO
 import cats.effect.Sync
 import cats.implicits._
 import fs2.text
+import org.http4s.ContextRequest
 import org.http4s.Request
 import org.http4s.Response
+import org.http4s.server.AuthMiddleware.defaultAuthFailure
 import org.http4s.server.HttpMiddleware
 
 object LoggerMiddleware {
@@ -137,4 +140,42 @@ object LoggerMiddleware {
   def apply[F[_]: Sync: Monad]: HttpMiddleware[F] =
     apply(logRequest[F], logResponseHandled[F], logRequestNotHandled[F])
 
+  // Normal handler
+  type HttpRoutes[F[_]] = Kleisli[OptionT[F, *], Request[F], Response[F]]
+  // Request[F] => F[Option[A]]
+  type ContextExtractor[F[_], A] = Kleisli[OptionT[F, *], Request[F], A]
+  // ContextRequest[F, A] => F[Option[Response[F]]
+  type ContextHandler[F[_], A] = Kleisli[OptionT[F, *], ContextRequest[F, A], Response[F]]
+  // how to compose ContextExtractor + ContextHandler
+  trait Token
+  val ctxExtractor: ContextExtractor[IO, Token] = ??? // how to extract
+  val ctxHandler: ContextHandler[IO, Token] = ??? // how to handle
+  // composition
+  val composition1: Request[IO] => OptionT[IO, Response[IO]] =
+    (rq: Request[IO]) => ctxExtractor(rq).flatMap(t => ctxHandler(ContextRequest(t, rq)))
+  val composition2: Kleisli[OptionT[IO, *], Request[IO], Response[IO]] =
+    Kleisli((rq: Request[IO]) => ctxExtractor(rq).flatMap(t => ctxHandler(ContextRequest(t, rq))))
+  val composition3: HttpRoutes[IO] = {
+    Kleisli((rq: Request[IO]) => ctxExtractor(rq).flatMap(t => ctxHandler(ContextRequest(t, rq))))
+  }
+
+  val fail1: Request[IO] => Option[IO[Response[IO]]] = (rq: Request[IO]) => defaultAuthFailure[IO].apply(rq).some
+  val failK1: Kleisli[Option, Request[IO], IO[Response[IO]]] = Kleisli(fail1)
+
+  val fail2a: Request[IO] => IO[Option[Response[IO]]] = (rq: Request[IO]) =>
+    defaultAuthFailure[IO].apply(rq).some.sequence
+  val fail2b: Request[IO] => OptionT[IO, Response[IO]] = (rq: Request[IO]) =>
+    OptionT(defaultAuthFailure[IO].apply(rq).some.sequence)
+  val failK2a: Kleisli[IO, Request[IO], Option[Response[IO]]] = Kleisli(fail2a)
+  val failK2b: Kleisli[OptionT[IO, *], Request[IO], Response[IO]] = Kleisli(fail2b)
+
+  val completeApp: Kleisli[OptionT[IO, *], Request[IO], Response[IO]] = composition3.orElse(failK2b)
+
+  composition3.orNotFound
+
+  // Kleisli[OptionT[F, *], Request[F], T]
+//  val am1 = AuthMiddleware.apply(???)
+  // Kleisli[F, Request[F], Either[Err, T]]
+  // Kleisli[OptionT[F, *], ContextRequest[F, T], Response[F]]
+//  val am2 = AuthMiddleware.apply(???, ???)
 }
