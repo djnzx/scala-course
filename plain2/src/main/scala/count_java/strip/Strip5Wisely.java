@@ -27,7 +27,7 @@ public final class Strip5Wisely implements Strip {
   private static Optional<Token> nextToken(LineState ls) {
     return tokensToFind(ls)
         .map(f -> f.apply(ls.input, ls.pos))
-        .flatMap(Optional::stream)
+        .flatMap(ot -> ot.map(Stream::of).orElseGet(Stream::empty))
         .min(Comparator.comparingInt(tk -> tk.at));
   }
 

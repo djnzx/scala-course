@@ -3,8 +3,7 @@ package ce2.petstore
 import ce2.common.debug.DebugHelper
 import cats.effect._
 import org.http4s._
-import org.http4s.client.blaze.BlazeClientBuilder
-import scala.concurrent.ExecutionContext
+import org.http4s.ember.client.EmberClientBuilder
 
 object Client extends IOApp {
   val scruffles = Pet("Scruffles", "dog")
@@ -20,6 +19,6 @@ object Client extends IOApp {
 
   def pets: Resource[IO, PetService[IO]] =
     for {
-      client <- BlazeClientBuilder[IO](ExecutionContext.global).resource
+      client <- EmberClientBuilder.default[IO].build
     } yield ClientResources.pets(client, Uri.uri("http://localhost:8080"))
 }

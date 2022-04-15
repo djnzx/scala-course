@@ -9,9 +9,9 @@ object CompilerOptions {
 
   val javacOptions = Seq(
     "-source",
-    "11",
+    "8",
     "-target",
-    "11",
+    "8",
   )
 
   val scalacOptions = Seq(

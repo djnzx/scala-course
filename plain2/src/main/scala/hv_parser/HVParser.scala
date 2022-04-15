@@ -10,10 +10,13 @@ object HVParser {
 
   /** It finds indexes of requested columns
     *
-    * @param columns Iterable[String] with header names
-    * @param interested Set[String] we are interested in
+    * @param columns
+    *   Iterable[String] with header names
+    * @param interested
+    *   Set[String] we are interested in
     *
-    * @return (Header, Int) column name and its position
+    * @return
+    *   (Header, Int) column name and its position
     */
   def findColumns(columns: Iterable[Header], interested: Set[Header]): Set[(Header, Int)] =
     columns
@@ -42,14 +45,15 @@ object HVParser {
     pickHvSorted(data, found, required)
       .map { case (_, v) => v }
 
-  /** First implementation based on the known size of headers length
-    * TODO: set return type to Option
-    * TODO: make it lazy in terms of headers
-    * TODO: implement checking empty string as a sign for end of the stream
+  /** First implementation based on the known size of headers length TODO: set return type to Option TODO: make it lazy
+    * in terms of headers TODO: implement checking empty string as a sign for end of the stream
     *
-    * @param headers All the headers we have
-    * @param req All the headers we interested in
-    * @return function
+    * @param headers
+    *   All the headers we have
+    * @param req
+    *   All the headers we interested in
+    * @return
+    *   function
     */
   def createMapper(headers: Seq[Header], req: Seq[Header]): IndexedSeq[Value] => Seq[Value] =
     (data: IndexedSeq[Value]) => {
@@ -66,14 +70,15 @@ object HVParser {
         .map { case (_, data) => data }
     }
 
-  /** Second implementation based on the known size of headers length
-    * TODO: set return type to Option
-    * TODO: make it lazy in terms of headers
-    * TODO: implement checking empty string as a sign for end of the stream
+  /** Second implementation based on the known size of headers length TODO: set return type to Option TODO: make it lazy
+    * in terms of headers TODO: implement checking empty string as a sign for end of the stream
     *
-    * @param headers All the headers we have
-    * @param req All the headers we interested in
-    * @return function
+    * @param headers
+    *   All the headers we have
+    * @param req
+    *   All the headers we interested in
+    * @return
+    *   function
     */
   def createMapper2(headers: Seq[Header], req: Seq[Header]): Option[IndexedSeq[Value] => Seq[Value]] = {
 
@@ -95,7 +100,7 @@ object HVParser {
       val h = it.next
 
       /** we treat empty string - as exhausted iterator */
-      if (h.isBlank) return None
+      if (h.isEmpty) return None
 
       req.contains(h) match {
         /** needed, add */
