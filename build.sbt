@@ -123,9 +123,10 @@ lazy val circex = (project in file("circex"))
 
 lazy val co = (project in file("co"))
   .settings(
+    crossScalaVersions := Seq(v.vScala212, v.vScala213),
     commonSettings,
     scalacOptions -= "-Ymacro-annotations",
-    scalaVersion := v.vScala212,
+//    scalaVersion := v.vScala212,
     libraryDependencies ++= Seq(
       CompilerPlugins.betterMonadicFor,
       CompilerPlugins.contextApplied,
@@ -195,7 +196,7 @@ lazy val plain3 = (project in file("plain3"))
   )
 
 lazy val initCommands = s"""
-    import fs2._, cats.effect._, cats.effect.unsafe.implicits.global
+    import cats._, cats.data._, cats.implicits._, fs2._, cats.effect._, cats.effect.unsafe.implicits.global
   """
 
 /** FS2 - Scala 3 - CatEffects 2 */
@@ -223,10 +224,9 @@ lazy val fs2s3ce3 = (project in file("fs2s3ce3"))
 /** FS2 - Scala 2 - CatEffects 2 */
 lazy val fs2s2ce2 = (project in file("fs2s2ce2"))
   .settings(
-    scalaVersion := v.vScala213,
+    commonSettings,
     libraryDependencies ++= Seq(
       "co.fs2" %% "fs2-core" % v.fs2ce2,
-      Libraries.pprint,
     ),
     initialCommands := initCommands,
   )

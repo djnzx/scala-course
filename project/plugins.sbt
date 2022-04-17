@@ -3,8 +3,11 @@ resolvers ++= Seq(
   Resolver.sonatypeRepo("public"),
 )
 
-/** ScalaFmt: https://github.com/scalameta/sbt-scalafmt */
-addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.4")
+/** ScalaFmt Plugin: https://github.com/scalameta/sbt-scalafmt
+  * Plugin by itself: https://github.com/scalameta/scalafmt Documentation:
+  * https://scalameta.org/scalafmt/docs/installation.html
+  */
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.6")
 
 /** dependency tree, bundled into sbt since 1.4 */
 addDependencyTreePlugin
