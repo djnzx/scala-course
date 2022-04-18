@@ -1,13 +1,9 @@
 # https://labs.consol.de/development/git/2017/02/22/gitignore.html
 .bloop/
+.bsp/
+.git/
 .idea/
 .metals/
 .vscode/
-target/
+target
 *.iml
-
-/node_modules/
-
-/kube/c4_frontend/build
-/kube/c5_complex/client/build
-/typesafe/tele/cinnamon-prometheus-docker-sandbox-2.14.3.zip

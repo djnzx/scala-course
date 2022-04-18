@@ -13,8 +13,8 @@ object Libraries {
   def akka(artifact: String, v: String): ModuleID = s"${pf.typesafe}.akka" %% artifact % v
   def akka(artifact: String): ModuleID = akka(artifact, Versions.akka)
   def akkaHttp(artifact: String): ModuleID = akka(artifact, Versions.akkaHttp)
-  def slf4j(artifact: String): ModuleID = pf.slf4j % artifact % Versions.slf4j17
-  val tsconfig: ModuleID = pf.typesafe             % "config" % Versions.tsconfig
+  def slf4j(artifact: String): ModuleID = pf.slf4j                          % artifact % Versions.slf4j17
+  val tsconfig: ModuleID = pf.typesafe                                      % "config" % Versions.tsconfig
 
   val shapeless = "com.chuusai"      %% "shapeless"     % Versions.shapeless
   val jsoup = "org.jsoup"             % "jsoup"         % Versions.jsoup
@@ -84,16 +84,13 @@ object Libraries {
 
   val scalaTestWhole = "org.scalatest" %% "scalatest" % Versions.scalaTest
 
-  val scalaTestShould = "org.scalatest"   %% "scalatest-shouldmatchers" % Versions.scalaTest
-  val scalaTestFlatSpec = "org.scalatest" %% "scalatest-flatspec"       % Versions.scalaTest
-  val scalaTestFunSpec = "org.scalatest"  %% "scalatest-funspec"        % Versions.scalaTest
-
-  val scalaTest = Seq(scalaTestFunSpec, scalaTestShould)
+  val scalaTestShould = "org.scalatest"  %% "scalatest-shouldmatchers" % Versions.scalaTest
+  val scalaTestFunSpec = "org.scalatest" %% "scalatest-funspec"        % Versions.scalaTest
 
   /** scalatestplus - is a project by scalatest for integrations org.scalatestplus::scalacheck-1-14 - library to
     * integrate: scalatest + scalacheck
     */
-  val scalaTestPlus = "org.scalatestplus" %% "scalacheck-1-15" % Versions.scalaTestPlus
+  val scalaTestScalaCheckIntegration = "org.scalatestplus" %% "scalacheck-1-15" % Versions.scalaTestPlus
 
   // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
   val silencerAnnotation = "com.github.ghik" % "silencer-lib" % Versions.silencer % Provided cross CrossVersion.full

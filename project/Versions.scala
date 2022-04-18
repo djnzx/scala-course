@@ -12,11 +12,11 @@ object Versions {
   // Cats & Effect
   val cats = "2.7.0"
   val catsEffect2 = "2.5.4"
-  val catsEffect3 = "3.3.8"
+  val catsEffect3 = "3.3.11"
 
   // FS2
   val fs2ce2 = "2.5.10"
-  val fs2ce3 = "3.2.5"
+  val fs2ce3 = "3.2.7"
 
   // Http4s
   val http4sCe2 = "0.21.31"
