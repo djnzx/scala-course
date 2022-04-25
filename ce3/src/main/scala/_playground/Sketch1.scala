@@ -1,9 +1,8 @@
-package playground
+package _playground
 
-import cats.implicits._
 import cats.effect.IO
 import cats.effect.IOApp
-
+import cats.implicits._
 import scala.concurrent.duration.DurationInt
 
 object Sketch1 extends IOApp.Simple {

@@ -3,7 +3,6 @@ package ce2.common
 import cats.effect._
 import cats.syntax.all._
 import debug.DebugHelper
-
 import scala.concurrent.duration._
 
 /** Specify effect retry policies as an algebra, run them with an interpreter.
@@ -69,11 +68,11 @@ sealed trait RetryPolicy {
     *   is a `Timer[IO]` you might need in order to create a "sleep" effect.
     */
   def retry[A](
-      io: IO[A],
-    )(
-      implicit cs: ContextShift[IO],
-      timer: Timer[IO],
-    ): IO[A] =
+      io: IO[A]
+  )(implicit
+      cs: ContextShift[IO],
+      timer: Timer[IO]
+  ): IO[A] =
     ???
 }
 
