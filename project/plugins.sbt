@@ -1,6 +1,6 @@
 resolvers ++= Seq(
   MavenRepository("Artima", "https://repo.artima.com/releases"),
-  Resolver.sonatypeRepo("public"),
+  Resolver.sonatypeRepo("public")
 )
 
 /** ScalaFmt Plugin: https://github.com/scalameta/sbt-scalafmt
@@ -34,7 +34,10 @@ addSbtPlugin("org.scalaxb" % "sbt-scalaxb" % "1.8.3")
 addSbtPlugin("com.thesamet" % "sbt-protoc" % "1.0.0")
 
 /** ProtoBuf (https://github.com/scalapb/ScalaPB, https://scalapb.github.io) */
-libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.11.6"
+libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.11.10"
 
-/** cool set of options: (https://github.com/DavidGregory084/sbt-tpolecat) */
-addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.1.20")
+/** named options: (https://github.com/DavidGregory084/sbt-tpolecat) */
+addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.3.1")
+
+/** no-publish: https://github.com/ChristopherDavenport/sbt-no-publish */
+addSbtPlugin("io.chrisdavenport" % "sbt-no-publish" % "0.1.0")
