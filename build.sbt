@@ -87,6 +87,8 @@ lazy val ce2 = project
       "ch.qos.logback"     % "logback-classic"      % v.logback,
       "com.kubukoz"       %% "debug-utils"          % "1.1.3",
       "org.mongodb.scala" %% "mongo-scala-driver"   % "4.5.1",
+      Libraries.scalaTestFunSpec,
+      Libraries.scalaTestShould,
       Libraries.catsLaws, // ?
       Libraries.catsMtlCore, // ?
       Libraries.newtype,
@@ -134,6 +136,12 @@ lazy val ce3 = (project in file("ce3"))
       "io.circe"                    %% "circe-generic-extras" % v.circe,
       "io.circe"                    %% "circe-fs2"            % "0.14.0",
       "com.github.fd4s"             %% "fs2-kafka"            % "2.4.0"
+    )
+  )
+  .enablePlugins(ScalaxbPlugin)
+  .settings(
+    Compile / PB.targets := Seq(
+      scalapb.gen() -> (Compile / sourceManaged).value / "scalapb"
     )
   )
 
@@ -229,6 +237,7 @@ lazy val plain2 = (project in file("plain2"))
     commonSettings,
     libraryDependencies ++= Seq(
       CompilerPlugins.kindProjector,
+      "io.chymyst"                 %% "curryhoward"                % "0.3.8",
       "org.scala-lang.modules"     %% "scala-parallel-collections" % "1.0.3",
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.7.3",
       "org.scala-lang"              % "scala-reflect"              % v.vScala,
