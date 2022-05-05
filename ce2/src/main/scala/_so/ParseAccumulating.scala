@@ -1,7 +1,7 @@
 package _so
 
 import _so.ParseAccumulating.OptionOne
-import _so.ParseAccumulating.accumulating
+import _so.ParseAccumulating.OptionTwo
 import cats.implicits._
 import io.circe._
 import io.circe.generic.AutoDerivation
@@ -12,28 +12,20 @@ object ParseAccumulating {
 
   sealed trait Example
 
-  case class OptionOne(
-      event: String,
-      time: String,
-      platform: String
-  ) extends Example
+  case class OptionOne(event: String, time: String, platform: String) extends Example
   object OptionOne extends AutoDerivation
 
-  case class OptionTwo(
-      event: String,
-      time: String
-  ) extends Example
+  case class OptionTwo(event: String, time: String) extends Example
   object OptionTwo extends AutoDerivation
 
-  def accumulating[A](hc: HCursor)(implicit da: Decoder[A]): Decoder.Result[A] =
-    da.decodeAccumulating(hc)
-      .toEither
-      .leftMap { dff => DecodingFailure("errors", dff.toList.flatMap(_.history)) }
+  object Example {
 
-  implicit val decoder: Decoder[Example] = List[Decoder[Example]](
-    hc => accumulating[OptionOne](hc),
-    hc => accumulating[OptionTwo](hc)
-  ).reduce(_ or _)
+    implicit val decoder: Decoder[Example] = List[Decoder[Example]](
+      OptionOne.exportDecoder[OptionOne].instance.widen,
+      OptionTwo.exportDecoder[OptionTwo].instance.widen
+    ).reduce(_ or _)
+
+  }
 
 }
 
@@ -46,6 +38,17 @@ class ParseAccumulatingSpec extends AnyFunSpec {
       ("platform", 5.asJson)
     )
 
-    println(accumulating[OptionOne](invalid.hcursor))
+    // 2 errors
+    println(OptionOne.exportDecoder[OptionOne].instance.decodeAccumulating(invalid.hcursor))
+    // 1 error
+    println(OptionTwo.exportDecoder[OptionTwo].instance.decodeAccumulating(invalid.hcursor))
+    // 2 errors
+//    println(accumulating[OptionOne](invalid.hcursor))
+    // 1 error
+//    println(accumulating[Example](invalid.hcursor))
+    // 1
+    println(Decoder[OptionOne].decodeJson(invalid))
+    // 2
+    println(Decoder[OptionOne].decodeAccumulating(invalid.hcursor))
   }
 }
