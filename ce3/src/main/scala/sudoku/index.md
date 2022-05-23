@@ -1,0 +1,2 @@
+- [link](https://medium.com/@fqaiser94/concurrent-sudoku-solver-part-1-single-candidate-technique-domain-modelling-6c885a1e4ef3)
+- [repo](https://github.com/fqaiser94/concurrent-sudoku-solver/blob/main/src/test/scala/com/fq/sudoku/UtilsTest.scala)
