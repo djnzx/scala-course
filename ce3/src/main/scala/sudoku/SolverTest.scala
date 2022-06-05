@@ -10,9 +10,9 @@ class SolverTest extends CatsEffectSuite {
   val testCases = Seq(testCase1, testCase2, testCase3)
 
   val solvers = List(
-    CERefSolver
-//      CatsEffectQueueSolver,
-//      FS2StreamSolver
+    CERefSolver,
+    CEQueueSolver,
+    FS2StreamSolver
   )
 
   solvers.foreach { solver =>
