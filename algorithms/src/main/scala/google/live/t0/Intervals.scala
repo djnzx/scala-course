@@ -1,7 +1,7 @@
 package google.live.t0
 
 object Intervals extends App {
-  val src = List((1, 7), (5, 9))
+  val src = List((1, 7), (5, 9), (1, 11))
   val points = src.flatMap { case (a, b) => List(a, b) }.toSet.toVector.sorted
   val indexes = points.indices.drop(1)
   val pairs = indexes.map(i => (points(i - 1), points(i)))
@@ -11,5 +11,7 @@ object Intervals extends App {
       (m >= x) && (m <= y)
     }
   }
-  pprint.pprintln(pairsAndCount)
+  pairsAndCount.foreach { case ((l, r), c) =>
+    println(s"$l-$r : $c")
+  }
 }
