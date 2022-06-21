@@ -1,0 +1,12 @@
+####
+GET http://localhost:8080/a
+
+####
+GET http://localhost:8080/a?color=red
+
+####
+GET http://localhost:8080/a?color=red,green
+
+####
+GET http://localhost:8080/a?color=red,green,red,yellow,yellow
+

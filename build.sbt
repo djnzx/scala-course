@@ -87,6 +87,9 @@ lazy val ce2 = project
       "ch.qos.logback"     % "logback-classic"      % v.logback,
       "com.kubukoz"       %% "debug-utils"          % "1.1.3",
       "org.mongodb.scala" %% "mongo-scala-driver"   % "4.5.1",
+      "com.beachape"      %% "enumeratum"           % "1.7.0",
+      "com.beachape"      %% "enumeratum-circe"     % "1.7.0",
+      "com.beachape"      %% "enumeratum-doobie"    % "1.7.0",
       Libraries.scalaTestFunSpec,
       Libraries.scalaTestShould,
       Libraries.catsLaws, // ?
@@ -135,7 +138,10 @@ lazy val ce3 = (project in file("ce3"))
       "io.circe"                    %% "circe-parser"         % "0.15.0-M1",
       "io.circe"                    %% "circe-generic-extras" % v.circe,
       "io.circe"                    %% "circe-fs2"            % "0.14.0",
-      "com.github.fd4s"             %% "fs2-kafka"            % "2.4.0"
+      "com.github.fd4s"             %% "fs2-kafka"            % "2.4.0",
+      "com.beachape"                %% "enumeratum"           % "1.7.0",
+      "com.beachape"                %% "enumeratum-circe"     % "1.7.0",
+      "com.beachape"                %% "enumeratum-doobie"    % "1.7.1"
     )
   )
   .enablePlugins(ScalaxbPlugin)
