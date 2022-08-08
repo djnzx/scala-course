@@ -10,3 +10,12 @@ GET http://localhost:8080/a?color=red,green
 ####
 GET http://localhost:8080/a?color=red,green,red,yellow,yellow
 
+####
+POST http://localhost:8080/b
+
+payload
+
+####
+POST http://localhost:8080/c
+
+payload11

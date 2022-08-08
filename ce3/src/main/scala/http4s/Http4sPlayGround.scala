@@ -13,6 +13,7 @@ import org.http4s.QueryParamDecoder
 import org.http4s.blaze.server.BlazeServerBuilder
 import org.http4s.circe.CirceEntityCodec.circeEntityEncoder
 import org.http4s.dsl.io._
+import org.http4s.headers.Location
 import org.http4s.implicits._
 import scala.concurrent.ExecutionContext.{global => ec}
 
@@ -33,9 +34,20 @@ object Http4sPlayGround extends IOApp.Simple {
   import SequenceDecoders._
   object OptionColorParamMatcher extends OptionalQueryParamDecoderMatcher[Set[Color]]("color")
 
-  val routes = HttpRoutes.of[IO] { case GET -> Root / "a" :? OptionColorParamMatcher(colors) =>
-    val folded = colors.fold("option.empty")(_.mkString("."))
-    Ok(folded)
+  val routes = HttpRoutes.of[IO] {
+    case GET -> Root / "a" :? OptionColorParamMatcher(colors) =>
+      val folded = colors.fold("option.empty")(_.mkString("."))
+      Ok(folded)
+
+    case rq @ POST -> Root / "c" =>
+      TemporaryRedirect.apply(Location(uri"/b"))
+
+    case rq @ POST -> Root / "b" =>
+      val bodyF: IO[String] = rq.bodyText.compile.string
+
+      bodyF
+        .flatMap(s1 => bodyF.flatMap(s2 => (s1 + s2).pure[IO]))
+        .flatMap(Ok(_))
   }
 
   override def run: IO[Unit] = BlazeServerBuilder[IO]
