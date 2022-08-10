@@ -101,8 +101,14 @@ object D6UnfoldExperiments extends IOApp.Simple {
     .last
 
   override def run: IO[Unit] = for {
-    last <- stream4
-    _    <- IO(println(last))
+//    last <- stream4
+//    _    <- IO(println(last))
+    _ <- IO {
+           println(
+             (Set("a", "q") -- Set("q", "w")).some
+               .filter(_.nonEmpty)
+           )
+         }
   } yield ()
 
 }
