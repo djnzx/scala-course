@@ -1,7 +1,7 @@
 package monaderror
 
 import cats._
-import cats.data.EitherT
+import cats.data._
 import cats.effect._
 import cats.implicits._
 
@@ -68,8 +68,33 @@ class MonadErrorStudy[F[_]: Sync] {
     Sync[F].delay(println(x))
   }
 
+  /** if throwable => provide a value */
   val m15: F[Int] = m01.orElse(33.pure[F])
+
+  /** if throwable => provide another throwable */
   val m16: F[Int] = m01.orRaise(new Exception())
+
+  /** apply predicate, or throwable */
+  val m17: F[Int] = m01.ensure(IAX)(_ > 0)
+
+  /** apply predicate, or a -> throwable */
+  val m18: F[Int] = m01.ensureOr(i => IAX)(_ > 0)
+
+  /** from Option */
+  val oa: Option[Int] = ???
+  val m20: F[Int] = ME.fromOption(oa, IAX)
+
+  /** from Either */
+  val ea: Either[Throwable, Int] = ???
+  val m21: F[Int] = ME.fromEither(ea)
+
+  /** from Validated, Try... */
+  val fe: F[Either[Throwable, Int]] = ???
+
+  /** attempt - inverse */
+  val m22: F[Int] = fe.rethrow
+
+  val fa: F[Option[Int]] = ???
 
   def make(x: Int): F[String] = x match {
     case 1 => ME.raiseError(IAX)
