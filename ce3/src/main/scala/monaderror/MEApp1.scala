@@ -5,17 +5,19 @@ import cats.data._
 import cats.effect._
 import cats.implicits._
 
-/** [[Apply]]                [[Apply]]           [[Apply]]
-  *       \                       |                   |
-  * [[Applicative]][F]       [[FlatMap]][F] with [[Applicative]][F]
-  *         \                        \      /
-  * [[ApplicativeError]][F, E] with [[Monad]][F]
+/** {{{
+  * [[Apply]]           [[Apply]]     [[Apply]]
+  *       \                |             |
+  * [[Applicative]]    [[FlatMap]] + [[Applicative]]
+  *         \               \      /
+  * [[ApplicativeError]] + [[Monad]]
   *            \          /
-  *          [[MonadError]][F, E]
-  *                |
-  *          [[MonadCancel]][F, Throwable] with [[Defer]][F]
-  *                      \             /
-  *                         [[Sync]][F]
+  *          [[MonadError]]
+  *            /
+  *   [[MonadCancel]] + [[Defer]][F]
+  *            \          /
+  *            [[Sync]][F]
+  * }}}
   */
 class MonadErrorStudy[F[_]: Sync] {
 
@@ -35,7 +37,7 @@ class MonadErrorStudy[F[_]: Sync] {
   /** handle simple (full) Monadic */
   val m05: F[Int] = m01.handleErrorWith(t => (-2).pure[F])
 
-  /** => Either */
+  /** to Either */
   val m06: F[Either[Throwable, Int]] = m01.attempt
   val m07: EitherT[F, Throwable, Int] = m01.attemptT
 
@@ -79,6 +81,7 @@ class MonadErrorStudy[F[_]: Sync] {
 
   /** apply predicate, or a -> throwable */
   val m18: F[Int] = m01.ensureOr(i => IAX)(_ > 0)
+  val m19: (Int => Boolean) => F[Int] = m01.ensureOr(i => IAX)
 
   /** from Option */
   val oa: Option[Int] = ???
