@@ -121,6 +121,7 @@ lazy val ce3 = (project in file("ce3"))
       CompilerPlugins.betterMonadicFor,
       "org.typelevel"               %% "cats-core"            % v.cats,
       "org.typelevel"               %% "cats-effect"          % v.catsEffect3,
+      "com.github.cb372"            %% "cats-retry"           % "3.1.0",
       "co.fs2"                      %% "fs2-core"             % v.fs2ce3,
       "co.fs2"                      %% "fs2-io"               % v.fs2ce3,
       "org.typelevel"               %% "munit-cats-effect-3"  % "1.0.7",
