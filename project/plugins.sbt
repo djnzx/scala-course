@@ -16,7 +16,7 @@ addDependencyTreePlugin
 addSbtPlugin("ch.epfl.scala" % "sbt-bloop" % "1.4.11")
 
 /** NativePackager (https://github.com/sbt/sbt-native-packager) */
-addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.9.1")
+addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.9.9") // 1.9.10+ scala-xml 2.0, conflicts with sbt-scalaxb plugin
 
 // https://github.com/spray/sbt-revolver
 //addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
@@ -28,7 +28,7 @@ addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.9.1")
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.11.0")
 
 /** XML binding (https://github.com/eed3si9n/scalaxb, https://scalaxb.org/sbt-scalaxb) */
-addSbtPlugin("org.scalaxb" % "sbt-scalaxb" % "1.8.3")
+addSbtPlugin("org.scalaxb" % "sbt-scalaxb" % "1.8.3") // scala-xml 1.2.0
 
 /** ProtoBuf (https://github.com/thesamet/sbt-protoc) */
 addSbtPlugin("com.thesamet" % "sbt-protoc" % "1.0.0")

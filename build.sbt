@@ -9,7 +9,7 @@ lazy val v = Versions
 lazy val commonSettings = Seq(
   scalaVersion := v.vScala,
   organization := "org.alexr",
-  version := "2022.04.18",
+  version := "2022.09.18a",
   javacOptions ++= CompilerOptions.javacOptions,
   scalacOptions ++= CompilerOptions.scalacOptions,
   scalacOptions -= ScalacOpts.warningsAsFatals,
@@ -100,13 +100,6 @@ lazy val ce2 = project
     )
   )
 
-/** - cats: 2.7.0
-  * - CE: 3.3.11
-  * - fs2: 3.2.5
-  * - http4s: 0.23.11
-  * - circe: 0.15.0-M1
-  * - kafka: 2.4.0
-  */
 lazy val ce3 = (project in file("ce3"))
   .enablePlugins(BuildInfoPlugin)
   .settings(
@@ -131,24 +124,53 @@ lazy val ce3 = (project in file("ce3"))
       "org.http4s"                  %% "http4s-blaze-client"  % v.http4sCe3,
       "org.http4s"                  %% "http4s-ember-server"  % v.http4sCe3,
       "org.http4s"                  %% "http4s-ember-client"  % v.http4sCe3,
-      "com.softwaremill.sttp.tapir" %% "tapir-core"           % "1.0.0-M6",
-      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"     % "1.0.0-M6",
-      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"  % "1.0.0-M6",
-      "org.typelevel"               %% "log4cats-core"        % "2.2.0",
-      "org.typelevel"               %% "log4cats-slf4j"       % "2.2.0",
+      "com.softwaremill.sttp.tapir" %% "tapir-core"           % "1.1.0",
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"     % "1.1.0",
+      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"  % "1.1.0",
+      "org.typelevel"               %% "log4cats-core"        % "2.4.0",
+      "org.typelevel"               %% "log4cats-slf4j"       % "2.4.0",
       "io.circe"                    %% "circe-parser"         % "0.15.0-M1",
       "io.circe"                    %% "circe-generic-extras" % v.circe,
+      "io.circe"                    %% "circe-yaml"           % v.circe,
       "io.circe"                    %% "circe-fs2"            % "0.14.0",
-      "com.github.fd4s"             %% "fs2-kafka"            % "2.4.0",
+      "com.github.fd4s"             %% "fs2-kafka"            % "2.5.0",
       "com.beachape"                %% "enumeratum"           % "1.7.0",
       "com.beachape"                %% "enumeratum-circe"     % "1.7.0",
-      "com.beachape"                %% "enumeratum-doobie"    % "1.7.1"
+      "com.beachape"                %% "enumeratum-doobie"    % "1.7.1",
+      "io.kubernetes"                % "client-java-api"      % "16.0.0",
+      "io.kubernetes"                % "client-java"          % "16.0.0"
     )
   )
   .enablePlugins(ScalaxbPlugin)
   .settings(
     Compile / PB.targets := Seq(
       scalapb.gen() -> (Compile / sourceManaged).value / "scalapb"
+    )
+  )
+
+// sbt k8a/docker:publishLocal
+// docker images | grep k8a
+lazy val k8a = (project in file("k8a"))
+  .enablePlugins(JavaAppPackaging, DockerPlugin)
+  .settings(
+    dockerBaseImage := "openjdk:11-jre-slim",
+    dockerExposedPorts := Seq(8080),
+    dockerGroupLayers := {
+      case (_, path) if path.startsWith("alexr") => 2
+      case _                                     => 1
+    },
+    description := "artifact to experiment with k8",
+    commonSettings,
+    libraryDependencies ++= Seq(
+      CompilerPlugins.kindProjector,
+      CompilerPlugins.contextApplied,
+      CompilerPlugins.betterMonadicFor,
+      "com.github.cb372" %% "cats-retry"           % "3.1.0",
+      "org.http4s"       %% "http4s-dsl"           % "1.0.0-M36",
+      "org.http4s"       %% "http4s-blaze-server"  % "1.0.0-M36",
+      "org.http4s"       %% "http4s-circe"         % "1.0.0-M36",
+      "io.circe"         %% "circe-generic-extras" % "0.14.2"
+//      "io.circe"         %% "circe-parser"         % "0.15.0-M1",
     )
   )
 
@@ -196,13 +218,13 @@ lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
-      pf.lihaoyi                %% "upickle"    % "1.4.3", // http://www.lihaoyi.com/upickle
-      pf.lihaoyi                %% "ujson"      % "1.4.3",
-      pf.lihaoyi                %% "os-lib"     % "0.8.0", // https://github.com/lihaoyi/os-lib
-      pf.lihaoyi                %% "scalatags"  % "0.11.0",
-      pf.lihaoyi                %% "requests"   % "0.7.0",
-      pf.lihaoyi                %% "geny"       % "0.7.0",
-      pf.lihaoyi                %% "fastparse"  % "2.2.3", // https://www.lihaoyi.com/fastparse/
+      pf.lihaoyi                %% "upickle"    % "2.0.0", // http://www.lihaoyi.com/upickle
+      pf.lihaoyi                %% "ujson"      % "2.0.0",
+      pf.lihaoyi                %% "os-lib"     % "0.8.1", // https://github.com/lihaoyi/os-lib
+      pf.lihaoyi                %% "scalatags"  % "0.11.1",
+      pf.lihaoyi                %% "requests"   % "0.7.1",
+      pf.lihaoyi                %% "geny"       % "0.7.1",
+      pf.lihaoyi                %% "fastparse"  % "2.3.3", // https://www.lihaoyi.com/fastparse/
       "com.atlassian.commonmark" % "commonmark" % "0.17.0"
     )
   )

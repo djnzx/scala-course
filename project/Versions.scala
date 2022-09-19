@@ -10,19 +10,19 @@ object Versions {
   lazy val vScala = vScala213
 
   // Cats & Effect
-  val cats = "2.7.0"
+  val cats = "2.8.0"
   val catsEffect2 = "2.5.4"
-  val catsEffect3 = "3.3.11"
+  val catsEffect3 = "3.3.14"
 
   // FS2
   val fs2ce2 = "2.5.10"
-  val fs2ce3 = "3.2.7"
+  val fs2ce3 = "3.2.14"
 
   // Http4s
-  val http4sCe2 = "0.21.31"
-//  val http4sCe2 = "0.22.7"
-  val http4sCe3 = "0.23.11"
-  val http4s1 = "1.0.0-M32"
+  val http4sCe2 = "0.21.33"
+//  val http4sCe2 = "0.22.14"
+  val http4sCe3 = "0.23.12" // 0.23.15, but server 0.23.12
+  val http4s1 = "1.0.0-M36"
 
   // Json
   val circe = "0.14.1"
