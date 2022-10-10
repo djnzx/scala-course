@@ -9,7 +9,7 @@ lazy val v = Versions
 lazy val commonSettings = Seq(
   scalaVersion := v.vScala,
   organization := "org.alexr",
-  version := "2022.09.18a",
+  version := "2022.10.07",
   javacOptions ++= CompilerOptions.javacOptions,
   scalacOptions ++= CompilerOptions.scalacOptions,
   scalacOptions -= ScalacOpts.warningsAsFatals,
@@ -130,8 +130,8 @@ lazy val ce3 = (project in file("ce3"))
       "org.typelevel"               %% "log4cats-core"        % "2.4.0",
       "org.typelevel"               %% "log4cats-slf4j"       % "2.4.0",
       "io.circe"                    %% "circe-parser"         % "0.15.0-M1",
-      "io.circe"                    %% "circe-generic-extras" % v.circe,
-      "io.circe"                    %% "circe-yaml"           % v.circe,
+      "io.circe"                    %% "circe-generic-extras" % v.circeGenericExtras,
+      "io.circe"                    %% "circe-yaml"           % v.circeYaml,
       "io.circe"                    %% "circe-fs2"            % "0.14.0",
       "com.github.fd4s"             %% "fs2-kafka"            % "2.5.0",
       "com.beachape"                %% "enumeratum"           % "1.7.0",
@@ -247,7 +247,11 @@ lazy val mix = (project in file("mix"))
       "com.propensive"       %% "contextual"                 % "1.2.1",
       Libraries.refinedCore,
       Libraries.refinedScalaz,
-      "org.scalaz"           %% "scalaz-deriving-jsonformat" % "2.0.0-M5"
+      "org.scalaz"           %% "scalaz-deriving-jsonformat" % "2.0.0-M5",
+      "org.apache.lucene"     % "lucene-core"                % "7.1.0", // 9.4.0
+      "org.apache.lucene"     % "lucene-queryparser"         % "7.1.0",
+      "org.apache.lucene"     % "lucene-analyzers-common"    % "7.1.0",
+      "org.apache.lucene"     % "lucene-memory"              % "7.1.0"
     )
   )
 

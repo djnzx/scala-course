@@ -3,8 +3,8 @@ object Versions {
   // Scala versions
   lazy val vScala210 = "2.10.7" // Nov, 2017
   lazy val vScala211 = "2.11.12" // Nov, 2017
-  lazy val vScala212 = "2.12.15" // Sep, 2021
-  lazy val vScala213 = "2.13.8" // Jan, 2022
+  lazy val vScala212 = "2.12.17" // Sep, 2022
+  lazy val vScala213 = "2.13.9" // Sep, 2022
   lazy val vScala30 = "3.0.2"
   lazy val vScala31 = "3.1.1"
   lazy val vScala = vScala213
@@ -16,19 +16,21 @@ object Versions {
 
   // FS2
   val fs2ce2 = "2.5.10"
-  val fs2ce3 = "3.2.14"
+  val fs2ce3 = "3.3.0"
 
   // Http4s
   val http4sCe2 = "0.21.33"
 //  val http4sCe2 = "0.22.14"
   val http4sCe3 = "0.23.12" // 0.23.15, but server 0.23.12
-  val http4s1 = "1.0.0-M36"
+  val http4s1 = "1.0.0-M37"
 
   // Json
-  val circe = "0.14.1"
+  val circe = "0.14.2" // 0.14.3
+  val circeGenericExtras = "0.14.2"
+  val circeYaml = "0.14.1"
 
   val catsMtlCore = "0.7.1"
-  val catsRetry = "1.1.1"
+  val catsRetry = "3.1.0"
 
   val ciris = "1.0.4"
   val javaxCrypto = "1.0.1"
@@ -40,14 +42,14 @@ object Versions {
   val skunk = "0.0.7"
   val doobie = "0.13.4" // 1.0.0-RC2, 2022, Jan
   val squants = "1.6.0"
-  val logback = "1.2.3"
+  val logback = "1.4.3"
   val zio1v = "1.0.3"
   val zio2v = "2.0.0-M1"
   val sqlPg = "42.3.1"
   val sqlH2 = "1.4.200"
   val scalaz = "7.2.30"
   val jsoup = "1.13.1"
-  val shapeless = "2.3.8" // 2022+Feb
+  val shapeless = "2.3.10"
 
   // testing
   val scalaTest = "3.2.10"
@@ -66,6 +68,6 @@ object Versions {
   val play = "2.9.2"
   val slick = "3.3.3"
   val tsconfig = "1.4.0"
-  val slf4j17 = "1.7.32"
+  val slf4j17 = "2.0.3"
 
 }

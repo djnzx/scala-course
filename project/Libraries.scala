@@ -1,13 +1,13 @@
 import sbt._
 
 object Libraries {
-  def circe(artifact: String): ModuleID = "io.circe"    %% artifact % Versions.circe
-  def ciris(artifact: String): ModuleID = "is.cir"      %% artifact % Versions.ciris
-  def http4s(artifact: String): ModuleID = "org.http4s" %% artifact % Versions.http4sCe2
-  def zio1(artifact: String): ModuleID = pf.zio         %% artifact % Versions.zio1v withSources () withJavadoc ()
-  def zio2(artifact: String): ModuleID = pf.zio         %% artifact % Versions.zio2v withSources () withJavadoc ()
-  def scalaz(artifact: String): ModuleID = "org.scalaz" %% artifact % Versions.scalaz
-  def fs2(artifact: String): ModuleID = "co.fs2"        %% artifact % Versions.fs2ce2
+  def circe(artifact: String, v: String = Versions.circe): ModuleID = "io.circe" %% artifact % v
+  def ciris(artifact: String): ModuleID = "is.cir"                               %% artifact % Versions.ciris
+  def http4s(artifact: String): ModuleID = "org.http4s"                          %% artifact % Versions.http4sCe2
+  def zio1(artifact: String): ModuleID = pf.zio                                  %% artifact % Versions.zio1v withSources () withJavadoc ()
+  def zio2(artifact: String): ModuleID = pf.zio                                  %% artifact % Versions.zio2v withSources () withJavadoc ()
+  def scalaz(artifact: String): ModuleID = "org.scalaz"                          %% artifact % Versions.scalaz
+  def fs2(artifact: String): ModuleID = "co.fs2"                                 %% artifact % Versions.fs2ce2
 
   def slick(artifact: String): ModuleID = s"${pf.typesafe}.slick"          %% artifact % Versions.slick
   def akka(artifact: String, v: String): ModuleID = s"${pf.typesafe}.akka" %% artifact % v
@@ -34,7 +34,7 @@ object Libraries {
 
   val circeCore = circe("circe-core")
   val circeGeneric = circe("circe-generic")
-  val circeGenericEx = circe("circe-generic-extras")
+  val circeGenericEx = circe("circe-generic-extras", Versions.circeGenericExtras)
   val circeParser = circe("circe-parser")
   val circeRefined = circe("circe-refined")
   val circeShapes = circe("circe-shapes")
