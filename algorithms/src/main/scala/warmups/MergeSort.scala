@@ -9,12 +9,17 @@ object MergeSort {
     case n => Some(ri, n - 1)
   }
 
-  def merge(as: List[Int], bs: List[Int], r: List[Int] = Nil): List[Int] = (as, bs) match {
-    case (Nil, Nil)                     => r.reverse
-    case (Nil, bs)                      => (bs.reverse ::: r).reverse
-    case (as, Nil)                      => (as.reverse ::: r).reverse
-    case (ah :: at, bh :: _) if ah < bh => merge(at, bs, ah :: r)
-    case (_, bh :: bt)                  => merge(as, bt, bh :: r)
+  def merge(as: List[Int], bs: List[Int]): List[Int] = {
+
+    def go(as: List[Int], bs: List[Int], r: List[Int]): List[Int] = (as, bs) match {
+      case (Nil, Nil)                     => r.reverse
+      case (Nil, bs)                      => (bs.reverse ::: r).reverse
+      case (as, Nil)                      => (as.reverse ::: r).reverse
+      case (ah :: at, bh :: _) if ah < bh => go(at, bs, ah :: r)
+      case (_, bh :: bt)                  => go(as, bt, bh :: r)
+    }
+
+    go(as, bs, Nil)
   }
 
   def sort(xs: Array[Int]): Iterable[Int] = {
