@@ -4,7 +4,7 @@ object Versions {
   lazy val vScala210 = "2.10.7" // Nov, 2017
   lazy val vScala211 = "2.11.12" // Nov, 2017
   lazy val vScala212 = "2.12.17" // Sep, 2022
-  lazy val vScala213 = "2.13.9" // Sep, 2022
+  lazy val vScala213 = "2.13.10" // Oct, 8 2022
   lazy val vScala30 = "3.0.2"
   lazy val vScala31 = "3.1.1"
   lazy val vScala = vScala213
