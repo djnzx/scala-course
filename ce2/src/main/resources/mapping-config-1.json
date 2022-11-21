@@ -1,0 +1,16 @@
+{
+  "mappings": [
+    {
+      "from": "vessel_name",
+      "to": "name_vessel"
+    },
+    {
+      "from": "berth_number",
+      "to": "number_berth"
+    },
+    {
+      "from": "quay_id",
+      "to": "id_quay"
+    }
+  ]
+}
