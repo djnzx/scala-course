@@ -3,7 +3,7 @@ package munitx
 import munit._
 
 // https://www.youtube.com/watch?v=4ZQNxcdeK_g
-class Test1 extends FunSuite {
+class MunitFirstTest extends FunSuite {
 
   // transformation!
 
