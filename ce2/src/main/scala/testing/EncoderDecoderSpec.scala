@@ -20,6 +20,12 @@ class EncoderDecoderSpec extends AnyFunSpec with Matchers with ScalaCheckPropert
     }
   }
 
+  it("1") {
+    forAll(Gen.posNum[Int]) { x: Int =>
+      x shouldEqual   1000
+    }
+  }
+
   it("test plain") {
     import Implicits._
 

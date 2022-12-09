@@ -2,6 +2,7 @@ package _http4s
 
 import cats.implicits.{catsSyntaxApplicativeId, toFunctorOps}
 import cats.{Applicative, Defer, Functor}
+import io.circe.syntax.EncoderOps
 import org.http4s._
 import org.http4s.dsl.io._
 import org.http4s.implicits.http4sLiteralsSyntax
@@ -46,8 +47,13 @@ class HttpServiceBinding[F[_]: Applicative: Functor: Defer] {
       r.pure[F]
   }
 
+  private val asciiStringWithoutQuotesEncoder = new EntityEncoder[F, String] {
+    override def toEntity(a: String): Entity[F] = Entity(fs2.Stream.emits(a.map(_.toByte)).covary)
+    override def headers: Headers = Headers.empty
+  }
   /** partial function Tq => Rs lifted to Rq => Option[Rs] */
   val httpBinding: HttpRoutes[F] = HttpRoutes.of[F] {
+    case GET -> Root / "q"  => Response[F](Status.Ok).withEntity("quotes").pure[F]
     /** http://localhost:8080/hello/Jim */
     case GET -> Root / "hello" / name => service.core(name).map { x => ok(x) }
     /** http://localhost:8080/hello2/Jackson */

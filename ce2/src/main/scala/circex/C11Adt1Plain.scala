@@ -17,10 +17,11 @@ object C11Adt1Plain extends App {
   import ModelAdt._
 
   /** manual encoder */
-  implicit val e: Encoder[Event] = Encoder.instance {
-    case foo: Foo => foo.asJson
-    case bar: Bar => bar.asJson
-  }
+//  implicit val e: Encoder[Event] = Encoder.instance {
+//    case foo: Foo => foo.asJson
+//    case bar: Bar => bar.asJson
+//  }
+  implicit val e: Encoder[Event] = Encoder.instance(_.asJson)
 
   /** sequential decoder */
   implicit val d: Decoder[Event] =

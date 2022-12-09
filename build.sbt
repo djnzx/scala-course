@@ -25,6 +25,21 @@ lazy val commonSettings = Seq(
   )
 )
 
+lazy val munitx = (project in file("munitx"))
+  .settings(
+    commonSettings,
+    libraryDependencies --= Seq(
+      Libraries.scalaCheck,
+      Libraries.scalaTestFunSpec,
+      Libraries.scalaTestShould,
+      Libraries.scalaTestScalaCheckIntegration
+    ),
+      libraryDependencies ++= Seq(
+      "org.scalameta" %% "munit"            % "1.0.0-M7",
+      "org.scalameta" %% "munit-scalacheck" % "1.0.0-M7"
+    ),
+  )
+
 lazy val algorithms = (project in file("algorithms"))
   .settings(
     commonSettings
