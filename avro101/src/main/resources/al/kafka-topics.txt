@@ -1,0 +1,4 @@
+tos.N4_OWN.INV_MOVE_EVENT_MV (k:62,v:80)
+tos.N4_OWN.SPATIAL_BINS_MV (k:57,v:65)
+=>
+aicon_events_unitmoves (k:121,v:122)

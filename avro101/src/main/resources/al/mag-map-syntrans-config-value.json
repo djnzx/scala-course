@@ -1,0 +1,132 @@
+{
+  "mappings" : [
+    {
+      "to" : "moveKind",
+      "from" : "move_kind"
+    },
+    {
+      "to" : "containerCategory",
+      "from" : "category"
+    },
+    {
+      "to" : "containerFreightType",
+      "from" : "freight_kind"
+    },
+    {
+      "to" : "pointOfWork",
+      "from" : "pow"
+    },
+    {
+      "to" : "lineOperatorTosKey",
+      "from" : "line_op"
+    },
+    {
+      "to" : "carrierTosKey",
+      "from" : "carrier_gkey"
+    },
+    {
+      "to" : "fetchCheTosKey",
+      "from" : "che_fetch"
+    },
+    {
+      "to" : "fetchCheLoginName",
+      "from" : "che_fetch_login_name"
+    },
+    {
+      "to" : "carryCheTosKey",
+      "from" : "che_carry"
+    },
+    {
+      "to" : "carryCheLoginName",
+      "from" : "che_carry_login_name"
+    },
+    {
+      "to" : "putCheTosKey",
+      "from" : "che_put"
+    },
+    {
+      "to" : "putCheLoginName",
+      "from" : "che_put_login_name"
+    },
+    {
+      "to" : "qcCheTosKey",
+      "from" : "che_qc"
+    },
+    {
+      "to" : "rehandleCount",
+      "from" : "rehandle_count"
+    },
+    {
+      "to" : "sequenceNumber",
+      "from" : "mve_gkey"
+    },
+    {
+      "to" : "dispatchTime",
+      "from" : "t_dispatch"
+    },
+    {
+      "to" : "fetchTime",
+      "from" : "t_fetch"
+    },
+    {
+      "to" : "carryCompleteTime",
+      "from" : "t_carry_complete"
+    },
+    {
+      "to" : "putTime",
+      "from" : "t_put"
+    },
+    {
+      "to" : "isTwinFetch",
+      "from" : "twin_fetch"
+    },
+    {
+      "to" : "isTwinCarry",
+      "from" : "twin_carry"
+    },
+    {
+      "to" : "isTwinPut",
+      "from" : "twin_put"
+    },
+    {
+      "to" : "moveEventKey",
+      "from" : "f23_____"
+    },
+    {
+      "to" : "containerTerminalVisitKey",
+      "from" : "f24_____"
+    },
+    {
+      "to" : "isSnapshot",
+      "from" : "f25_____"
+    },
+    {
+      "to" : "dbTime",
+      "from" : "f26_____"
+    },
+    {
+      "to" : "isDeleted",
+      "from" : "f27_____"
+    },
+    {
+      "to" : "from",
+      "from" : "f28_____"
+    },
+    {
+      "to" : "to",
+      "from" : "f29_____"
+    },
+    {
+      "to" : "isRehandle",
+      "from" : "f30_____"
+    },
+    {
+      "to" : "isHousekeeping",
+      "from" : "f31_____"
+    },
+    {
+      "to" : "currentTimeMillis",
+      "from" : "f32_____"
+    }
+  ]
+}

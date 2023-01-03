@@ -1,0 +1,401 @@
+{
+  "type": "record",
+  "name": "UnitMovesValue",
+  "namespace": "com.avlino.alenza.aicon.events",
+  "fields": [
+    {
+      "name": "moveEventKey",
+      "type": "string",
+      "default": "UNKNOWN"
+    },
+    {
+      "name": "containerTerminalVisitKey",
+      "type": "string",
+      "default": "UNKNOWN"
+    },
+    {
+      "name": "sequenceNumber",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null
+    },
+    {
+      "name": "moveKind",
+      "type": "string",
+      "default": "UNKNOWN"
+    },
+    {
+      "name": "containerCategory",
+      "type": "string",
+      "default": "UNKNOWN"
+    },
+    {
+      "name": "containerFreightType",
+      "type": "string",
+      "default": "UNKNOWN"
+    },
+    {
+      "name": "isRehandle",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "isHousekeeping",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "pointOfWork",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "rehandleCount",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "lineOperatorTosKey",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "carrierTosKey",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "dispatchTime",
+      "type": [
+        "null",
+        {
+          "type": "long",
+          "connect.version": 1,
+          "connect.name": "org.apache.kafka.connect.data.Timestamp",
+          "logicalType": "timestamp-millis"
+        }
+      ],
+      "default": null
+    },
+    {
+      "name": "fetchTime",
+      "type": [
+        "null",
+        {
+          "type": "long",
+          "connect.version": 1,
+          "connect.name": "org.apache.kafka.connect.data.Timestamp",
+          "logicalType": "timestamp-millis"
+        }
+      ],
+      "default": null
+    },
+    {
+      "name": "carryCompleteTime",
+      "type": [
+        "null",
+        {
+          "type": "long",
+          "connect.version": 1,
+          "connect.name": "org.apache.kafka.connect.data.Timestamp",
+          "logicalType": "timestamp-millis"
+        }
+      ],
+      "default": null
+    },
+    {
+      "name": "putTime",
+      "type": [
+        "null",
+        {
+          "type": "long",
+          "connect.version": 1,
+          "connect.name": "org.apache.kafka.connect.data.Timestamp",
+          "logicalType": "timestamp-millis"
+        }
+      ],
+      "default": null
+    },
+    {
+      "name": "fetchCheTosKey",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "fetchCheLoginName",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "isTwinFetch",
+      "type": [
+        "null",
+        "boolean"
+      ],
+      "default": null
+    },
+    {
+      "name": "carryCheTosKey",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "carryCheLoginName",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "isTwinCarry",
+      "type": [
+        "null",
+        "boolean"
+      ],
+      "default": null
+    },
+    {
+      "name": "putCheTosKey",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "putCheLoginName",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "isTwinPut",
+      "type": [
+        "null",
+        "boolean"
+      ],
+      "default": null
+    },
+    {
+      "name": "qcCheTosKey",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "from",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "movePart",
+          "fields": [
+            {
+              "name": "location",
+              "type": [
+                "null",
+                {
+                  "type": "record",
+                  "name": "locationRecord",
+                  "namespace": "com.avlino.alenza.aicon.entity",
+                  "fields": [
+                    {
+                      "name": "locationType",
+                      "type": "string"
+                    },
+                    {
+                      "name": "locationId",
+                      "type": "string"
+                    },
+                    {
+                      "name": "locationTosKey",
+                      "type": "string"
+                    },
+                    {
+                      "name": "slotPosition",
+                      "type": "string"
+                    },
+                    {
+                      "name": "slotName",
+                      "type": "string",
+                      "default": "UNKNOWN"
+                    },
+                    {
+                      "name": "stackPositionTier",
+                      "type": "int",
+                      "default": -1
+                    },
+                    {
+                      "name": "positionTosKey",
+                      "type": "string",
+                      "default": "UNKNOWN"
+                    },
+                    {
+                      "name": "positionSubClass",
+                      "type": "string",
+                      "default": "UNKNOWN"
+                    },
+                    {
+                      "name": "positionInfo",
+                      "type": [
+                        "null",
+                        {
+                          "type": "record",
+                          "name": "PositionLevel",
+                          "fields": [
+                            {
+                              "name": "level",
+                              "type": "string"
+                            },
+                            {
+                              "name": "name",
+                              "type": "string"
+                            },
+                            {
+                              "name": "size",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "parent",
+                              "type": [
+                                "null",
+                                "PositionLevel"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "head",
+                              "type": [
+                                "null",
+                                "PositionLevel"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "tail",
+                              "type": [
+                                "null",
+                                "PositionLevel"
+                              ],
+                              "default": null
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "cheTosKey",
+              "type": [
+                "null",
+                "string"
+              ],
+              "default": null
+            },
+            {
+              "name": "cheLoginName",
+              "type": [
+                "null",
+                "string"
+              ],
+              "default": null
+            },
+            {
+              "name": "time",
+              "type": [
+                "null",
+                {
+                  "type": "long",
+                  "connect.version": 1,
+                  "connect.name": "org.apache.kafka.connect.data.Timestamp",
+                  "logicalType": "timestamp-millis"
+                }
+              ],
+              "default": null
+            }
+          ]
+        }
+      ],
+      "default": null
+    },
+    {
+      "name": "to",
+      "type": [
+        "null",
+        "movePart"
+      ],
+      "default": null
+    },
+    {
+      "name": "isSnapshot",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "name": "dbTime",
+      "type": [
+        "null",
+        {
+          "type": "long",
+          "connect.version": 1,
+          "connect.name": "org.apache.kafka.connect.data.Timestamp",
+          "logicalType": "timestamp-millis"
+        }
+      ],
+      "default": null
+    },
+    {
+      "name": "isDeleted",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "currentTimeMillis",
+      "type": [
+        "null",
+        {
+          "type": "long",
+          "connect.version": 1,
+          "connect.name": "org.apache.kafka.connect.data.Timestamp",
+          "logicalType": "timestamp-millis"
+        }
+      ],
+      "default": null
+    }
+  ]
+}

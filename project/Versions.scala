@@ -10,7 +10,7 @@ object Versions {
   lazy val vScala = vScala213
 
   // Cats & Effect
-  val cats = "2.8.0"
+  val cats = "2.9.0"
   val catsEffect2 = "2.5.4"
   val catsEffect3 = "3.3.14"
 

@@ -25,6 +25,26 @@ lazy val commonSettings = Seq(
   )
 )
 
+lazy val avro101 = (project in file("avro101"))
+  .settings(
+    scalaVersion := v.vScala212,
+    javacOptions ++= CompilerOptions.javacOptions,
+    scalacOptions ++= CompilerOptions.scalacOptions,
+    scalacOptions -= ScalacOpts.warningsAsFatals, // we are learning, there is no sense to be so strict
+    scalacOptions -= ScalacOpts.macroAnnotations, // 2.12 doesn't have it
+    libraryDependencies ++= Seq(
+      Libraries.pprint,
+      Libraries.fansi,
+      Libraries.sourcecode,
+      Libraries.scalaCheck,
+      Libraries.scalaTestFunSpec,
+      Libraries.scalaTestShould,
+      Libraries.scalaTestScalaCheckIntegration,
+      "org.apache.avro" % "avro" % "1.9.2",
+      Libraries.cats
+    )
+  )
+
 lazy val munitx = (project in file("munitx"))
   .settings(
     commonSettings,

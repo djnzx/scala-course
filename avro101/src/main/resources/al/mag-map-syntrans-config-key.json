@@ -1,0 +1,12 @@
+{
+  "mappings" : [
+    {
+      "to" : "container_terminal_visit_key",
+      "from" : "f1"
+    },
+    {
+      "to" : "move_event_key",
+      "from" : "f2"
+    }
+  ]
+}
