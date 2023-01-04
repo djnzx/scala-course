@@ -17,6 +17,14 @@ object SchemaCreate {
   val contents = contentsFromResources("0/schema1.json")
   val schema1b = new Schema.Parser().parse(contents)
 
+  // format: off
+  val schema1c = SchemaBuilder.record("person").fields()
+    .name("name").`type`.stringType.noDefault
+    .name("age").`type`.nullable.intType.noDefault
+    .name("skill").`type`.stringType.noDefault
+    .endRecord
+  // format: on
+
   def main(as: Array[String]) = {
     println(schema1a)
     println(schema1b)

@@ -1,18 +1,17 @@
 package tools
 
+import cats.implicits.catsSyntaxOptionId
 import cats.implicits.toBifunctorOps
 import cats.implicits.toFunctorOps
-import collection.JavaConverters._
-import java.io.BufferedWriter
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.OutputStream
 import org.apache.avro.Schema
 import org.apache.avro.file.DataFileReader
 import org.apache.avro.file.DataFileWriter
 import org.apache.avro.generic.GenericDatumReader
 import org.apache.avro.generic.GenericDatumWriter
 import org.apache.avro.generic.GenericRecord
+import scala.collection.JavaConverters._
 import scala.util.Try
 
 object Tools {
@@ -28,6 +27,7 @@ object Tools {
     x
   }
 
+  /** write to file with schema */
   def writeTo(file: File, schema: Schema, items: GenericRecord*) = {
     val gw = new GenericDatumWriter[GenericRecord](schema)
     val w = new DataFileWriter[GenericRecord](gw)
@@ -36,14 +36,24 @@ object Tools {
     w.close()
   }
 
-  def read(file: File) = {
-    val gr = new GenericDatumReader[GenericRecord]
+  private def readFrom(file: File, maybeSchema: Option[Schema]): List[GenericRecord] = {
+    val gr = maybeSchema.fold(
+      new GenericDatumReader[GenericRecord]
+    ) { schema =>
+      new GenericDatumReader[GenericRecord](schema)
+    }
     val r = new DataFileReader[GenericRecord](file, gr)
     val x = r.iterator().asScala.toList
     r.close()
     x
   }
 
-  def read(file: File, schema: Schema) = {}
+  /** read without schema check enforced */
+  def readFrom(file: File): List[GenericRecord] =
+    readFrom(file, None)
+
+  /** read WITH schema check enforced */
+  def readFrom(file: File, schema: Schema): List[GenericRecord] =
+    readFrom(file, schema.some)
 
 }
