@@ -1,7 +1,7 @@
 package tools
 
-import cats.implicits.{toBifunctorOps, toFunctorOps}
-
+import cats.implicits.toBifunctorOps
+import cats.implicits.toFunctorOps
 import collection.JavaConverters._
 import java.io.BufferedWriter
 import java.io.ByteArrayOutputStream
@@ -13,7 +13,6 @@ import org.apache.avro.file.DataFileWriter
 import org.apache.avro.generic.GenericDatumReader
 import org.apache.avro.generic.GenericDatumWriter
 import org.apache.avro.generic.GenericRecord
-
 import scala.util.Try
 
 object Tools {
@@ -24,10 +23,9 @@ object Tools {
     val w = new DataFileWriter[GenericRecord](gw)
     val os = new ByteArrayOutputStream()
     w.create(schema, os)
-    val x = Try(w.append(record)).toEither.leftMap(_.getCause.getMessage).as(os.toString)
+    val x = Try(w.append(record)).toEither.leftMap(_.getCause.getMessage).as(record)
     w.close()
     x
-    //x.fold(_ => false, _ => true)
   }
 
   def writeTo(file: File, schema: Schema, items: GenericRecord*) = {
