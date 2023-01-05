@@ -45,6 +45,16 @@ lazy val avro101 = (project in file("avro101"))
     )
   )
 
+lazy val mono101 = (project in file("mono101"))
+  .settings(
+    commonSettings,
+    libraryDependencies ++= Seq(
+      Libraries.pprint,
+      "dev.optics" %% "monocle-core" % "3.2.0",
+      "dev.optics" %% "monocle-macro" % "3.2.0",
+    )
+  )
+
 lazy val munitx = (project in file("munitx"))
   .settings(
     commonSettings,
@@ -54,10 +64,10 @@ lazy val munitx = (project in file("munitx"))
       Libraries.scalaTestShould,
       Libraries.scalaTestScalaCheckIntegration
     ),
-      libraryDependencies ++= Seq(
+    libraryDependencies ++= Seq(
       "org.scalameta" %% "munit"            % "1.0.0-M7",
       "org.scalameta" %% "munit-scalacheck" % "1.0.0-M7"
-    ),
+    )
   )
 
 lazy val algorithms = (project in file("algorithms"))
@@ -169,6 +179,7 @@ lazy val ce3 = (project in file("ce3"))
       "org.typelevel"               %% "log4cats-core"        % "2.4.0",
       "org.typelevel"               %% "log4cats-slf4j"       % "2.4.0",
       "io.circe"                    %% "circe-parser"         % "0.15.0-M1",
+      "io.circe"                    %% "circe-optics"         % "0.14.1",
       "io.circe"                    %% "circe-generic-extras" % v.circeGenericExtras,
       "io.circe"                    %% "circe-yaml"           % v.circeYaml,
       "io.circe"                    %% "circe-fs2"            % "0.14.0",

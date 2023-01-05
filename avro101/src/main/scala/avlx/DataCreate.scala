@@ -24,4 +24,12 @@ object DataCreate {
   /** generic data fails only on absent attribute names */
   //    user1.put("whatever", new Object)
 
+  val address = new GenericData.Record(SchemaCreate.addressSchema)
+  address.put("street", "Broadway")
+  address.put("house", 123L)
+
+  val user6 = new GenericData.Record(SchemaCreate.schema1d)
+  user6.put("name", "Jackery")
+  user6.put("age", 66)
+  user6.put("address", address)
 }

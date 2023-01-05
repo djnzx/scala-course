@@ -1,11 +1,11 @@
 package avlx
 
-import java.io.File
+import tools.Console.delimiter
 import tools.Tools.readFrom
 
-object DataRead {
+import java.io.File
 
-  def delimiter() = println("-" * 50)
+object DataRead {
 
   def main(as: Array[String]): Unit = {
     val FILE = new File("persons.avro")
