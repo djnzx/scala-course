@@ -7,6 +7,10 @@ object syntax {
 
   implicit class GenericRecordOps(record: GenericRecord) {
 
+    // TODO: since this is Avro an it has a schema
+    //  we can think of detailed error support like:
+    //  - field `name` doesn't exist in a given schema on the corresponding layer
+    //  - field `name` exists but has a different type ...
     def go[A](path: String)(implicit ex: TypeExtractor[A], gx: TypeExtractor[GenericRecord]): Option[A] = {
 
       @tailrec

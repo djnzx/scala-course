@@ -1,0 +1,34 @@
+{
+  "type": "record",
+  "name": "person2",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": [
+        "int",
+        "null"
+      ]
+    },
+    {
+      "name": "address",
+      "type": {
+        "type": "record",
+        "name": "address",
+        "fields": [
+          {
+            "name": "street",
+            "type": "string"
+          },
+          {
+            "name": "house",
+            "type": "long"
+          }
+        ]
+      }
+    }
+  ]
+}

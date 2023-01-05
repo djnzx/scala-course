@@ -1,4 +1,4 @@
-import org.apache.avro.generic.GenericRecord
+import org.apache.avro.generic.{GenericData, GenericRecord}
 import pprint.{pprintln => println}
 import tools.Console.delimiter
 
@@ -14,9 +14,21 @@ object Playground2 extends App {
 
   delimiter()
 
-  println(user6)
-  println(user6.go[String]("name")) // Some("Jackery")
-  println(user6.go[GenericRecord]("address")) // Some({"street": "Broadway", "house": 123})
-  println(user6.go[String]("address.street")) // Some("Broadway")
-  println(user6.go[Long]("address.house")) // Some(123L)
+  val p: GenericData.Record = user6
+
+  val f1: Option[String] = p.go[String]("name")
+  val f2: Option[GenericRecord] = p.go[GenericRecord]("address")
+  val f3: Option[String] = p.go[String]("address.street")
+  val f4: Option[Long] = p.go[Long]("address.house")
+  val f5: Option[Long] = p.go[Long]("a")
+  val f6: Option[Double] = p.go[Double]("address.street.x")
+
+  println(p)
+  println(p.getSchema)
+  println(f1)
+  println(f2)
+  println(f3)
+  println(f4)
+  println(f5)
+  println(f6)
 }
