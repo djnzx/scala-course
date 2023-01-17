@@ -40,7 +40,8 @@ lazy val avro101 = (project in file("avro101"))
       Libraries.scalaTestFunSpec,
       Libraries.scalaTestShould,
       Libraries.scalaTestScalaCheckIntegration,
-      "org.apache.avro" % "avro" % "1.9.2",
+      "org.apache.avro"   % "avro"                % "1.11.0",
+      "org.apache.kafka" %% "kafka-streams-scala" % "3.3.1",
       Libraries.cats
     )
   )
@@ -50,8 +51,8 @@ lazy val mono101 = (project in file("mono101"))
     commonSettings,
     libraryDependencies ++= Seq(
       Libraries.pprint,
-      "dev.optics" %% "monocle-core" % "3.2.0",
-      "dev.optics" %% "monocle-macro" % "3.2.0",
+      "dev.optics" %% "monocle-core"  % "3.2.0",
+      "dev.optics" %% "monocle-macro" % "3.2.0"
     )
   )
 
@@ -80,14 +81,14 @@ lazy val amt = (project in file("amt"))
     commonSettings,
     description := "AMT WSDL experiments",
     libraryDependencies ++= Seq(
-      "org.apache.axis"   % "axis"              % "1.4", // no transitive
-      "org.apache.axis"   % "axis-saaj"         % "1.4", // no transitive
-      "org.apache.axis"   % "axis-jaxrpc"       % "1.4", // no transitive
+      "org.apache.axis"   % "axis"              % "1.4",   // no transitive
+      "org.apache.axis"   % "axis-saaj"         % "1.4",   // no transitive
+      "org.apache.axis"   % "axis-jaxrpc"       % "1.4",   // no transitive
       "axis"              % "axis-wsdl4j"       % "1.5.1", // no transitive
       // "wsdl4j" % "wsdl4j" % "1.6.3", // no transitive
       // just to avoid warnings in runtime
-      "commons-discovery" % "commons-discovery" % "0.5", // transitive: commons-logging" % "commons-logging" % "1.1.1"
-      "javax.mail"        % "mail"              % "1.4.7" // transitive: "javax.activation" % "activation" % "1.1",
+      "commons-discovery" % "commons-discovery" % "0.5",   // transitive: commons-logging" % "commons-logging" % "1.1.1"
+      "javax.mail"        % "mail"              % "1.4.7"  // transitive: "javax.activation" % "activation" % "1.1",
     )
   )
 
@@ -101,15 +102,15 @@ lazy val ce2 = project
       CompilerPlugins.kindProjector,
       CompilerPlugins.contextApplied,
       CompilerPlugins.betterMonadicFor,
-      "org.typelevel"       %% "cats-core"            % v.cats,
-      "org.typelevel"       %% "cats-free"            % v.cats,
-      "org.typelevel"       %% "cats-effect"          % v.catsEffect2,
-      "org.typelevel"       %% "cats-effect-laws"     % v.catsEffect2,
-      "co.fs2"              %% "fs2-core"             % v.fs2ce2,
-      "co.fs2"              %% "fs2-reactive-streams" % v.fs2ce2,
-      "co.fs2"              %% "fs2-io"               % v.fs2ce2,
-      "com.github.fd4s"     %% "fs2-kafka"            % "1.10.0", // CE2
-      Libraries.circeParser, // plain parsers to Map => "circe-core", "circe-jawn" => "circe-numbers"
+      "org.typelevel"   %% "cats-core"            % v.cats,
+      "org.typelevel"   %% "cats-free"            % v.cats,
+      "org.typelevel"   %% "cats-effect"          % v.catsEffect2,
+      "org.typelevel"   %% "cats-effect-laws"     % v.catsEffect2,
+      "co.fs2"          %% "fs2-core"             % v.fs2ce2,
+      "co.fs2"          %% "fs2-reactive-streams" % v.fs2ce2,
+      "co.fs2"          %% "fs2-io"               % v.fs2ce2,
+      "com.github.fd4s" %% "fs2-kafka"            % "1.10.0", // CE2
+      Libraries.circeParser,    // plain parsers to Map => "circe-core", "circe-jawn" => "circe-numbers"
       Libraries.circeGenericEx, // generic derivation, adt support => "circe-generic" => "circe-core"
       Libraries.circeShapes,
       Libraries.circeTesting,
@@ -141,7 +142,7 @@ lazy val ce2 = project
       "com.sksamuel.avro4s" %% "avro4s-refined"       % "4.1.0",
       Libraries.scalaTestFunSpec,
       Libraries.scalaTestShould,
-      Libraries.catsLaws, // ?
+      Libraries.catsLaws,    // ?
       Libraries.catsMtlCore, // ?
       Libraries.newtype,
       Libraries.refinedCore,
@@ -286,8 +287,8 @@ lazy val mix = (project in file("mix"))
     libraryDependencies ++= Seq(
       CompilerPlugins.kindProjector,
       CompilerPlugins.betterMonadicFor,
-      "io.getquill"          %% "quill-jdbc"                 % "3.5.1",
-      "org.flywaydb"          % "flyway-core"                % "6.4.2",
+      "io.getquill" %% "quill-jdbc"  % "3.5.1",
+      "org.flywaydb" % "flyway-core" % "6.4.2",
       Libraries.http4sServer, // URI
       Libraries.sqlPgDriver,
       Libraries.jsoup,
@@ -349,7 +350,7 @@ lazy val sparkx = (project in file("sparkx"))
 //      "org.apache.spark" %% "spark-core" % "2.4.7", // 2.11 / 2.12
 //      "org.apache.spark" %% "spark-sql"  % "2.4.7", // 2.11 / 2.12
       "org.apache.spark" %% "spark-core" % "3.2.0", // 2.12 / 2.13
-      "org.apache.spark" %% "spark-sql"  % "3.2.0" // 2.12 / 2.13
+      "org.apache.spark" %% "spark-sql"  % "3.2.0"  // 2.12 / 2.13
     )
   )
 
