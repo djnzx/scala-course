@@ -1,9 +1,8 @@
-package joiner
+package ks
 
 import org.apache.kafka.streams.kstream.ValueJoiner
 import org.apache.kafka.streams.scala.ByteArrayKeyValueStore
-import org.apache.kafka.streams.scala.kstream.KTable
-import org.apache.kafka.streams.scala.kstream.Materialized
+import org.apache.kafka.streams.scala.kstream.{KTable, Materialized}
 
 class JoinSignatureIfKeysSame[K, A, B](t1: KTable[K, A], t2: KTable[K, B]) {
 
