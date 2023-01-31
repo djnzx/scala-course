@@ -1,8 +1,6 @@
 package joiner
 
-import joiner.AgnosticJoiner.IterableJoiner
-import joiner.AgnosticJoiner.KMaterialized
-import joiner.AgnosticJoiner.KafkaStreamsJoiner
+import joiner.AgnosticJoiner.{HashMapJoiner, IterableJoiner, KMaterialized, KafkaStreamsJoiner}
 import org.apache.kafka.streams.scala.ByteArrayKeyValueStore
 import org.apache.kafka.streams.scala.kstream.KTable
 import org.apache.kafka.streams.scala.kstream.Materialized
@@ -10,7 +8,7 @@ import org.apache.kafka.streams.scala.kstream.Materialized
 /** 1. MAIN ABSTRACTION */
 trait AgnosticJoiner[AS[_, _], K1, V3] {
 
-  def join2[K2, V1, V2](
+  def join[K2, V1, V2](
       keyExtractor: V1 => K2,
       combiner: (V1, V2) => V3
   )(
@@ -33,19 +31,19 @@ object AgnosticJoiner {
       as: AS[K1, V1],
       bs: AS[K2, V2]
   )(implicit impl: AgnosticJoiner[AS, K1, V3]): AS[K1, V3] =
-    impl.join2(keyExtractor, combiner)(as, bs)
+    impl.join(keyExtractor, combiner)(as, bs)
 
   type KMaterialized[K1, V3] = Materialized[K1, V3, ByteArrayKeyValueStore]
 
   class KafkaStreamsJoiner[K1, V3](materialized: KMaterialized[K1, V3]) extends AgnosticJoiner[KTable, K1, V3] {
-    override def join2[K2, V1, V2](keyExtractor: V1 => K2, combiner: (V1, V2) => V3)(
+    override def join[K2, V1, V2](keyExtractor: V1 => K2, combiner: (V1, V2) => V3)(
         as: KTable[K1, V1],
         bs: KTable[K2, V2]
     ): KTable[K1, V3] = as.leftJoin(bs, keyExtractor, combiner(_, _), materialized)
   }
 
   class IterableJoiner[K1, V3] extends AgnosticJoiner[KTableT, K1, V3] {
-    override def join2[K2, V1, V2](keyExtractor: V1 => K2, combiner: (V1, V2) => V3)(
+    override def join[K2, V1, V2](keyExtractor: V1 => K2, combiner: (V1, V2) => V3)(
         as: KTableT[K1, V1],
         bs: KTableT[K2, V2]
     ): KTableT[K1, V3] = KTableT(
@@ -57,17 +55,25 @@ object AgnosticJoiner {
     )
   }
 
+  class HashMapJoiner[K1, V3] extends AgnosticJoiner[Map, K1, V3] {
+    override def join[K2, V1, V2](keyExtractor: V1 => K2, combiner: (V1, V2) => V3)(as: Map[K1, V1], bs: Map[K2, V2]): Map[K1, V3] = ???
+  }
+
 }
 
 /** 4.1. INSTANCE TO DECLARE IN CODE */
-object KafkaInstances {
-  lazy val kMaterialized: KMaterialized[Int, (String, String, Double)] = ???
-  implicit lazy val ksJoiner: AgnosticJoiner[KTable, Int, (String, String, Double)] = new KafkaStreamsJoiner(kMaterialized)
+object KafkaKTableInstances {
+  implicit def ksJoiner[K1, V3](implicit km: KMaterialized[K1, V3]): AgnosticJoiner[KTable, K1, V3] = new KafkaStreamsJoiner(km)
 }
 
 /** 4.2. INSTANCE TO DECLARE IN TESTS */
-object TestInstances {
-  implicit val itJoiner: AgnosticJoiner[KTableT, Int, (String, String, Double)] = new IterableJoiner[Int, (String, String, Double)]
+object TestKTableTInstances {
+  implicit def itJoiner[K1, V3]: AgnosticJoiner[KTableT, K1, V3] = new IterableJoiner[K1, V3]
+}
+
+/** 4.3. INSTANCE TO DECLARE IN TESTS */
+object TestMapInstances {
+  implicit def mJoiner[K1, V3]: AgnosticJoiner[Map, K1, V3] = new HashMapJoiner[K1, V3]
 }
 
 /** 5. BUSINESS LOGIC DECOUPLED */
@@ -86,7 +92,7 @@ object BusinessLogicDefinedAgnostically {
 /** 6.1 USE IN TESTS */
 object UsingInTests extends App {
   import BusinessLogicDefinedAgnostically._
-  import TestInstances._
+  import TestKTableTInstances._
 
   val t1: KTableT[Int, (String, Long)] = KTableT(
     Vector(
@@ -100,7 +106,7 @@ object UsingInTests extends App {
     Vector(
       (101L, ("RED", 1001.1)),
       (102L, ("GREEN", 1002.2)),
-      (103L, ("BLUE", 1003.3)),
+      (103L, ("BLUE", 1003.3))
     )
   )
 
@@ -113,8 +119,9 @@ object UsingInTests extends App {
 /** 6.2 USE WITH KAFKA STREAMS */
 object UsingWithKafkaStreams {
   import BusinessLogicDefinedAgnostically._
-  import KafkaInstances._
+  import KafkaKTableInstances._
 
+  implicit val mat: KMaterialized[Int, (String, String, Double)] = ???
   val t1: KTable[Int, (String, Long)] = ???
   val t2: KTable[Long, (String, Double)] = ???
 
