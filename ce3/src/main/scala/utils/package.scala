@@ -8,7 +8,7 @@ import scala.concurrent.duration.FiniteDuration
 package object utils {
 
   implicit class DebugWrapper[F[_], A](fa: F[A]) {
-    def debug(implicit functor: Functor[F]): F[A] = fa.map { a =>
+    def debug0(implicit functor: Functor[F]): F[A] = fa.map { a =>
       val t = Thread.currentThread().getName
       println(s"[$t] $a")
       a

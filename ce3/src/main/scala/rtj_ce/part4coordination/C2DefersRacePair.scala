@@ -26,15 +26,15 @@ object C2DefersRacePair extends IOApp.Simple {
     def tickingClock(counter: Ref[IO, Int], signal: Deferred[IO, Unit]): IO[Unit] = for {
       _     <- IO.sleep(1.second)
       count <- counter.updateAndGet(_ + 1)
-      _     <- IO(count).debug
+      _     <- IO(count).debug0
       _     <- if (count >= 10) signal.complete(()) else tickingClock(counter, signal)
     } yield ()
 
     // waiter
     def eggReadyNotification(signal: Deferred[IO, Unit]) = for {
-      _ <- IO("Egg boiling on some other fiber, waiting...").debug
+      _ <- IO("Egg boiling on some other fiber, waiting...").debug0
       _ <- signal.get
-      _ <- IO("EGG READY!").debug
+      _ <- IO("EGG READY!").debug0
     } yield ()
 
     // app

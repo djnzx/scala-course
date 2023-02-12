@@ -14,9 +14,9 @@ object C1RefsExamples extends IOApp.Simple {
     def task(workload: String): IO[Unit] = {
       val wordCount = workload.split(" ").length
       for {
-        _        <- IO(s"Counting words for '$workload': $wordCount'").debug
+        _        <- IO(s"Counting words for '$workload': $wordCount'").debug0
         newCount <- IO(count + wordCount)
-        _        <- IO(s"New total: $newCount").debug
+        _        <- IO(s"New total: $newCount").debug0
         _        <- IO(count += wordCount)
       } yield ()
     }
@@ -38,9 +38,9 @@ object C1RefsExamples extends IOApp.Simple {
       val wordCount = workload.split(" ").length
 
       for {
-        _        <- IO(s"Counting words for '$workload': $wordCount'").debug
+        _        <- IO(s"Counting words for '$workload': $wordCount'").debug0
         newCount <- total.updateAndGet(currentCount => currentCount + wordCount)
-        _        <- IO(s"New total: $newCount").debug
+        _        <- IO(s"New total: $newCount").debug0
       } yield ()
     }
 

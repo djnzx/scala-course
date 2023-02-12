@@ -26,15 +26,15 @@ object C2Defers extends IOApp.Simple {
   def demoDeferred(): IO[Unit] = {
 
     def consumer(signal: Deferred[IO, Int]) = for {
-      _             <- IO("[consumer] waiting for result...").debug
+      _             <- IO("[consumer] waiting for result...").debug0
       meaningOfLife <- signal.get // blocker
-      _             <- IO(s"[consumer] got the result: $meaningOfLife").debug
+      _             <- IO(s"[consumer] got the result: $meaningOfLife").debug0
     } yield ()
 
     def producer(signal: Deferred[IO, Int]) = for {
-      _             <- IO("[producer] crunching numbers...").debug
+      _             <- IO("[producer] crunching numbers...").debug0
       _             <- IO.sleep(1.second)
-      _             <- IO("[producer] complete: 42").debug
+      _             <- IO("[producer] complete: 42").debug0
       meaningOfLife <- IO(42)
       _             <- signal.complete(meaningOfLife)
     } yield ()

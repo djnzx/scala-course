@@ -16,8 +16,8 @@ object C2BracketResourcesGuarantee extends IOApp.Simple {
 
   // use-case: manage a connection lifecycle
   class Connection(url: String) {
-    def open(): IO[String] = IO(s"opening connection to $url").debug
-    def close(): IO[String] = IO(s"closing connection to $url").debug
+    def open(): IO[String] = IO(s"opening connection to $url").debug0
+    def close(): IO[String] = IO(s"closing connection to $url").debug0
   }
 
   val asyncFetchUrl = for {
@@ -54,7 +54,7 @@ object C2BracketResourcesGuarantee extends IOApp.Simple {
     IO(new Scanner(new FileReader(new File(path))))
 
   def readLineByLine(scanner: Scanner): IO[Unit] =
-    if (scanner.hasNextLine) IO(scanner.nextLine()).debug >> IO.sleep(100.millis) >> readLineByLine(scanner)
+    if (scanner.hasNextLine) IO(scanner.nextLine()).debug0 >> IO.sleep(100.millis) >> readLineByLine(scanner)
     else IO.unit
 
   def bracketReadFile(path: String): IO[Unit] =
@@ -62,7 +62,7 @@ object C2BracketResourcesGuarantee extends IOApp.Simple {
       openFileScanner(path).bracket { scanner =>
         readLineByLine(scanner)
       } { scanner =>
-        IO(s"closing file at $path").debug >> IO(scanner.close())
+        IO(s"closing file at $path").debug0 >> IO(scanner.close())
       }
 
   /** *************** Resources
@@ -74,7 +74,7 @@ object C2BracketResourcesGuarantee extends IOApp.Simple {
         IO(new Connection(scanner.nextLine())).bracket { conn =>
           conn.open() >> IO.never
         }(conn => conn.close().void)
-      }(scanner => IO("closing file").debug >> IO(scanner.close()))
+      }(scanner => IO("closing file").debug0 >> IO(scanner.close()))
   // nesting resources are tedious
 
   val connectionResource = Resource.make(IO(new Connection("rockthejvm.com")))(conn => conn.close().void)
@@ -87,8 +87,8 @@ object C2BracketResourcesGuarantee extends IOApp.Simple {
 
   // resources are equivalent to brackets
   val simpleResource = IO("some resource")
-  val usingResource: String => IO[String] = string => IO(s"using the string: $string").debug
-  val releaseResource: String => IO[Unit] = string => IO(s"finalizing the string: $string").debug.void
+  val usingResource: String => IO[String] = string => IO(s"using the string: $string").debug0
+  val releaseResource: String => IO[Unit] = string => IO(s"finalizing the string: $string").debug0.void
 
   val usingResourceWithBracket = simpleResource.bracket(usingResource)(releaseResource)
   val usingResourceWithResource = Resource.make(simpleResource)(releaseResource).use(usingResource)
@@ -97,7 +97,7 @@ object C2BracketResourcesGuarantee extends IOApp.Simple {
     * Resource)
     */
   def getResourceFromFile(path: String) = Resource.make(openFileScanner(path)) { scanner =>
-    IO(s"closing file at $path").debug >> IO(scanner.close())
+    IO(s"closing file at $path").debug0 >> IO(scanner.close())
   }
 
   def resourceReadFile(path: String) =
@@ -114,12 +114,12 @@ object C2BracketResourcesGuarantee extends IOApp.Simple {
   // nested resources
   def connFromConfResource(path: String) =
     Resource
-      .make(IO("opening file").debug >> openFileScanner(path))(scanner => IO("closing file").debug >> IO(scanner.close()))
+      .make(IO("opening file").debug0 >> openFileScanner(path))(scanner => IO("closing file").debug0 >> IO(scanner.close()))
       .flatMap(scanner => Resource.make(IO(new Connection(scanner.nextLine())))(conn => conn.close().void))
 
   // equivalent
   def connFromConfResourceClean(path: String) = for {
-    scanner <- Resource.make(IO("opening file").debug >> openFileScanner(path))(scanner => IO("closing file").debug >> IO(scanner.close()))
+    scanner <- Resource.make(IO("opening file").debug0 >> openFileScanner(path))(scanner => IO("closing file").debug0 >> IO(scanner.close()))
     conn    <- Resource.make(IO(new Connection(scanner.nextLine())))(conn => conn.close().void)
   } yield conn
 
@@ -127,17 +127,17 @@ object C2BracketResourcesGuarantee extends IOApp.Simple {
     connFromConfResourceClean("cats-effect/src/main/resources/connection.txt").use(conn => conn.open() >> IO.never)
   val canceledConnection = for {
     fib <- openConnection.start
-    _   <- IO.sleep(1.second) >> IO("cancelling!").debug >> fib.cancel
+    _   <- IO.sleep(1.second) >> IO("cancelling!").debug0 >> fib.cancel
   } yield ()
 
   // connection + file will close automatically
 
   // finalizers to regular IOs
-  val ioWithFinalizer = IO("some resource").debug.guarantee(IO("freeing resource").debug.void)
-  val ioWithFinalizer_v2 = IO("some resource").debug.guaranteeCase {
-    case Succeeded(fa)  => fa.flatMap(result => IO(s"releasing resource: $result").debug).void
-    case Errored(e @ _) => IO("nothing to release").debug.void
-    case Canceled()     => IO("resource got canceled, releasing what's left").debug.void
+  val ioWithFinalizer = IO("some resource").debug0.guarantee(IO("freeing resource").debug0.void)
+  val ioWithFinalizer_v2 = IO("some resource").debug0.guaranteeCase {
+    case Succeeded(fa)  => fa.flatMap(result => IO(s"releasing resource: $result").debug0).void
+    case Errored(e @ _) => IO("nothing to release").debug0.void
+    case Canceled()     => IO("resource got canceled, releasing what's left").debug0.void
   }
 
   override def run = ioWithFinalizer.void

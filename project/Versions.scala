@@ -1,28 +1,28 @@
 object Versions {
 
   // Scala versions
-  lazy val vScala210 = "2.10.7" // Nov, 2017
-  lazy val vScala211 = "2.11.12" // Nov, 2017
-  lazy val vScala212 = "2.12.17" // Sep, 2022
-  lazy val vScala213 = "2.13.10" // Oct, 8 2022
-  lazy val vScala30 = "3.0.2"
-  lazy val vScala31 = "3.1.1"
-  lazy val vScala = vScala213
+  val vScala210 = "2.10.7" // Nov, 2017
+  val vScala211 = "2.11.12" // Nov, 2017
+  val vScala212 = "2.12.17" // Sep, 2022
+  val vScala213 = "2.13.10" // Oct, 8 2022
+  val vScala30 = "3.0.2"
+  val vScala31 = "3.1.3"
+  val vScala32 = "3.2.2"
+  val vScala = vScala213
 
   // Cats & Effect
   val cats = "2.9.0"
-  val catsEffect2 = "2.5.4"
-  val catsEffect3 = "3.3.14"
+  val catsEffect2 = "2.5.5"
+  val catsEffect3 = "3.4.6"
 
   // FS2
-  val fs2ce2 = "2.5.10"
-  val fs2ce3 = "3.3.0"
+  val fs2ce2 = "2.5.11"
+  val fs2ce3 = "3.6.1"
 
   // Http4s
-  val http4sCe2 = "0.21.33"
-//  val http4sCe2 = "0.22.14"
-  val http4sCe3 = "0.23.12" // 0.23.15, but server 0.23.12
-  val http4s1 = "1.0.0-M37"
+  val http4sCe2 = "0.21.34"
+  val http4sCe3 = "0.23.13" // 0.23.18, but server 0.23.13
+  val http4s1 = "1.0.0-M39"
 
   // Json
   val circe = "0.14.2" // 0.14.3
@@ -39,7 +39,7 @@ object Versions {
   val newtype = "0.4.4"
   val refined = "0.9.28"
   val redis4cats = "0.9.6"
-  val skunk = "0.0.7"
+  val skunk = "0.5.1"
   val doobie = "0.13.4" // 1.0.0-RC2, 2022, Jan
   val squants = "1.6.0"
   val logback = "1.4.3"
@@ -55,6 +55,9 @@ object Versions {
   val scalaTest = "3.2.10"
   val scalaCheck = "1.15.4"
   val scalaTestPlus = "3.2.10.0"
+//  val scalaTest = "3.2.15"
+//  val scalaCheck = "1.17.0"
+//  val scalaTestPlus = "3.2.15.0"
 
   // compiler plugins
   val silencer = "1.6.0"

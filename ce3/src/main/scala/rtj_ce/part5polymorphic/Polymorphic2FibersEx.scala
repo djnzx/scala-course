@@ -69,8 +69,8 @@ object Polymorphic2FibersEx extends IOApp.Simple {
   // (which would make the code more complicated)
 
   import scala.concurrent.duration._
-  val fast = IO.sleep(1.second) >> IO(42).debug
-  val slow = IO.sleep(2.seconds) >> IO("Scala").debug
+  val fast = IO.sleep(1.second) >> IO(42).debug0
+  val slow = IO.sleep(2.seconds) >> IO("Scala").debug0
   val race = ioRace(fast, slow)
   val race_v2 = generalRace(fast, slow)
 

@@ -53,7 +53,7 @@ object C1FibersExercises extends IOApp.Simple {
 
   def processResultsFromFiber[A](io: IO[A]): IO[A] = {
     val ioResult = for {
-      fib    <- io.debug.start
+      fib    <- io.debug0.start
       result <- fib.join
     } yield result
 
@@ -65,7 +65,7 @@ object C1FibersExercises extends IOApp.Simple {
   }
 
   def testEx1() = {
-    val aComputation = IO("starting").debug >> IO.sleep(1.second) >> IO("done!").debug >> IO(42)
+    val aComputation = IO("starting").debug0 >> IO.sleep(1.second) >> IO("done!").debug0 >> IO(42)
     processResultsFromFiber(aComputation).void
   }
 
@@ -91,9 +91,9 @@ object C1FibersExercises extends IOApp.Simple {
   }
 
   def testEx2() = {
-    val firstIO = IO.sleep(2.seconds) >> IO(1).debug
-    val secondIO = IO.sleep(3.seconds) >> IO(2).debug
-    tupleIOs(firstIO, secondIO).debug.void
+    val firstIO = IO.sleep(2.seconds) >> IO(1).debug0
+    val secondIO = IO.sleep(3.seconds) >> IO(2).debug0
+    tupleIOs(firstIO, secondIO).debug0.void
   }
 
   // 3
@@ -113,8 +113,8 @@ object C1FibersExercises extends IOApp.Simple {
   }
 
   def testEx3() = {
-    val aComputation = IO("starting").debug >> IO.sleep(1.second) >> IO("done!").debug >> IO(42)
-    timeout(aComputation, 500.millis).debug.void
+    val aComputation = IO("starting").debug0 >> IO.sleep(1.second) >> IO("done!").debug0 >> IO(42)
+    timeout(aComputation, 500.millis).debug0.void
   }
 
   override def run = processResultsFromFiber(IO(3.6)).void

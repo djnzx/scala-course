@@ -153,11 +153,11 @@ lazy val ce2 = project
 lazy val ce3 = (project in file("ce3"))
   .enablePlugins(BuildInfoPlugin)
   .settings(
+    commonSettings,
     buildInfoPackage := "alexr",
     buildInfoOptions ++= Seq(BuildInfoOption.BuildTime, BuildInfoOption.ToMap),
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion /*, libraryDependencies */ ),
     description := "Cats Effects 3",
-    commonSettings,
     libraryDependencies ++= Seq(
       CompilerPlugins.kindProjector,
       CompilerPlugins.contextApplied,
@@ -174,22 +174,22 @@ lazy val ce3 = (project in file("ce3"))
       "org.http4s"                  %% "http4s-blaze-client"  % v.http4sCe3,
       "org.http4s"                  %% "http4s-ember-server"  % v.http4sCe3,
       "org.http4s"                  %% "http4s-ember-client"  % v.http4sCe3,
-      "com.softwaremill.sttp.tapir" %% "tapir-core"           % "1.1.0",
-      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"     % "1.1.0",
-      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"  % "1.1.0",
-      "org.typelevel"               %% "log4cats-core"        % "2.4.0",
-      "org.typelevel"               %% "log4cats-slf4j"       % "2.4.0",
+      "com.softwaremill.sttp.tapir" %% "tapir-core"           % "1.2.8",
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"     % "1.2.8",
+      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"  % "1.2.8",
+      "org.typelevel"               %% "log4cats-core"        % "2.5.0",
+      "org.typelevel"               %% "log4cats-slf4j"       % "2.5.0",
       "io.circe"                    %% "circe-parser"         % "0.15.0-M1",
       "io.circe"                    %% "circe-optics"         % "0.14.1",
       "io.circe"                    %% "circe-generic-extras" % v.circeGenericExtras,
       "io.circe"                    %% "circe-yaml"           % v.circeYaml,
       "io.circe"                    %% "circe-fs2"            % "0.14.0",
       "com.github.fd4s"             %% "fs2-kafka"            % "2.5.0",
-      "com.beachape"                %% "enumeratum"           % "1.7.0",
-      "com.beachape"                %% "enumeratum-circe"     % "1.7.0",
-      "com.beachape"                %% "enumeratum-doobie"    % "1.7.1",
-      "io.kubernetes"                % "client-java-api"      % "16.0.0",
-      "io.kubernetes"                % "client-java"          % "16.0.0"
+      "com.beachape"                %% "enumeratum"           % "1.7.2",
+      "com.beachape"                %% "enumeratum-circe"     % "1.7.2",
+      "com.beachape"                %% "enumeratum-doobie"    % "1.7.3",
+      "io.kubernetes"                % "client-java-api"      % "17.0.1",
+      "io.kubernetes"                % "client-java"          % "17.0.1"
     )
   )
   .enablePlugins(ScalaxbPlugin)
@@ -292,17 +292,16 @@ lazy val mix = (project in file("mix"))
       Libraries.http4sServer, // URI
       Libraries.sqlPgDriver,
       Libraries.jsoup,
-      //      "org.typelevel" %% "simulacrum" % "1.0.0",
-      "com.github.mpilquist" %% "simulacrum"                 % "0.19.0",
-      "org.scalaz"           %% "scalaz-core"                % "7.3.2",
-      "com.propensive"       %% "contextual"                 % "1.2.1",
+      "org.typelevel"    %% "simulacrum"                 % "1.0.1",
+      "org.scalaz"       %% "scalaz-core"                % "7.3.7",
+      "com.propensive"   %% "contextual"                 % "1.2.1",
       Libraries.refinedCore,
       Libraries.refinedScalaz,
-      "org.scalaz"           %% "scalaz-deriving-jsonformat" % "2.0.0-M5",
-      "org.apache.lucene"     % "lucene-core"                % "7.1.0", // 9.4.0
-      "org.apache.lucene"     % "lucene-queryparser"         % "7.1.0",
-      "org.apache.lucene"     % "lucene-analyzers-common"    % "7.1.0",
-      "org.apache.lucene"     % "lucene-memory"              % "7.1.0"
+      "org.scalaz"       %% "scalaz-deriving-jsonformat" % "2.0.0-M5",
+      "org.apache.lucene" % "lucene-core"                % "7.1.0", // 9.4.0
+      "org.apache.lucene" % "lucene-queryparser"         % "7.1.0",
+      "org.apache.lucene" % "lucene-analyzers-common"    % "7.1.0",
+      "org.apache.lucene" % "lucene-memory"              % "7.1.0"
     )
   )
 
@@ -349,8 +348,8 @@ lazy val sparkx = (project in file("sparkx"))
     libraryDependencies ++= Seq(
 //      "org.apache.spark" %% "spark-core" % "2.4.7", // 2.11 / 2.12
 //      "org.apache.spark" %% "spark-sql"  % "2.4.7", // 2.11 / 2.12
-      "org.apache.spark" %% "spark-core" % "3.2.0", // 2.12 / 2.13
-      "org.apache.spark" %% "spark-sql"  % "3.2.0"  // 2.12 / 2.13
+      "org.apache.spark" %% "spark-core" % "3.2.1", // 2.12 / 2.13
+      "org.apache.spark" %% "spark-sql"  % "3.2.1"  // 2.12 / 2.13
     )
   )
 
