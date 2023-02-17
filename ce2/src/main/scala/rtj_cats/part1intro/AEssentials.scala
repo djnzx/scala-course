@@ -7,7 +7,7 @@ import scala.util.Failure
 import scala.util.Success
 import scala.util.Try
 
-object Essentials {
+object AEssentials {
 
   // values
   val aBoolean: Boolean = false

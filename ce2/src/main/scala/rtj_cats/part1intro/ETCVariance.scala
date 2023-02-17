@@ -1,6 +1,6 @@
 package rtj_cats.part1intro
 
-object TCVariance {
+object ETCVariance {
 
   import cats.Eq
   import cats.instances.int._ // Eq[Int] TC instance

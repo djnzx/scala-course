@@ -1,6 +1,6 @@
 package rtj_cats.part1intro
 
-object TypeClasses {
+object CTypeClasses {
 
   case class Person(name: String, age: Int)
 

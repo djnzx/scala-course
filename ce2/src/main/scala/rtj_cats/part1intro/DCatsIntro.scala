@@ -1,6 +1,6 @@
 package rtj_cats.part1intro
 
-object CatsIntro {
+object DCatsIntro {
 
   // Eq
   // val aComparison = 2 == "a string" -- wrong, will trigger a compiler warning, will always return false
