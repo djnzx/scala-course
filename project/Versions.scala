@@ -13,7 +13,7 @@ object Versions {
   // Cats & Effect
   val cats = "2.9.0"
   val catsEffect2 = "2.5.5"
-  val catsEffect3 = "3.4.6"
+  val catsEffect3 = "3.4.8"
 
   // FS2
   val fs2ce2 = "2.5.11"
@@ -26,8 +26,8 @@ object Versions {
 
   // Json
   val circe = "0.14.2" // 0.14.3
-  val circeGenericExtras = "0.14.2"
-  val circeYaml = "0.14.1"
+  val circeGenericExtras = "0.14.3"
+  val circeYaml = "0.14.2"
 
   val catsMtlCore = "0.7.1"
   val catsRetry = "3.1.0"

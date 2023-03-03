@@ -8,8 +8,8 @@ lazy val v = Versions
 
 lazy val commonSettings = Seq(
   scalaVersion := v.vScala,
-  organization := "org.alexr",
-  version := "2022.10.07",
+  organization := "alexr",
+  version := "2023.03.03",
   javacOptions ++= CompilerOptions.javacOptions,
   scalacOptions ++= CompilerOptions.scalacOptions,
   scalacOptions -= ScalacOpts.warningsAsFatals,
@@ -22,6 +22,14 @@ lazy val commonSettings = Seq(
     Libraries.scalaTestFunSpec,
     Libraries.scalaTestShould,
     Libraries.scalaTestScalaCheckIntegration
+  )
+)
+
+lazy val compilerPlugins = Seq(
+  libraryDependencies ++= Seq(
+    CompilerPlugins.kindProjector,
+    CompilerPlugins.contextApplied,
+    CompilerPlugins.betterMonadicFor
   )
 )
 
@@ -147,6 +155,9 @@ lazy val ce2 = project
       Libraries.newtype,
       Libraries.refinedCore,
       Libraries.shapeless
+    ),
+    dependencyOverrides ++= Seq(
+      "io.circe" %% "circe-core" % "0.14.4"
     )
   )
 
@@ -162,40 +173,62 @@ lazy val ce3 = (project in file("ce3"))
       CompilerPlugins.kindProjector,
       CompilerPlugins.contextApplied,
       CompilerPlugins.betterMonadicFor,
-      "org.typelevel"               %% "cats-core"            % v.cats,
-      "org.typelevel"               %% "cats-effect"          % v.catsEffect3,
-      "com.github.cb372"            %% "cats-retry"           % "3.1.0",
-      "co.fs2"                      %% "fs2-core"             % v.fs2ce3,
-      "co.fs2"                      %% "fs2-io"               % v.fs2ce3,
-      "org.typelevel"               %% "munit-cats-effect-3"  % "1.0.7",
-      "org.http4s"                  %% "http4s-dsl"           % v.http4sCe3, // transitive: "http4s-core"
-      "org.http4s"                  %% "http4s-circe"         % v.http4sCe3,
-      "org.http4s"                  %% "http4s-blaze-server"  % v.http4sCe3,
-      "org.http4s"                  %% "http4s-blaze-client"  % v.http4sCe3,
-      "org.http4s"                  %% "http4s-ember-server"  % v.http4sCe3,
-      "org.http4s"                  %% "http4s-ember-client"  % v.http4sCe3,
-      "com.softwaremill.sttp.tapir" %% "tapir-core"           % "1.2.8",
-      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"     % "1.2.8",
-      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"  % "1.2.8",
-      "org.typelevel"               %% "log4cats-core"        % "2.5.0",
-      "org.typelevel"               %% "log4cats-slf4j"       % "2.5.0",
-      "io.circe"                    %% "circe-parser"         % "0.15.0-M1",
-      "io.circe"                    %% "circe-optics"         % "0.14.1",
-      "io.circe"                    %% "circe-generic-extras" % v.circeGenericExtras,
-      "io.circe"                    %% "circe-yaml"           % v.circeYaml,
-      "io.circe"                    %% "circe-fs2"            % "0.14.0",
-      "com.github.fd4s"             %% "fs2-kafka"            % "2.5.0",
-      "com.beachape"                %% "enumeratum"           % "1.7.2",
-      "com.beachape"                %% "enumeratum-circe"     % "1.7.2",
-      "com.beachape"                %% "enumeratum-doobie"    % "1.7.3",
-      "io.kubernetes"                % "client-java-api"      % "17.0.1",
-      "io.kubernetes"                % "client-java"          % "17.0.1"
+      "org.typelevel"               %% "cats-core"             % v.cats,
+      "org.typelevel"               %% "cats-effect"           % v.catsEffect3,
+      "com.github.cb372"            %% "cats-retry"            % "3.1.0",
+      "co.fs2"                      %% "fs2-core"              % v.fs2ce3,
+      "co.fs2"                      %% "fs2-io"                % v.fs2ce3,
+      "org.typelevel"               %% "munit-cats-effect-3"   % "1.0.7",
+      "org.http4s"                  %% "http4s-dsl"            % v.http4sCe3, // transitive: "http4s-core"
+      "org.http4s"                  %% "http4s-circe"          % v.http4sCe3,
+      "org.http4s"                  %% "http4s-blaze-server"   % v.http4sCe3,
+      "org.http4s"                  %% "http4s-blaze-client"   % v.http4sCe3,
+      "org.http4s"                  %% "http4s-ember-server"   % v.http4sCe3,
+      "org.http4s"                  %% "http4s-ember-client"   % v.http4sCe3,
+      "com.softwaremill.sttp.tapir" %% "tapir-core"            % "1.2.9",
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"      % "1.2.9",
+      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"   % "1.2.9",
+      "org.typelevel"               %% "log4cats-core"         % "2.5.0",
+      "org.typelevel"               %% "log4cats-slf4j"        % "2.5.0",
+      "io.circe"                    %% "circe-parser"          % "0.15.0-M1",
+      "io.circe"                    %% "circe-optics"          % "0.14.1",
+      "io.circe"                    %% "circe-generic-extras"  % v.circeGenericExtras,
+      "io.circe"                    %% "circe-yaml"            % v.circeYaml,
+      "io.circe"                    %% "circe-fs2"             % "0.14.1",
+      "com.github.fd4s"             %% "fs2-kafka"             % "2.5.0",
+      "com.beachape"                %% "enumeratum"            % "1.7.2",
+      "com.beachape"                %% "enumeratum-circe"      % "1.7.2",
+      "com.beachape"                %% "enumeratum-doobie"     % "1.7.3",
+      "com.beachape"                %% "enumeratum-cats"       % "1.7.2",
+      "com.beachape"                %% "enumeratum-scalacheck" % "1.7.2",
+      "io.kubernetes"                % "client-java-api"       % "17.0.1",
+      "io.kubernetes"                % "client-java"           % "17.0.1",
+      "jakarta.mail"                 % "jakarta.mail-api"      % "2.1.1",
+      "io.scalaland"                %% "chimney"               % "0.7.0"
     )
   )
   .enablePlugins(ScalaxbPlugin)
   .settings(
     Compile / PB.targets := Seq(
       scalapb.gen() -> (Compile / sourceManaged).value / "scalapb"
+    )
+  )
+
+lazy val httpt = (project in file("httpt"))
+  .settings(
+    commonSettings,
+    compilerPlugins,
+    description := "HTTP load tests",
+    libraryDependencies ++= Seq(
+      "org.http4s" %% "http4s-dsl"          % "1.0.0-M39",
+      "org.http4s" %% "http4s-circe"        % "1.0.0-M39",
+      "org.http4s" %% "http4s-ember-server" % "1.0.0-M39",
+      "org.http4s" %% "http4s-blaze-server" % "1.0.0-M38",
+      "org.http4s" %% "http4s-jetty-server" % "1.0.0-M32"
+    ),
+    dependencyOverrides ++= Seq(
+      "org.http4s" %% "http4s-core"   % "1.0.0-M39",
+      "org.http4s" %% "http4s-server" % "1.0.0-M39"
     )
   )
 
