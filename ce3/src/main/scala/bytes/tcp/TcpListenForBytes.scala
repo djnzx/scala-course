@@ -1,13 +1,12 @@
-package bytes
+package bytes.tcp
 
-import cats.effect.Concurrent
-import cats.effect.IO
-import cats.effect.IOApp
-import cats.effect.Sync
+import bytes._
+import cats.effect.{Concurrent, IO, IOApp, Sync}
 import cats.effect.std.Console
 import cats.implicits._
-import fs2.io.net._
 import fs2._
+import fs2.io.net.Network
+import fs2.io.net.Socket
 
 object TcpListenForBytes extends IOApp.Simple {
 
