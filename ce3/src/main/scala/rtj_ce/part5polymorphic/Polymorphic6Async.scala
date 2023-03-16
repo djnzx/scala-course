@@ -49,7 +49,7 @@ object Polymorphic6Async extends IOApp.Simple {
         println(s"[${Thread.currentThread().getName}] Computing an async MOL")
         cb(Right(42))
       }
-    }.as(Some(IO("Cancelled!").debug.void)) // <-- finalizer in case the computation gets cancelled
+    }.as(Some(IO("Cancelled!").debug0.void)) // <-- finalizer in case the computation gets cancelled
   }
 
   val asyncMeaningOfLifeComplex_v2: IO[Int] = asyncIO.async { (cb: Callback[Int]) =>
@@ -58,11 +58,11 @@ object Polymorphic6Async extends IOApp.Simple {
         println(s"[${Thread.currentThread().getName}] Computing an async MOL")
         cb(Right(42))
       }
-    }.as(Some(IO("Cancelled!").debug.void)) // <-- finalizer in case the computation gets cancelled
+    }.as(Some(IO("Cancelled!").debug0.void)) // <-- finalizer in case the computation gets cancelled
   } // same
 
   val myExecutionContext = ExecutionContext.fromExecutorService(threadPool)
-  val asyncMeaningOfLife_v3 = asyncIO.evalOn(IO(42).debug, myExecutionContext).guarantee(IO(threadPool.shutdown()))
+  val asyncMeaningOfLife_v3 = asyncIO.evalOn(IO(42).debug0, myExecutionContext).guarantee(IO(threadPool.shutdown()))
 
   // never
   val neverIO = asyncIO.never

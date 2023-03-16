@@ -25,24 +25,24 @@ import utils.DebugWrapper
 object C5CountdownLatches extends IOApp.Simple {
 
   def announcer(latch: CountDownLatch[IO]): IO[Unit] = for {
-    _ <- IO("Starting race shortly...").debug >> IO.sleep(2.seconds)
-    _ <- IO("5...").debug >> IO.sleep(1.second)
+    _ <- IO("Starting race shortly...").debug0 >> IO.sleep(2.seconds)
+    _ <- IO("5...").debug0 >> IO.sleep(1.second)
     _ <- latch.release
-    _ <- IO("4...").debug >> IO.sleep(1.second)
+    _ <- IO("4...").debug0 >> IO.sleep(1.second)
     _ <- latch.release
-    _ <- IO("3...").debug >> IO.sleep(1.second)
+    _ <- IO("3...").debug0 >> IO.sleep(1.second)
     _ <- latch.release
-    _ <- IO("2...").debug >> IO.sleep(1.second)
+    _ <- IO("2...").debug0 >> IO.sleep(1.second)
     _ <- latch.release
-    _ <- IO("1...").debug >> IO.sleep(1.second)
+    _ <- IO("1...").debug0 >> IO.sleep(1.second)
     _ <- latch.release // gun firing
-    _ <- IO("GO GO GO!").debug
+    _ <- IO("GO GO GO!").debug0
   } yield ()
 
   def createRunner(id: Int, latch: CountDownLatch[IO]): IO[Unit] = for {
-    _ <- IO(s"[runner $id] waiting for signal...").debug
+    _ <- IO(s"[runner $id] waiting for signal...").debug0
     _ <- latch.await // block this fiber until the count reaches 0
-    _ <- IO(s"[runner $id] RUNNING!").debug
+    _ <- IO(s"[runner $id] RUNNING!").debug0
   } yield ()
 
   def sprint(): IO[Unit] = for {
@@ -83,11 +83,11 @@ object C5CountdownLatches extends IOApp.Simple {
   }
 
   def createFileDownloaderTask(id: Int, latch: C5CDLatch, filename: String, destFolder: String): IO[Unit] = for {
-    _     <- IO(s"[task $id] downloading chunk...").debug
+    _     <- IO(s"[task $id] downloading chunk...").debug0
     _     <- IO.sleep((Random.nextDouble() * 1000).toInt.millis)
     chunk <- FileServer.getFileChunk(id)
     _     <- writeToFile(s"$destFolder/$filename.part$id", chunk)
-    _     <- IO(s"[task $id] chunk download complete").debug
+    _     <- IO(s"[task $id] chunk download complete").debug0
     _     <- latch.release
   } yield ()
 
@@ -101,7 +101,7 @@ object C5CountdownLatches extends IOApp.Simple {
   def downloadFile(filename: String, destFolder: String): IO[Unit] = for {
     n     <- FileServer.getNumChunks
     latch <- C5CDLatch(n)
-    _     <- IO(s"Download started on $n fibers.").debug
+    _     <- IO(s"Download started on $n fibers.").debug0
     _     <- (0 until n).toList.parTraverse(id => createFileDownloaderTask(id, latch, filename, destFolder))
     _     <- latch.await
     _     <- (0 until n).toList

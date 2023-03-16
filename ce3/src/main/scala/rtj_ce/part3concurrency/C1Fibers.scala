@@ -17,19 +17,19 @@ object C1Fibers extends IOApp.Simple {
   import utils._
 
   def sameThreadIOs() = for {
-    _ <- meaningOfLife.debug
-    _ <- favLang.debug
+    _ <- meaningOfLife.debug0
+    _ <- favLang.debug0
   } yield ()
 
   // introducing Fiber: a data structure describing an effect running on some thread
   def createFiber: Fiber[IO, Throwable, String] = ??? // almost impossible to create fibers manually
 
   // the fiber is not actually started, but the fiber allocation is wrapped in another effect
-  val aFiber: IO[Fiber[IO, Throwable, Int]] = meaningOfLife.debug.start
+  val aFiber: IO[Fiber[IO, Throwable, Int]] = meaningOfLife.debug0.start
 
   def differentThreadIOs() = for {
     _ <- aFiber
-    _ <- favLang.debug
+    _ <- favLang.debug0
   } yield ()
 
   // joining a fiber
@@ -57,13 +57,13 @@ object C1Fibers extends IOApp.Simple {
   } yield result
 
   def testCancel() = {
-    val task: IO[String] = IO("starting").debug >> IO.sleep(1.second) >> IO("done").debug
+    val task: IO[String] = IO("starting").debug0 >> IO.sleep(1.second) >> IO("done").debug0
     // onCancel is a "finalizer", allowing you to free up resources in case you get canceled
-    val taskWithCancellationHandler: IO[String] = task.onCancel(IO("I'm being cancelled!").debug.void)
+    val taskWithCancellationHandler: IO[String] = task.onCancel(IO("I'm being cancelled!").debug0.void)
 
     for {
       fib    <- taskWithCancellationHandler.start // on a separate thread
-      _      <- IO.sleep(500.millis) >> IO("cancelling").debug // running on the calling thread
+      _      <- IO.sleep(500.millis) >> IO("cancelling").debug0 // running on the calling thread
       _      <- fib.cancel
       result <- fib.join
     } yield result

@@ -16,7 +16,7 @@ object C2DefersNotifier extends IOApp.Simple {
     def downloadFile(contentRef: Ref[IO, String]): IO[Unit] =
       fileParts
         .map { part =>
-          IO(s"[downloader] got '$part'").debug >> IO.sleep(1.second) >> contentRef.update(currentContent => currentContent + part)
+          IO(s"[downloader] got '$part'").debug0 >> IO.sleep(1.second) >> contentRef.update(currentContent => currentContent + part)
         }
         .sequence
         .void
@@ -24,9 +24,9 @@ object C2DefersNotifier extends IOApp.Simple {
     def notifyFileComplete(contentRef: Ref[IO, String]): IO[Unit] = for {
       file <- contentRef.get
       _    <-
-        if (file.endsWith("<EOF>")) IO("[notifier] File download complete").debug
+        if (file.endsWith("<EOF>")) IO("[notifier] File download complete").debug0
         else
-          IO("[notifier] downloading...").debug >> IO.sleep(500.millis) >> notifyFileComplete(contentRef) // busy wait!
+          IO("[notifier] downloading...").debug0 >> IO.sleep(500.millis) >> notifyFileComplete(contentRef) // busy wait!
     } yield ()
 
     for {
@@ -41,13 +41,13 @@ object C2DefersNotifier extends IOApp.Simple {
   /** deferred works miracles for waiting */
   def fileNotifierWithDeferred(): IO[Unit] = {
     def notifyFileComplete(signal: Deferred[IO, String]): IO[Unit] = for {
-      _ <- IO("[notifier] downloading...").debug
+      _ <- IO("[notifier] downloading...").debug0
       _ <- signal.get // blocks until the signal is completed
-      _ <- IO("[notifier] File download complete").debug
+      _ <- IO("[notifier] File download complete").debug0
     } yield ()
 
     def downloadFilePart(part: String, contentRef: Ref[IO, String], signal: Deferred[IO, String]): IO[Unit] = for {
-      _             <- IO(s"[downloader] got '$part'").debug
+      _             <- IO(s"[downloader] got '$part'").debug0
       _             <- IO.sleep(1.second)
       latestContent <- contentRef.updateAndGet(currentContent => currentContent + part)
       _             <- if (latestContent.contains("<EOF>")) signal.complete(latestContent) else IO.unit

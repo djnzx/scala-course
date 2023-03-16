@@ -91,16 +91,16 @@ object С5AsyncIOs extends IOApp.Simple {
         }
       }.as(
         // this is finalizer attached
-        Some(IO("finalizer attached!").debug.void)
+        Some(IO("finalizer attached!").debug0.void)
       )
     }
 
     for {
       fib <- asyncMeaningOfLifeIO_v2.start
-      _   <- IO.sleep(500.millis) >> IO("cancelling...").debug >> fib.cancel
+      _   <- IO.sleep(500.millis) >> IO("cancelling...").debug0 >> fib.cancel
       _   <- fib.join // IO[Outcome[IO, E, A]]
     } yield ()
   }
 
-  override def run = demoAsyncCancellation().debug >> IO(threadPool.shutdown())
+  override def run = demoAsyncCancellation().debug0 >> IO(threadPool.shutdown())
 }

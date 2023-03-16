@@ -15,23 +15,23 @@ object C3MutexPlayground extends IOApp.Simple {
   def criticalTask(): IO[Int] = IO.sleep(1.second) >> IO(Random.nextInt(100))
 
   def createNonLockingTask(id: Int): IO[Int] = for {
-    _   <- IO(s"[task $id] working...").debug
+    _   <- IO(s"[task $id] working...").debug0
     res <- criticalTask()
-    _   <- IO(s"[task $id] got result: $res").debug
+    _   <- IO(s"[task $id] got result: $res").debug0
   } yield res
 
   def demoNonLockingTasks(): IO[List[Int]] = (1 to 10).toList.parTraverse(id => createNonLockingTask(id))
 
   def createLockingTask(id: Int, mutex: C3Mutex1): IO[Int] = for {
-    _   <- IO(s"[task $id] waiting for permission...").debug
+    _   <- IO(s"[task $id] waiting for permission...").debug0
     _   <- mutex.acquire // blocks if the mutex has been acquired by some other fiber
     // critical section
-    _   <- IO(s"[task $id] working...").debug
+    _   <- IO(s"[task $id] working...").debug0
     res <- criticalTask()
-    _   <- IO(s"[task $id] got result: $res").debug
+    _   <- IO(s"[task $id] got result: $res").debug0
     // critical section end
     _   <- mutex.release
-    _   <- IO(s"[task $id] lock removed.").debug
+    _   <- IO(s"[task $id] lock removed.").debug0
   } yield res
 
   def demoLockingTasks() = for {
@@ -44,7 +44,7 @@ object C3MutexPlayground extends IOApp.Simple {
     if (id % 2 == 0) createLockingTask(id, mutex)
     else
       for {
-        fib    <- createLockingTask(id, mutex).onCancel(IO(s"[task $id] received cancellation!").debug.void).start
+        fib    <- createLockingTask(id, mutex).onCancel(IO(s"[task $id] received cancellation!").debug0.void).start
         _      <- IO.sleep(2.seconds) >> fib.cancel
         out    <- fib.join
         result <- out match {
@@ -60,5 +60,5 @@ object C3MutexPlayground extends IOApp.Simple {
     results <- (1 to 10).toList.parTraverse(id => createCancellingTask(id, mutex))
   } yield results
 
-  override def run = demoCancellingTasks().debug.void
+  override def run = demoCancellingTasks().debug0.void
 }

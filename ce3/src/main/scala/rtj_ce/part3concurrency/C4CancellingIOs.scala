@@ -13,16 +13,16 @@ object C4CancellingIOs extends IOApp.Simple {
     - IO.race & other APIs
     - manual cancellation
    */
-  val chainOfIOs: IO[Int] = IO("waiting").debug >> IO.canceled >> IO(42).debug
+  val chainOfIOs: IO[Int] = IO("waiting").debug0 >> IO.canceled >> IO(42).debug0
 
   // uncancelable
   // example: online store, payment processor
   // payment process must NOT be canceled
   val specialPaymentSystem = (
-    IO("Payment running, don't cancel me...").debug >>
+    IO("Payment running, don't cancel me...").debug0 >>
       IO.sleep(1.second) >>
-      IO("Payment completed.").debug
-  ).onCancel(IO("MEGA CANCEL OF DOOM!").debug.void)
+      IO("Payment completed.").debug0
+  ).onCancel(IO("MEGA CANCEL OF DOOM!").debug0.void)
 
   val cancellationOfDoom = for {
     fib <- specialPaymentSystem.start
@@ -35,7 +35,7 @@ object C4CancellingIOs extends IOApp.Simple {
 
   val noCancellationOfDoom = for {
     fib <- atomicPayment.start
-    _   <- IO.sleep(500.millis) >> IO("attempting cancellation...").debug >> fib.cancel
+    _   <- IO.sleep(500.millis) >> IO("attempting cancellation...").debug0 >> fib.cancel
     _   <- fib.join
   } yield ()
 
@@ -51,24 +51,24 @@ object C4CancellingIOs extends IOApp.Simple {
     - verify password, CANNOT be cancelled once it's started
    */
   val inputPassword =
-    IO("Input password:").debug >> IO("(typing password)").debug >> IO.sleep(2.seconds) >> IO("RockTheJVM1!")
-  val verifyPassword = (pw: String) => IO("verifying...").debug >> IO.sleep(2.seconds) >> IO(pw == "RockTheJVM1!")
+    IO("Input password:").debug0 >> IO("(typing password)").debug0 >> IO.sleep(2.seconds) >> IO("RockTheJVM1!")
+  val verifyPassword = (pw: String) => IO("verifying...").debug0 >> IO.sleep(2.seconds) >> IO(pw == "RockTheJVM1!")
 
   val authFlow: IO[Unit] = IO.uncancelable { poll =>
     for {
       pw       <- poll(inputPassword).onCancel(
-                    IO("Authentication timed out. Try again later.").debug.void
+                    IO("Authentication timed out. Try again later.").debug0.void
                   ) // this is cancelable
       verified <- verifyPassword(pw) // this is NOT cancelable
       _        <-
-        if (verified) IO("Authentication successful.").debug // this is NOT cancelable
-        else IO("Authentication failed.").debug
+        if (verified) IO("Authentication successful.").debug0 // this is NOT cancelable
+        else IO("Authentication failed.").debug0
     } yield ()
   }
 
   val authProgram = for {
     authFib <- authFlow.start
-    _       <- IO.sleep(3.seconds) >> IO("Authentication timeout, attempting cancel...").debug >> authFib.cancel
+    _       <- IO.sleep(3.seconds) >> IO("Authentication timeout, attempting cancel...").debug0 >> authFib.cancel
     _       <- authFib.join
   } yield ()
 
@@ -81,14 +81,14 @@ object C4CancellingIOs extends IOApp.Simple {
     *   1. Anticipate 2. Run to see if you're correct 3. Prove your theory
     */
   // 1
-  val cancelBeforeMol = IO.canceled >> IO(42).debug
-  val uncancelableMol = IO.uncancelable(_ => IO.canceled >> IO(42).debug)
+  val cancelBeforeMol = IO.canceled >> IO(42).debug0
+  val uncancelableMol = IO.uncancelable(_ => IO.canceled >> IO(42).debug0)
   // uncancelable will eliminate ALL cancel points
 
   // 2
   val invincibleAuthProgram = for {
     authFib <- IO.uncancelable(_ => authFlow).start
-    _       <- IO.sleep(1.seconds) >> IO("Authentication timeout, attempting cancel...").debug >> authFib.cancel
+    _       <- IO.sleep(1.seconds) >> IO("Authentication timeout, attempting cancel...").debug0 >> authFib.cancel
     _       <- authFib.join
   } yield ()
   /*
@@ -98,14 +98,14 @@ object C4CancellingIOs extends IOApp.Simple {
   // 3
   def threeStepProgram(): IO[Unit] = {
     val sequence = IO.uncancelable { poll =>
-      poll(IO("cancelable").debug >> IO.sleep(1.second) >> IO("cancelable end").debug) >>
-        IO("uncancelable").debug >> IO.sleep(1.second) >> IO("uncancelable end").debug >>
-        poll(IO("second cancelable").debug >> IO.sleep(1.second) >> IO("second cancelable end").debug)
+      poll(IO("cancelable").debug0 >> IO.sleep(1.second) >> IO("cancelable end").debug0) >>
+        IO("uncancelable").debug0 >> IO.sleep(1.second) >> IO("uncancelable end").debug0 >>
+        poll(IO("second cancelable").debug0 >> IO.sleep(1.second) >> IO("second cancelable end").debug0)
     }
 
     for {
       fib <- sequence.start
-      _   <- IO.sleep(1500.millis) >> IO("CANCELING").debug >> fib.cancel
+      _   <- IO.sleep(1500.millis) >> IO("CANCELING").debug0 >> fib.cancel
       _   <- fib.join
     } yield ()
   }

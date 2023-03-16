@@ -19,14 +19,14 @@ object Polymorphic1CancellationEx extends IOApp.Simple {
     mc.pure(Thread.sleep(duration.toMillis))
 
   def inputPassword[F[_], E](implicit mc: MonadCancel[F, E]): F[String] = for {
-    _  <- mc.pure("Input password:").debug
-    _  <- mc.pure("(typing password)").debug
+    _  <- mc.pure("Input password:").debug0
+    _  <- mc.pure("(typing password)").debug0
     _  <- unsafeSleep[F, E](5.seconds)
     pw <- mc.pure("RockTheJVM1!")
   } yield pw
 
   def verifyPassword[F[_], E](pw: String)(implicit mc: MonadCancel[F, E]): F[Boolean] = for {
-    _       <- mc.pure("verifying...").debug
+    _       <- mc.pure("verifying...").debug0
     _       <- unsafeSleep[F, E](2.seconds)
     checked <- mc.pure(pw == "RockTheJVM1!")
   } yield checked
@@ -35,20 +35,20 @@ object Polymorphic1CancellationEx extends IOApp.Simple {
     for {
       // this is cancelable
       pw       <- poll(inputPassword).onCancel(
-                    mc.pure("Authentication timed out. Try again later.").debug.void
+                    mc.pure("Authentication timed out. Try again later.").debug0.void
                   )
       // this is NOT cancelable
       verified <- verifyPassword(pw)
       _        <-
         // this is NOT cancelable
-        if (verified) mc.pure("Authentication successful.").debug
-        else mc.pure("Authentication failed.").debug
+        if (verified) mc.pure("Authentication successful.").debug0
+        else mc.pure("Authentication failed.").debug0
     } yield ()
   }
 
   val authProgram: IO[Unit] = for {
     authFib <- authFlow[IO, Throwable].start
-    _       <- IO.sleep(3.seconds) >> IO("Authentication timeout, attempting cancel...").debug >> authFib.cancel
+    _       <- IO.sleep(3.seconds) >> IO("Authentication timeout, attempting cancel...").debug0 >> authFib.cancel
     _       <- authFib.join
   } yield ()
 

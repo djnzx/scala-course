@@ -1,6 +1,6 @@
 package rtj_cats.part1intro
 
-object Implicits {
+object BImplicits {
 
   // implicit classes
   case class Person(name: String) {
