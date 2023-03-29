@@ -2,7 +2,9 @@ package java_issues
 
 import java.util.Scanner
 
-object JavaScannerIsIllDesigned extends App {
+// update: it closes underline stream,
+// and as a result, closes System.in
+object IsJavaScannerIllDesigned extends App {
 
   val in = System.in
 
