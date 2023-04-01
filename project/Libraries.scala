@@ -78,19 +78,18 @@ object Libraries {
   val logback = "ch.qos.logback" % "logback-classic" % Versions.logback
 
   // Test
+  val scalaTestWhole = "org.scalatest" %% "scalatest" % Versions.scalaTest
+  val scalaTestShould = "org.scalatest"  %% "scalatest-shouldmatchers" % Versions.scalaTest
+  val scalaTestFunSpec = "org.scalatest" %% "scalatest-funspec"        % Versions.scalaTest
+
   val scalaCheck = "org.scalacheck" %% "scalacheck" % Versions.scalaCheck
   // scalactic transitively comes from "scalatest-core"
   // val scalactic_ = "org.scalactic" %% "scalactic" % Versions.scalaTest
 
-  val scalaTestWhole = "org.scalatest" %% "scalatest" % Versions.scalaTest
-
-  val scalaTestShould = "org.scalatest"  %% "scalatest-shouldmatchers" % Versions.scalaTest
-  val scalaTestFunSpec = "org.scalatest" %% "scalatest-funspec"        % Versions.scalaTest
-
   /** scalatestplus - is a project by scalatest for integrations org.scalatestplus::scalacheck-1-14 - library to
     * integrate: scalatest + scalacheck
     */
-  val scalaTestScalaCheckIntegration = "org.scalatestplus" %% "scalacheck-1-15" % Versions.scalaTestPlus
+  val scalaTestScalaCheckIntegration = "org.scalatestplus" %% "scalacheck-1-17" % Versions.scalaTestPlus
 
   // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
   val silencerAnnotation = "com.github.ghik" % "silencer-lib" % Versions.silencer % Provided cross CrossVersion.full

@@ -325,16 +325,15 @@ lazy val mix = (project in file("mix"))
       Libraries.http4sServer, // URI
       Libraries.sqlPgDriver,
       Libraries.jsoup,
-      "org.typelevel"    %% "simulacrum"                 % "1.0.1",
-      "org.scalaz"       %% "scalaz-core"                % "7.3.7",
-      "com.propensive"   %% "contextual"                 % "1.2.1",
+      "org.typelevel"  %% "simulacrum"                 % "1.0.1",
+      "org.scalaz"     %% "scalaz-core"                % "7.3.7",
+      "com.propensive" %% "contextual"                 % "1.2.1",
       Libraries.refinedCore,
       Libraries.refinedScalaz,
-      "org.scalaz"       %% "scalaz-deriving-jsonformat" % "2.0.0-M5",
-      "org.apache.lucene" % "lucene-core"                % "7.1.0", // 9.4.0
-      "org.apache.lucene" % "lucene-queryparser"         % "7.1.0",
-      "org.apache.lucene" % "lucene-analyzers-common"    % "7.1.0",
-      "org.apache.lucene" % "lucene-memory"              % "7.1.0"
+      "org.scalaz"     %% "scalaz-deriving-jsonformat" % "2.0.0-M5"
+    ),
+    dependencyOverrides ++= Seq(
+      "org.scalatest" %% "scalatest" % "3.2.15"
     )
   )
 
@@ -357,7 +356,7 @@ lazy val plain2 = (project in file("plain2"))
       "org.scala-lang.modules"     %% "scala-parallel-collections" % "1.0.3",
       "com.softwaremill.quicklens" %% "quicklens"                  % "1.7.3",
       "org.scala-lang"              % "scala-reflect"              % v.vScala,
-      "org.scalaxb"                %% "scalaxb"                    % "1.8.0",
+      "org.scalaxb"                %% "scalaxb"                    % "1.11.0",
       "io.vavr"                     % "vavr"                       % "1.0.0-alpha-3",
       Libraries.scalaTestWhole,
       Libraries.scalaCheck,
@@ -375,14 +374,16 @@ lazy val sparkx = (project in file("sparkx"))
   .settings(
     commonSettings,
     scalaVersion := v.vScala213,
-//    scalaVersion := v.scala212,
-//    scalaVersion := v.scala211,
     scalacOptions -= ScalacOpts.macroAnnotations,
     libraryDependencies ++= Seq(
-//      "org.apache.spark" %% "spark-core" % "2.4.7", // 2.11 / 2.12
-//      "org.apache.spark" %% "spark-sql"  % "2.4.7", // 2.11 / 2.12
-      "org.apache.spark" %% "spark-core" % "3.2.1", // 2.12 / 2.13
-      "org.apache.spark" %% "spark-sql"  % "3.2.1"  // 2.12 / 2.13
+      "org.apache.spark" %% "spark-core" % "3.3.2",
+      "org.apache.spark" %% "spark-sql"  % "3.3.2"
+    ),
+    // it doesn't really fix the issue, but to avoid any sbt failures
+    // TODO: remove or possibly move to another repo later
+    dependencyOverrides ++= Seq(
+      "io.netty"                % "netty-all" % "4.1.90.Final",
+      "org.scala-lang.modules" %% "scala-xml" % "2.1.0"
     )
   )
 
@@ -408,19 +409,6 @@ lazy val typesafe = (project in file("typesafe"))
       Libraries.slf4j("slf4j-simple"),
       "ch.qos.logback"        % "logback-classic" % "1.2.3"
     )
-  )
-
-lazy val zio1 = (project in file("zio1"))
-  .settings(
-    commonSettings,
-    description := "ZIO v1",
-    libraryDependencies ++= Seq(
-      pf.zio %% "zio"          % v.zio1v,
-      pf.zio %% "zio-streams"  % v.zio1v,
-      pf.zio %% "zio-test"     % v.zio1v,
-      pf.zio %% "zio-test-sbt" % v.zio1v % Test
-    ),
-    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
   )
 
 lazy val zio2 = (project in file("zio2"))

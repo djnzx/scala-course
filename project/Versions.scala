@@ -1,7 +1,7 @@
 object Versions {
 
   // Scala versions
-  val vScala210 = "2.10.7" // Nov, 2017
+  val vScala210 = "2.10.7"  // Nov, 2017
   val vScala211 = "2.11.12" // Nov, 2017
   val vScala212 = "2.12.17" // Sep, 2022
   val vScala213 = "2.13.10" // Oct, 8 2022
@@ -37,7 +37,7 @@ object Versions {
   val http4sJwtAuth = "0.0.7"
   val log4cats = "1.0.1"
   val newtype = "0.4.4"
-  val refined = "0.9.28"
+  val refined = "0.10.3"
   val redis4cats = "0.9.6"
   val skunk = "0.5.1"
   val doobie = "0.13.4" // 1.0.0-RC2, 2022, Jan
@@ -52,12 +52,12 @@ object Versions {
   val shapeless = "2.3.10"
 
   // testing
-  val scalaTest = "3.2.10"
-  val scalaCheck = "1.15.4"
-  val scalaTestPlus = "3.2.10.0"
-//  val scalaTest = "3.2.15"
-//  val scalaCheck = "1.17.0"
-//  val scalaTestPlus = "3.2.15.0"
+//  val scalaTest = "3.2.11"
+//  val scalaCheck = "1.15.4"
+//  val scalaTestPlus = "3.2.10.0"
+  val scalaTest = "3.2.15"
+  val scalaCheck = "1.17.0"
+  val scalaTestPlus = "3.2.15.0"
 
   // compiler plugins
   val silencer = "1.6.0"
