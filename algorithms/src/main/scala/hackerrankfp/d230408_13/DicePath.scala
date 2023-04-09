@@ -15,7 +15,7 @@ object DicePath extends App {
     def turnD: Cell = dice.turnD.pipe(dice => Cell(dice, sum + dice.value))
   }
 
-  def solveMax(m: Int, n: Int): Int = {
+  def solveMax0(m: Int, n: Int) = {
     val a        = Array.fill[Iterable[Cell]](m, n)(None)
     val indicesY = a.indices
     val indicesX = a(0).indices
@@ -36,24 +36,33 @@ object DicePath extends App {
       }
     }
 
-    a(m - 1)(n - 1).maxBy(_.sum).sum
+    a
+//    a(m - 1)(n - 1).maxBy(_.sum).sum
   }
 
-//  val t0 = System.currentTimeMillis()
+  val t0 = System.currentTimeMillis()
+
 //  (1 to 60)
 //    .flatMap(m => (1 to 60).map(n => m -> n))
 //    .foreach { case (m, n) =>
-//      val r = solveMax(m, n)
+//      val r = a0(m-1)(n-1).maxBy(_.sum).sum
 //      println(s"m=$m n=$n max=$r")
 //    }
 //  val t1 = System.currentTimeMillis()
 //  println(t1 - t0)
 
-  val n = scala.io.StdIn.readInt()
-  (1 to n)
+  val n            = scala.io.StdIn.readInt()
+  val testcases    = (1 to n)
     .map(_ => scala.io.StdIn.readLine())
     .map(_.split(" ").map(_.toInt))
-    .map { case Array(m, n) => solveMax(m, n) }
+    .flatMap {
+      case Array(m, n) => Some(m -> n)
+      case _           => None
+    }
+  val (maxM, maxN) = testcases.foldLeft(0 -> 0) { case ((maxM, maxN), (m, n)) => (maxM max m) -> (maxN max n) }
+  val a0           = solveMax0(maxM, maxN)
+  testcases
+    .map { case (m, n) => a0(m - 1)(n - 1).maxBy(_.sum).sum }
     .foreach(println)
 
 }
