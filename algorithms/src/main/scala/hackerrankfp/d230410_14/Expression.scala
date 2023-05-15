@@ -22,6 +22,7 @@ object Expression extends App {
     val all: List[Op] = List(Add, Sub, Mul)
   }
 
+
   def valid(x: Int) = x % 101 == 0
 
   def show(ns: Array[Int], ops: List[Op]) =
