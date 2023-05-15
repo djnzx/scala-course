@@ -23,6 +23,7 @@ object Expression extends App {
   }
 
 
+
   def valid(x: Int) = x % 101 == 0
 
   def show(ns: Array[Int], ops: List[Op]) =
