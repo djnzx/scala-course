@@ -10,22 +10,25 @@ object Versions {
   val vScala32 = "3.2.2"
   val vScala = vScala213
 
-  // Cats & Effect
+  // testing
+  val scalaTest = "3.2.16" // https://mvnrepository.com/artifact/org.scalatest/scalatest
+  val scalaCheck = "1.17.0" // https://mvnrepository.com/artifact/org.scalacheck/scalacheck
+  val scalaTestPlus = "3.2.16.0" // https://mvnrepository.com/artifact/org.scalatestplus/scalacheck-1-17
+
+  // cats & cats effect
   val cats = "2.9.0"
   val catsEffect2 = "2.5.5"
-  val catsEffect3 = "3.4.8"
 
-  // FS2
+  // fs2
   val fs2ce2 = "2.5.11"
-  val fs2ce3 = "3.6.1"
 
   // Http4s
   val http4sCe2 = "0.21.34"
-  val http4sCe3 = "0.23.13" // 0.23.18, but server 0.23.13
+  val http4sCe3 = "0.23.15" // 0.23.19
   val http4s1 = "1.0.0-M39"
 
   // Json
-  val circe = "0.14.2" // 0.14.3
+  val circe = "0.14.2" // 0.14.5
   val circeGenericExtras = "0.14.3"
   val circeYaml = "0.14.2"
 
@@ -50,14 +53,6 @@ object Versions {
   val scalaz = "7.2.30"
   val jsoup = "1.13.1"
   val shapeless = "2.3.10"
-
-  // testing
-//  val scalaTest = "3.2.11"
-//  val scalaCheck = "1.15.4"
-//  val scalaTestPlus = "3.2.10.0"
-  val scalaTest = "3.2.15"
-  val scalaCheck = "1.17.0"
-  val scalaTestPlus = "3.2.15.0"
 
   // compiler plugins
   val silencer = "1.6.0"

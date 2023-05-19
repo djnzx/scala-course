@@ -174,10 +174,11 @@ lazy val ce3 = (project in file("ce3"))
       CompilerPlugins.contextApplied,
       CompilerPlugins.betterMonadicFor,
       "org.typelevel"               %% "cats-core"             % v.cats,
-      "org.typelevel"               %% "cats-effect"           % v.catsEffect3,
+      "org.typelevel"               %% "cats-effect"           % "3.5.0",
       "com.github.cb372"            %% "cats-retry"            % "3.1.0",
-      "co.fs2"                      %% "fs2-core"              % v.fs2ce3,
-      "co.fs2"                      %% "fs2-io"                % v.fs2ce3,
+      "co.fs2"                      %% "fs2-core"              % "3.7.0",
+      "co.fs2"                      %% "fs2-io"                % "3.7.0",
+      "com.github.fd4s"             %% "fs2-kafka"             % "2.6.0",
       "org.typelevel"               %% "munit-cats-effect-3"   % "1.0.7",
       "org.http4s"                  %% "http4s-dsl"            % v.http4sCe3, // transitive: "http4s-core"
       "org.http4s"                  %% "http4s-circe"          % v.http4sCe3,
@@ -195,7 +196,6 @@ lazy val ce3 = (project in file("ce3"))
       "io.circe"                    %% "circe-generic-extras"  % v.circeGenericExtras,
       "io.circe"                    %% "circe-yaml"            % v.circeYaml,
       "io.circe"                    %% "circe-fs2"             % "0.14.1",
-      "com.github.fd4s"             %% "fs2-kafka"             % "2.5.0",
       "com.beachape"                %% "enumeratum"            % "1.7.2",
       "com.beachape"                %% "enumeratum-circe"      % "1.7.2",
       "com.beachape"                %% "enumeratum-doobie"     % "1.7.3",
@@ -302,13 +302,13 @@ lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
-      pf.lihaoyi                %% "upickle"    % "2.0.0", // http://www.lihaoyi.com/upickle
-      pf.lihaoyi                %% "ujson"      % "2.0.0",
-      pf.lihaoyi                %% "os-lib"     % "0.8.1", // https://github.com/lihaoyi/os-lib
-      pf.lihaoyi                %% "scalatags"  % "0.11.1",
-      pf.lihaoyi                %% "requests"   % "0.7.1",
-      pf.lihaoyi                %% "geny"       % "0.7.1",
-      pf.lihaoyi                %% "fastparse"  % "2.3.3", // https://www.lihaoyi.com/fastparse/
+      pf.lihaoyi                %% "upickle"    % "3.0.0", // http://www.lihaoyi.com/upickle
+      pf.lihaoyi                %% "ujson"      % "3.0.0",
+      pf.lihaoyi                %% "os-lib"     % "0.9.1", // https://github.com/lihaoyi/os-lib
+      pf.lihaoyi                %% "scalatags"  % "0.12.0",
+      pf.lihaoyi                %% "requests"   % "0.8.0",
+      pf.lihaoyi                %% "geny"       % "1.0.0",
+      pf.lihaoyi                %% "fastparse"  % "3.0.0", // https://www.lihaoyi.com/fastparse/
       "com.atlassian.commonmark" % "commonmark" % "0.17.0"
     )
   )
