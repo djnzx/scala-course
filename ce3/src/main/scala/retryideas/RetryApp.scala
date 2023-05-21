@@ -24,9 +24,9 @@ object RetryApp extends IOApp.Simple {
   val policy: RetryPolicy[IO] = {
     import retry.RetryPolicies._
     // 6 retries starting from 1 gives us +1 +2 +4 +8 +16 +32 = 63 sec ~= 1 min
-    val growing = limitRetries[IO](5) join exponentialBackoff[IO](1.second)
+    val growing: RetryPolicy[IO] = limitRetries[IO](5) join exponentialBackoff[IO](1.second)
     // constant never terminating retry
-    val constant = constantDelay[IO](10.seconds)
+    val constant: RetryPolicy[IO] = constantDelay[IO](10.seconds)
 
     growing followedBy constant
   }

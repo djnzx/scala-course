@@ -14,6 +14,7 @@ object Intro extends App {
 
   // lens applied to object
   val a: AppliedLens[User, String] = user.focus(_.name)
+
   // value extracted to Option[A]
   val b: Option[String] = user.focus(_.name).getOption
   // value extracted to A

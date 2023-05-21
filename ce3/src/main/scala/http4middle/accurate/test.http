@@ -1,0 +1,42 @@
+# context is optional (absent)
+### 200 - /a + None
+GET http://localhost:8080/a
+
+# context is optional (present)
+#### 200 - /a + Some(qwe123)
+GET http://localhost:8080/a
+X-Token: qwe123
+
+# context is optional (absent)
+#### 200 - /b + None
+GET http://localhost:8080/b
+
+# context is optional (present)
+#### 200 - /b + Some(123)
+GET http://localhost:8080/b
+X-Code: 123
+
+
+# context is required (absent)
+#### 401 - UNAUTORIZED
+GET http://localhost:8080/c
+
+# context is required (present)
+#### 200 - /c + asd456
+GET http://localhost:8080/c
+X-Token: asd456
+
+# context is required (absent)
+#### 401 - UNAUTORIZED
+GET http://localhost:8080/d
+
+# context is required (present)
+#### 200 - /c + 123456
+GET http://localhost:8080/d
+X-Code: 123456
+
+# it should be handled by orElse handler
+# and return 404 NotFound, but due to nuances of implementation
+# it returns
+#### 404 / 200-orElse(/z), BUT 401 UNAUTORIZED
+GET http://localhost:8080/z
