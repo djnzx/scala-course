@@ -25,6 +25,6 @@ object ContextExtractor {
 
   def pure[F[_]: Applicative, A](f: Request[F] => A): Extractor[F, Nothing, A] = either(f.andThen(_.asRight))
 
-  def unsafe[F[_]: Applicative, A](f: Request[F] => A): Extractor[F, Throwable, A] = either(rq => Try(f(rq)).toEither)
+  def unsafe[F[_]: Applicative, A](f: Request[F] => A): Extractor[F, Throwable, A] = either((rq: Request[F]) => Try(f(rq)).toEither)
 
 }

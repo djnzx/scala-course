@@ -3,11 +3,12 @@ object Versions {
   // Scala versions
   val vScala210 = "2.10.7"  // Nov, 2017
   val vScala211 = "2.11.12" // Nov, 2017
-  val vScala212 = "2.12.17" // Sep, 2022
-  val vScala213 = "2.13.10" // Oct, 8 2022
+  val vScala212 = "2.12.18" // Jun, 2023
+  val vScala213 = "2.13.11" // Jun, 2023
   val vScala30 = "3.0.2"
   val vScala31 = "3.1.3"
   val vScala32 = "3.2.2"
+  val vScala33 = "3.3.0"
   val vScala = vScala213
 
   // testing

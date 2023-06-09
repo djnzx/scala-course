@@ -11,7 +11,8 @@ object Utils {
   def fileFromResources(name: String): File =
     new File(absolutePathFromResources(name))
 
-  def contentsFromResources(name: String): String =
-    Files.readString(Paths.get(absolutePathFromResources(name)))
+  // JDK 11
+  def contentsFromResources(name: String): String = ???
+//    Files.readString(Paths.get(absolutePathFromResources(name)))
 
 }
