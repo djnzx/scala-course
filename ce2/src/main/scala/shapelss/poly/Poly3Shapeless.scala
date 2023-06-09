@@ -1,9 +1,7 @@
 package shapelss.poly
 
 import shapeless.ops.coproduct.Inject
-import shapeless.:+:
-import shapeless.CNil
-import shapeless.Poly1
+import shapeless.{:+:, CNil, Coproduct, Poly1}
 
 /** https://akmetiuk.com */
 object Poly3Shapeless extends App {
@@ -18,6 +16,7 @@ object Poly3Shapeless extends App {
   val x1: X = X(1)
   val x2: X = X(3.14)
   val x3: X = X(true)
+  val x4: X = Coproduct[X](1) // now, we don't need `X.apply`
 
   val fi = (x: Int) => s"I'm an Int: $x"
   val fd = (x: Double) => s"I'm a Double: $x"
