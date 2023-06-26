@@ -44,7 +44,7 @@ object Versions {
   val refined = "0.10.3"
   val redis4cats = "0.9.6"
   val skunk = "0.5.1"
-  val doobie = "0.13.4" // 1.0.0-RC2, 2022, Jan
+  val doobie = "0.13.4" // 1.0.0-RC4, 2023, Jun
   val squants = "1.6.0"
   val logback = "1.4.3"
   val zio1v = "1.0.3"
