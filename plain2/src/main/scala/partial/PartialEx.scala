@@ -1,6 +1,6 @@
 package partial
 
-import scala.collection.mutable.ArraySeq
+import scala.collection.mutable
 
 object PartialEx extends App {
 
@@ -8,7 +8,7 @@ object PartialEx extends App {
 
   val accessor: Int => String = a.apply
   
-  val aa: ArraySeq.ofRef[String] = wrapRefArray(a)
+  val aa: mutable.ArraySeq.ofRef[String] = wrapRefArray(a)
   
   val f: Int => Option[String] = a.lift
   
@@ -21,7 +21,8 @@ object PartialEx extends App {
   
   val l = Vector("a", "b")
   val fx: Int => Option[String] = l.lift
-  
+  val pf: PartialFunction[Int, String] = fx.unlift
+
 //  val toInt: String => Int = (s: String) => s.toInt
 //  val toIntOpt: String => Option[Int] = PartialFunction.fromFunction(toInt).lift
 //  
