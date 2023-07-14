@@ -33,10 +33,9 @@ object Versions {
   val circeGenericExtras = "0.14.3"
   val circeYaml = "0.14.2"
 
-  val catsMtlCore = "0.7.1"
+  val catsMtl = "1.3.1"
   val catsRetry = "3.1.0"
 
-  val ciris = "1.0.4"
   val javaxCrypto = "1.0.1"
   val http4sJwtAuth = "0.0.7"
   val log4cats = "1.0.1"
@@ -44,12 +43,11 @@ object Versions {
   val refined = "0.10.3"
   val redis4cats = "0.9.6"
   val skunk = "0.5.1"
-  val doobie = "0.13.4" // 1.0.0-RC4, 2023, Jun
-  val squants = "1.6.0"
+  val doobie = "1.0.0-RC2" // 1.0.0-RC4, 2023, Jun
   val logback = "1.4.3"
   val zio1v = "1.0.3"
   val zio2v = "2.0.0-M1"
-  val sqlPg = "42.3.1"
+  val sqlPg = "42.5.4"
   val sqlH2 = "1.4.200"
   val scalaz = "7.2.30"
   val jsoup = "1.13.1"

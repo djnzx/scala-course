@@ -1,5 +1,4 @@
-import sbt.Def.spaceDelimited
-import sbt.Keys._
+import sbt.Keys.*
 import sbtbuildinfo.BuildInfoOption
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
@@ -9,7 +8,7 @@ lazy val v = Versions
 lazy val commonSettings = Seq(
   scalaVersion := v.vScala,
   organization := "alexr",
-  version := "2023.06.09",
+  version := "2023.07.14",
   javacOptions ++= CompilerOptions.javacOptions,
   scalacOptions ++= CompilerOptions.scalacOptions,
   scalacOptions -= ScalacOpts.warningsAsFatals,
@@ -80,9 +79,7 @@ lazy val munitx = (project in file("munitx"))
   )
 
 lazy val algorithms = (project in file("algorithms"))
-  .settings(
-    commonSettings
-  )
+  .settings(commonSettings)
 
 lazy val amt = (project in file("amt"))
   .settings(
@@ -108,53 +105,20 @@ lazy val ce2 = project
     description := "Cats Effects 2",
     libraryDependencies ++= Seq(
       CompilerPlugins.kindProjector,
-      CompilerPlugins.contextApplied,
-      CompilerPlugins.betterMonadicFor,
       "org.typelevel"   %% "cats-core"            % v.cats,
-      "org.typelevel"   %% "cats-free"            % v.cats,
       "org.typelevel"   %% "cats-effect"          % v.catsEffect2,
       "org.typelevel"   %% "cats-effect-laws"     % v.catsEffect2,
-      "co.fs2"          %% "fs2-core"             % v.fs2ce2,
-      "co.fs2"          %% "fs2-reactive-streams" % v.fs2ce2,
-      "co.fs2"          %% "fs2-io"               % v.fs2ce2,
-      "com.github.fd4s" %% "fs2-kafka"            % "1.10.0", // CE2
-      Libraries.circeParser,    // plain parsers to Map => "circe-core", "circe-jawn" => "circe-numbers"
       Libraries.circeGenericEx, // generic derivation, adt support => "circe-generic" => "circe-core"
-      Libraries.circeShapes,
-      Libraries.circeTesting,
-//      Libraries.circeRefined,
-      "org.http4s"          %% "http4s-blaze-server"  % v.http4sCe2,
-      "org.http4s"          %% "http4s-blaze-client"  % v.http4sCe2,
-      "org.http4s"          %% "http4s-ember-server"  % v.http4sCe2,
-      "org.http4s"          %% "http4s-ember-client"  % v.http4sCe2,
-      "org.http4s"          %% "http4s-circe"         % v.http4sCe2,
-      "org.http4s"          %% "http4s-dsl"           % v.http4sCe2,
-      Libraries.doobieCore,
-      Libraries.doobiePg,
-      Libraries.sqlPgDriver,
-      "dev.profunktor"      %% "console4cats"         % "0.8.1",
-      "org.scala-lang"       % "scala-reflect"        % v.vScala,
-      "com.google.cloud"     % "google-cloud-logging" % "3.7.2",
-      "org.typelevel"       %% "cats-tagless-macros"  % "0.11",
-      "org.scalameta"       %% "munit-scalacheck"     % "0.7.8",
-      "org.typelevel"       %% "munit-cats-effect-2"  % "1.0.6",
-      "ch.qos.logback"       % "logback-classic"      % v.logback,
-      "com.kubukoz"         %% "debug-utils"          % "1.1.3",
-      "org.mongodb.scala"   %% "mongo-scala-driver"   % "4.5.1",
-      "com.beachape"        %% "enumeratum"           % "1.7.0",
-      "com.beachape"        %% "enumeratum-circe"     % "1.7.0",
-      "com.beachape"        %% "enumeratum-doobie"    % "1.7.0",
-      "com.sksamuel.avro4s" %% "avro4s-core"          % "4.1.0",
-      "com.sksamuel.avro4s" %% "avro4s-json"          % "4.1.0",
-      "com.sksamuel.avro4s" %% "avro4s-kafka"         % "4.1.0",
-      "com.sksamuel.avro4s" %% "avro4s-refined"       % "4.1.0",
-      Libraries.scalaTestFunSpec,
-      Libraries.scalaTestShould,
-      Libraries.catsLaws,    // ?
-      Libraries.catsMtlCore, // ?
-      Libraries.newtype,
-      Libraries.refinedCore,
-      Libraries.shapeless
+      "org.http4s"        %% "http4s-ember-server"  % v.http4sCe2,
+      "org.http4s"        %% "http4s-ember-client"  % v.http4sCe2,
+      "org.http4s"        %% "http4s-circe"         % v.http4sCe2,
+      "org.http4s"        %% "http4s-dsl"           % v.http4sCe2,
+      "org.scala-lang"     % "scala-reflect"        % v.vScala,
+      "org.typelevel"     %% "cats-tagless-macros"  % "0.11",
+      "org.scalameta"     %% "munit-scalacheck"     % "0.7.8",
+      "org.typelevel"     %% "munit-cats-effect-2"  % "1.0.6",
+      "ch.qos.logback"     % "logback-classic"      % v.logback,
+      "org.mongodb.scala" %% "mongo-scala-driver"   % "4.5.1"
     ),
     dependencyOverrides ++= Seq(
       "io.circe" %% "circe-core" % "0.14.4"
@@ -197,6 +161,7 @@ lazy val ce3 = (project in file("ce3"))
       "io.circe"                    %% "circe-yaml"            % v.circeYaml,
       "io.circe"                    %% "circe-fs2"             % "0.14.1",
       "io.circe"                    %% "circe-shapes"          % "0.14.1",
+      "io.circe"                    %% "circe-testing"         % "0.14.1",
       "com.beachape"                %% "enumeratum"            % "1.7.2",
       "com.beachape"                %% "enumeratum-circe"      % "1.7.2",
       "com.beachape"                %% "enumeratum-doobie"     % "1.7.3",
@@ -207,9 +172,14 @@ lazy val ce3 = (project in file("ce3"))
       "jakarta.mail"                 % "jakarta.mail-api"      % "2.1.1",
       "io.scalaland"                %% "chimney"               % "0.7.5",
       "org.tpolecat"                %% "skunk-core"            % "0.6.0",
+      Libraries.doobieCore,
+      Libraries.doobiePg,
+      Libraries.sqlPgDriver,
       Libraries.newtype,
       Libraries.refinedCore,
-      Libraries.shapeless
+      Libraries.shapeless,
+      "com.kubukoz"                 %% "debug-utils"           % "1.1.3",
+      Libraries.catsMtl
     )
   )
   .enablePlugins(ScalaxbPlugin)
@@ -225,11 +195,13 @@ lazy val httpt = (project in file("httpt"))
     compilerPlugins,
     description := "HTTP load tests",
     libraryDependencies ++= Seq(
-      "org.http4s" %% "http4s-dsl"          % "1.0.0-M39",
-      "org.http4s" %% "http4s-circe"        % "1.0.0-M39",
-      "org.http4s" %% "http4s-ember-server" % "1.0.0-M39",
-      "org.http4s" %% "http4s-blaze-server" % "1.0.0-M38",
-      "org.http4s" %% "http4s-jetty-server" % "1.0.0-M32"
+      "org.http4s"    %% "http4s-dsl"          % "1.0.0-M39",
+      "org.http4s"    %% "http4s-circe"        % "1.0.0-M39",
+      "org.http4s"    %% "http4s-ember-server" % "1.0.0-M39", // 13.07.2023
+      "org.http4s"    %% "http4s-blaze-server" % "1.0.0-M38", //  4.01.2023
+      "org.http4s"    %% "http4s-jetty-server" % "1.0.0-M32",
+      "org.typelevel" %% "log4cats-core"       % "2.6.0",
+      "org.typelevel" %% "log4cats-slf4j"      % "2.6.0"
     ),
     dependencyOverrides ++= Seq(
       "org.http4s" %% "http4s-core"   % "1.0.0-M39",
@@ -259,7 +231,6 @@ lazy val k8a = (project in file("k8a"))
       "org.http4s"       %% "http4s-blaze-server"  % "1.0.0-M36",
       "org.http4s"       %% "http4s-circe"         % "1.0.0-M36",
       "io.circe"         %% "circe-generic-extras" % "0.14.2"
-//      "io.circe"         %% "circe-parser"         % "0.15.0-M1",
     )
   )
 
@@ -432,14 +403,3 @@ lazy val zio2 = (project in file("zio2"))
 //addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
 //addCommandAlias("check", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")
 // https://www.scala-sbt.org/release/docs/Library-Dependencies.html
-
-lazy val initCommands = s"""
-    import cats._, cats.data._, cats.implicits._, fs2._, cats.effect._, cats.effect.unsafe.implicits.global
-  """
-
-lazy val ping = inputKey[Unit]("Will ping the server")
-ping := {
-  println("pinging server...")
-  val x: Seq[String] = spaceDelimited("<arg>").parsed
-  println(x)
-}

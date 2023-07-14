@@ -1,4 +1,4 @@
-import ScalacOpts._
+import ScalacOpts.*
 
 /** https://docs.scala-lang.org/overviews/compiler-options/index.html
   * https://docs.scala-lang.org/overviews/compiler-options/index.html#Warning_Settings
@@ -9,9 +9,9 @@ object CompilerOptions {
 
   val javacOptions = Seq(
     "-source",
-    "8",
+    "11",
     "-target",
-    "8",
+    "11",
   )
 
   val scalacOptions = Seq(
@@ -26,7 +26,7 @@ object CompilerOptions {
     warningsAsFatals, // ??? doesn't work as expected
     matchShouldBeExhaustive,
     lintDeprecation,
-    //    "-Xlint:unsound-match",
+    // "-Xlint:unsound-match",
     // "-Ypartial-unification", // by default since 2.13
     "-language:existentials",
     "-Ywarn-numeric-widen",

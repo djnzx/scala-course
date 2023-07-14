@@ -2,7 +2,6 @@ import sbt._
 
 object Libraries {
   def circe(artifact: String, v: String = Versions.circe): ModuleID = "io.circe"   %% artifact % v
-  def ciris(artifact: String): ModuleID                             = "is.cir"     %% artifact % Versions.ciris
   def http4s(artifact: String): ModuleID                            = "org.http4s" %% artifact % Versions.http4sCe2
   def zio1(artifact: String): ModuleID                              = pf.zio       %% artifact % Versions.zio1v withSources () withJavadoc ()
   def zio2(artifact: String): ModuleID                              = pf.zio       %% artifact % Versions.zio2v withSources () withJavadoc ()
@@ -16,14 +15,13 @@ object Libraries {
   def slf4j(artifact: String): ModuleID           = pf.slf4j                 % artifact % Versions.slf4j17
   val tsconfig: ModuleID                          = pf.typesafe              % "config" % Versions.tsconfig
 
-  val shapeless   = "com.chuusai"      %% "shapeless"     % Versions.shapeless
-  val jsoup       = "org.jsoup"         % "jsoup"         % Versions.jsoup
-  val cats        = pf.typelevel       %% "cats-core"     % Versions.cats withSources () withJavadoc ()
-  val catsLaws    = pf.typelevel       %% "cats-laws"     % Versions.cats withSources () withJavadoc ()
-  val catsMtlCore = pf.typelevel       %% "cats-mtl-core" % Versions.catsMtlCore withSources () withJavadoc ()
-  val catsEffect  = pf.typelevel       %% "cats-effect"   % Versions.catsEffect2 withSources () withJavadoc ()
-  val squants     = pf.typelevel       %% "squants"       % Versions.squants
-  val catsRetry   = "com.github.cb372" %% "cats-retry"    % Versions.catsRetry
+  val shapeless  = "com.chuusai"      %% "shapeless"   % Versions.shapeless
+  val jsoup      = "org.jsoup"         % "jsoup"       % Versions.jsoup
+  val cats       = pf.typelevel       %% "cats-core"   % Versions.cats withSources () withJavadoc ()
+  val catsLaws   = pf.typelevel       %% "cats-laws"   % Versions.cats withSources () withJavadoc ()
+  val catsMtl    = pf.typelevel       %% "cats-mtl"    % Versions.catsMtl withSources () withJavadoc ()
+  val catsEffect = pf.typelevel       %% "cats-effect" % Versions.catsEffect2 withSources () withJavadoc ()
+  val catsRetry  = "com.github.cb372" %% "cats-retry"  % Versions.catsRetry
 
   val fs2core     = fs2("fs2-core")
   val fs2io       = fs2("fs2-io")
@@ -39,10 +37,6 @@ object Libraries {
   val circeRefined   = circe("circe-refined")
   val circeShapes    = circe("circe-shapes")
   val circeTesting   = circe("circe-testing")
-
-  val cirisCore    = ciris("ciris")
-  val cirisEnum    = ciris("ciris-enumeratum")
-  val cirisRefined = ciris("ciris-refined")
 
   val http4sServer = http4s("http4s-blaze-server")
   val http4sDsl    = http4s("http4s-dsl")
