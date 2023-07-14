@@ -6,8 +6,9 @@ import io.circe.generic.AutoDerivation
 import org.http4s.client.Client
 import org.http4s.Request
 import org.http4s.Status
+import org.http4s.circe.CirceSensitiveDataEntityDecoder.circeEntityDecoder
 
-class PreciseResponseHandling[F[_]: Sync](httpClient: Client[F]) extends EED[F] {
+class PreciseResponseHandling[F[_]: Sync](httpClient: Client[F]) {
 
   sealed trait AccessTokenResponse
   case class AccessTokenProvided(token: String) extends AccessTokenResponse
