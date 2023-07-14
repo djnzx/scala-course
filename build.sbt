@@ -201,10 +201,11 @@ lazy val ce3 = (project in file("ce3"))
       "com.beachape"                %% "enumeratum-doobie"     % "1.7.3",
       "com.beachape"                %% "enumeratum-cats"       % "1.7.2",
       "com.beachape"                %% "enumeratum-scalacheck" % "1.7.2",
-      "io.kubernetes"                % "client-java-api"       % "17.0.1",
-      "io.kubernetes"                % "client-java"           % "17.0.1",
+      "io.kubernetes"                % "client-java-api"       % "18.0.0",
+      "io.kubernetes"                % "client-java"           % "18.0.0",
       "jakarta.mail"                 % "jakarta.mail-api"      % "2.1.1",
-      "io.scalaland"                %% "chimney"               % "0.7.0"
+      "io.scalaland"                %% "chimney"               % "0.7.5",
+      "org.tpolecat"                %% "skunk-core"            % "0.6.0"
     )
   )
   .enablePlugins(ScalaxbPlugin)
