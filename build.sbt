@@ -196,6 +196,7 @@ lazy val ce3 = (project in file("ce3"))
       "io.circe"                    %% "circe-generic-extras"  % v.circeGenericExtras,
       "io.circe"                    %% "circe-yaml"            % v.circeYaml,
       "io.circe"                    %% "circe-fs2"             % "0.14.1",
+      "io.circe"                    %% "circe-shapes"          % "0.14.1",
       "com.beachape"                %% "enumeratum"            % "1.7.2",
       "com.beachape"                %% "enumeratum-circe"      % "1.7.2",
       "com.beachape"                %% "enumeratum-doobie"     % "1.7.3",
@@ -205,7 +206,10 @@ lazy val ce3 = (project in file("ce3"))
       "io.kubernetes"                % "client-java"           % "18.0.0",
       "jakarta.mail"                 % "jakarta.mail-api"      % "2.1.1",
       "io.scalaland"                %% "chimney"               % "0.7.5",
-      "org.tpolecat"                %% "skunk-core"            % "0.6.0"
+      "org.tpolecat"                %% "skunk-core"            % "0.6.0",
+      Libraries.newtype,
+      Libraries.refinedCore,
+      Libraries.shapeless
     )
   )
   .enablePlugins(ScalaxbPlugin)

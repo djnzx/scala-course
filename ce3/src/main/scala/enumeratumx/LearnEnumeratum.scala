@@ -1,15 +1,16 @@
 package enumeratumx
 
 import cats.implicits.catsSyntaxEitherId
+import cats.implicits.catsSyntaxOptionId
 import enumeratum.EnumEntry.Lowercase
 import enumeratum.EnumEntry.Snakecase
 import enumeratum.EnumEntry.Uppercase
 import enumeratum._
 import io.circe.syntax.EncoderOps
-import org.scalactic.Equality
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
+/**  */
 object LearnEnumeratum {
 
   /** 1. extend EnumEntry + naming rule:
@@ -36,8 +37,7 @@ object LearnEnumeratum {
   sealed trait Color extends EnumEntry with Lowercase with Snakecase
 //    with Uppercase
 
-  /** 2. object extends Enum[A] */
-
+  /** 2. object extends Enum[A] + needed abilities */
   object Color
       extends Enum[Color]
       with CirceEnum[Color]    // Encoder[A] + Decoder[A]
@@ -55,48 +55,55 @@ object LearnEnumeratum {
 
 }
 
-object Equalities {
-  implicit val intDifferenceLeeThan10: Equality[Int] = new Equality[Int] {
-    override def areEqual(a1: Int, b: Any): Boolean = b match {
-      case a2: Int => math.abs(a1 - a2) < 10
-      case _       => false
-    }
-  }
-}
 
 class LearnEnumeratumSpec extends AnyFunSpec with Matchers {
   import LearnEnumeratum._
 
-  describe("1") {
-    it("equalities") {
-      import Equalities._
-      1 shouldEqual 10
-      1 should equal(10)
+  object data {
+
+    private def enquote(x: String) = {
+      val q = '"'
+      q + x + q
     }
-    it("1") {
 
-      val q         = '"'
-      val c1: Color = Color.Red
-      val c2: Color = Color.Blue(3)
-      val n1        = "red"
-      val n2        = "blue(3)"
-      val j1        = q + n1 + q
-      val j2        = q + n2 + q
+    val c1: Color = Color.Red
+    val c2: Color = Color.Green
+    val s1        = "red"
+    val s2        = "green"
+    val j1        = enquote(s1)
+    val j2        = enquote(s2)
+  }
 
-      c1.entryName shouldBe n1
-      c2.entryName shouldBe n2
+  describe("plain serialization / deserialization to / from String") {
+
+    import data._
+
+    it("serializes to String with help of enumeratum") {
+      c1.entryName shouldBe s1
+      c2.entryName shouldBe s2
+    }
+
+    it("deserializes from String with help of enumeratum") {
+      Color.withNameOption(s1) shouldBe c1.some
+      Color.withNameOption(s2) shouldBe c2.some
+      Color.withNameOption("abracadabra") shouldBe None
+    }
+
+  }
+
+  describe("serialization / deserialization with help of circe codec provided by enumeratum") {
+
+    import data._
+
+    it("serializes to String with help of enumeratum") {
+      c1.asJson.noSpaces shouldBe j1
+      c2.asJson.noSpaces shouldBe j2
+    }
+    it("deserializes from String with help of enumeratum") {
       io.circe.parser.decode[Color](j1) shouldBe c1.asRight
-      // enums deserialization for case classes doesn't work
-//      println(c1.entryName)
-//      println(c2.entryName)
-//      println(c1.asJson)
-//      println(c2.asJson)
-//      pprint.pprintln(
-//        io.circe.parser.decode[Color](j1)
-//      )
-//      pprint.pprintln(
-//        io.circe.parser.decode[Color](j2)
-//      )
+      io.circe.parser.decode[Color](j2) shouldBe c2.asRight
+      io.circe.parser.decode[Color]("abracadabra").isLeft shouldBe true
     }
+
   }
 }

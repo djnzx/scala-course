@@ -1,36 +1,34 @@
 package rtj_cats.auth
 
-import cats.effect.Sync
-import io.circe.Decoder
-import io.circe.Encoder
+import cats.effect.Concurrent
+import io.circe.{Decoder, Encoder}
 import io.circe.generic.AutoDerivation
 import io.circe.parser.decode
 import io.circe.syntax.EncoderOps
+import org.http4s.{EntityDecoder, EntityEncoder}
+import org.http4s.circe.{jsonEncoderOf, jsonOf}
+
 import java.util.UUID
-import org.http4s.EntityDecoder
-import org.http4s.EntityEncoder
-import org.http4s.circe.jsonEncoderOf
-import org.http4s.circe.jsonOf
 
 /** ADT deserialization */
 object AuthApi extends App {
 
   case class AuthRequest(user: String, pass: String)
   object AuthRequest extends AutoDerivation {
-    implicit def enityEncoder[F[_]]: EntityEncoder[F, AuthRequest] = jsonEncoderOf
-    implicit def entityDecoder[F[_]: Sync]: EntityDecoder[F, AuthRequest] = jsonOf
+    implicit def entityEncoder[F[_]]: EntityEncoder[F, AuthRequest] = jsonEncoderOf
+    implicit def entityDecoder[F[_]: Concurrent]: EntityDecoder[F, AuthRequest] = jsonOf
   }
 
   sealed trait AuthResponse
   case class AuthSuccess(token: UUID) extends AuthResponse
   object AuthSuccess extends AutoDerivation {
-    implicit def enityEncoder[F[_]]: EntityEncoder[F, AuthSuccess] = jsonEncoderOf
-    implicit def entityDecoder[F[_]: Sync]: EntityDecoder[F, AuthSuccess] = jsonOf
+    implicit def entityEncoder[F[_]]: EntityEncoder[F, AuthSuccess] = jsonEncoderOf
+    implicit def entityDecoder[F[_]: Concurrent]: EntityDecoder[F, AuthSuccess] = jsonOf
   }
   case class AuthFailed(message: String) extends AuthResponse
   object AuthFailed extends AutoDerivation {
-    implicit def enityEncoder[F[_]]: EntityEncoder[F, AuthFailed] = jsonEncoderOf
-    implicit def entityDecoder[F[_]: Sync]: EntityDecoder[F, AuthFailed] = jsonOf
+    implicit def entityEncoder[F[_]]: EntityEncoder[F, AuthFailed] = jsonEncoderOf
+    implicit def entityDecoder[F[_]: Concurrent]: EntityDecoder[F, AuthFailed] = jsonOf
   }
 
   object AuthResponse {
@@ -48,7 +46,7 @@ object AuthApi extends App {
     ).reduceLeft(_ or _)
 
     implicit def enityEncoder[F[_]]: EntityEncoder[F, AuthResponse] = jsonEncoderOf
-    implicit def entityDecoder[F[_]: Sync]: EntityDecoder[F, AuthResponse] = jsonOf
+    implicit def entityDecoder[F[_]: Concurrent]: EntityDecoder[F, AuthResponse] = jsonOf
   }
 
   val r1: AuthResponse = AuthSuccess(UUID.randomUUID())

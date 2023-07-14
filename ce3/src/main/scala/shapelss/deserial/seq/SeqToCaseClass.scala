@@ -31,7 +31,21 @@ object SeqToCaseClass {
     def read[A: Reader](s: Iterable[String]): Result[A] = pick[A].read(s)
 
     /** given generic representation, pick corresponding reader, read, and map to the target type */
-    def pickAndRead[A, HL: Reader](generic: Aux[A, HL]) = pick[HL].map(generic.from)
+    def pickAndRead[A, HL: Reader](generic: Aux[A, HL]): Reader[A] = {
+      val f: HL => A = generic.from
+      val hlReader: Reader[HL] = pick[HL]
+      hlReader.map(f)
+    }
+    def make[A: Generic]: Reader[A] = {
+      val ga = Generic[A]
+      def f = ga.from _
+//      implicitly[Reader[Generic[A]#Repr]]
+      val impl: Reader[Generic[A]#Repr] = ??? //pick[Generic[A]#Repr]
+//      def ga: Generic[A]#Repr => A = Generic[A].from _
+      //val f = ga.from
+//      impl.map(f)
+      ???
+    }
 
     private def head[A](as: Iterable[A]): Result[A] = as match {
       case Nil    => Left(DeSequenceIsEmpty)

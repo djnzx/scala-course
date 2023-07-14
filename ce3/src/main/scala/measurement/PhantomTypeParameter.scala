@@ -1,4 +1,4 @@
-package measure
+package measurement
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers

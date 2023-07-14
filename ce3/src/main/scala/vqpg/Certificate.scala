@@ -5,7 +5,6 @@ import io.circe.Json
 import io.circe.generic.semiauto.deriveEncoder
 import io.circe.syntax.EncoderOps
 import java.time.LocalDate
-import java.time.LocalTime
 
 case class Certificate(
     id: String,

@@ -11,9 +11,8 @@ import cats.implicits._
 import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
-import rtj_cats.auth.AuthApi.AuthRequest
 
-class AuthRoutes[F[_]: Monad: Sync](authService: AuthService) extends Http4sDsl[F] {
+class AuthRoutes[F[_]: Monad: Concurrent](authService: AuthService) extends Http4sDsl[F] {
 
   val routes: HttpRoutes[F] = HttpRoutes.of {
     case GET -> Root                 => Ok("hello")

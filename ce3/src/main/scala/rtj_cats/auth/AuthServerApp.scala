@@ -3,6 +3,7 @@ package rtj_cats.auth
 import cats.effect.ExitCode
 import cats.effect.IO
 import cats.effect.IOApp
+import com.comcast.ip4s.IpLiteralSyntax
 import org.http4s.HttpApp
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.implicits._
@@ -15,7 +16,7 @@ object AuthServerApp extends IOApp {
 
   val server = EmberServerBuilder
     .default[IO]
-    .withPort(8080)
+    .withPort(port"8080")
     .withHttpApp(app)
     .build
     .use(_ => IO.never)

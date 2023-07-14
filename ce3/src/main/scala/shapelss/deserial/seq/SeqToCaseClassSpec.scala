@@ -11,8 +11,9 @@ class SeqToCaseClassSpec extends AnyFunSpec with Matchers {
 
     case class ExcelLine(a: String, b: String, c: Boolean, d: Option[Double])
     object ExcelLine {
-      val ga = Generic[ExcelLine]
-      implicit val reader = Reader.pickAndRead(ga)
+      private val ga = Generic[ExcelLine]
+      implicit val reader: Reader[ExcelLine] = Reader.pickAndRead(ga)
+//      implicit val reader2: Reader[ExcelLine] = Reader.make[ExcelLine]
     }
 
     it("should deserialize 1") {
