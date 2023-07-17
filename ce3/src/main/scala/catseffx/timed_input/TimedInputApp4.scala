@@ -8,7 +8,6 @@ import cats.implicits._
 import scala.concurrent.duration._
 import scala.io.StdIn
 
-
 // https://typelevel.org/cats-effect/docs/faq
 object TimedInputApp4 extends IOApp.Simple {
 
