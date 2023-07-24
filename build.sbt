@@ -80,6 +80,10 @@ lazy val munitx = (project in file("munitx"))
 
 lazy val algorithms = (project in file("algorithms"))
   .settings(commonSettings)
+  .settings(
+    // compiled with JDK17
+    libraryDependencies += "org.springframework.security" % "spring-security-crypto" % "6.1.2"
+  )
 
 lazy val amt = (project in file("amt"))
   .settings(

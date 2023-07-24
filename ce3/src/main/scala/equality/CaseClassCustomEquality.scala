@@ -1,12 +1,17 @@
 package equality
 
+import org.scalacheck.Prop.forAll
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalactic.Equality
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 import shapeless.::
 import shapeless.Generic
+import shapeless.Generic.Aux
 import shapeless.HList
 import shapeless.HNil
+
+import scala.util.Random
 
 // case class custom equality
 object CaseClassCustomEquality {
@@ -90,6 +95,28 @@ class CaseClassCustomEqualitySpec extends AnyFunSpec with Matchers {
       val g2 = mkGenT[Person]
     }
 
+  }
+
+  describe("props") {
+
+    implicit val arbitraryPerson: Arbitrary[Person] = Arbitrary(
+      for {
+        name <- Gen.alphaStr
+        age <- Gen.choose(0, 100)
+      } yield Person(name, age)
+    )
+
+    it("1") {
+      val g: Aux[Person, String :: Int :: HNil] = Generic[Person]
+
+
+      val prop = forAll { (p1: Person) =>
+        val p2 = p1.copy(age = p1.age + Random.nextInt(9))
+        caseClassEq[Person, String :: Int :: HNil].areEqual(p1, p2)
+      }
+
+      prop.check()
+    }
   }
 
 }
