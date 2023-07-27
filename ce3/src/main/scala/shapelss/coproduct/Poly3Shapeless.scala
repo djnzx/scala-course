@@ -1,8 +1,6 @@
-package shapelesscoproduct
+package shapelss.coproduct
 
-import shapeless.:+:
-import shapeless.CNil
-import shapeless.Poly1
+import shapeless.{:+:, CNil, Poly1}
 import shapeless.ops.coproduct.Inject
 
 import scala.reflect.runtime.universe.reify
