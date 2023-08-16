@@ -1,1 +1,1 @@
-a
+contents of file a.txt

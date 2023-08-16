@@ -32,4 +32,5 @@ object Doobie5 extends IOApp.Simple {
           IO(println(s"id: $id, name:$name"))
         },
       )
+
 }

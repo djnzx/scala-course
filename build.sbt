@@ -20,7 +20,9 @@ lazy val commonSettings = Seq(
     Libraries.scalaCheck,
     Libraries.scalaTestFunSpec,
     Libraries.scalaTestShould,
-    Libraries.scalaTestScalaCheckIntegration
+    Libraries.scalaTestScalaCheckIntegration,
+    "org.mockito" %% "mockito-scala-scalatest" % "1.17.14" // + "org.mockito" % "mockito-core" % "4.8.1"
+//    "org.scalatestplus" %% "mockito-4-11" % "3.2.16.0" // "org.mockito" % "mockito-core" % "4.11.0"
   )
 )
 
@@ -109,20 +111,20 @@ lazy val ce2 = project
     description := "Cats Effects 2",
     libraryDependencies ++= Seq(
       CompilerPlugins.kindProjector,
-      "org.typelevel"   %% "cats-core"            % v.cats,
-      "org.typelevel"   %% "cats-effect"          % v.catsEffect2,
-      "org.typelevel"   %% "cats-effect-laws"     % v.catsEffect2,
+      "org.typelevel" %% "cats-core"        % v.cats,
+      "org.typelevel" %% "cats-effect"      % v.catsEffect2,
+      "org.typelevel" %% "cats-effect-laws" % v.catsEffect2,
       Libraries.circeGenericEx, // generic derivation, adt support => "circe-generic" => "circe-core"
-      "org.http4s"        %% "http4s-ember-server"  % v.http4sCe2,
-      "org.http4s"        %% "http4s-ember-client"  % v.http4sCe2,
-      "org.http4s"        %% "http4s-circe"         % v.http4sCe2,
-      "org.http4s"        %% "http4s-dsl"           % v.http4sCe2,
-      "org.scala-lang"     % "scala-reflect"        % v.vScala,
-      "org.typelevel"     %% "cats-tagless-macros"  % "0.11",
-      "org.scalameta"     %% "munit-scalacheck"     % "0.7.8",
-      "org.typelevel"     %% "munit-cats-effect-2"  % "1.0.6",
-      "ch.qos.logback"     % "logback-classic"      % v.logback,
-      "org.mongodb.scala" %% "mongo-scala-driver"   % "4.5.1"
+      "org.http4s"        %% "http4s-ember-server" % v.http4sCe2,
+      "org.http4s"        %% "http4s-ember-client" % v.http4sCe2,
+      "org.http4s"        %% "http4s-circe"        % v.http4sCe2,
+      "org.http4s"        %% "http4s-dsl"          % v.http4sCe2,
+      "org.scala-lang"     % "scala-reflect"       % v.vScala,
+      "org.typelevel"     %% "cats-tagless-macros" % "0.11",
+      "org.scalameta"     %% "munit-scalacheck"    % "0.7.8",
+      "org.typelevel"     %% "munit-cats-effect-2" % "1.0.6",
+      "ch.qos.logback"     % "logback-classic"     % v.logback,
+      "org.mongodb.scala" %% "mongo-scala-driver"  % "4.5.1"
     ),
     dependencyOverrides ++= Seq(
       "io.circe" %% "circe-core" % "0.14.4"
@@ -305,12 +307,14 @@ lazy val mix = (project in file("mix"))
       Libraries.http4sServer, // URI
       Libraries.sqlPgDriver,
       Libraries.jsoup,
-      "org.typelevel"  %% "simulacrum"                 % "1.0.1",
-      "org.scalaz"     %% "scalaz-core"                % "7.3.7",
-      "com.propensive" %% "contextual"                 % "1.2.1",
+      "net.ruippeixotog" %% "scala-scraper"              % "3.0.0",
+      "org.typelevel"    %% "simulacrum"                 % "1.0.1",
+      "org.scalaz"       %% "scalaz-core"                % "7.3.7",
+      "com.propensive"   %% "contextual"                 % "1.2.1",
       Libraries.refinedCore,
       Libraries.refinedScalaz,
-      "org.scalaz"     %% "scalaz-deriving-jsonformat" % "2.0.0-M5"
+      "io.jsonwebtoken"  % "jjwt"                       % "0.9.1",
+      "org.scalaz"       %% "scalaz-deriving-jsonformat" % "2.0.0-M5"
     ),
     dependencyOverrides ++= Seq(
       "org.scalatest" %% "scalatest" % "3.2.15"

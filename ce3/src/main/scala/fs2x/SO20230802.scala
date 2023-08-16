@@ -8,7 +8,7 @@ import fs2.io.file.Path
 import java.nio.file.{Path => JPath}
 
 // https://stackoverflow.com/questions/76817051/handle-large-file-with-stream-in-scala/76819409#76819409
-object SO20230802 {
+object SO20230802 extends App {
 
   case class User(a: Any, b: Any, c: Any, d: Any)
 
@@ -30,7 +30,6 @@ object SO20230802 {
       .as(true)
       .lastOr(false)
       .compile
-      .last
-      .map(_.getOrElse(sys.error("never happen by design")))
+      .lastOrError
 
 }
