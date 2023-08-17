@@ -34,8 +34,8 @@ object Doobie7whereIn extends IOApp.Simple {
   val f1 = whereIn[(Int, String)](fr"SELECT id, name FROM t1", whereInOpt("id", List()))
   val f2 = whereIn[(Int, String)](fr"SELECT id, name FROM t1", whereInOpt("id", List(1, 2, 3)))
 
-  val data1 = f1.transact(xa[IO])
-  val data2 = f2.transact(xa[IO])
+  val data1: IO[List[(Int, String)]] = f1.transact(xa[IO])
+  val data2: IO[List[(Int, String)]] = f2.transact(xa[IO])
 
   override def run: IO[Unit] = {
     data1.flatMap {
