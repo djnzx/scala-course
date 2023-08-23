@@ -1,4 +1,0 @@
-- https://medium.com/crowdbotics/a-complete-one-by-one-guide-to-install-docker-on-your-mac-os-using-homebrew-e818eb4cfc3
-
-- install docker desktop
-- brew install docker docker-machine

@@ -4,7 +4,7 @@ import scala.sys.process._
 
 object SystemInterop extends App {
 
-  val process = Process("g", Seq("-la"))
+  val process = Process("ls", Seq("-la"))
   val outcome = process.!!.trim
 
   println("--")

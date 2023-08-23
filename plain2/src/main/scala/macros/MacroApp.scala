@@ -7,7 +7,7 @@ object MacroApp {
 
   def main(args: Array[String]): Unit = {
 //    hello()
-//    print_param(33)
+//    print_param(33, 3.14)
 
     val x = "G"
     val y = "K"

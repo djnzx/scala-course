@@ -8,7 +8,7 @@ lazy val v = Versions
 lazy val commonSettings = Seq(
   scalaVersion := v.vScala,
   organization := "alexr",
-  version := "2023.07.14",
+  version := "2023.08.24",
   javacOptions ++= CompilerOptions.javacOptions,
   scalacOptions ++= CompilerOptions.scalacOptions,
   scalacOptions -= ScalacOpts.warningsAsFatals,
@@ -18,11 +18,11 @@ lazy val commonSettings = Seq(
     Libraries.fansi,
     Libraries.sourcecode,
     Libraries.scalaCheck,
+    Libraries.scalaCheckShapeless,
     Libraries.scalaTestFunSpec,
     Libraries.scalaTestShould,
     Libraries.scalaTestScalaCheckIntegration,
-    "org.mockito" %% "mockito-scala-scalatest" % "1.17.14" // + "org.mockito" % "mockito-core" % "4.8.1"
-//    "org.scalatestplus" %% "mockito-4-11" % "3.2.16.0" // "org.mockito" % "mockito-core" % "4.11.0"
+    Libraries.scalaMockito
   )
 )
 
@@ -111,23 +111,23 @@ lazy val ce2 = project
     description := "Cats Effects 2",
     libraryDependencies ++= Seq(
       CompilerPlugins.kindProjector,
-      "org.typelevel" %% "cats-core"        % v.cats,
-      "org.typelevel" %% "cats-effect"      % v.catsEffect2,
-      "org.typelevel" %% "cats-effect-laws" % v.catsEffect2,
-      Libraries.circeGenericEx, // generic derivation, adt support => "circe-generic" => "circe-core"
-      "org.http4s"        %% "http4s-ember-server" % v.http4sCe2,
-      "org.http4s"        %% "http4s-ember-client" % v.http4sCe2,
-      "org.http4s"        %% "http4s-circe"        % v.http4sCe2,
-      "org.http4s"        %% "http4s-dsl"          % v.http4sCe2,
-      "org.scala-lang"     % "scala-reflect"       % v.vScala,
-      "org.typelevel"     %% "cats-tagless-macros" % "0.11",
-      "org.scalameta"     %% "munit-scalacheck"    % "0.7.8",
-      "org.typelevel"     %% "munit-cats-effect-2" % "1.0.6",
-      "ch.qos.logback"     % "logback-classic"     % v.logback,
-      "org.mongodb.scala" %% "mongo-scala-driver"  % "4.5.1"
+      "org.typelevel"     %% "cats-core"            % v.cats,
+      "org.typelevel"     %% "cats-effect"          % v.catsEffect2,
+      "org.typelevel"     %% "cats-effect-laws"     % v.catsEffect2,
+      "io.circe"          %% "circe-generic-extras" % "0.14.3", // generic derivation: "circe-generic" => "circe-core"
+      "org.http4s"        %% "http4s-ember-server"  % v.http4sCe2,
+      "org.http4s"        %% "http4s-ember-client"  % v.http4sCe2,
+      "org.http4s"        %% "http4s-circe"         % v.http4sCe2,
+      "org.http4s"        %% "http4s-dsl"           % v.http4sCe2,
+      "org.scala-lang"     % "scala-reflect"        % v.vScala,
+      "org.typelevel"     %% "cats-tagless-macros"  % "0.11",
+      "org.scalameta"     %% "munit-scalacheck"     % "0.7.8",
+      "org.typelevel"     %% "munit-cats-effect-2"  % "1.0.6",
+      "ch.qos.logback"     % "logback-classic"      % v.logback,
+      "org.mongodb.scala" %% "mongo-scala-driver"   % "4.9.0"
     ),
     dependencyOverrides ++= Seq(
-      "io.circe" %% "circe-core" % "0.14.4"
+      "io.circe" %% "circe-core" % "0.14.5"
     )
   )
 
@@ -144,11 +144,11 @@ lazy val ce3 = (project in file("ce3"))
       CompilerPlugins.contextApplied,
       CompilerPlugins.betterMonadicFor,
       "org.typelevel"               %% "cats-core"             % v.cats,
-      "org.typelevel"               %% "cats-effect"           % "3.5.0",
+      "org.typelevel"               %% "cats-effect"           % "3.5.1",
       "com.github.cb372"            %% "cats-retry"            % "3.1.0",
-      "co.fs2"                      %% "fs2-core"              % "3.7.0",
-      "co.fs2"                      %% "fs2-io"                % "3.7.0",
-      "com.github.fd4s"             %% "fs2-kafka"             % "2.6.0",
+      "co.fs2"                      %% "fs2-core"              % "3.8.0",
+      "co.fs2"                      %% "fs2-io"                % "3.8.0",
+      "com.github.fd4s"             %% "fs2-kafka"             % "2.6.1",
       "org.typelevel"               %% "munit-cats-effect-3"   % "1.0.7",
       "org.http4s"                  %% "http4s-dsl"            % v.http4sCe3, // transitive: "http4s-core"
       "org.http4s"                  %% "http4s-circe"          % v.http4sCe3,
@@ -156,18 +156,18 @@ lazy val ce3 = (project in file("ce3"))
       "org.http4s"                  %% "http4s-blaze-client"   % v.http4sCe3,
       "org.http4s"                  %% "http4s-ember-server"   % v.http4sCe3,
       "org.http4s"                  %% "http4s-ember-client"   % v.http4sCe3,
-      "com.softwaremill.sttp.tapir" %% "tapir-core"            % "1.2.9",
-      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"      % "1.2.9",
-      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"   % "1.2.9",
+      "com.softwaremill.sttp.tapir" %% "tapir-core"            % "1.7.2",
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"      % "1.7.2",
+      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"   % "1.7.2",
       "org.typelevel"               %% "log4cats-core"         % "2.5.0",
       "org.typelevel"               %% "log4cats-slf4j"        % "2.5.0",
-      "io.circe"                    %% "circe-parser"          % "0.15.0-M1",
+      "io.circe"                    %% "circe-parser"          % "0.14.5",
       "io.circe"                    %% "circe-optics"          % "0.14.1",
-      "io.circe"                    %% "circe-generic-extras"  % v.circeGenericExtras,
+      "io.circe"                    %% "circe-generic-extras"  % "0.14.3",
       "io.circe"                    %% "circe-yaml"            % v.circeYaml,
       "io.circe"                    %% "circe-fs2"             % "0.14.1",
-      "io.circe"                    %% "circe-shapes"          % "0.14.1",
-      "io.circe"                    %% "circe-testing"         % "0.14.1",
+      "io.circe"                    %% "circe-shapes"          % "0.14.5",
+      "io.circe"                    %% "circe-testing"         % "0.14.5",
       "com.beachape"                %% "enumeratum"            % "1.7.2",
       "com.beachape"                %% "enumeratum-circe"      % "1.7.2",
       "com.beachape"                %% "enumeratum-doobie"     % "1.7.3",
@@ -240,29 +240,6 @@ lazy val k8a = (project in file("k8a"))
     )
   )
 
-/** John A. De Goes Project ZIO https://zio.dev https://ziverge.com */
-lazy val degoes = (project in file("degoes"))
-  .settings(
-    commonSettings,
-    libraryDependencies ++= Seq(
-      "io.lemonlabs"          %% "scala-uri"        % "1.5.1",
-      // ZIO
-      Libraries.zio1("zio"),
-      Libraries.zio1("zio-test"),
-      Libraries.zio1("zio-test-sbt"),
-      Libraries.zio1("zio-test-magnolia"),
-      Libraries.zio1("zio-streams"),
-      pf.zio                  %% "zio-interop-cats" % "2.2.0.1",
-      pf.zio                  %% "zio-kafka"        % "0.13.0",
-      "com.github.pureconfig" %% "pureconfig"       % "0.14.0",
-      Libraries.sqlPgDriver,
-      Libraries.doobieCore,
-      Libraries.doobiePg,
-      Libraries.doobieHikari
-    ),
-    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
-  )
-
 lazy val fp_red = (project in file("fp_red"))
   .settings(
     commonSettings,
@@ -313,7 +290,7 @@ lazy val mix = (project in file("mix"))
       "com.propensive"   %% "contextual"                 % "1.2.1",
       Libraries.refinedCore,
       Libraries.refinedScalaz,
-      "io.jsonwebtoken"  % "jjwt"                       % "0.9.1",
+      "io.jsonwebtoken"   % "jjwt"                       % "0.9.1",
       "org.scalaz"       %% "scalaz-deriving-jsonformat" % "2.0.0-M5"
     ),
     dependencyOverrides ++= Seq(
@@ -337,11 +314,10 @@ lazy val plain2 = (project in file("plain2"))
     libraryDependencies ++= Seq(
       CompilerPlugins.kindProjector,
       "io.chymyst"                 %% "curryhoward"                % "0.3.8",
-      "org.scala-lang.modules"     %% "scala-parallel-collections" % "1.0.3",
-      "com.softwaremill.quicklens" %% "quicklens"                  % "1.7.3",
+      "org.scala-lang.modules"     %% "scala-parallel-collections" % "1.0.4",
+      "com.softwaremill.quicklens" %% "quicklens"                  % "1.8.10",
       "org.scala-lang"              % "scala-reflect"              % v.vScala,
       "org.scalaxb"                %% "scalaxb"                    % "1.11.0",
-      "io.vavr"                     % "vavr"                       % "1.0.0-alpha-3",
       Libraries.scalaTestWhole,
       Libraries.scalaCheck,
       Libraries.scalaTestScalaCheckIntegration
@@ -407,7 +383,3 @@ lazy val zio2 = (project in file("zio2"))
     ),
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
   )
-
-//addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
-//addCommandAlias("check", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")
-// https://www.scala-sbt.org/release/docs/Library-Dependencies.html

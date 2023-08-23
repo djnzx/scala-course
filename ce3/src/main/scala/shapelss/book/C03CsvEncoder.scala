@@ -97,13 +97,21 @@ object C03CsvEncoder extends App {
       enc: CsvEncoder[R],
     ): CsvEncoder[A] = createEncoder(a => enc.encode(gen.to(a)))
 
+  def genericEncoder2[A, R](
+      implicit
+      gen: Generic.Aux[A, R],
+      enc: CsvEncoder[R],
+    ): CsvEncoder[A] = createEncoder(a => enc.encode(gen.to(a)))
+
   case class Foo(bar: String, baz: Int) // must be case class !
 //  implicit def anyToGeneric[A] = Generic[A]
   implicit val gFoo = Generic[Foo]
   writeCsv(List(Foo("abc", 123)))
 
   case class Booking(room: String, date: Date)
+
   implicit val dateEncoder: CsvEncoder[Date] = createEncoder(d => List(d.toString))
+
   writeCsv(List(Booking("QWE", new Date())))
   pprint.pprintln(reify(CsvEncoder[Int]))
 

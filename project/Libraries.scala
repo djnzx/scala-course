@@ -1,12 +1,9 @@
-import sbt._
+import sbt.*
 
 object Libraries {
-  def circe(artifact: String, v: String = Versions.circe): ModuleID = "io.circe"   %% artifact % v
-  def http4s(artifact: String): ModuleID                            = "org.http4s" %% artifact % Versions.http4sCe2
-  def zio1(artifact: String): ModuleID                              = pf.zio       %% artifact % Versions.zio1v withSources () withJavadoc ()
-  def zio2(artifact: String): ModuleID                              = pf.zio       %% artifact % Versions.zio2v withSources () withJavadoc ()
-  def scalaz(artifact: String): ModuleID                            = "org.scalaz" %% artifact % Versions.scalaz
-  def fs2(artifact: String): ModuleID                               = "co.fs2"     %% artifact % Versions.fs2ce2
+  def http4s(artifact: String): ModuleID = "org.http4s" %% artifact % Versions.http4sCe2
+  def zio2(artifact: String): ModuleID   = pf.zio       %% artifact % Versions.zio2v
+  def fs2(artifact: String): ModuleID    = "co.fs2"     %% artifact % Versions.fs2ce2
 
   def slick(artifact: String): ModuleID           = s"${pf.typesafe}.slick" %% artifact % Versions.slick
   def akka(artifact: String, v: String): ModuleID = s"${pf.typesafe}.akka"  %% artifact % v
@@ -17,26 +14,14 @@ object Libraries {
 
   val shapeless  = "com.chuusai"      %% "shapeless"   % Versions.shapeless
   val jsoup      = "org.jsoup"         % "jsoup"       % Versions.jsoup
-  val cats       = pf.typelevel       %% "cats-core"   % Versions.cats withSources () withJavadoc ()
-  val catsLaws   = pf.typelevel       %% "cats-laws"   % Versions.cats withSources () withJavadoc ()
-  val catsMtl    = pf.typelevel       %% "cats-mtl"    % Versions.catsMtl withSources () withJavadoc ()
-  val catsEffect = pf.typelevel       %% "cats-effect" % Versions.catsEffect2 withSources () withJavadoc ()
+  val cats       = pf.typelevel       %% "cats-core"   % Versions.cats
+  val catsLaws   = pf.typelevel       %% "cats-laws"   % Versions.cats
+  val catsMtl    = pf.typelevel       %% "cats-mtl"    % Versions.catsMtl
+  val catsEffect = pf.typelevel       %% "cats-effect" % Versions.catsEffect2
   val catsRetry  = "com.github.cb372" %% "cats-retry"  % Versions.catsRetry
 
-  val fs2core     = fs2("fs2-core")
-  val fs2io       = fs2("fs2-io")
-  val fs2reactive = fs2("fs2-reactive-streams")
-
-  val scalazCore   = scalaz("scalaz-core")
-  val scalazEffect = scalaz("scalaz-effect")
-
-  val circeCore      = circe("circe-core")
-  val circeGeneric   = circe("circe-generic")
-  val circeGenericEx = circe("circe-generic-extras", Versions.circeGenericExtras)
-  val circeParser    = circe("circe-parser")
-  val circeRefined   = circe("circe-refined")
-  val circeShapes    = circe("circe-shapes")
-  val circeTesting   = circe("circe-testing")
+  val fs2core = fs2("fs2-core")
+  val fs2io   = fs2("fs2-io")
 
   val http4sServer = http4s("http4s-blaze-server")
   val http4sDsl    = http4s("http4s-dsl")
@@ -76,14 +61,18 @@ object Libraries {
   val scalaTestShould  = "org.scalatest" %% "scalatest-shouldmatchers" % Versions.scalaTest
   val scalaTestFunSpec = "org.scalatest" %% "scalatest-funspec"        % Versions.scalaTest
 
-  val scalaCheck = "org.scalacheck" %% "scalacheck" % Versions.scalaCheck
+  // https://mvnrepository.com/artifact/org.scalacheck/scalacheck
+  val scalaCheck          = "org.scalacheck"             %% "scalacheck"                % "1.17.0"
+  // https://github.com/alexarchambault/scalacheck-shapeless
+  val scalaCheckShapeless = "com.github.alexarchambault" %% "scalacheck-shapeless_1.16" % "1.3.1"
   // scalactic transitively comes from "scalatest-core"
   // val scalactic_ = "org.scalactic" %% "scalactic" % Versions.scalaTest
 
   /** scalatestplus - is a project by scalatest for integrations org.scalatestplus::scalacheck-1-14 - library to
     * integrate: scalatest + scalacheck
     */
-  val scalaTestScalaCheckIntegration = "org.scalatestplus" %% "scalacheck-1-17" % Versions.scalaTestPlus
+  val scalaTestScalaCheckIntegration = "org.scalatestplus" %% "scalacheck-1-17"         % Versions.scalaTestPlus
+  val scalaMockito                   = "org.mockito"       %% "mockito-scala-scalatest" % "1.17.14" // tr: "org.mockito" % "mockito-core" % "4.8.1"
 
   // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
   val silencerAnnotation = "com.github.ghik" % "silencer-lib" % Versions.silencer % Provided cross CrossVersion.full

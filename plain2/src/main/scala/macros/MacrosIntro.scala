@@ -16,12 +16,14 @@ object MacrosIntro  {
     ex
   }
 
-  def print_param(x: Any): Unit = macro print_param_impl
+  def print_param(x: Int, y: Double): Unit = macro print_param_impl
 
-  def print_param_impl(c: whitebox.Context)(x: c.Expr[Any]): c.Expr[Unit] = {
+  def print_param_impl(c: whitebox.Context)(x: c.Expr[Any], y: c.Expr[Any]): c.Expr[Unit] = {
     import c.universe._
+
     val ex: c.universe.Expr[Unit] = reify {
       println(x.splice)
+      println(y.splice)
     }
     ex
   }

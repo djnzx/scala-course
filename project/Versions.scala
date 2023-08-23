@@ -1,6 +1,5 @@
 object Versions {
 
-  // Scala versions
   val vScala210 = "2.10.7"  // Nov, 2017
   val vScala211 = "2.11.12" // Nov, 2017
   val vScala212 = "2.12.18" // Jun, 2023
@@ -13,11 +12,10 @@ object Versions {
 
   // testing
   val scalaTest = "3.2.16" // https://mvnrepository.com/artifact/org.scalatest/scalatest
-  val scalaCheck = "1.17.0" // https://mvnrepository.com/artifact/org.scalacheck/scalacheck
   val scalaTestPlus = "3.2.16.0" // https://mvnrepository.com/artifact/org.scalatestplus/scalacheck-1-17
 
   // cats & cats effect
-  val cats = "2.9.0"
+  val cats = "2.10.0"
   val catsEffect2 = "2.5.5"
 
   // fs2
@@ -30,7 +28,6 @@ object Versions {
 
   // Json
   val circe = "0.14.2" // 0.14.5
-  val circeGenericExtras = "0.14.3"
   val circeYaml = "0.14.2"
 
   val catsMtl = "1.3.1"
@@ -44,9 +41,8 @@ object Versions {
   val redis4cats = "0.9.6"
   val skunk = "0.5.1"
   val doobie = "1.0.0-RC2" // 1.0.0-RC4, 2023, Jun
-  val logback = "1.4.3"
-  val zio1v = "1.0.3"
-  val zio2v = "2.0.0-M1"
+  val logback = "1.4.7"
+  val zio2v = "2.0.16"
   val sqlPg = "42.5.4"
   val sqlH2 = "1.4.200"
   val scalaz = "7.2.30"
