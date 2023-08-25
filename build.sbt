@@ -352,6 +352,7 @@ lazy val typesafe = (project in file("typesafe"))
     commonSettings,
     description := "Lightbend (Typesafe) Stack: Akka, Akka-Streams, Akka-Http Play, Lagom, Slick (https://www.lightbend.com)",
     libraryDependencies ++= Seq(
+      Libraries.cats,
       // untyped - old examples
       Libraries.akka("akka-actor"),
       Libraries.akka("akka-actor-typed"),
@@ -363,6 +364,7 @@ lazy val typesafe = (project in file("typesafe"))
       // Slick
       Libraries.slickCore,
       Libraries.slickHikari,
+      Libraries.sqlPgDriver,
       // config
       Libraries.tsconfig,
       // logger

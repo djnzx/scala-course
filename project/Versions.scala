@@ -43,7 +43,7 @@ object Versions {
   val doobie = "1.0.0-RC2" // 1.0.0-RC4, 2023, Jun
   val logback = "1.4.7"
   val zio2v = "2.0.16"
-  val sqlPg = "42.5.4"
+  val sqlPg = "42.6.0"
   val sqlH2 = "1.4.200"
   val scalaz = "7.2.30"
   val jsoup = "1.13.1"

@@ -20,6 +20,13 @@ object Doobie2 extends IOApp {
     .compile
     .toList
 
+  val program25 = sql"select id, name, qty from t1"
+    .query[(Int, String, Option[Int])]
+    .stream
+    .compile
+    .toList
+    .transact(xa[IO])
+
   /** plain tuple mapping */
   val program3 = sql"select id, name, qty from t1"
     .query[(Int, String, Option[Int])]
