@@ -8,7 +8,7 @@ lazy val v = Versions
 lazy val commonSettings = Seq(
   scalaVersion := v.vScala,
   organization := "alexr",
-  version := "2023.08.24",
+  version := "2023.08.27",
   javacOptions ++= CompilerOptions.javacOptions,
   scalacOptions ++= CompilerOptions.scalacOptions,
   scalacOptions -= ScalacOpts.warningsAsFatals,
@@ -19,7 +19,7 @@ lazy val commonSettings = Seq(
     Libraries.sourcecode,
     Libraries.scalaCheck,
     Libraries.scalaCheckShapeless,
-    Libraries.scalaTestFunSpec,
+    Libraries.scalaTestWhole,
     Libraries.scalaTestShould,
     Libraries.scalaTestScalaCheckIntegration,
     Libraries.scalaMockito
@@ -145,6 +145,7 @@ lazy val ce3 = (project in file("ce3"))
       CompilerPlugins.betterMonadicFor,
       "org.typelevel"               %% "cats-core"             % v.cats,
       "org.typelevel"               %% "cats-effect"           % "3.5.1",
+      "org.typelevel"               %% "cats-parse"            % "0.3.10",
       "com.github.cb372"            %% "cats-retry"            % "3.1.0",
       "co.fs2"                      %% "fs2-core"              % "3.8.0",
       "co.fs2"                      %% "fs2-io"                % "3.8.0",
@@ -353,23 +354,17 @@ lazy val typesafe = (project in file("typesafe"))
     description := "Lightbend (Typesafe) Stack: Akka, Akka-Streams, Akka-Http Play, Lagom, Slick (https://www.lightbend.com)",
     libraryDependencies ++= Seq(
       Libraries.cats,
-      // untyped - old examples
       Libraries.akka("akka-actor"),
       Libraries.akka("akka-actor-typed"),
       Libraries.akka("akka-stream"),
       Libraries.akkaHttp("akka-http"),
       Libraries.akkaHttp("akka-http-spray-json"),
-      // play JSON
       s"${pf.typesafe}.play" %% "play-json"       % v.play,
-      // Slick
       Libraries.slickCore,
       Libraries.slickHikari,
       Libraries.sqlPgDriver,
-      // config
       Libraries.tsconfig,
-      // logger
-      Libraries.slf4j("slf4j-simple"),
-      "ch.qos.logback"        % "logback-classic" % "1.2.3"
+      "ch.qos.logback"        % "logback-classic" % "1.4.7"
     )
   )
 
