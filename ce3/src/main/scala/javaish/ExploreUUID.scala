@@ -18,19 +18,15 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
   */
 class ExploreUUID extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks {
 
+  /** Version 1: Time-based UUID
+    * Version 2: DCE Security UUID (rarely used)
+    * Version 3: Name-based (MD5) UUID
+    * Version 4: Randomly generated UUID
+    * Version 5: Name-based (SHA-1) UUID
+    */
   test("uuid") {
-
-    /** Version 1: Time-based UUID
-      * Version 2: DCE Security UUID (rarely used)
-      * Version 3: Name-based (MD5) UUID
-      * Version 4: Randomly generated UUID
-      * Version 5: Name-based (SHA-1) UUID
-      */
-    test("uuid") {
-      val uuid = UUID.randomUUID
-      System.out.println("Version: " + (uuid.version & 0xf))
-      System.out.println("UUID: " + uuid)
-    }
-
+    val uuid = UUID.randomUUID
+    System.out.println("Version: " + (uuid.version & 0xf))
+    System.out.println("UUID: " + uuid)
   }
 }
