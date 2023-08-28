@@ -1,4 +1,4 @@
-package vidiq
+package interview.vidiq
 
 /** Cinema Tickets
   *

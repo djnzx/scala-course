@@ -7,7 +7,11 @@ import skunk._
 
 trait SkunkExploreApp extends IOApp.Simple {
 
-  // docker run -p5432:5432 -d tpolecat/skunk-world
+  /** https://typelevel.org/skunk/tutorial/Setup.html
+    * https://github.com/typelevel/skunk
+    *
+    * docker run -p5432:5432 -d tpolecat/skunk-world
+    */
   val sessionR: Resource[IO, Session[IO]] =
     Session.single(
       host = "localhost",
