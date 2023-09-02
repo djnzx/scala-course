@@ -61,6 +61,21 @@ class PlaygroundSpec extends AnyFunSpec with Matchers with ScalaCheckPropertyChe
       1 shouldEqual 1
     }
 
+    it("nested forall count") {
+      var c = 0
+      forAll { s1: String => // 10 times
+
+        forAll{ s2: String => // 10 times
+          c += 1
+          val s3 = s1 + s2
+          s3.length should be >= 0
+        }
+
+      }
+      pprint.pprintln(c) // 10x10 = 100 times
+    }
+
+
     it("2") {
 
       forAll { (s1: String, s2: String) =>

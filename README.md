@@ -109,3 +109,25 @@ I thought I knew Scala...
     - cats effects 3. recap
 - week 2
     - tapir 0.19.3
+- typelevel deep dive again
+  - cats
+  - effects
+  - fs2
+  - doobie
+  - http4s
+  - circe
+  - shapeless
+- kafka streams processing
+- youtube API
+
+### 2023 notes
+- typelevel deep dive again
+  - cats
+  - effects
+  - fs2
+  - doobie
+  - http4s
+  - circe
+  - shapeless
+- kafka streams processing
+- 

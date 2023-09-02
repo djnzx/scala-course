@@ -1,6 +1,7 @@
 package slickvt
 
 
+import akka.actor.ActorSystem
 import akka.stream.scaladsl.Source
 import slick.dbio.{DBIOAction, Streaming}
 import slick.jdbc.PostgresProfile.api._
@@ -24,4 +25,10 @@ trait SlickBase {
     def stream = stream0(q.result)
   }
 
+  implicit class DbioOps[T](dbio: DBIOAction[_, Streaming[T], Nothing]) {
+    def stream = stream0(dbio)
+  }
+
+//  implicit val sys = ActorSystem()
+//  implicit val ec = sys.dispatcher
 }
