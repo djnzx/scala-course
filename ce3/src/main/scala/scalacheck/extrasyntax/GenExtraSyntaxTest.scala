@@ -1,9 +1,12 @@
 package scalacheck.extrasyntax
 
 import org.scalacheck.Gen
+import org.scalatest.OptionValues
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-class GenExtraSyntaxTest extends BootstrapFunSuite with ScalaCheckDrivenPropertyChecks with ArbitraryFromGen with GenExtraSyntax {
+class GenExtraSyntaxTest extends AnyFunSuite with Matchers with OptionValues with ScalaCheckDrivenPropertyChecks with ArbitraryFromGen with GenExtraSyntax {
 
   override implicit val generatorDrivenConfig: PropertyCheckConfiguration = PropertyCheckConfiguration(minSuccessful = 25)
 
