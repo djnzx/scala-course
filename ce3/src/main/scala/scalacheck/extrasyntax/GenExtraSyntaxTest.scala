@@ -3,6 +3,7 @@ package scalacheck.extrasyntax
 import org.scalacheck.Gen
 import org.scalatest.OptionValues
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.Matcher
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
@@ -68,6 +69,23 @@ class GenExtraSyntaxTest extends AnyFunSuite with Matchers with OptionValues wit
       }
     }
 
+  }
+
+  test(".listOfUptN") {
+    val g = Gen.choose(10, 20)
+    val MAX = 3
+    implicit val gl: Gen[List[Int]] = g.listOfUpToN(MAX)
+
+    forAll { xs: List[Int] =>
+      pprint.pprintln(xs)
+      val x: Int => Matcher[Int] = be >= _
+
+      val matcher0: Matcher[Int] = be >= 0
+      val matcher1: Matcher[Int] = be <= MAX
+
+      xs.length should be >= 0
+      xs.length should be <= MAX
+    }
   }
 
 }

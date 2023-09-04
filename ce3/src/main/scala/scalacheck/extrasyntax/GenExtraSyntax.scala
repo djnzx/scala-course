@@ -2,6 +2,8 @@ package scalacheck.extrasyntax
 
 import org.scalacheck.Gen
 
+import scala.util.chaining.scalaUtilChainingOps
+
 trait GenExtraSyntax {
 
   private object impl {
@@ -22,6 +24,10 @@ trait GenExtraSyntax {
     def notPresentIn(as: Seq[A]): Gen[A] = ga.retryUntil(a => !as.contains(a))
 
     def notPresentIn(gas: Gen[Seq[A]]): Gen[A] = notPresentIn(gas.sample.get)
+
+    def listOfUpToN(n: Int): Gen[List[A]] =
+      (0 to n).map(x => 1 -> Gen.listOfN(x, ga))
+        .pipe(x => Gen.frequency(x: _*))
 
   }
 
