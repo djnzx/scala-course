@@ -1,12 +1,15 @@
 package slickvt
 
 import akka.NotUsed
-import akka.stream.scaladsl.Source
+import akka.stream.Materializer
+import akka.stream.scaladsl.{Keep, Sink, Source}
 import model._
 import slick.jdbc.PostgresProfile.api.{Tag => _, _}
 import slick.lifted.Rep
 import slickvt.model.TagFilter.{ExcludesOnly, IncludesAndExcludes, IncludesOnly}
 import slickvt.model.TargetStrategies._
+
+import scala.concurrent.ExecutionContext
 
 trait Impl extends StreamOps with SlickStreamingQueryOps {
 
@@ -54,6 +57,8 @@ trait Impl extends StreamOps with SlickStreamingQueryOps {
 
 
   private def doFindProfilesWithTags(request: RQuery) = {
+
+
     val profilesFiltered = mkProfilesFilter(request)
     val tagsFiltered = mkTagsFilter(request)
 
@@ -85,5 +90,10 @@ trait Impl extends StreamOps with SlickStreamingQueryOps {
     regroupSequentialAfterJoin(s)(_._1)(_._2)
       .map { case (p, ts) => p -> ts.flatten }
   }
+
+  def findProfileWithTags(request: RQuery)(implicit m: Materializer, ec: ExecutionContext) = findProfilesWithTagsSource(request)
+    .toMat(Sink.seq)(Keep.right)
+    .run()
+    .map(_.headOption)
 
 }
