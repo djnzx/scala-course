@@ -9,13 +9,13 @@ object Fps007IO extends App {
   val it: Iterator[String] = Source.fromFile("1.txt").getLines()
 
   val filename = "fileopen.scala"
-  for (line <- Source.fromFile(filename).getLines) {
+  for (line <- Source.fromFile(filename).getLines()) {
     println(line)
   }
 //  val lines = Source.fromFile("/Users/Al/.bash_profile").getLines.toList
 
   val bufferedSource = Source.fromFile("example.txt")
-  for (line <- bufferedSource.getLines) {
+  for (line <- bufferedSource.getLines()) {
     println(line.toUpperCase)
   }
 

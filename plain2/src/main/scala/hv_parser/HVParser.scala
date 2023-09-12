@@ -97,7 +97,7 @@ object HVParser {
       if (it.isEmpty) return None
 
       /** next piece of data to check */
-      val h = it.next
+      val h = it.next()
 
       /** we treat empty string - as exhausted iterator */
       if (h.isEmpty) return None

@@ -1,8 +1,10 @@
 package fps
 
+import scala.annotation.unused
+
 object Fps004Lazy2 extends App {
 
-  var counter = 0;
+  var counter: Long = 0;
 
   val block_of_code: () => Long = () => {
     println("evaluating")
@@ -16,7 +18,7 @@ object Fps004Lazy2 extends App {
     println("ex1a:quit")
   }
 
-  def ex1b(code: => Long): Unit = { // code won't be evaluated (called)
+  def ex1b(@unused code: => Long): Unit = { // code won't be evaluated (called)
     println("ex1b:entrance")
     println("ex1b:quit")
   }
@@ -27,7 +29,7 @@ object Fps004Lazy2 extends App {
     println("ex2a:quit")
   }
 
-  def ex2b(code: Long): Unit = {
+  def ex2b(@unused code: Long): Unit = {
     println("ex2b:entrance")
     println("ex2b:quit")
   }

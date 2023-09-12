@@ -2,6 +2,7 @@ package essential
 
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import scala.annotation.unused
 
 object X227TypeClass extends App {
   trait HtmlWriteable {
@@ -81,7 +82,7 @@ object X227TypeClass extends App {
 
   // and we can just pick implementation if we need it
   object HtmlableInstanceByVar {
-    def apply[A](p: A)(implicit instance: Htmlable[A]): Htmlable[A] = instance
+    def apply[A](@unused p: A)(implicit instance: Htmlable[A]): Htmlable[A] = instance
   }
   object HtmlableInstanceByType {
     def apply[A](implicit instance: Htmlable[A]): Htmlable[A] = instance

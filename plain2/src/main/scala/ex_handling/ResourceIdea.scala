@@ -2,8 +2,6 @@ package ex_handling
 
 import java.io.FileInputStream
 
-import scala.util.Using
-
 object ResourceIdea extends App {
   
   // acquire

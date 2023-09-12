@@ -19,8 +19,8 @@ object X159CalcV3 extends App {
       case Success(r) => fn(r)
     }
   }
-  final case class Failure[String](reason: String) extends YEither[String, Nothing]
-  final case class Success[Double](result: Double) extends YEither[Nothing, Double]
+  final case class Failure[S1](reason: S1) extends YEither[S1, Nothing]
+  final case class Success[D1](result: D1) extends YEither[Nothing, D1]
 
   sealed trait Expression {
     def eval: YEither[String, Double] = this match {

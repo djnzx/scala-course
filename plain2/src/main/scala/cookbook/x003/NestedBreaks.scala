@@ -10,8 +10,8 @@ object NestedBreaks extends App {
     for (i <- 1 to 10) {
       inner.breakable {
         for (j <- i to 10) {
-          if (i % 3 == 0) inner.break
-          if (i % 5 == 0) outer.break
+          if (i % 3 == 0) inner.break()
+          if (i % 5 == 0) outer.break()
         }
       }
     }

@@ -1,7 +1,6 @@
 package xml
 
 import scala.xml._
-import scalaxb._
 
 object XMLParse1 extends App {
 

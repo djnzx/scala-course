@@ -10,7 +10,7 @@ object Fps011SimpleFpAppFlipCoin extends App {
   }
 
   def putStrLn(line: String): Unit = scala.Console.print(line)
-  def getStrLn: String = scala.io.StdIn.readLine
+  def getStrLn: String = scala.io.StdIn.readLine()
   def toss: String = scala.util.Random.nextInt(2) match {
     case 0 => "H"
     case _ => "T"

@@ -257,10 +257,7 @@ lazy val plain2 = (project in file("plain2"))
     Settings.common,
     libraryDependencies ++= Seq(
       "io.chymyst"                 %% "curryhoward"                % "0.3.8",
-      "org.scala-lang.modules"     %% "scala-parallel-collections" % "1.0.4",
-      "com.softwaremill.quicklens" %% "quicklens"                  % "1.8.10",
-      "org.scala-lang"              % "scala-reflect"              % v.vScala213,
-      "org.scalaxb"                %% "scalaxb"                    % "1.11.0",
+      "com.softwaremill.quicklens" %% "quicklens"                  % "1.9.6",
     )
   )
 

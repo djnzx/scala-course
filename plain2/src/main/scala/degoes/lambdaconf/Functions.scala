@@ -344,17 +344,17 @@ object Functions extends App {
       object Monoid {
         def apply[A](implicit M: Monoid[A]): Monoid[A] = M
       }
-      implicit val MonoidString = new Monoid[String] {
+      implicit val MonoidString: Monoid[String] = new Monoid[String] {
         def empty: String = ""
         def append(l: String, r: String): String = l + r
       }
       val ms: Monoid[String] = Monoid[String]
 
-      implicit def MonoidList[A] = new Monoid[List[A]] {
+      implicit def MonoidList[A]: Monoid[List[A]] = new Monoid[List[A]] {
         def empty: List[A] = Nil
         def append(l: List[A], r: List[A]): List[A] = l ++ r
       }
-      implicit def OptionMonoid[A: Semigroup] = new Monoid[Option[A]] {
+      implicit def OptionMonoid[A: Semigroup]: Monoid[Option[A]] = new Monoid[Option[A]] {
         def empty: Option[A] = None
         def append(l: Option[A], r: Option[A]): Option[A] =
           (for {
@@ -362,7 +362,7 @@ object Functions extends App {
             r <- r
           } yield l <> r).orElse(l).orElse(r) // or none...
       }
-      implicit def MapSemigroup[K, V: Semigroup] = new Semigroup[Map[K, V]] {
+      implicit def MapSemigroup[K, V: Semigroup]: Semigroup[Map[K, V]] = new Semigroup[Map[K, V]] {
         def append(l: Map[K, V], r: Map[K, V]): Map[K, V] =
           (l.toList ++ r.toList).foldLeft[Map[K, V]](Map()) {
             case (map, (k, v)) =>

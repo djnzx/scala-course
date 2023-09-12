@@ -1,5 +1,7 @@
 package degoes.tips12
 
+import scala.annotation.unused
+
 object Tip02SmartConstructors extends App {
   /**
     * the problem:
@@ -9,7 +11,7 @@ object Tip02SmartConstructors extends App {
 
   def sendEmail(email: Email) = ??? // undefined behavior
   // compromise, private constructor
-  sealed class Email private (value: String)
+  sealed class Email private (@unused value: String)
   object Email {
     def fromString(origin: String): Option[Email] =
       if (origin.length > 6) Some(new Email(origin)) else None

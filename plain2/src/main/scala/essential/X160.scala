@@ -1,7 +1,7 @@
 package essential
 
+import scala.annotation.unused
 import scala.collection.immutable.Queue
-import scala.collection.mutable
 
 object X160 extends App {
   /**
@@ -11,7 +11,7 @@ object X160 extends App {
     *
     */
   class ABC {
-    def apply(num: Int): ABC = {
+    def apply(@unused num: Int): ABC = {
 //      println(num)
       new ABC()
     }

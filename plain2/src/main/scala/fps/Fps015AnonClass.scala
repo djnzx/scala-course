@@ -1,5 +1,6 @@
 package fps
 
+import scala.annotation.unused
 import scala.util.{Try, Using}
 
 object Fps015AnonClass extends App {
@@ -24,7 +25,7 @@ object Fps015AnonClass extends App {
   val r1: Int = t1a.f("Hello")
   val r2: String = t2b.f("hello")
 
-  case class PartNumber(vendor: String)(number: String)
+  case class PartNumber(vendor: String)(@unused number: String)
   val pn = PartNumber("Tinken")("5707")
 
   val r: Try[String] = Using(scala.io.Source.fromFile("1.txt"))(s => s.getLines().mkString("\n"))

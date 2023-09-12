@@ -32,7 +32,6 @@ object Methods extends App {
   o.method21(22)
   o.method3(74)
   o.method3(75)
-  o.method5
   o.method5()
   o.method6
 
