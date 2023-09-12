@@ -273,18 +273,10 @@ lazy val plain3 = (project in file("plain3"))
 lazy val sparkx = (project in file("sparkx"))
   .settings(
     Settings.common,
-    scalaVersion := v.vScala213,
-    scalacOptions -= ScalacOpts.macroAnnotations,
     libraryDependencies ++= Seq(
-      "org.apache.spark" %% "spark-core" % "3.3.2",
-      "org.apache.spark" %% "spark-sql"  % "3.3.2"
+      "org.apache.spark" %% "spark-core" % "3.4.1",
+      "org.apache.spark" %% "spark-sql"  % "3.4.1"
     ),
-    // it doesn't really fix the issue, but to avoid any sbt failures
-    // TODO: remove or possibly move to another repo later
-    dependencyOverrides ++= Seq(
-      "io.netty"                % "netty-all" % "4.1.90.Final",
-      "org.scala-lang.modules" %% "scala-xml" % "2.1.0"
-    )
   )
 
 lazy val typesafe = (project in file("typesafe"))
