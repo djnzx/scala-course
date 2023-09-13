@@ -4,7 +4,6 @@ import com.sksamuel.elastic4s.IndexAndType
 import com.sksamuel.elastic4s.RefreshPolicy
 import com.sksamuel.elastic4s.http.ElasticClient
 import com.sksamuel.elastic4s.http.ElasticDsl._
-import com.sksamuel.elastic4s.http.ElasticProperties
 import com.sksamuel.elastic4s.http.RequestFailure
 import com.sksamuel.elastic4s.http.RequestSuccess
 import com.sksamuel.elastic4s.http.Response
@@ -24,7 +23,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class ExploreElastic68 extends AnyFunSuite with BeforeAndAfterAll {
 
-  val client: ElasticClient = ElasticClient(ESConfig.props)
+  val client: ElasticClient = ElasticClient(ESConfig.props())
 
   type EsIndex = String
   type EsType  = String

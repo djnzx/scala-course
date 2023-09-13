@@ -160,6 +160,8 @@ lazy val es68 = (project in file("es68"))
     libraryDependencies ++= Seq(
       "com.sksamuel.elastic4s" %% "elastic4s-core"       % "6.7.8",
       "com.sksamuel.elastic4s" %% "elastic4s-http"       % "6.7.8",
+      "com.beachape"           %% "enumeratum"           % "1.7.2",
+      "com.beachape"           %% "enumeratum-circe"     % "1.7.2",
       "io.circe"               %% "circe-parser"         % "0.14.6",
       "io.circe"               %% "circe-generic-extras" % "0.14.3",
       "org.typelevel"          %% "cats-core"            % "2.10.0",
