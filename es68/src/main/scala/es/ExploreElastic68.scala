@@ -1,0 +1,104 @@
+package es
+
+import com.sksamuel.elastic4s.IndexAndType
+import com.sksamuel.elastic4s.RefreshPolicy
+import com.sksamuel.elastic4s.http.ElasticClient
+import com.sksamuel.elastic4s.http.ElasticDsl._
+import com.sksamuel.elastic4s.http.ElasticProperties
+import com.sksamuel.elastic4s.http.RequestFailure
+import com.sksamuel.elastic4s.http.RequestSuccess
+import com.sksamuel.elastic4s.http.Response
+import com.sksamuel.elastic4s.http.index.CreateIndexResponse
+import com.sksamuel.elastic4s.http.index.IndexResponse
+import com.sksamuel.elastic4s.http.index.admin.DeleteIndexResponse
+import com.sksamuel.elastic4s.http.search.SearchResponse
+import com.sksamuel.elastic4s.indexes.CreateIndexRequest
+import com.sksamuel.elastic4s.indexes.DeleteIndexRequest
+import com.sksamuel.elastic4s.indexes.IndexRequest
+import com.sksamuel.elastic4s.mappings.MappingDefinition
+import com.sksamuel.elastic4s.mappings.dynamictemplate.DynamicMapping
+import com.sksamuel.elastic4s.searches.SearchRequest
+import io.circe.generic.AutoDerivation
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.funsuite.AnyFunSuite
+
+class ExploreElastic68 extends AnyFunSuite with BeforeAndAfterAll {
+
+  type EsIndex = String
+  type EsType  = String
+  val props: ElasticProperties     = ElasticProperties("http://localhost:9200")
+  val client: ElasticClient        = ElasticClient(props)
+  val myIndex: EsIndex             = "artists"
+  val myType: EsType               = "myType"
+  val myIndexAndType: IndexAndType = myIndex / myType
+
+  override protected def afterAll(): Unit = client.close()
+
+  test("delete index") {
+    val rqDeleteIdx: DeleteIndexRequest  = deleteIndex(myIndex)
+    val x: Response[DeleteIndexResponse] = client.execute(rqDeleteIdx).await
+    pprint.pprintln(x)
+  }
+
+  test("create index with mapping - strict") {
+
+    val mapDef: MappingDefinition = mapping(myType)
+      .fields(
+        textField("name")
+      )
+      .dynamic(DynamicMapping.Strict)
+
+    val rqCreateIdx: CreateIndexRequest  = createIndex(myIndex).mappings(mapDef)
+    val x: Response[CreateIndexResponse] = client.execute(rqCreateIdx).await
+    pprint.pprintln(x)
+  }
+
+  test("insert into index - by fields - good") {
+    val rqInsertIntoIndex: IndexRequest = indexInto(myIndexAndType)
+      .fields("name" -> "Ben")
+      .refresh(RefreshPolicy.Immediate)
+
+    val x: Response[IndexResponse] = client.execute(rqInsertIntoIndex).await
+    pprint.pprintln(x)
+  }
+
+  test("insert into index - by JSON - good") {
+
+    case class MyData(name: String)
+    object MyData extends AutoDerivation
+
+    val data = MyData("Doe33")
+
+    import es.IndexableDerivation.indexableWithCirce
+
+    val rqInsertIntoIndex: IndexRequest = indexInto(myIndexAndType)
+      .doc(data)
+
+    val x: Response[IndexResponse] = client.execute(rqInsertIntoIndex).await
+    pprint.pprintln(x)
+  }
+
+  test("insert into index - by fields - extra field - FAILED due to Strictness") {
+    val rqInsertIntoIndex: IndexRequest =
+      indexInto(myIndexAndType)
+        .fields("name" -> "Beam", "t" -> 1)
+        .refresh(RefreshPolicy.Immediate)
+
+    val x: Response[IndexResponse] = client.execute(rqInsertIntoIndex).await
+    pprint.pprintln(x)
+  }
+
+  test("query index") {
+    val rqSearch: SearchRequest        = searchWithType(myIndexAndType).query("Doe33")
+    val resp: Response[SearchResponse] = client.execute(rqSearch).await
+
+    resp match {
+      case failure: RequestFailure                 => pprint.pprintln("We failed " -> failure.error)
+      case results: RequestSuccess[SearchResponse] => pprint.pprintln(results.result.hits.hits.toList)
+      case results                                 => pprint.pprintln(results.result)
+    }
+
+    resp.foreach((x: SearchResponse) => println("There were" -> x.totalHits))
+  }
+
+}

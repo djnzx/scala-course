@@ -153,6 +153,30 @@ lazy val ce3 = (project in file("ce3"))
     )
   )
 
+lazy val es68 = (project in file("es68"))
+  .settings(
+    Settings.common,
+    description := "Elastic Search 6.8 Learning",
+    libraryDependencies ++= Seq(
+      "com.sksamuel.elastic4s" %% "elastic4s-core"       % "6.7.8",
+      "com.sksamuel.elastic4s" %% "elastic4s-http"       % "6.7.8",
+      "io.circe"               %% "circe-parser"         % "0.14.6",
+      "io.circe"               %% "circe-generic-extras" % "0.14.3",
+      "org.typelevel"          %% "cats-core"            % "2.10.0",
+    ),
+  )
+
+lazy val es89 = (project in file("es89"))
+  .settings(
+    Settings.common,
+    description := "Elastic Search 8 Learning",
+    libraryDependencies ++= Seq(
+      "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % "8.9.2",
+      "com.sksamuel.elastic4s" %% "elastic4s-testkit"       % "8.9.2",
+      "org.typelevel"          %% "cats-core"               % "2.10.0",
+    ),
+  )
+
 lazy val httpt = (project in file("httpt"))
   .settings(
     Settings.common,
@@ -256,8 +280,8 @@ lazy val plain2 = (project in file("plain2"))
   .settings(
     Settings.common,
     libraryDependencies ++= Seq(
-      "io.chymyst"                 %% "curryhoward"                % "0.3.8",
-      "com.softwaremill.quicklens" %% "quicklens"                  % "1.9.6",
+      "io.chymyst"                 %% "curryhoward" % "0.3.8",
+      "com.softwaremill.quicklens" %% "quicklens"   % "1.9.6",
     )
   )
 
