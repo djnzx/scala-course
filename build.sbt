@@ -163,6 +163,7 @@ lazy val es68 = (project in file("es68"))
       "io.circe"               %% "circe-parser"         % "0.14.6",
       "io.circe"               %% "circe-generic-extras" % "0.14.3",
       "org.typelevel"          %% "cats-core"            % "2.10.0",
+      "com.github.pureconfig"  %% "pureconfig"           % "0.17.4",
     ),
   )
 

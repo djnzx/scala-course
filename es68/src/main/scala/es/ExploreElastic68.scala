@@ -24,10 +24,10 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class ExploreElastic68 extends AnyFunSuite with BeforeAndAfterAll {
 
+  val client: ElasticClient = ElasticClient(ESConfig.props)
+
   type EsIndex = String
   type EsType  = String
-  val props: ElasticProperties     = ElasticProperties("http://localhost:9200")
-  val client: ElasticClient        = ElasticClient(props)
   val myIndex: EsIndex             = "artists"
   val myType: EsType               = "myType"
   val myIndexAndType: IndexAndType = myIndex / myType
