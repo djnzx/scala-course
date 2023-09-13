@@ -34,12 +34,12 @@ object Tuples extends App {
 
   Ordering[User].compare(("a", 1), ("b", 1))
 
-  implicit def inductionStep[Head, Marioska](implicit
-                                             headCompare: Ordering[Head],
-                                             tailCompare: Ordering[Marioska]) = new Ordering[(Head, Marioska)] {
-    override def compare(left: (Head, Marioska), right: (Head, Marioska)) = {
-      val comp1 = Ordering[Head].compare(left._1, right._1)
-      val comp2 = Ordering[Marioska].compare(left._2, right._2)
+  implicit def inductionStep[A, B](implicit
+                                   headCompare: Ordering[A],
+                                   tailCompare: Ordering[B]): Ordering[(A, B)] = new Ordering[(A, B)] {
+    override def compare(left: (A, B), right: (A, B)) = {
+      val comp1 = Ordering[A].compare(left._1, right._1)
+      val comp2 = Ordering[B].compare(left._2, right._2)
 
       if(comp1 == 0) comp2 else comp1
     }

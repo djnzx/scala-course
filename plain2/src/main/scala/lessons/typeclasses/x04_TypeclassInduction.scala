@@ -12,7 +12,7 @@ object x04_TypeclassInduction extends App {
   }
 
   // induction step
-  implicit def step[H, T](implicit head: Named[H], tail: Named[T]) = new Named[(H, T)] {
+  implicit def step[H, T](implicit head: Named[H], tail: Named[T]): Named[(H, T)] = new Named[(H, T)] {
     override val name: String = s"${head.name}-${tail.name}"
   }
 

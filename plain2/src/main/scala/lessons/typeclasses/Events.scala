@@ -25,7 +25,7 @@ object Events {
   implicit val base = new Named[EndOfList] { val name: String = "" }
   // Named induction step: (E, Tail)
   implicit def step[Head,Tail](implicit n: Named[Head], tailNames: Named[Tail]
-    ) = new Named[(Head,Tail)] {
+    ): Named[(Head, Tail)] = new Named[(Head,Tail)] {
     val name: String = s"${n.name}, ${tailNames.name}"
   }
   // helper
@@ -90,7 +90,7 @@ object Events {
                                                    namedEvent: Named[E],
                                                    fromString: FromString[E],
                                                    tailHandles: HandleEvents[Tail]
-                                                 ) = new HandleEvents[(E, Tail)] {
+                                                 ): HandleEvents[(E, Tail)] {type Out = Either[tailHandles.Out, E]} = new HandleEvents[(E, Tail)] {
 
     type Out = Either[tailHandles.Out, E]
 

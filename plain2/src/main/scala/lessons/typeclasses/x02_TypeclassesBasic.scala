@@ -17,7 +17,7 @@ object x02_TypeclassesBasic extends App {
     override def squash_(a: String, b: String): String = a + b
   }
   // concrete implementation for Option[T]
-  implicit def squashOpt[A](implicit impl: Squash[A]) = new Squash[Option[A]] {
+  implicit def squashOpt[A](implicit impl: Squash[A]): Squash[Option[A]] = new Squash[Option[A]] {
     override def squash_(a: Option[A], b: Option[A]): Option[A] = for {
       v1 <- a
       v2 <- b

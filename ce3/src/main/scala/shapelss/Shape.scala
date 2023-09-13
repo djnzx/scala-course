@@ -30,7 +30,7 @@ object Shape extends App {
       implicit
       headCompare: Ordering[Head],
       tailCompare: Ordering[Tail],
-    ) =
+    ): Ordering[Head :: Tail] =
     new Ordering[Head :: Tail] {
       override def compare(left: Head :: Tail, right: Head :: Tail) = {
         val leftC = headCompare.compare(left.head, right.head)
@@ -72,7 +72,7 @@ object Shape extends App {
   implicit def transformCaseClasses[CC1, CC2, HL <: HList](
       implicit gen1: Generic.Aux[CC1, HL],
       gen2: Generic.Aux[CC2, HL],
-    ) = new Transform[CC1, CC2] {
+    ): Transform[CC1, CC2] = new Transform[CC1, CC2] {
     override def from(v: CC1) = {
       gen2.from(gen1.to(v))
     }

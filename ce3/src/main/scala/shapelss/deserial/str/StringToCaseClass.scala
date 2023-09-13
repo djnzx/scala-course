@@ -54,7 +54,7 @@ object StringToCaseClass {
         case false => Left(DeSequenceNonEmpty)
       }
     }
-    implicit def optReader[A: Reader] = new Reader[Option[A]] {
+    implicit def optReader[A: Reader]: Reader[Option[A]] = new Reader[Option[A]] {
       override def read(s: String) = s match {
         case "" => Right(None)
         case s  => Reader.read[A](s).map(Some[A])

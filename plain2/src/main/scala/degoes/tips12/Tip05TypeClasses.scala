@@ -46,7 +46,7 @@ object Tip05TypeClasses extends App {
     * Byte, Short, Int, Long, Float, Double don't extent NumberLike
     */
   // automatic derivation, recursion in types!
-  implicit def tuple2numeric[A: Numeric, B: Numeric] = new Numeric[(A, B)] {
+  implicit def tuple2numeric[A: Numeric, B: Numeric]: Numeric[(A, B)] = new Numeric[(A, B)] {
     override def add(l: (A, B), r: (A, B)): (A, B) = (l._1 \/ r._1, r._2 \/ r._2)
   }
   val t2: (Int, Int) = sumAll2((1,2) :: (2,3) :: (3,4) :: Nil)

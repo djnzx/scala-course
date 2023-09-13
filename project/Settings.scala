@@ -8,7 +8,7 @@ object Settings {
   val common: Seq[Setting[?]] = Seq(
     scalaVersion := Versions.vScala213,
     organization := "alexr",
-    version := "2023.09.12",
+    version := "2023.09.13",
     javacOptions ++= CompilerOptions.javacOptions,
     scalacOptions ++= CompilerOptions.scalacOptions,
     scalacOptions -= ScalacOpts.warningsAsFatals,

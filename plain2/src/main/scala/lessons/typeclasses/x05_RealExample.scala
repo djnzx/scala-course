@@ -38,7 +38,7 @@ object x05_RealExample extends App {
   }
   // induction
   implicit def step[Head, Tail](implicit head: Named[Head], parser: Parser[Head], tail: DynDisp[Tail]
-                               ) = new DynDisp[(Head, Tail)] {
+                               ): DynDisp[(Head, Tail)] {type Out = Either[tail.Out, Head]} = new DynDisp[(Head, Tail)] {
 
     override type Out = Either[tail.Out, Head]
 
