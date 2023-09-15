@@ -1,3 +1,5 @@
 -J-Xms2G
 -J-Xmx6G
 -J-Xss4M
+-J-XX:+UseG1GC
+-J-Duser.timezone=GMT
