@@ -310,9 +310,10 @@ lazy val typesafe = (project in file("typesafe"))
     libraryDependencies ++= Seq(
       Libraries.cats,
       Libraries.sqlPostgres,
-      "com.typesafe.akka"  %% "akka-actor"           % "2.6.17",
-      "com.typesafe.akka"  %% "akka-actor-typed"     % "2.6.17",
-      "com.typesafe.akka"  %% "akka-stream"          % "2.6.17",
+      "com.typesafe.akka"  %% "akka-actor"           % "2.6.21",
+      "com.typesafe.akka"  %% "akka-actor-typed"     % "2.6.21",
+      "com.typesafe.akka"  %% "akka-stream"          % "2.6.21",
+      "org.reactivestreams" % "reactive-streams"     % "1.0.4",
       "com.typesafe.akka"  %% "akka-http"            % "10.5.0",
       "com.typesafe.akka"  %% "akka-http-spray-json" % "10.5.0",
       "com.typesafe.slick" %% "slick"                % "3.4.1",
