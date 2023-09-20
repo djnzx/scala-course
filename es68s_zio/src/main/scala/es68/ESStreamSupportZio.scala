@@ -6,7 +6,7 @@ import com.sksamuel.elastic4s.searches.sort.Sort
 import zio.ZIO
 import zio.stream.ZStream
 
-trait ESStreamSupportZIO {
+trait ESStreamSupportZio {
 
   def mkZioStream[A](
       request: SearchRequest,

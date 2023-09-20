@@ -6,7 +6,7 @@ import com.sksamuel.elastic4s.searches.SearchRequest
 import com.sksamuel.elastic4s.searches.sort.Sort
 import fs2.{Chunk, Stream}
 
-trait ESStreamSupportFS2 {
+trait ESStreamSupportFs2 {
 
   def mkFs2Stream[F[_]: Functor, A](
       request: SearchRequest,
