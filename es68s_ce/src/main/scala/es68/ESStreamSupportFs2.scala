@@ -1,35 +1,30 @@
 package es68
 
 import cats.Functor
-import cats.implicits.{catsSyntaxOptionId, toFunctorOps}
+import cats.implicits.catsSyntaxOptionId
+import cats.implicits.toFunctorOps
 import com.sksamuel.elastic4s.searches.SearchRequest
 import com.sksamuel.elastic4s.searches.sort.Sort
-import fs2.{Chunk, Stream}
+import fs2.Chunk
+import fs2.Stream
 
-trait ESStreamSupportFs2 {
+trait ESStreamSupportFs2 extends StreamSupportFs2 {
 
-  def mkFs2Stream[F[_]: Functor, A](
+  def mkEsFs2Stream[F[_]: Functor, A](
       request: SearchRequest,
       sortFields: Seq[Sort],  // we are about to paginate, so we need consistent sorting
       afterFn: A => Seq[Any], // we need the extractor function to be used in `es.searchAfter(...)`
-      bufferSize: Int = 1024  // page size
+      pageSize: Int = 1024    // page size
     )(esExecute: SearchRequest => F[Seq[A]]
     ): Stream[F, A] = {
 
-    val request0: SearchRequest = request
+    val initial: SearchRequest = request
       .sortBy(sortFields)
-      .size(bufferSize)
+      .size(pageSize)
 
-    Stream.unfoldChunkEval(request0) { request: SearchRequest =>
-      esExecute(request)
-        .map {
-          case xs if xs.isEmpty => None // no data
-          case xs               =>      // data
-            val afterClause = afterFn(xs.last)
-            val afterQuery  = request.searchAfter(afterClause)
-            (Chunk.from(xs), afterQuery).some
-        }
-    }
+    def reqModifyFn(q: SearchRequest, last: A): SearchRequest = q.searchAfter(afterFn(last))
+
+    mkFs2Stream(initial, reqModifyFn, pageSize)(esExecute)
   }
 
 }
