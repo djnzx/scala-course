@@ -1,9 +1,9 @@
-package es
+package es68
 
 import com.sksamuel.elastic4s.http.ElasticNodeEndpoint
 import com.sksamuel.elastic4s.http.ElasticProperties
 
-object ESConfig {
+object ElasticConfig {
 
   case class ElasticNodeProperties(protocol: String, host: String, port: Int)
   case class AppProperties(es: ElasticNodeProperties)

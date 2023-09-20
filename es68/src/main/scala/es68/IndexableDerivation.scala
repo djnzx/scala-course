@@ -1,4 +1,4 @@
-package es
+package es68
 
 import com.sksamuel.elastic4s.{AggReader, Hit, HitReader, Indexable}
 import io.circe.{Decoder, Encoder, Json, Printer}
