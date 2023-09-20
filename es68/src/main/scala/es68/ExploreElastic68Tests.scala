@@ -2,7 +2,7 @@ package es68
 
 import com.sksamuel.elastic4s.IndexAndType
 import com.sksamuel.elastic4s.RefreshPolicy
-import com.sksamuel.elastic4s.http.{ElasticClient, HttpResponse, RequestFailure, RequestSuccess, Response}
+import com.sksamuel.elastic4s.http.{ElasticClient, RequestFailure, RequestSuccess, Response}
 import com.sksamuel.elastic4s.http.ElasticDsl._
 import com.sksamuel.elastic4s.http.index.CreateIndexResponse
 import com.sksamuel.elastic4s.http.index.IndexResponse
@@ -14,13 +14,9 @@ import com.sksamuel.elastic4s.indexes.IndexRequest
 import com.sksamuel.elastic4s.mappings.MappingDefinition
 import com.sksamuel.elastic4s.mappings.dynamictemplate.DynamicMapping
 import com.sksamuel.elastic4s.searches.SearchRequest
-import com.sksamuel.elastic4s.searches.queries.BoolQuery
-import com.sksamuel.elastic4s.searches.queries.term.TermQuery
-import es68.campaign.model.TargetType.{Instant, Registration, TargetList}
 import io.circe.generic.AutoDerivation
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
-import org.slf4j.{Logger, LoggerFactory}
 
 class ExploreElastic68Tests extends AnyFunSuite with BeforeAndAfterAll {
 
@@ -102,30 +98,5 @@ class ExploreElastic68Tests extends AnyFunSuite with BeforeAndAfterAll {
     resp.foreach((x: SearchResponse) => println("There were" -> x.totalHits))
   }
 
-  test("client123") {
-    import scala.concurrent.ExecutionContext.Implicits.global
-    import scala.concurrent.Future
-    import es68.IndexableDerivation.hitReaderWithCirce
-    import es68.campaign.model.CampaignEntity
-    import ESClient._
-    import es68.campaign.model.ChronoUnitInstances._
-
-    val client = ESClient.apply[Future]("campaign.conf")
-    implicit val logger: Logger = LoggerFactory.getLogger(this.getClass)
-
-    val tQuery: TermQuery = termQuery("targetType", Instant.entryName)
-    val bQuery: BoolQuery = must(tQuery)
-
-    val indexAndType = "paridirect_campaign/campaign"
-    val q: SearchRequest = search(indexAndType)//.query(bQuery)
-    val xs: TotalResult[CampaignEntity] = client.execute0[SearchRequest, SearchResponse](q)
-      .map(_.toTotalResult[CampaignEntity]).await
-
-    pprint.pprintln(xs.total)
-    pprint.pprintln(xs.data.size)
-//    xs.foreach(x => pprint.pprintln(x))
-//    client.close()
-
-  }
 
 }
