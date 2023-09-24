@@ -1,6 +1,5 @@
 import sbt.Keys.*
 import sbtbuildinfo.BuildInfoOption
-import scala.collection.Seq
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 

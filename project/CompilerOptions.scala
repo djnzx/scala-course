@@ -7,16 +7,13 @@ import ScalacOpts.*
   */
 object CompilerOptions {
 
-  val javacOptions = Seq(
-    "-source",
-    "11",
-    "-target",
-    "11",
-  )
+  val javacOptions: Seq[String] =
+    Seq("-source", "11") ++
+      Seq("-target", "11") ++
+      Seq(
+      )
 
-  val scalacOptions = Seq(
-    encoding,
-    UTF8,
+  val scalacOptions: Seq[String] = utf8 ++ Seq(
     feature,
     deprecation,
     unchecked,

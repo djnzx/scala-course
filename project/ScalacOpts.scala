@@ -3,8 +3,7 @@ object ScalacOpts {
 
   /** default project encoding
     */
-  val encoding = "-encoding"
-  val UTF8 = "UTF-8"
+  val utf8: Seq[String] = Seq("-encoding", "UTF-8")
 
   /** Emit warning and location for usages of features that should be imported explicitly.
     */
@@ -12,7 +11,7 @@ object ScalacOpts {
 
   /** Emit warning and location for usages of deprecated APIs.
     */
-  val deprecation = "-deprecation"
+  val deprecation     = "-deprecation"
   val lintDeprecation = "-Xlint:deprecation"
 
   /** Enable additional warnings where generated code depends on assumptions.
