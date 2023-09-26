@@ -1,38 +1,32 @@
 import sbt.*
 
 object Libraries {
-  val shapeless = "com.chuusai" %% "shapeless" % "2.3.10"
-
-  val newtype       = "io.estatico" %% "newtype"        % "0.4.4"
-  val refinedCore   = "eu.timepit"  %% "refined"        % "0.10.3"
-  val refinedCats   = "eu.timepit"  %% "refined-cats"   % "0.10.3"
-  val refinedScalaz = "eu.timepit"  %% "refined-scalaz" % "0.10.3"
-
-  val jsoup     = "org.jsoup"         % "jsoup"      % "1.15.4"
-  val cats      = pf.typelevel       %% "cats-core"  % "2.10.0"
-  val catsLaws  = pf.typelevel       %% "cats-laws"  % "2.10.0"
-  val catsMtl   = pf.typelevel       %% "cats-mtl"   % "1.3.1"
-  val catsRetry = "com.github.cb372" %% "cats-retry" % "3.1.0"
-
-  val sqlPostgres = "org.postgresql" % "postgresql" % "42.6.0"
-  val sqlH2       = "com.h2database" % "h2"         % "1.4.200"
-
-  val http4sJwtAuth      = "dev.profunktor" %% "http4s-jwt-auth"     % "0.0.7"
-  val redis4catsEffects  = "dev.profunktor" %% "redis4cats-effects"  % "0.9.6"
-  val redis4catsLog4cats = "dev.profunktor" %% "redis4cats-log4cats" % "0.9.6"
-
-  val log4cats    = "io.chrisdavenport" %% "log4cats-slf4j" % "1.1.1"
-  val javaxCrypto = "javax.xml.crypto"   % "jsr105-api"     % "1.0.1"
-
-  val doobieCore   = pf.tpolecat %% "doobie-core"     % "1.0.0-RC2"
-  val doobiePg     = pf.tpolecat %% "doobie-postgres" % "1.0.0-RC2"
-  val doobieHikari = pf.tpolecat %% "doobie-hikari"   % "1.0.0-RC2"
-  val skunkCore    = pf.tpolecat %% "skunk-core"      % "0.6.0"
-  val skunkCirce   = pf.tpolecat %% "skunk-circe"     % "0.6.0"
-
-  // Runtime
-  val logback = "ch.qos.logback" % "logback-classic" % "1.4.7"
-
+  val shapeless             = "com.chuusai"                %% "shapeless"                 % "2.3.10"
+  // types-related
+  val newtype               = "io.estatico"                %% "newtype"                   % "0.4.4"
+  val refinedCore           = "eu.timepit"                 %% "refined"                   % "0.10.3"
+  val refinedCats           = "eu.timepit"                 %% "refined-cats"              % "0.10.3"
+  val refinedScalaz         = "eu.timepit"                 %% "refined-scalaz"            % "0.10.3"
+  // basic functional abstractions
+  val cats                  = "org.typelevel"              %% "cats-core"                 % "2.10.0"
+  val catsLaws              = "org.typelevel"              %% "cats-laws"                 % "2.10.0"
+  val catsMtl               = "org.typelevel"              %% "cats-mtl"                  % "1.3.1"
+  val catsRetry             = "com.github.cb372"           %% "cats-retry"                % "3.1.0"
+  // postgreSQL related
+  val doobieCore            = "org.tpolecat"               %% "doobie-core"               % "1.0.0-RC2"
+  val doobiePg              = "org.tpolecat"               %% "doobie-postgres"           % "1.0.0-RC2"
+  val doobieHikari          = "org.tpolecat"               %% "doobie-hikari"             % "1.0.0-RC2"
+  val skunkCore             = "org.tpolecat"               %% "skunk-core"                % "1.0.0-M1" // no more 2.12
+  val skunkCirce            = "org.tpolecat"               %% "skunk-circe"               % "1.0.0-M1"
+  val sqlPostgres           = "org.postgresql"              % "postgresql"                % "42.6.0"
+  //
+  val http4sJwtAuth         = "dev.profunktor"             %% "http4s-jwt-auth"           % "1.2.1"
+  val redis4catsEffects     = "dev.profunktor"             %% "redis4cats-effects"        % "1.5.0"
+  val redis4catsLog4cats    = "dev.profunktor"             %% "redis4cats-log4cats"       % "1.5.0"
+  //
+  val jsoup                 = "org.jsoup"                   % "jsoup"                     % "1.16.1"
+  // logging runtime
+  val logback               = "ch.qos.logback"              % "logback-classic"           % "1.4.7"
   // https://www.scalatest.org
   // https://mvnrepository.com/artifact/org.scalatest/scalatest
   val scalaTest             = "org.scalatest"              %% "scalatest"                 % "3.2.16"
@@ -47,11 +41,10 @@ object Libraries {
   // https://mvnrepository.com/artifact/org.scalactic/scalactic
   // val scalactic_ = "org.scalactic" %% "scalactic" % Versions.scalaTest
   val scalaCheckIntegration = "org.scalatestplus"          %% "scalacheck-1-17"           % "3.2.16.0"
-  val scalaMockito          = "org.mockito"                %% "mockito-scala-scalatest"   % "1.17.14" // tr: "org.mockito" % "mockito-core" % "4.8.1"
-
+  val scalaMockito          = "org.mockito"                %% "mockito-scala-scalatest"   % "1.17.14"  // tr: "org.mockito" % "mockito-core" % "4.8.1"
   // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
   // look for the plugin corresponding
-  val silencerAnnotation = "com.github.ghik" % "silencer-lib" % "1.6.0" % Provided cross CrossVersion.full
+  val silencerAnnotation    = "com.github.ghik"             % "silencer-lib"              % "1.6.0" % Provided cross CrossVersion.full
 
   val testingToolkit: Seq[ModuleID] = Seq(
     scalaTest,              // runners, matchers

@@ -3,7 +3,7 @@ import sbt.*
 object CompilerPlugins {
 
   /** https://github.com/typelevel/kind-projector */
-  private val kindProjector = compilerPlugin(pf.typelevel %% "kind-projector" % "0.13.2" cross CrossVersion.full)
+  private val kindProjector = compilerPlugin("org.typelevel" %% "kind-projector" % "0.13.2" cross CrossVersion.full)
   /** https://github.com/oleg-py/better-monadic-for */
   private val betterMonadicFor = compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
   /** https://github.com/augustjune/context-applied */
