@@ -1,9 +1,15 @@
 package git_api
 
+import cats.data.EitherT
+
 import java.io.File
 import java.time.{LocalDateTime, OffsetDateTime}
 import sys.process.Process
 import sys.process.ProcessBuilder
+import cats.implicits._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class Git(baseDir: File) {
   import Git._

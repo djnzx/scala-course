@@ -1,14 +1,19 @@
 package shapelss.coproduct
 
 import cats.implicits._
-import io.circe.{Decoder, DecodingFailure, Encoder, HCursor}
+import io.circe.Decoder
+import io.circe.DecodingFailure
+import io.circe.Encoder
+import io.circe.HCursor
 import io.circe.generic.AutoDerivation
 import io.circe.syntax.EncoderOps
-import shapeless.{:+:, CNil, Coproduct, Poly1}
-import shapeless.ops.coproduct.Inject
-
 import java.util.UUID
 import scala.reflect.runtime.universe.reify
+import shapeless.:+:
+import shapeless.CNil
+import shapeless.Coproduct
+import shapeless.Poly1
+import shapeless.ops.coproduct.Inject
 
 object CoproductUseCase extends App {
 
@@ -40,16 +45,9 @@ object CoproductUseCase extends App {
     type R = Ok :+: Error :+: WrongData.type :+: CNil
 
     object R {
-      def apply[A](
-          a: A
-        )(
-          implicit inj: Inject[R, A]
-        ): R = inj(a)
-      implicit def autoLiftMembers[A](
-          a: A
-        )(
-          implicit inj: Inject[R, A]
-        ): R = inj(a)
+      def apply[A](a: A)(implicit inj: Inject[R, A]): R = inj(a)
+
+      implicit def autoLiftMembers[A](a: A)(implicit inj: Inject[R, A]): R = inj(a)
     }
   }
 
@@ -162,9 +160,9 @@ object CoproductUseCase extends App {
       .at[Error](foldEr)
       .at[WrongData.type](foldWd)
       .build
+    import Instances._
     // import folder._ // Idea always removing this import
     import folder._
-    import Instances._
     // we need to import context manually
 
     // they are string, but we can't write that
