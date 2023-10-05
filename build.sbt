@@ -97,6 +97,7 @@ lazy val ce3 = (project in file("ce3"))
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion /*, libraryDependencies */ ),
     description := "CE3-based-related",
     libraryDependencies ++= Seq(
+      "org.scalameta"               %% "scalameta"             % "4.8.11",
       "org.typelevel"               %% "cats-core"             % "2.10.0",
       "org.typelevel"               %% "cats-effect"           % "3.5.1",
       "org.typelevel"               %% "cats-parse"            % "0.3.10",
@@ -169,27 +170,23 @@ lazy val es68 = (project in file("es68"))
     ),
   )
 
-lazy val es68s = (project in file("es68s"))
-  .settings(Settings.common)
-  .dependsOn(es68)
-
 lazy val es68s_akka = (project in file("es68s_akka"))
   .settings(Settings.common)
-  .dependsOn(es68s)
+  .dependsOn(es68)
   .settings(
     libraryDependencies += "com.typesafe.akka" %% "akka-stream" % "2.6.21"
   )
 
 lazy val es68s_ce = (project in file("es68s_ce"))
   .settings(Settings.common)
-  .dependsOn(es68s)
+  .dependsOn(es68)
   .settings(
     libraryDependencies += "co.fs2" %% "fs2-core" % "3.9.2"
   )
 
 lazy val es68s_zio = (project in file("es68s_zio"))
   .settings(Settings.common)
-  .dependsOn(es68s)
+  .dependsOn(es68)
   .settings(
     libraryDependencies += "dev.zio" %% "zio-streams" % "2.0.15"
   )
