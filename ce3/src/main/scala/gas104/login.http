@@ -1,0 +1,10 @@
+####
+GET https://account.104.ua/ua/login
+
+####
+POST https://account.104.ua/ua/login
+Content-Type: application/x-www-form-urlencoded
+
+username = &
+password = &
+_csrf_token=

@@ -143,7 +143,8 @@ lazy val ce3 = (project in file("ce3"))
       Libraries.refinedCore,
       Libraries.shapeless,
       "com.kubukoz"                 %% "debug-utils"           % "1.1.3",
-      Libraries.catsMtl
+      Libraries.catsMtl,
+      Libraries.jsoup,
     )
   )
   .enablePlugins(ScalaxbPlugin)

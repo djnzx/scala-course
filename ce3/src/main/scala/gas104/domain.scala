@@ -29,7 +29,7 @@ object domain {
       implicit val decoder: Decoder[Row] = deriveConfiguredDecoder
     }
 
-    case class Data(error: Option[String], data: Seq[Row])
+    case class Data(error: Option[String], data: Option[Seq[Row]])
 
     object Data extends AutoDerivation
 
