@@ -96,6 +96,7 @@ object TypeLambda1 extends App {
 
   object solution22 {
     def foo2[F[_, _], B](f: Functor[({ type ab[C] = F[B, C] })#ab]) = ???
+    //                              =============================
   }
 
   object solution23 {

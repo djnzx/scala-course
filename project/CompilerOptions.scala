@@ -23,6 +23,7 @@ object CompilerOptions {
     warningsAsFatals, // ??? doesn't work as expected
     matchShouldBeExhaustive,
     lintDeprecation,
+    "-Xcheckinit",
     // "-Xlint:unsound-match",
     // "-Ypartial-unification", // by default since 2.13
     "-language:existentials",

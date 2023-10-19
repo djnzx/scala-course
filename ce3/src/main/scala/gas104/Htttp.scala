@@ -128,7 +128,7 @@ object Htttp {
       case Some(data) =>
         data.traverse_ { x: Row =>
           val r    = URow.from(x)
-          val line = (r.dateTime, r.counter, r.delta)
+          val line = (r.dateTime.toLocalDate, r.counter, r.delta)
           Sync[F].delay(pprint.pprintln(line))
         }
       case None       =>

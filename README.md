@@ -130,4 +130,3 @@ I thought I knew Scala...
   - circe
   - shapeless
 - kafka streams processing
-- 
