@@ -14,4 +14,9 @@ object PrimesApp extends App {
 
   println((primes take 1000).toList)
 
+  // stack overflow
+  val gt100k = primes.dropWhile(_ < 100000).head
+
+  println(gt100k)
+
 }
