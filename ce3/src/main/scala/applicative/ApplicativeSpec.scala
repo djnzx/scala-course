@@ -22,6 +22,7 @@ class ApplicativeSpec extends AnyFunSuite {
     pprint.pprintln(a2.length)
   }
 
+
   /** and special case  */
   test("tupled") {
     val AL = Applicative[List]
