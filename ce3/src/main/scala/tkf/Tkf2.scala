@@ -1,12 +1,11 @@
 package tkf
 
-import scala.concurrent.Await
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
 import cats.implicits._
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
-
+import scala.concurrent.Await
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 import scala.util.chaining.scalaUtilChainingOps
 
 /** На вход Seq[Future[String]] Получить Future[(Seq[String], Seq[Throwable]) - результат агрегации выполненых Future и
@@ -52,6 +51,19 @@ object Tkf2 extends App {
 
   }
 
+  object ImplementationCatsV3 {
+    import common.refine
+
+    def sequenceCats[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+      xs.traverse(refine)
+        .map(_.separate)
+
+    def sequenceCats2[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+      xs.traverse(refine)
+        .map(_.separateFoldable)
+
+  }
+
   object ImplementationPlain {
 
     import common._
@@ -63,8 +75,7 @@ object Tkf2 extends App {
 
     def sequencePlain[A](
         xs: Seq[Future[A]],
-      )(
-        implicit ec: ExecutionContext,
+      )(implicit ec: ExecutionContext,
       ): Future[Seq[A]] =
       xs.foldLeft(Future.successful(Seq.empty[A])) { (fs, f) =>
         map2(fs, f)(_ :+ _)
@@ -85,15 +96,15 @@ object Tkf2 extends App {
 class Tkf2Spec extends AnyFunSpec with Matchers {
 
   import Tkf2.{impl => sequence}
-  import scala.concurrent.duration.DurationInt
   import scala.concurrent.ExecutionContext.Implicits.global
+  import scala.concurrent.duration.DurationInt
 
   it("1") {
 
-    val good = Seq("a", "b")
+    val good  = Seq("a", "b")
     val goodF = good.map(Future.successful)
 
-    val bad = Seq(
+    val bad  = Seq(
       new IllegalArgumentException("x"),
       new IllegalArgumentException("z"),
     )
@@ -101,7 +112,7 @@ class Tkf2Spec extends AnyFunSpec with Matchers {
 
     val data = goodF ++ badF
 
-    val fr: Future[(Seq[String], Seq[Throwable])] = sequence(data)
+    val fr: Future[(Seq[String], Seq[Throwable])]        = sequence(data)
     val (outGood, outBad): (Seq[String], Seq[Throwable]) = Await.result(fr, 10.seconds)
 
     outGood should contain allElementsOf good
