@@ -4,11 +4,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-/**
- * Task1Java.class    - 5187
- * Task1Java$Pt.class - 1878
- * */
-public class Task1Java {
+public class MaxIslandJava {
 
   static class Pt {
     final int x;

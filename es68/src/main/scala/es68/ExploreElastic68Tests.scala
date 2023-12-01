@@ -20,7 +20,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class ExploreElastic68Tests extends AnyFunSuite with BeforeAndAfterAll {
 
-  val nativeProps = ElasticConfig.props("campaign.conf")
+  val nativeProps = ElasticConfig.props("application.conf")
   val nativeClient: ElasticClient = ElasticClient(nativeProps)
 
   type EsIndex = String
