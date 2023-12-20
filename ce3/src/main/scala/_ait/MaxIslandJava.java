@@ -59,8 +59,8 @@ public class MaxIslandJava {
   }
 
   static boolean insideBoard(Pt p, int[][] surface) {
-    return isBetween(p.x, 0, surface[0].length - 1) &&
-      isBetween(p.y, 0, surface.length - 1);
+    return isBetween(p.y, 0, surface.length - 1) &&
+      isBetween(p.x, 0, surface[0].length - 1);
   }
 
   static boolean isLand(Pt p, int[][] surface) {

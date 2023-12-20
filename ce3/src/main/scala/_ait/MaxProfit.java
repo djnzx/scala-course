@@ -3,9 +3,9 @@ package _ait;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Task2 {
+public class MaxProfit {
 
-  public static int ArrayChallenge(int[] arr) {
+  public static int solve(int[] arr) {
     HashMap<Integer, Integer> state = new HashMap<>();
     Arrays.stream(arr)
       .forEach(x -> {
