@@ -29,12 +29,9 @@ class IslandRelatedTasks(sf: Array[Array[Int]]) {
     }
 
   val nonWater: Seq[Pt] = indicesY
-    .to(LazyList)
     .flatMap { y =>
       indicesX
-        .to(LazyList)
-        .map(x => Pt(x, y))
-        .filter(isLand)
+        .flatMap(x => Some(Pt(x, y)).filter(isLand))
     }
 
   def maxIslandArea: Int = nonWater
