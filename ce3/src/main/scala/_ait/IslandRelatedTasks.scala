@@ -17,17 +17,15 @@ class IslandRelatedTasks(sf: Array[Array[Int]]) {
 
   def insideBoard(p: Pt): Boolean = indicesY.contains(p.y) && indicesX.contains(p.x)
 
-  def flood(pt: Pt, current: Set[Pt], visited: Set[Pt]): Option[Set[Pt]] =
-    Option.unless(
-      current.contains(pt) || // loop detection
-        visited.contains(pt)  // double entry prevention
-    ) {
-      val next = current + pt
-      next ++ pt.neighbours
+  def flood(current: Set[Pt], visited: Set[Pt]): Option[Set[Pt]] =
+    if (current.size == 1 && visited.contains(current.head)) None // double entry prevention
+    else {
+      val next = current
+        .flatMap(_.neighbours)
         .filter(insideBoard)
-        .filter(isLand)
-        .flatMap(p => flood(p, next, visited))
-        .flatten
+        .filter(isLand) -- current
+      if (next.isEmpty) Some(current)
+      else flood(current ++ next, visited)
     }
 
   val nonWater: Seq[Pt] = indicesY
@@ -42,7 +40,7 @@ class IslandRelatedTasks(sf: Array[Array[Int]]) {
   def maxIslandArea: Int = nonWater
     //    max-size   visited points
     .foldLeft(0 -> Set.empty[Pt]) { case (x @ (mx, visited), p) =>
-      flood(p, Set.empty, visited) match {
+      flood(Set(p), visited) match {
         case Some(found) => (mx max found.size, found ++ visited)
         case None        => x
       }
@@ -53,7 +51,7 @@ class IslandRelatedTasks(sf: Array[Array[Int]]) {
   def firstMaxIslandSize: Set[Pt] = nonWater
     //        max-island       visited points
     .foldLeft(Set.empty[Pt] -> Set.empty[Pt]) { case (x @ (island, visited), p) =>
-      flood(p, Set.empty, visited) match {
+      flood(Set(p), visited) match {
         case Some(found) if found.size > island.size => (found, found ++ visited)
         case Some(found)                             => (island, found ++ visited)
         case _                                       => x
@@ -65,7 +63,7 @@ class IslandRelatedTasks(sf: Array[Array[Int]]) {
   def islandCount: Int = nonWater
     //    count   visited points
     .foldLeft(0 -> Set.empty[Pt]) { case (x @ (count, visited), p) =>
-      flood(p, Set.empty, visited) match {
+      flood(Set(p), visited) match {
         case Some(found) => (count + 1, found ++ visited)
         case None        => x
       }

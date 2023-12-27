@@ -136,6 +136,7 @@ lazy val ce3 = (project in file("ce3"))
       "jakarta.mail"                 % "jakarta.mail-api"      % "2.1.1",
       "io.scalaland"                %% "chimney"               % "0.7.5",
       "org.tpolecat"                %% "skunk-core"            % "0.6.0",
+      "io.7mind.izumi"              %% "logstage-core"         % "1.2.3",
       Libraries.doobieCore,
       Libraries.doobiePg,
       Libraries.sqlPostgres,
