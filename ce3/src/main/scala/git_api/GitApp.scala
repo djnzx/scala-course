@@ -1,15 +1,9 @@
 package git_api
 
-import cats.data.EitherT
-
 import java.io.File
-import java.time.{LocalDateTime, OffsetDateTime}
-import sys.process.Process
-import sys.process.ProcessBuilder
-import cats.implicits._
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import java.time.OffsetDateTime
+import scala.sys.process.Process
+import scala.sys.process.ProcessBuilder
 
 class Git(baseDir: File) {
   import Git._
@@ -25,9 +19,9 @@ class Git(baseDir: File) {
 
   private lazy val exec = exeName(cmdName)
 
-  def cmd(args: Any*): P = Process(exec +: args.map(_.toString), baseDir)
+  def cmd(args: String*): P = Process(exec +: args, baseDir)
 
-  def add(files: Seq[String]): P = cmd(("add" +: files): _*)
+  def add(files: Seq[String]): P = cmd("add" +: files: _*)
 
   def add(file: String, files: String*): P = add(file +: files)
 
@@ -37,15 +31,16 @@ class Git(baseDir: File) {
 
   def currentHash: String = revParse("HEAD")
 
+  // git stores hash with len = 40
   def currentHash(len: Int): String = currentHash.take(len)
 
-
+  // git uses hash with len = 8
   def commitList(): LazyList[Commit] =
     cmd("log", "--pretty=format:%h : %an : %ae :  %cI : %s", "--date=iso8601").lazyLines
       .map(_.split(" : ").map(_.trim))
       .collect { case Array(a, b, c, d, e) => Commit(a, b, c, OffsetDateTime.parse(d), e) }
 
-  def commitList(n: Int): LazyList[Commit] = commitList.take(n)
+  def commitList(n: Int): LazyList[Commit] = commitList().take(n)
 
   def tags: Iterable[String] = ???
 
@@ -63,13 +58,15 @@ object Git {
   def apply(baseDir: File): Git   = new Git(baseDir)
   def apply(baseDir: String): Git = apply(new File(baseDir))
   def apply(): Git                = apply(".")
+
 }
 
-object GitApi extends App {
+object GitApp extends App {
   val git = Git()
   println(git.currentBranch)
   println(git.currentHash(8))
-  git.commitList(5)
-    .foreach(pprint.pprintln(_))
+  git
+    .commitList(5)
+    .foreach(x => pprint.pprintln(x, width = 200))
 
 }
