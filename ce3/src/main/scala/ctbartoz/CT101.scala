@@ -1,8 +1,17 @@
 package ctbartoz
 
 import cats._
+import cats.arrow.Profunctor
 import cats.data._
-import cats.implicits._
+import cats.implicits.catsSyntaxAlternativeSeparate
+import cats.implicits.catsSyntaxEitherId
+import cats.implicits.catsSyntaxUnite
+import cats.implicits.toBifunctorOps
+import cats.implicits.toContravariantOps
+import cats.implicits.toFunctorOps
+import cats.implicits.toProfunctorOps
+import cats.implicits.toTraverseOps
+//import cats.implicits._
 
 object CT101 extends App {
 
@@ -21,8 +30,8 @@ object CT101 extends App {
     * 6.2 https://www.youtube.com/watch?v=EO86S2EZssc&list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&index=12
     * 7.1 https://www.youtube.com/watch?v=pUQ0mmbIdxs&list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&index=13
     * 7.2 https://www.youtube.com/watch?v=wtIKd8AhJOc&list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&index=14
-    * 8.1
-    * 8.2
+    * 8.1 https://www.youtube.com/watch?v=REqRzMI26Nw&list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&index=15
+    * 8.2 https://www.youtube.com/watch?v=iXZR1v3YN-8&list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&index=16
     * 9.1
     * 9.2
     * 10.1
@@ -71,7 +80,7 @@ object CT101 extends App {
       (3, "c"),
     )
   )
-  pprint.pprintln(a)
+//  pprint.pprintln(a)
 
   val b = repackEithers(
     List(
@@ -81,13 +90,49 @@ object CT101 extends App {
       Right("b")
     )
   )
-  pprint.pprintln(b)
+//  pprint.pprintln(b)
 
   object bi {
-    val x: Either[String, Int] = ???
+    val x: Either[String, Int]            = ???
     val y: Either[Option[Double], String] = x.bimap(_.toDoubleOption, _.toString)
   }
 
-//  Bifunctor
+  object profunctor {
 
+    def f(a: Int): Float = a.toFloat
+
+    def pre(a: String): Int = a.length
+
+    def post(a: Float): Double = a.toDouble
+
+    val comb1: String => Double = (pre _) andThen f andThen post
+
+    val comb2a: String => Double = (f _).dimap(pre)(post)
+    val comb2b: String => Float  = (f _).dimap(pre)(identity)
+
+    val comb3: Int => Double = (f _).map(post)
+
+    val pf: Profunctor.Ops[Function, Int, Float] { type TypeClassType = Profunctor[Function] } = toProfunctorOps(f)
+
+    type ToString[A] = A => String
+
+    // cats contramap requires type constructor with one hole to derive contravariant
+    val f10a                = (x: Int) => s"original: $x"
+    val f10c: ToString[Int] = (x: Int) => s"original: $x"
+    val f11                 = f10c.contramap((s: String) => s.length)
+
+    val r: String = f11("ten")
+
+    implicit def mkFunctionContravariant[C]: Contravariant[* => C] =
+      new Contravariant[* => C] {
+        override def contramap[A, B](fac: A => C)(fba: B => A): B => C =
+          (b: B) => {
+            val a: A = fba(b)
+            val c: C = fac(a)
+            c
+          }
+      }
+  }
+
+  pprint.pprintln(profunctor.r)
 }
