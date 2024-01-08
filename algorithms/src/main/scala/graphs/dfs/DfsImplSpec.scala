@@ -1,6 +1,7 @@
 package graphs.dfs
 
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
 trait Graph {
   def add(src: Int, dst: Int): Unit
@@ -60,9 +61,9 @@ class DFS(g: Graph) {
 
 }
 
-class DfsImplSpec extends AnyFunSuite {
+class DfsImplSpec extends AnyFunSuite with Matchers {
 
-  test("make & toString") {
+  test("apply & toString") {
     val g = DiGraph(
       1 -> 2,
       1 -> 3,
@@ -73,7 +74,7 @@ class DfsImplSpec extends AnyFunSuite {
   }
 
   test("dfs") {
-    val g   = DiGraph(
+    val g     = DiGraph(
       1 -> 4,
       1 -> 2,
       2 -> 1,
@@ -85,9 +86,16 @@ class DfsImplSpec extends AnyFunSuite {
       1 -> 7,
       7 -> 4
     )
-    val dfs = new DFS(g)
-    dfs.traverse(1, 4)
-      .foreach(x => pprint.pprintln(x))
+    val dfs   = new DFS(g)
+    val paths = dfs.traverse(1, 4)
+    paths.foreach(x => pprint.pprintln(x))
+
+    paths shouldEqual Set(
+      List(1, 2, 3, 4),
+      List(1, 4),
+      List(1, 5, 6, 4),
+      List(1, 7, 4)
+    )
   }
 
 }
