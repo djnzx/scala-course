@@ -73,7 +73,7 @@ class DfsImplSpec extends AnyFunSuite with Matchers {
     println(g)
   }
 
-  test("dfs") {
+  test("dfs 1") {
     val g     = DiGraph(
       1 -> 4,
       1 -> 2,
@@ -95,6 +95,36 @@ class DfsImplSpec extends AnyFunSuite with Matchers {
       List(1, 4),
       List(1, 5, 6, 4),
       List(1, 7, 4)
+    )
+  }
+
+  test("dfs 2") {
+    val g     = DiGraph(
+      1  -> 2,
+      1  -> 6,
+      1  -> 10,
+      2  -> 3,
+      2  -> 4,
+      6  -> 7,
+      6  -> 9,
+      3  -> 11,
+      4  -> 5,
+      5  -> 11,
+      7  -> 8,
+      9  -> 5,
+      8  -> 11,
+      10 -> 11
+    )
+    val dfs   = new DFS(g)
+    val paths = dfs.traverse(1, 11)
+    paths.foreach(x => pprint.pprintln(x))
+
+    paths shouldEqual Set(
+      List(1, 2, 3, 11),
+      List(1, 2, 4, 5, 11),
+      List(1, 6, 7, 8, 11),
+      List(1, 6, 9, 5, 11),
+      List(1, 10, 11)
     )
   }
 
