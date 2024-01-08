@@ -111,6 +111,8 @@ object CT101 extends App {
     val comb2b: String => Float  = (f _).dimap(pre)(identity)
 
     val comb3: Int => Double = (f _).map(post)
+    val comb3a: Int => Double = (f _).rmap(post)
+    val comb4: String => Float = (f _).lmap(pre)
 
     val pf = toProfunctorOps(f _)
 
