@@ -1,4 +1,4 @@
-package graphs.leejava.colored;
+package graphs.lee.colored;
 
 import java.io.PrintStream;
 

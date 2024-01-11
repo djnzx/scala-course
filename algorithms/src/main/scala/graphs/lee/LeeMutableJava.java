@@ -1,8 +1,8 @@
-package graphs.leejava;
+package graphs.lee;
 
-import graphs.leejava.colored.Ansi;
-import graphs.leejava.colored.Attribute;
-import graphs.leejava.colored.Colored;
+import graphs.lee.colored.Ansi;
+import graphs.lee.colored.Attribute;
+import graphs.lee.colored.Colored;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class Lee {
+public class LeeMutableJava {
   private static final int EMPTY = 0;
   private static final int START = 1;
   private static final int OBSTACLE = -10;
@@ -22,7 +22,7 @@ public class Lee {
   private final int height;
   private final int[][] board;
 
-  public Lee(int width, int height) {
+  public LeeMutableJava(int width, int height) {
     this.width = width;
     this.height = height;
     this.board = new int[height][width];
@@ -36,53 +36,53 @@ public class Lee {
     board[y][x] = value;
   }
 
-  private int get(Point p) {
-    return get(p.x, p.y);
+  private int get(Pt p) {
+    return get(p.x(), p.y());
   }
 
-  private void set(Point p, int value) {
-    set(p.x, p.y, value);
+  private void set(Pt p, int value) {
+    set(p.x(), p.y(), value);
   }
 
-  private boolean isOnBoard(Point p) {
-    return p.x >= 0 && p.x < width && p.y >= 0 && p.y < height;
+  private boolean isOnBoard(Pt p) {
+    return p.x() >= 0 && p.x() < width && p.y() >= 0 && p.y() < height;
   }
 
-  private boolean isUnvisited(Point p) {
+  private boolean isUnvisited(Pt p) {
     return get(p) == EMPTY;
   }
 
   // offsets, not points
-  private Supplier<Stream<Point>> deltas() {
+  private Supplier<Stream<Pt>> deltas() {
     return () -> Stream.of(
-      Point.of(-1, 0),
-      Point.of(0, -1),
-      Point.of(1, 0),
-      Point.of(0, 1)
+      Pt.of(-1, 0),
+      Pt.of(0, -1),
+      Pt.of(1, 0),
+      Pt.of(0, 1)
     );
   }
 
-  private Stream<Point> neighbours(Point p) {
+  private Stream<Pt> neighbours(Pt p) {
     return deltas().get()
-      .map(d -> p.move(d.x, d.y))
+      .map(d -> p.move(d.x(), d.y()))
       .filter(this::isOnBoard);
   }
 
-  private Stream<Point> neighboursUnvisited(Point p) {
+  private Stream<Pt> neighboursUnvisited(Pt p) {
     return neighbours(p)
       .filter(this::isUnvisited);
   }
 
-  private Stream<Point> neighboursByValue(Point pt, int value) {
+  private Stream<Pt> neighboursByValue(Pt pt, int value) {
     return neighbours(pt)
       .filter(p -> get(p) == value);
   }
 
-  private void initializeBoard(Set<Point> obstacles) {
+  private void initializeBoard(Set<Pt> obstacles) {
     obstacles.forEach(p -> set(p, OBSTACLE));
   }
 
-  public Optional<Iterable<Point>> trace(Point src, Point dst, Set<Point> obstacles) {
+  public Optional<Iterable<Pt>> trace(Pt src, Pt dst, Set<Pt> obstacles) {
     // 1. initialization
     initializeBoard(obstacles);
     System.out.println("2a");
@@ -91,10 +91,10 @@ public class Lee {
     set(src, counter[0]);
     counter[0]++;
     boolean found = false;
-    for (Set<Point> curr = Set.of(src); !(found || curr.isEmpty()); counter[0]++) {
+    for (Set<Pt> curr = Set.of(src); !(found || curr.isEmpty()); counter[0]++) {
       System.out.println(curr.size());
       System.out.println(boardFormatted(List.of()));
-      Set<Point> next = curr.stream()
+      Set<Pt> next = curr.stream()
         .flatMap(this::neighboursUnvisited)
         .collect(Collectors.toSet());
       next.forEach(p -> set(p, counter[0]));
@@ -104,13 +104,13 @@ public class Lee {
     System.out.println("2b");
     // 3. backtrack (reconstruct path)
     if (!found) return Optional.empty();
-    LinkedList<Point> path = new LinkedList<>();
+    LinkedList<Pt> path = new LinkedList<>();
     path.add(dst);
     counter[0]--;
-    Point curr = dst;
+    Pt curr = dst;
     while (counter[0] > START) {
       counter[0]--;
-      Point prev = neighboursByValue(curr, counter[0])
+      Pt prev = neighboursByValue(curr, counter[0])
         .findFirst()
 //        .reduce((p1, p2) -> p2)
         .orElseThrow(() -> new RuntimeException("impossible"));
@@ -120,7 +120,7 @@ public class Lee {
     return Optional.of(path);
   }
 
-  private String cellFormatted(Point p, Set<Point> path) {
+  private String cellFormatted(Pt p, Set<Pt> path) {
     int value = get(p);
     String valueF = String.format("%3d", value);
 
@@ -139,13 +139,13 @@ public class Lee {
     return valueF;
   }
 
-  public String boardFormatted(Iterable<Point> path0) {
-    Set<Point> path = StreamSupport
+  public String boardFormatted(Iterable<Pt> path0) {
+    Set<Pt> path = StreamSupport
       .stream(path0.spliterator(), false)
       .collect(Collectors.toSet());
     return IntStream.range(0, height).mapToObj(y ->
       IntStream.range(0, width)
-        .mapToObj(x -> Point.of(x, y))
+        .mapToObj(x -> Pt.of(x, y))
         .map(p -> cellFormatted(p, path))
         .collect(Collectors.joining())
     ).collect(Collectors.joining("\n"));
