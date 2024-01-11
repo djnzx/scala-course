@@ -45,6 +45,7 @@ class LeeMutable(width: Int, height: Int, os: Iterable[Pt]) {
   }
 
   def fmtBoard(path0: Iterable[Pt] = Iterable.empty) = {
+    import graphs.lee.Pretty.colorize
     val path           = path0.toSet
     def fmtCell(p: Pt) = get(p) match {
       case OBSTACLE => colorize(" XX", Console.BLUE)
@@ -64,6 +65,4 @@ private object LeeMutable {
   val EMPTY    = 0
   val START    = 1
   val OBSTACLE = -10
-
-  def colorize(value: String, color: String) = color.concat(value).concat(Console.RESET)
 }

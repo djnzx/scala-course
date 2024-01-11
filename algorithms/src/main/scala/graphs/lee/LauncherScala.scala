@@ -26,18 +26,20 @@ object LauncherScala extends App {
   ).map(Pt.of)
 
   {
-    val lee   = new LeeMutable(15, 10, obstacles)
-    val trace = lee.trace(src, dst)
+    val board = new LeeMutable(15, 10, obstacles)
+    val trace = board.trace(src, dst)
     println(trace)
     println
-    trace.foreach(path => println(lee.fmtBoard(path)))
+    trace.foreach(path => println(board.fmtBoard(path)))
   }
 
   {
-    val lee   = new LeeImmutable(15, 10, obstacles)
-    val trace = lee.trace(src, dst)
+    val board            = new LeeImmutable(15, 10, obstacles)
+    val (trace, visited) = board.trace(src, dst)
     println
     println(trace)
+    println
+    println(board.represent(trace, visited))
   }
 
 }
