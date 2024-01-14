@@ -11,13 +11,12 @@ object Alphabetize {
   def alphabetizeV1(origin: String): String = {
     val L = origin.length
 
-    val sorted: String      = origin.filter(isToSort).sorted
-    val toSaveInd: Set[Int] = origin.indices.filter(i => isToSave(origin(i))).toSet
+    val sorted: String = origin.filter(isToSort).sorted
 
     def reconstruct(outcome: List[Char], done: Int, used: Int): String = done match {
-      case L                 => outcome.reverse.mkString
-      case i if toSaveInd(i) => reconstruct(origin(i) :: outcome, i + 1, used)
-      case i                 => reconstruct(sorted(used) :: outcome, i + 1, used + 1)
+      case L                        => outcome.reverse.mkString
+      case i if isToSave(origin(i)) => reconstruct(origin(i) :: outcome, i + 1, used)
+      case i                        => reconstruct(sorted(used) :: outcome, i + 1, used + 1)
     }
 
     reconstruct(Nil, 0, 0)
@@ -36,13 +35,46 @@ object Alphabetize {
       .foldLeft(
         List.empty[Char] -> origin.filter(isToSort).sorted.toList
       ) {
-        case ((s2, buf), next) if isToSave(next) => (next :: s2) -> buf
-        case ((s2, next :: rest), _)             => (next :: s2) -> rest
-        case ((_, Nil), _)                       => ???
+        case ((s2, buf), next) if isToSave(next) => (next :: s2)     -> buf
+        case ((s2, buf), _)                      => (buf.head :: s2) -> buf.tail
       }
       ._1
       .reverse
       .mkString
+
+  def alphabetizeV4(origin: String): String = {
+    var sorted = origin.filter(isToSort).sorted
+    val target = new Array[Char](origin.length)
+
+    (0 until origin.length)
+      .foreach { i =>
+        val c: Char = origin(i)
+        val z: Char =
+          if (isToSave(c)) c
+          else {
+            val peek: Char = sorted.head
+            sorted = sorted.substring(1)
+            peek
+          }
+        target(i) = z
+      }
+
+    new String(target)
+  }
+
+  def alphabetizeV5(origin: String): String = {
+    val sorted = origin.filter(isToSort).sorted
+
+    def reconstruct(origin: List[Char], sorted: List[Char], acc: List[Char]): List[Char] = (origin, sorted) match {
+      case (Nil, Nil)                   => acc
+      case (Nil, s :: ss)               => reconstruct(Nil, ss, s :: acc)
+      case (o :: os, Nil)               => reconstruct(os, Nil, o :: acc)
+      case (o :: os, ss) if isToSave(o) => reconstruct(os, ss, o :: acc)
+      case (_ :: os, s :: ss)           => reconstruct(os, ss, s :: acc)
+    }
+
+    reconstruct(origin.toList, sorted.toList, Nil).reverse.mkString
+  }
 
 }
 
@@ -58,7 +90,7 @@ class AlphabetizeSpec extends AnyFunSpec with Matchers {
 
     for {
       (in, out) <- io
-    } yield alphabetizeV3(in) shouldEqual out
+    } yield alphabetizeV5(in) shouldEqual out
   }
 
 }
