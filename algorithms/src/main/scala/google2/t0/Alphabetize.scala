@@ -65,15 +65,15 @@ object Alphabetize {
   def alphabetizeV5(origin: String): String = {
     val sorted = origin.filter(isToSort).sorted
 
-    def reconstruct(origin: List[Char], sorted: List[Char], acc: List[Char]): List[Char] = (origin, sorted) match {
+    def combine(origin: List[Char], sorted: List[Char], acc: List[Char]): List[Char] = (origin, sorted) match {
       case (Nil, Nil)                   => acc
-      case (Nil, s :: ss)               => reconstruct(Nil, ss, s :: acc)
-      case (o :: os, Nil)               => reconstruct(os, Nil, o :: acc)
-      case (o :: os, ss) if isToSave(o) => reconstruct(os, ss, o :: acc)
-      case (_ :: os, s :: ss)           => reconstruct(os, ss, s :: acc)
+      case (Nil, s :: ss)               => combine(Nil, ss, s :: acc)
+      case (o :: os, Nil)               => combine(os, Nil, o :: acc)
+      case (o :: os, ss) if isToSave(o) => combine(os, ss, o :: acc)
+      case (_ :: os, s :: ss)           => combine(os, ss, s :: acc)
     }
 
-    reconstruct(origin.toList, sorted.toList, Nil).reverse.mkString
+    combine(origin.toList, sorted.toList, Nil).reverse.mkString
   }
 
 }
@@ -83,9 +83,10 @@ class AlphabetizeSpec extends AnyFunSpec with Matchers {
 
   it("alphabetize") {
     val io = Map(
-      "Google Mail"           -> "Gaegil Mloo",
-      "GooZgleX Mail"         -> "GaeZgilX Mloo",
-      "Don't worry, Be Happy" -> "Dae'n ooppr, Br Htwyy",
+      "Google Mail"            -> "Gaegil Mloo",
+      "GooZgleX Mail"          -> "GaeZgilX Mloo",
+      "Don't worry, Be Happy"  -> "Dae'n ooppr, Br Htwyy",
+      "Don't worry, Be HappyZ" -> "Dae'n ooppr, Br HtwyyZ",
     )
 
     for {
