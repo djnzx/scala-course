@@ -18,7 +18,8 @@ object FiboPlayground extends App {
 
     def fibo(n: Int): Int = n match {
       case 0 | 1 => n
-      case n     => cache.getOrElse(
+      case n     =>
+        cache.getOrElse(
           n, {
             val nTh = fibo(n - 1) + fibo(n - 2)
             cache.put(n, nTh)
@@ -66,17 +67,19 @@ object FiboPlayground extends App {
     def fibo(n: Int): Int = (1 to n).foldLeft((0, 1)) { case ((n1, n2), _) => (n2, n1 + n2) }._1
   }
 
+  object PureFunctionalImplementation {
+    val fiboSeq: LazyList[Int]    = LazyList.unfold(0 -> 1) { case (n1, n2) => Some(n1, (n2, n1 + n2)) }
+    def fibo(n: Int): Vector[Int] = fiboSeq.take(n + 1).toVector
+    def fiboNth(n: Int): Int      = fiboSeq.slice(n, n + 1).head
+  }
+
   // 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765
   val range = 0 to 20
-  val r0 = range.map(x => ClassicRecursion.fibo(x))
-  val r1 = range.map(x => ClassicRecursionCached.fibo(x))
-  val r2 = range.map(x => JavaIshMutable.fibo(x))
-  val r3 = range.map(x => TailRecursion.fibo(x))
-  val r4 = range.map(x => DeclarativeImplementation.fibo(x))
-  println(r0)
-  println(r1)
-  println(r2)
-  println(r3)
-  println(r4)
-
+  val r0    = range.map(x => ClassicRecursion.fibo(x))
+  val r1    = range.map(x => ClassicRecursionCached.fibo(x))
+  val r2    = range.map(x => JavaIshMutable.fibo(x))
+  val r3    = range.map(x => TailRecursion.fibo(x))
+  val r4    = range.map(x => DeclarativeImplementation.fibo(x))
+  val r5    = PureFunctionalImplementation.fibo(20)
+  List(r0, r1, r2, r3, r4, r5).foreach(x => pprint.pprintln(x))
 }
