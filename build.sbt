@@ -43,7 +43,7 @@ lazy val algorithms = (project in file("algorithms"))
     Settings.common,
     // compiled with JDK17
     libraryDependencies += "org.springframework.security" % "spring-security-crypto" % "6.1.2",
-    libraryDependencies += "org.typelevel"               %% "cats-effect"            % "3.5.3",
+    libraryDependencies += "co.fs2"                      %% "fs2-core"               % "3.9.3",
   )
 
 lazy val amt = (project in file("amt"))
