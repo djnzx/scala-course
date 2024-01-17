@@ -1,22 +1,13 @@
 package hackerrankfp.d240117
 
+import hackerrankfp.util.Console
+import hackerrankfp.util.Console.Real
+import hackerrankfp.util.Console.Test
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
-import scala.collection.mutable
 
 /** https://www.hackerrank.com/challenges/crosswords-101/problem?isFullScreen=true */
 object CrosswordApp {
-  import scala.io.StdIn
-
-  trait Console {
-    def readLine(): String
-    def printLine(line: String): Unit
-  }
-
-  object RealConsole extends Console {
-    override def readLine(): String            = StdIn.readLine()
-    override def printLine(line: String): Unit = println(line)
-  }
 
   def readBoard(console: Console) =
     (1 to 10)
@@ -98,18 +89,20 @@ object CrosswordApp {
       .foreach(console.printLine)
   }
 
-  def main(args: Array[String]): Unit = doSolve(RealConsole)
+  def main(args: Array[String]): Unit = doSolve(Real)
 
 }
 
 class CrosswordAppSpec extends AnyFunSuite with Matchers {
   import CrosswordApp._
+
   test("replace") {
     (0 to 9).foreach { x =>
       val outcome = tryToReplaceAt("---I------", "INDIA", x)
       pprint.pprintln(outcome)
     }
   }
+
   test("transpose") {
     val board         = List(
       "ABCD",
@@ -126,6 +119,7 @@ class CrosswordAppSpec extends AnyFunSuite with Matchers {
     transposed.foreach(x => pprint.pprintln(x))
     transposed shouldBe transposedExp
   }
+
   val boardInput  = List(
     "+-++++++++",
     "+-++++++++",
@@ -158,18 +152,7 @@ class CrosswordAppSpec extends AnyFunSuite with Matchers {
   }
 
   test("whole app") {
-    val testConsole = new Console {
-
-      val it = Iterator(boardInput: _*) ++ Iterator(wordsRaw)
-
-      override def readLine(): String = it.nextOption().getOrElse("")
-
-      val buffer = mutable.ListBuffer.empty[String]
-
-      override def printLine(line: String): Unit = buffer.append(line)
-
-      def output = buffer.toList
-    }
+    val testConsole = new Test(boardInput :+ wordsRaw)
 
     CrosswordApp.doSolve(testConsole)
     testConsole.output shouldBe boardOutput
