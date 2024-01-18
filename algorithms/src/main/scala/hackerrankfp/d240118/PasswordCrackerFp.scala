@@ -102,7 +102,7 @@ class PasswordCrackerFpSpec extends AnyFunSuite with Matchers with ScalaCheckPro
     x shouldBe None
   }
 
-  test("is unsolvable") {
+  test("non-solvable") {
     val phrases = Table(
       "unsolvable patterns",
       "baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
