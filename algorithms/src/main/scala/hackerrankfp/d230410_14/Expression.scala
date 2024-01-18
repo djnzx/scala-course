@@ -1,17 +1,9 @@
 package hackerrankfp.d230410_14
 
-import cats.Eval
-import cats.effect.IO
-import cats.effect.IOApp
-import cats.effect.unsafe.implicits.global
-import fs2.Pure
-import fs2.Stream
 import hackerrankfp.util.Console
 import hackerrankfp.util.Console.Real
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
-
-import scala.collection.mutable
 
 // https://www.hackerrank.com/challenges/expressions/problem
 object Expression {
@@ -24,7 +16,7 @@ object Expression {
       case Op.Mul => "*"
     }
 
-    def apply(a: Long, x: Long): Long = this match {
+    def apply(a: BigInt, x: Int): BigInt = this match {
       case Op.Add => a + x
       case Op.Sub => a - x
       case Op.Mul => a * x
@@ -35,15 +27,14 @@ object Expression {
     case object Add extends Op
     case object Sub extends Op
     case object Mul extends Op
-    val all  = List(Add, Sub, Mul)
-    val allL = LazyList(Add, Sub, Mul)
-    val allS = Stream(Add, Sub, Mul)
+    val all  = List(Mul, Add, Sub)
+    val allL = LazyList(Mul, Add, Sub)
   }
 
-  def isValid(x: Long): Boolean = x % 101 == 0
+  def isValid(x: BigInt): Boolean = x % 101 == 0
 
-  def show(ns: List[Long], ops: List[Op]): String = {
-    def go(xs: List[Long], os: List[Op], acc: List[String]): List[String] = (xs, os) match {
+  def show(ns: List[Int], ops: List[Op]): String = {
+    def go(xs: List[Int], os: List[Op], acc: List[String]): List[String] = (xs, os) match {
       case (Nil, Nil)         => acc.reverse
       case (x :: xs, o :: os) => go(xs, os, x.toString :: o.show :: acc)
       case _                  => sys.error("`ops` is designed to be one number less than `ns`")
@@ -51,80 +42,27 @@ object Expression {
     go(ns.tail, ops, ns.head.toString :: Nil).mkString
   }
 
-  // TODO: deal with StackOverflow here
-  def combinationsR(xa: Long, xs0: List[Long]): LazyList[(Long, List[Op])] =
-    xs0 match {
+  def combinationsR(xa: BigInt, ns: List[Int]): LazyList[(BigInt, List[Op])] = ns match {
       case Nil     => LazyList.empty
       case x :: xs =>
         Op.allL.flatMap { op =>
-          val xa2  = op(xa, x)
+          val xa2 = op(xa, x)
           val tail = combinationsR(xa2, xs)
           if (tail.isEmpty) LazyList(xa2 -> List(op))
           else tail.map { case (a, ops) => a -> (op :: ops) }
         }
     }
 
-  def combinationsR2(xa: Long, xs0: List[Long]): Stream[fs2.Pure, (Long, List[Op])] =
-    xs0 match {
-      case Nil     => Stream.empty
-      case x :: xs =>
-        println(xa)
-        Op.allS.flatMap { op =>
-          val xa2 = op(xa, x)
-          combinationsR2(xa2, xs)
-            .map { case (a, ops) => a -> (op :: ops) }
-            .ifEmptyEmit(xa2 -> List(op))
-        }
-    }
-
-  def combinationsEval(xa: Long, xs0: List[Long]): Eval[LazyList[(Long, List[Op])]] =
-    xs0 match {
-      case Nil     => Eval.now(LazyList.empty)
-      case x :: xs =>
-        def f(op: Op): Eval[LazyList[(Long, List[Op])]] =
-          Eval
-            .later(xa)
-            .map(xa => op(xa, x))
-            .flatMap { xa2 =>
-              combinationsEval(xa2, xs)
-                .map { tail =>
-                  if (tail.isEmpty) LazyList(xa2 -> List(op))
-                  else tail.map { case (a, ops) => a -> (op :: ops) }
-                }
-            }
-
-        f(Op.Add).flatMap { fa =>
-          f(Op.Sub).flatMap { fb =>
-            f(Op.Mul).map { fc =>
-              fa ++ fb ++ fc
-            }
-          }
-        }
-    }
-
-  def solveItEval(xs: List[Long]) =
-    combinationsEval(xs.head, xs.tail).value
-      .filter { case (n, _) => isValid(n) }
-      .map { case (n, ops) => show(xs, ops) }
-  // .value
-
-  def solveIt(xs: List[Long]) =
+  def solveIt(xs: List[Int]) =
     combinationsR(xs.head, xs.tail)
       .filter { case (n, _) => isValid(n) }
       .map { case (n, ops) => show(xs, ops) }
-//      .covary[IO]
-//      .foreach(x => IO(println(x)))
-//      .compile
-//      .drain
-//      .unsafeRunSync()
-//      .map { case (n, ops) => show(xs, ops) + s" = $n" }
 
   def doSolve(console: Console) = {
     val _  = console.readLine()
-    val xs = console.readLine().split(" ").map(_.toLong).toList
+    val xs = console.readLine().split(" ").map(_.toInt).toList
 //    val s  =
-    solveItEval(xs)
-//    solveIt(xs)
+    solveIt(xs)
       .foreach(println)
 //      .headOption.getOrElse("*0*")
 //    println(s)
@@ -145,10 +83,10 @@ object PlainImplementation {
     go(n, List(Nil))
   }
 
-  def find(numbers: List[Long]) =
+  def find(numbers: List[Int]) =
     variations(numbers.length - 1)
       .map { ops =>
-        val r = (ops zip numbers.tail).foldLeft(numbers.head) { case (a, (op, x)) => op(a, x) }
+        val r = (ops zip numbers.tail).foldLeft(BigInt(numbers.head)) { case (a, (op, x)) => op(a, x) }
         r -> ops
       }
       .filter { case (r, _) => isValid(r) }
@@ -159,7 +97,7 @@ object PlainImplementation {
 object TailRecursiveButEager {
   import Expression._
 
-  def combinationsTR(acc: List[(Long, List[Op])], xs: List[Int]): List[(Long, List[Op])] =
+  def combinationsTR(acc: List[(BigInt, List[Op])], xs: List[Int]): List[(BigInt, List[Op])] =
     xs match {
       case Nil     => acc.map { case (a, ops) => a -> ops.reverse }
       case x :: xs =>
@@ -185,11 +123,11 @@ class ExpressionSpec extends AnyFunSuite with Matchers {
   }
 
   test("variations 1") {
-    variations(1) shouldBe List(List(Add), List(Sub), List(Mul))
+    variations(1).toSet shouldBe Set(List(Add), List(Sub), List(Mul))
   }
 
   test("variations 2") {
-    variations(2) shouldBe List(
+    variations(2).toSet shouldBe Set(
       List(Add, Add),
       List(Sub, Add),
       List(Mul, Add),
@@ -202,25 +140,25 @@ class ExpressionSpec extends AnyFunSuite with Matchers {
     )
   }
 
-  val numbers = List[Long](55, 3, 45, 33, 25)
+  val numbers = List[Int](55, 3, 45, 33, 25)
 
   // 55+3-45*33-25 = 404
   // 55*3+45-33+25 = 202
   test("solve cached 1") {
-    solveItEval(numbers)
+    solveIt(numbers)
       .foreach(println)
   }
 
-//  test("solve cached 0") {
-//    val numbers = List[Long](22, 79, 21)
-//    solveIt(numbers)
-//      .foreach(println)
-//  }
+  test("solve cached 0") {
+    val numbers = List[Int](22, 79, 21)
+    solveIt(numbers)
+      .foreach(println)
+  }
 
   test("solve cached 3") {
     val xs = "59 34 36 63 79 82 20 4 81 16 30 93 50 38 78 10 22 61 91 27 18 78 96 19 38 10 3 17 42 90 98 60 1 63 16 28 97 45 19 35 44 56 77 43 24 42 28 35 95 44 61 55 32 84"
       .split(" ")
-      .map(_.toLong)
+      .map(_.toInt)
       .toList
 
     println(xs.size)
@@ -228,47 +166,25 @@ class ExpressionSpec extends AnyFunSuite with Matchers {
 //      .foreach(println)
   }
 
-//  test("solve cached 3 EVAL") {
-//    val xs = "59 34 36 63 79 82 20 4 81 16 30 93 50 38 78 10 22 61 91 27 18 78 96 19 38 10 3 17 42 90 98 60 1 63 16 28 97 45 19 35 44 56 77 43 24 42 28 35 95 44 61 55 32 84"
-//      .split(" ")
-//      .map(_.toLong)
-//      .toList
-//
-//    println(xs.size)
-//    solveItEval(xs)
-//      .foreach(println)
-//  }
-//
   // stack overflow
   test("solve cached 4") {
     val xs =
       "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100"
         .split(" ")
-        .map(_.toLong)
+        .map(_.toInt)
         .toList
 
     println(xs.size)
     solveIt(xs)
-//      .foreach(println)
+      .take(10)
+      .foreach(println)
   }
-//
-//  test("solve cached 4 EVAL") {
-//    val xs =
-//      "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100"
-//        .split(" ")
-//        .map(_.toLong)
-//        .toList
-//
-//    println(xs.size)
-//    solveItEval(xs)
-//      .foreach(println)
-//  }
-//
-//  // 55*3+45-33+25 = 202
-//  // 55+3-45*33-25 = 404
-//  test("!") {
-//    find(numbers)
-//      .foreach(println)
-//  }
+
+  // 55*3+45-33+25 = 202
+  // 55+3-45*33-25 = 404
+  test("!") {
+    find(numbers)
+      .foreach(println)
+  }
 
 }
