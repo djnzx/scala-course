@@ -1,4 +1,4 @@
-package hackerrankfp.d240119
+package hackerrankfp.d240118
 
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
