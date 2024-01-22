@@ -35,12 +35,23 @@ object MonadIsMonoid4 {
     }
   }
 
-  /** 11. this is the proof vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv */
-  trait Monad[F[_]] extends Functor[F] with MonoidInCategoryK2[F, NaturalTransformation, Id, Lambda[A => F[F[A]]]] {
+  trait MonoidInCategoryFunctorsNT[F[_]] extends MonoidInCategoryK2[F, NaturalTransformation, Id, Lambda[A => F[F[A]]]]
+
+  /** 11. this is the proof vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+    *
+    * - `unit` -> `pure`, `pure` -> `unit`
+    *
+    * - WE need to implement `pure` OR `unit`
+    *
+    * - `flatMap` -> `combine` -> `flatten` -> `flatMap`
+    *
+    * - WE need to implement only ONE (ANY)
+    */
+  trait Monad[F[_]] extends Functor[F] with MonoidInCategoryFunctorsNT[F] {
     type FF[A] = F[F[A]]
     // public
-    def pure[A](a: A): F[A]
-    def flatMap[A, B](fa: F[A])(f: A ==> F[B]): F[B]
+    def pure[A](a: A): F[A] = unit(a)
+    def flatMap[A, B](fa: F[A])(f: A ==> F[B]): F[B] = combine(map(fa)(f))
     // from functor, but we can implement it here
     override def map[A, B](fa: F[A])(f: A ==> B): F[B] = flatMap(fa)(a => pure(f(a)))
     // can be derived
@@ -63,7 +74,20 @@ object InstanceMonoidInCategoryFunctors {
   import MonadIsMonoid4._
 
   type ListList[A] = List[List[A]]
-  object AnotherListMonoid extends MonoidInCategoryFunctors2[List] { // TODO:  with Monad[List]
+
+  object YetAnotherListMonoid extends Monad[List] {
+
+    override def unit: NaturalTransformation[Id, List] = new NaturalTransformation[Id, List] {
+      override def apply[A](fa: Id[A]): List[A] = List(fa)
+    }
+
+    override def combine: NaturalTransformation[ListList, List] = new NaturalTransformation[ListList, List] {
+      override def apply[A](fa: List[List[A]]): List[A] = fa.flatten
+    }
+
+  }
+
+  object AnotherListMonoid extends MonoidInCategoryFunctors2[List] {
 
     override def unit: NaturalTransformation[Id, List] = new NaturalTransformation[Id, List] {
       override def apply[A](fa: Id[A]): List[A] = List(fa)
