@@ -1,4 +1,4 @@
-package scalacheck.extrasyntax
+package genextra
 
 import org.scalacheck.{Arbitrary, Gen}
 

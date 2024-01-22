@@ -1,20 +1,14 @@
-package naturaltransformation
+package _sandbox
 
 import org.scalacheck.{Arbitrary, Gen}
-import org.scalatest.Succeeded
+import org.scalatest.Inside
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
-object NaturalTransformation {}
-
-class NaturalTransformationSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks {
+class SandboxProps extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks with Inside {
 
   test("1") {
-    Succeeded
-  }
-
-  test("2") {
 
     def add(a: Int, b: Int): Int = a + b
 
@@ -31,11 +25,11 @@ class NaturalTransformationSpec extends AnyFunSuite with Matchers with ScalaChec
 
   }
 
-  test("3") {
+  test("2") {
 
     val genInt = Gen.posNum[Int]
     implicit val arbInt: Arbitrary[Int] = Arbitrary(genInt)
-    forAll{ (x: Int, y: Int) =>
+    forAll { (x: Int, y: Int) =>
       x + y should be >= x
       x + y should be >= y
     }
