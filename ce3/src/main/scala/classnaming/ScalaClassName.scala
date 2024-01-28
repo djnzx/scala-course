@@ -2,7 +2,7 @@ package classnaming
 
 object ScalaClassName {
 
-  private def isDigit(x: String): Boolean = x.forall(c => c >= '0' && c <= '9')
+  private def isDigit(xs: String): Boolean = xs.forall(_.isDigit)
 
   private val delimiters = Array('$', '.')
 
