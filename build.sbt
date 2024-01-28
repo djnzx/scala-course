@@ -361,3 +361,13 @@ lazy val zio2 = (project in file("zio2"))
     ),
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
   )
+
+lazy val spring = (project in file("spring"))
+  .settings(
+    Settings.common,
+    description := "SpringBootExperiments",
+    libraryDependencies ++= Seq(
+      "org.projectlombok"        % "lombok"                  % "1.18.30",
+      "org.springframework.boot" % "spring-boot-starter-web" % "3.2.2",
+    ),
+  )
