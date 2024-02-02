@@ -1,4 +1,4 @@
-package genextra
+package scalacheck.genextra
 
 import cats.Applicative
 import org.scalacheck.Gen

@@ -1,4 +1,4 @@
-package genextra
+package scalacheck.genextra
 
 import org.scalacheck.Gen
 import org.scalatest.OptionValues

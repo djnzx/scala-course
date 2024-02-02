@@ -1,4 +1,4 @@
-package genextra
+package scalacheck.genextra
 
 trait PrettyPrint {
 
