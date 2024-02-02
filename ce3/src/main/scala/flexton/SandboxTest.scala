@@ -8,7 +8,6 @@ import enumeratum.Enum
 import enumeratum.EnumEntry
 import enumeratum.EnumEntry.Lowercase
 import enumeratum.ScalacheckInstances
-import genextra.GenExtraSyntax
 import io.circe.Codec
 import io.circe.generic.AutoDerivation
 import io.circe.generic.extras.semiauto.deriveUnwrappedCodec
@@ -20,6 +19,7 @@ import org.scalatest.Succeeded
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import scalacheck.genextra.GenExtraSyntax
 
 object enumx {
   sealed trait Color extends EnumEntry with Lowercase
