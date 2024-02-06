@@ -5,6 +5,8 @@ import fs2.interop.reactivestreams._
 import org.reactivestreams.Publisher
 import org.reactivestreams.Subscriber
 
+import java.util.concurrent.Flow
+
 /** ReactivePlayground
   *
   * - consuming from org.reactivestreams.Publisher[A]
@@ -22,9 +24,9 @@ class Fs2ReactivePlayground[F[_]: Async, A] {
   val fs2Stream: fs2.Stream[F, A] = fromPublisher[F, A](elasticSearchPublisher, 1000)
 
   /** having any library providing source as a [[org.reactivestreams.Subscriber]] */
-  val elasticSearchSubscriber: Subscriber[A] = ???
+  val elasticSearchSubscriber: Flow.Subscriber[A] = ???
 
   /** we can sink top it */
-  val r: F[Unit] = fs2Stream.subscribe(elasticSearchSubscriber)
+  val r = fs2Stream.subscribe(elasticSearchSubscriber)
 
 }

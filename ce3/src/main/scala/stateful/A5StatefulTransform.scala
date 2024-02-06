@@ -1,7 +1,6 @@
-package fss.d1
+package stateful
 
-import cats.effect.IO
-import cats.effect.IOApp
+import cats.effect.{IO, IOApp}
 //import cats._
 //import cats.implicits._
 import cats.effect.std.Random

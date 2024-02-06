@@ -5,6 +5,7 @@ import cats.effect.unsafe.implicits.global
 import cats.instances.vector._
 import cats.syntax.parallel._
 import http_book.Book
+import org.http4s.circe.CirceEntityCodec.{circeEntityDecoder, circeEntityEncoder}
 import org.http4s.client.dsl.io._
 import org.http4s.client.{Client, JavaNetClientBuilder}
 import org.http4s.dsl.io._

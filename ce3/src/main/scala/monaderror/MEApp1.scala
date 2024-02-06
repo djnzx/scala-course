@@ -19,7 +19,7 @@ import cats.implicits._
   *            [[Sync]][F]
   * }}}
   */
-class MonadErrorStudy[F[_]: Sync] {
+class MonadErrorExplore[F[_]: Sync] {
 
   val ME = MonadError[F, Throwable]
   val ISX = new IllegalStateException()
@@ -108,10 +108,10 @@ class MonadErrorStudy[F[_]: Sync] {
 
 object MEApp1 extends IOApp.Simple {
 
-  val MES = new MonadErrorStudy[IO]
+  val MEX = new MonadErrorExplore[IO]
 
   override def run: IO[Unit] = for {
-    s <- MES
+    s <- MEX
            .make(1)
            .attemptNarrow[IllegalArgumentException]
     _ <- IO.println(s)

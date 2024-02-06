@@ -1,16 +1,7 @@
-package fss
+package fs2x
 
-import cats.effect.std.Queue
-import cats.effect.ExitCode
-import cats.effect.IO
-import cats.effect.IOApp
-import cats.syntax.all._
-import fs2.Chunk
-import fs2.INothing
-import fs2.Pipe
-import fs2.Pull
-import fs2.Pure
-import fs2.Stream
+import cats.effect.{IO, IOApp}
+import fs2.{Chunk, Pipe, Pure, Stream}
 
 import scala.concurrent.duration.DurationInt
 
@@ -42,8 +33,8 @@ object RTJTutorial extends IOApp.Simple {
     val andrewGarfield: Actor = Actor(15, "Andrew", "Garfield")
   }
 
-  import Model._
   import Data._
+  import Model._
   val s1: Stream[Pure, Actor] = Stream(
     henryCavil,
     galGodot,

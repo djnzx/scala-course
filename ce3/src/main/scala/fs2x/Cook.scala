@@ -1,9 +1,10 @@
-package fss
+package fs2x
 
+import fs2._
 import cats._
 import cats.effect._
 import cats.effect.unsafe.implicits.global
-import fs2._
+import cats.implicits._
 
 object Cook extends App {
 
@@ -60,7 +61,7 @@ object Cook extends App {
   def sim(
       numberOfRolls: Int,
       jiaoziToServe: Int
-  ) =
+    ) =
     for {
       box       <- emptyBox
       bowl = roll(numberOfRolls)

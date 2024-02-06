@@ -7,6 +7,7 @@ import http_book.Book
 import io.circe.parser._
 import io.circe.syntax._
 import org.http4s.blaze.server.BlazeServerBuilder
+import org.http4s.circe.CirceEntityCodec.circeEntityEncoder
 import org.http4s.circe.CirceEntityDecoder._
 import org.http4s.dsl.io._
 import org.http4s.implicits._

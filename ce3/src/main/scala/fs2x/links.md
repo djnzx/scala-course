@@ -1,6 +1,6 @@
 - [FS2: The Official Guide](https://fs2.io/guide.html)
 - [FS2: readme](https://github.com/functional-streams-for-scala/fs2/blob/series/1.0/docs/ReadmeExample.md)
 - [FS2: NIO bindings](https://github.com/functional-streams-for-scala/fs2/tree/series/1.0/io/)
-- [FS2: Pull](https://github.com/functional-streams-for-scala/fs2/blob/series/1.0/core/shared/src/main/scala/fs2/Pull.scala)
+- [FS2: Pull](https://github.com/typelevel/fs2/blob/main/core/shared/src/main/scala/fs2/Pull.scala)
 - [FS2: Deferred](https://typelevel.org/cats-effect/concurrency/deferred.html)
 - [FS2: Queue](https://github.com/functional-streams-for-scala/fs2/blob/series/1.0/core/shared/src/main/scala/fs2/concurrent/Queue.scala)

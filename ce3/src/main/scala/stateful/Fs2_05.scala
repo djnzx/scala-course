@@ -1,4 +1,4 @@
-package fs2x
+package stateful
 
 import fs2._
 

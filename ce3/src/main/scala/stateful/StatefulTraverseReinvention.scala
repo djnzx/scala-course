@@ -1,8 +1,9 @@
-package statesfultraverse
+package stateful
 
 import cats._
 import cats.data._
 import cats.implicits._
+import fs2.Pure
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
@@ -103,5 +104,40 @@ class StatefulTraverseReinvention extends AnyFunSuite with Matchers with ScalaCh
     bs shouldBe List(1001.0, 1002.0, 1003.0)
     s shouldBe Map(1 -> "100", 2 -> "200", 3 -> "300")
   }
+
+  test("fs2.Stream") {
+    val as = fs2.Stream(1, 2, 3)
+    val bss: fs2.Stream[Pure, (Map[Int, String], Double)] = as.mapAccumulate(st0)(fab)
+
+    val bs: List[Double] = bss.map(_._2).compile.toList
+    val s: Map[Int, String] = bss.map(_._1).last.compile.toList.flatten.headOption.getOrElse(st0)
+    bs shouldBe List(1001.0, 1002.0, 1003.0)
+    s shouldBe Map(1 -> "100", 2 -> "200", 3 -> "300")
+  }
+
+  test("fs2.scan - all intermediate steps") {
+    val xs = fs2.Stream(1, 2, 3, 4)
+      .scan(0)(_ + _)
+      .toList
+
+    pprint.pprintln(xs)
+    xs shouldBe List(0, 1, 3, 6, 10)
+  }
+
+  test("fs2.fold - final result only") {
+    val xs = fs2.Stream(1, 2, 3, 4)
+      .fold(0)(_ + _)
+      .toList
+
+    pprint.pprintln(xs)
+    xs shouldBe List(10)
+  }
+
+  test("pull") {
+    val xs = fs2.Stream(1, 2, 3, 4)
+    xs.pull
+  }
+
+
 
 }
