@@ -1,1 +1,1 @@
-[S-99: Ninety-Nine Scala Problems](http://aperiodic.net/phil/scala/s-99/)
+Moved [here](https://github.com/alexr007/scala-99.git )
