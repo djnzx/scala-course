@@ -52,7 +52,7 @@ object B010FriendsPairingCombinations {
     require(N % n == 0, s"data size ($N) should be divisible by $n!")
 
     // @formatter:off
-    combinations(n, data)                  // 1. all pairs combinations 
+    pickN(n, data)                  // 1. all pairs combinations
       .flatMap { la =>                     // 2. take n-th pair
         val a = allCombN(data -- la, n)    // 3. calculate the tail without that pair
         val b = a.map { lla => la :: lla } // 4. attach the n-th pair from step2 
@@ -67,7 +67,7 @@ object B010FriendsPairingCombinations {
 
     // @formatter:off
     (1 to 2)                                  // 1. all combinations by1 and by2
-      .map { n => combinations(n, data) }
+      .map { n => pickN(n, data) }
       .reduce(_:::_)
 //      .foldLeft(List(List.empty[A]))(_:::_)     // I have no idea why foldLeft DOESN'T WORK
       .flatMap { la =>                            // 2. take n-th group (1/2 - doesn't matter)
