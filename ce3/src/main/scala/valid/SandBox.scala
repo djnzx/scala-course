@@ -14,20 +14,16 @@ class SandBox extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks wi
 
     case class Person(id: Int, name: (String, String))
     val p = Person(13, "Jim"-> "Bim")
-
-    val f1: model.Field[Int] = model.Field.make(p.id)
-    val f2: model.Field[String] = model.Field.make(p.name._1)
-    pprint.pprintln(f1)
-    pprint.pprintln(f2)
-    pprint.pprintln(reify(p.name._1))
+//    val f1: model.Field[Int] = model.Field.make(p.id)
+//    val f2: model.Field[String] = model.Field.make(p.name._1)
+//    pprint.pprintln(f1)
+//    pprint.pprintln(f2)
+//    pprint.pprintln(reify(p.name._1))
   }
 
   test("2") {
-    val l = m.Macros.currentLocation
-    pprint.pprintln(l)
-
-
-
+//    val l = m.Macros.currentLocation
+//    pprint.pprintln(l)
   }
 
 }
