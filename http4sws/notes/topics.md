@@ -1,0 +1,11 @@
+### interesting topics
+- 
+- Websocket - https://blog.rockthejvm.com/websockets-in-http4s/
+- Websocket - https://github.com/hkateu/WebsocketChatApp
+- Jekyll - https://github.com/mmistakes/minimal-mistakes
+- Jekyll - https://github.com/rockthejvm/rockthejvm.github.io
+- UDP - https://blog.rockthejvm.com/scala-fs2-udp/
+- Load Balancer - https://blog.rockthejvm.com/load-balancer/
+- gRPC - https://blog.rockthejvm.com/grpc-in-scala-with-fs2-scalapb/
+- OAuth - https://blog.rockthejvm.com/oauth-authentication-scala-http4s/
+- VThreads - https://blog.rockthejvm.com/ultimate-guide-to-java-virtual-threads/

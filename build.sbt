@@ -338,8 +338,8 @@ lazy val sparkx = (project in file("sparkx"))
 
 lazy val typesafe = (project in file("typesafe"))
   .settings(
-    Settings.common2,
     description := "Lightbend (Typesafe) Stack: Akka, Akka-Streams, Akka-Http Play, Lagom, Slick (https://www.lightbend.com)",
+    Settings.common2,
     libraryDependencies ++= Seq(
       Libraries.cats,
       Libraries.sqlPostgres,
@@ -359,8 +359,8 @@ lazy val typesafe = (project in file("typesafe"))
 
 lazy val zio2 = (project in file("zio2"))
   .settings(
-    Settings.common2,
     description := "ZIO v2",
+    Settings.common2,
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio"          % "2.0.16",
       "dev.zio" %% "zio-streams"  % "2.0.16",
@@ -372,8 +372,8 @@ lazy val zio2 = (project in file("zio2"))
 
 lazy val spring = (project in file("spring"))
   .settings(
+    description := "SpringBoot Experiments",
     Settings.common2,
-    description := "SpringBootExperiments",
     libraryDependencies ++= Seq(
       "org.projectlombok"        % "lombok"                  % "1.18.30",
       "org.springframework.boot" % "spring-boot-starter-web" % "3.2.2",
@@ -382,22 +382,14 @@ lazy val spring = (project in file("spring"))
 
 lazy val http4sws = (project in file("http4sws"))
   .settings(
-//    Settings.common,
-    name := "http4sws",
-    version := "0.0.1",
-    scalaVersion := v.vScala3,
-    libraryDependencies ++= {
-      val Http4sVersion = "0.23.23"
-      val CirceVersion = "0.14.6"
-      val LogbackVersion = "1.4.11"
-      val CatsParseVersion = "0.3.10"
-      Seq(
-        "org.http4s"    %% "http4s-ember-server" % Http4sVersion,
-        "org.http4s"    %% "http4s-circe"        % Http4sVersion,
-        "io.circe"      %% "circe-generic"       % CirceVersion,
-        "org.http4s"    %% "http4s-dsl"          % Http4sVersion,
-        "org.typelevel" %% "cats-parse"          % CatsParseVersion,
-        "ch.qos.logback" % "logback-classic"     % LogbackVersion,
-      )
-    }
+    description := "WebSocket with http4s and cats-parse",
+    Settings.common3,
+    libraryDependencies ++= Seq(
+      "org.http4s"    %% "http4s-ember-server" % "0.23.23",
+      "org.http4s"    %% "http4s-circe"        % "0.23.23",
+      "org.http4s"    %% "http4s-dsl"          % "0.23.23",
+      "io.circe"      %% "circe-generic"       % "0.14.6",
+      "org.typelevel" %% "cats-parse"          % "0.3.10",
+      "ch.qos.logback" % "logback-classic"     % "1.4.11",
+    )
   )

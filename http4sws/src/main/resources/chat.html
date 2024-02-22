@@ -1,0 +1,77 @@
+<!Doctype html>
+
+<body>
+    <div>
+        <div id="output" style=
+                "height: 500px;
+                width: 500px;
+                text-align: left;
+                overflow-y: scroll;
+                border-radius: 5px;
+                padding: 3px;
+                border: solid purple 2px;">
+        </div>
+        <br />
+        <form id="chatform">
+            <input type="text" name="entry" id="entry" />
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script>
+        const output = document.getElementById("output"); // access div id="output"
+        const form = document.getElementById("chatform"); // access form id="chatform"
+
+        function colorize(txt, color) {
+            let pre = document.createElement("pre");
+            pre.style.color = color
+            pre.textContent = txt
+            return pre
+        }
+
+        output.append(colorize("Send a message to get started!", "purple"));
+
+        const socket = new WebSocket("ws://localhost:8080/ws");
+
+        socket.onmessage = function (event) {
+            let obj = JSON.parse(event.data);
+            
+            if (obj.Register) {
+                output.append(colorize(obj.Register.msg, "green"))
+            } else if (obj.ParsingError) {
+                output.append(colorize("Registration failed: " + obj.ParsingError.msg, "red"))
+            } else if (obj.SuccessfulRegistration) {
+                output.append(colorize(obj.SuccessfulRegistration.msg, "purple"))
+            } else if (obj.UnsupportedCommand) {
+                output.append(colorize(obj.UnsupportedCommand.msg, "red"))
+            } if (obj.MessageToUser) {
+                output.append(colorize(obj.SendToUser.msg, "green"))
+            } else if (obj.ChatMessage) {
+                output.append(colorize(obj.ChatMsg.from.name + " : " + obj.ChatMsg.msg, "purple"))
+            } else {
+                
+            }
+            
+            output.scrollTop = output.scrollHeight;
+        };
+
+        socket.onclose = function (event) {
+            output.append(colorize("[closed] server connection ended", "red"));
+            output.scrollTop = output.scrollHeight;
+        };
+
+        socket.onerror = function (error) {
+            output.append(colorize("[Error] An error occurred while processing data", "red"));
+            console.log("[error]" + error.data + "\n");
+            output.scrollTop = output.scrollHeight;
+        };
+        
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const message = document.getElementById('entry').value;
+            socket.send(message);
+            document.getElementById('entry').value = '';
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+opcode
+0x1 - Text
+0x2 - Binary
+0x3 - 0x7 are reserved for non-control frames yet to be determined.
+These must have a payload length of 125 bytes or less and must not be fragmented.
+
+There are three types of control frames, 
+Close - 0x8, 
+Ping  - 0x9
+Pong   -0xA
+
+
+
