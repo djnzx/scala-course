@@ -1,7 +1,7 @@
-package _so
+package stackoverflowquestions
 
-import _so.ParseAccumulating.OptionOne
-import _so.ParseAccumulating.OptionTwo
+import stackoverflowquestions.ParseAccumulating.OptionOne
+import stackoverflowquestions.ParseAccumulating.OptionTwo
 import cats.implicits._
 import io.circe._
 import io.circe.generic.AutoDerivation

@@ -116,7 +116,8 @@ class StatefulTraverseReinvention extends AnyFunSuite with Matchers with ScalaCh
   }
 
   test("fs2.scan - all intermediate steps") {
-    val xs = fs2.Stream(1, 2, 3, 4)
+    val xs = fs2
+      .Stream(1, 2, 3, 4)
       .scan(0)(_ + _)
       .toList
 
@@ -125,7 +126,8 @@ class StatefulTraverseReinvention extends AnyFunSuite with Matchers with ScalaCh
   }
 
   test("fs2.fold - final result only") {
-    val xs = fs2.Stream(1, 2, 3, 4)
+    val xs = fs2
+      .Stream(1, 2, 3, 4)
       .fold(0)(_ + _)
       .toList
 
@@ -133,11 +135,49 @@ class StatefulTraverseReinvention extends AnyFunSuite with Matchers with ScalaCh
     xs shouldBe List(10)
   }
 
+  test("fs2 - stateful transformation") {
+    import fs2._
+
+    def playground[F[_], A, B, S] = {
+
+      /** having stream */
+      val sa: Stream[F, A] = ???
+
+      /** initial state */
+      val s0: S = ???
+
+      /** function to handle element */
+      val fab: (S, A) => (S, Seq[B]) = ???
+
+      /** function to handle the last element */
+      val fsb: S => B = ???
+
+      /** we want to */
+      def transform(
+          sa: Stream[F, A]
+        )(s0: S
+        )(fab: (S, A) => (S, Seq[B])
+        )(handleLast: S => B
+        ): Stream[F, B] =
+        // TODO
+        ???
+
+      // the only problem here
+      val sa2: Stream[F, (S, A)] = sa.mapAccumulate(s0)((s, a) => (s, a))
+      // it's hard to pro
+      sa2.map(_._2) ++ sa2.lastOr(???).map { case (s, a) => fsb(s) }
+
+      val sas0: Stream[F, List[A]] = ???
+      val sas1: Stream[F, Stream[Pure, A]] = sas0.map(Stream.emits(_))
+      val sas2: Stream[F, A] = sas1.flatten
+
+    }
+
+  }
+
   test("pull") {
     val xs = fs2.Stream(1, 2, 3, 4)
     xs.pull
   }
-
-
 
 }

@@ -1,4 +1,4 @@
-package scalacticx
+package scalactic101
 
 import org.scalactic.NormMethods.convertToNormalizer
 import org.scalactic._

@@ -11,7 +11,7 @@ lazy val avro101 = (project in file("avro101"))
     scalacOptions ++= CompilerOptions.scalacOptions,
     scalacOptions -= ScalacOpts.warningsAsFatals, // we are learning, there is no sense to be so strict
     scalacOptions -= ScalacOpts.macroAnnotations, // 2.12 doesn't have it
-    libraryDependencies ++= Libraries.testingToolkit,
+    libraryDependencies ++= Libraries.testingToolkit2,
     libraryDependencies ++= Seq(
       Libraries.cats,
       "org.apache.avro"   % "avro"                % "1.11.0",
@@ -21,7 +21,7 @@ lazy val avro101 = (project in file("avro101"))
 
 lazy val mono101 = (project in file("mono101"))
   .settings(
-    Settings.common,
+    Settings.common2,
     libraryDependencies ++= Seq(
       "dev.optics" %% "monocle-core"  % "3.2.0",
       "dev.optics" %% "monocle-macro" % "3.2.0"
@@ -30,7 +30,7 @@ lazy val mono101 = (project in file("mono101"))
 
 lazy val munitx = (project in file("munitx"))
   .settings(
-    Settings.common,
+    Settings.common2,
     libraryDependencies ++= Seq(
       "org.scalameta" %% "munit"            % "1.0.0-M8",
       "org.scalameta" %% "munit-scalacheck" % "1.0.0-M8"
@@ -39,7 +39,7 @@ lazy val munitx = (project in file("munitx"))
 
 lazy val algorithms = (project in file("algorithms"))
   .settings(
-    Settings.common,
+    Settings.common2,
     // compiled with JDK17
     libraryDependencies += "org.springframework.security" % "spring-security-crypto" % "6.1.2",
     libraryDependencies += "co.fs2"                      %% "fs2-core"               % "3.9.3",
@@ -47,7 +47,7 @@ lazy val algorithms = (project in file("algorithms"))
 
 lazy val amt = (project in file("amt"))
   .settings(
-    Settings.common,
+    Settings.common2,
     description := "AMT WSDL experiments",
     libraryDependencies ++= Seq(
       "org.apache.axis"   % "axis"              % "1.4",   // no transitive
@@ -64,7 +64,7 @@ lazy val amt = (project in file("amt"))
 lazy val ce2 = project
   .in(file("ce2"))
   .settings(
-    Settings.common,
+    Settings.common2,
 //    evictionErrorLevel := util.Level.Warn,
     description := "Cats Effects 2",
     libraryDependencies ++= Seq(
@@ -91,7 +91,7 @@ lazy val ce2 = project
 lazy val ce3 = (project in file("ce3"))
   .enablePlugins(BuildInfoPlugin)
   .settings(
-    Settings.common,
+    Settings.common2,
     buildInfoPackage := "alexr",
     buildInfoOptions ++= Seq(BuildInfoOption.BuildTime, BuildInfoOption.ToMap),
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion /*, libraryDependencies */ ),
@@ -166,7 +166,7 @@ lazy val ce3 = (project in file("ce3"))
 
 lazy val es68 = (project in file("es68"))
   .settings(
-    Settings.common,
+    Settings.common2,
     crossScalaVersions := Seq("2.12.18", "2.13.12"),
     description := "Elastic Search 6.8 Learning",
     libraryDependencies ++= Seq(
@@ -182,21 +182,21 @@ lazy val es68 = (project in file("es68"))
   )
 
 lazy val es68s_akka = (project in file("es68s_akka"))
-  .settings(Settings.common)
+  .settings(Settings.common2)
   .dependsOn(es68)
   .settings(
     libraryDependencies += "com.typesafe.akka" %% "akka-stream" % "2.6.21"
   )
 
 lazy val es68s_ce = (project in file("es68s_ce"))
-  .settings(Settings.common)
+  .settings(Settings.common2)
   .dependsOn(es68)
   .settings(
     libraryDependencies += "co.fs2" %% "fs2-core" % "3.9.2"
   )
 
 lazy val es68s_zio = (project in file("es68s_zio"))
-  .settings(Settings.common)
+  .settings(Settings.common2)
   .dependsOn(es68)
   .settings(
     libraryDependencies += "dev.zio" %% "zio-streams" % "2.0.15"
@@ -204,7 +204,7 @@ lazy val es68s_zio = (project in file("es68s_zio"))
 
 lazy val es89 = (project in file("es89"))
   .settings(
-    Settings.common,
+    Settings.common2,
     description := "Elastic Search 8 Learning",
     libraryDependencies ++= Seq(
       "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % "8.9.2",
@@ -215,7 +215,7 @@ lazy val es89 = (project in file("es89"))
 
 lazy val httpt = (project in file("httpt"))
   .settings(
-    Settings.common,
+    Settings.common2,
     description := "HTTP load tests",
     libraryDependencies ++= Seq(
       "org.http4s"    %% "http4s-dsl"          % "1.0.0-M39",
@@ -244,7 +244,7 @@ lazy val k8a = (project in file("k8a"))
       case _                                     => 1
     },
     description := "artifact to experiment with k8",
-    Settings.common,
+    Settings.common2,
     libraryDependencies ++= Seq(
       "com.github.cb372" %% "cats-retry"           % "3.1.0",
       "org.http4s"       %% "http4s-dsl"           % "1.0.0-M36",
@@ -256,7 +256,7 @@ lazy val k8a = (project in file("k8a"))
 
 lazy val fp_red = (project in file("fp_red"))
   .settings(
-    Settings.common,
+    Settings.common2,
     description := "FP in Scala (RED Book) Mostly plain Scala only a few libraries involved",
   )
 
@@ -267,7 +267,7 @@ lazy val fp_red = (project in file("fp_red"))
   */
 lazy val lihaoyi = (project in file("lihaoyi"))
   .settings(
-    Settings.common,
+    Settings.common2,
     libraryDependencies ++= Seq(
       LibrariesLihaoyi.upickle,
       LibrariesLihaoyi.ujson,
@@ -284,7 +284,7 @@ lazy val lihaoyi = (project in file("lihaoyi"))
 // https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
 lazy val mix = (project in file("mix"))
   .settings(
-    Settings.common,
+    Settings.common2,
     libraryDependencies ++= Seq(
       "io.getquill"      %% "quill-jdbc"                 % "3.5.1",
       "org.flywaydb"      % "flyway-core"                % "6.4.2",
@@ -306,7 +306,7 @@ lazy val mix = (project in file("mix"))
 lazy val pbx = (project in file("pbx"))
   .enablePlugins(ScalaxbPlugin)
   .settings(
-    Settings.common,
+    Settings.common2,
     Compile / PB.targets := Seq(
       scalapb.gen() -> (Compile / sourceManaged).value / "scalapb"
     )
@@ -314,7 +314,7 @@ lazy val pbx = (project in file("pbx"))
 
 lazy val plain2 = (project in file("plain2"))
   .settings(
-    Settings.common,
+    Settings.common2,
     libraryDependencies ++= Seq(
       "io.chymyst"                 %% "curryhoward" % "0.3.8",
       "com.softwaremill.quicklens" %% "quicklens"   % "1.9.6",
@@ -329,7 +329,7 @@ lazy val plain3 = (project in file("plain3"))
 
 lazy val sparkx = (project in file("sparkx"))
   .settings(
-    Settings.common,
+    Settings.common2,
     libraryDependencies ++= Seq(
       "org.apache.spark" %% "spark-core" % "3.4.1",
       "org.apache.spark" %% "spark-sql"  % "3.4.1"
@@ -338,7 +338,7 @@ lazy val sparkx = (project in file("sparkx"))
 
 lazy val typesafe = (project in file("typesafe"))
   .settings(
-    Settings.common,
+    Settings.common2,
     description := "Lightbend (Typesafe) Stack: Akka, Akka-Streams, Akka-Http Play, Lagom, Slick (https://www.lightbend.com)",
     libraryDependencies ++= Seq(
       Libraries.cats,
@@ -359,7 +359,7 @@ lazy val typesafe = (project in file("typesafe"))
 
 lazy val zio2 = (project in file("zio2"))
   .settings(
-    Settings.common,
+    Settings.common2,
     description := "ZIO v2",
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio"          % "2.0.16",
@@ -372,10 +372,32 @@ lazy val zio2 = (project in file("zio2"))
 
 lazy val spring = (project in file("spring"))
   .settings(
-    Settings.common,
+    Settings.common2,
     description := "SpringBootExperiments",
     libraryDependencies ++= Seq(
       "org.projectlombok"        % "lombok"                  % "1.18.30",
       "org.springframework.boot" % "spring-boot-starter-web" % "3.2.2",
     ),
+  )
+
+lazy val http4sws = (project in file("http4sws"))
+  .settings(
+//    Settings.common,
+    name := "http4sws",
+    version := "0.0.1",
+    scalaVersion := v.vScala3,
+    libraryDependencies ++= {
+      val Http4sVersion = "0.23.23"
+      val CirceVersion = "0.14.6"
+      val LogbackVersion = "1.4.11"
+      val CatsParseVersion = "0.3.10"
+      Seq(
+        "org.http4s"    %% "http4s-ember-server" % Http4sVersion,
+        "org.http4s"    %% "http4s-circe"        % Http4sVersion,
+        "io.circe"      %% "circe-generic"       % CirceVersion,
+        "org.http4s"    %% "http4s-dsl"          % Http4sVersion,
+        "org.typelevel" %% "cats-parse"          % CatsParseVersion,
+        "ch.qos.logback" % "logback-classic"     % LogbackVersion,
+      )
+    }
   )

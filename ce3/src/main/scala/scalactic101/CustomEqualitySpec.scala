@@ -1,4 +1,4 @@
-package scalacticx
+package scalactic101
 
 import org.scalactic.Equality
 import org.scalatest.funspec.AnyFunSpec

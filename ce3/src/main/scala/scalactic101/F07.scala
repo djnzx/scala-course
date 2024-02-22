@@ -1,0 +1,13 @@
+package scalactic101
+
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+
+class F07 extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks {
+
+  test("1") {
+
+  }
+
+}

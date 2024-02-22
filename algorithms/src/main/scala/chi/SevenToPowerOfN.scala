@@ -20,7 +20,7 @@ object SevenToPowerOfN {
 
 }
 
-class SevenToPowerOfNSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks {
+class SevenToPowerOfN extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks {
 
   import SevenToPowerOfN._
 

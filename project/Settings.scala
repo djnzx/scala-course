@@ -4,7 +4,7 @@ import scala.collection.immutable.Seq
 
 object Settings {
 
-  val common: Seq[Setting[?]] = Seq(
+  val common2: Seq[Setting[?]] = Seq(
     scalaVersion := Versions.vScala213,
     organization := "alexr",
     version := "2024.02.07",
@@ -13,7 +13,7 @@ object Settings {
     scalacOptions -= ScalacOpts.warningsAsFatals,
     resolvers ++= Resolvers.all,
     libraryDependencies ++= CompilerPlugins.all,
-    libraryDependencies ++= Libraries.testingToolkit,
+    libraryDependencies ++= Libraries.testingToolkit2,
   )
 
 }
