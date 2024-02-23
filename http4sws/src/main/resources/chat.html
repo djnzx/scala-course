@@ -34,23 +34,23 @@
 
         socket.onmessage = function (event) {
             let obj = JSON.parse(event.data);
-            
+
             if (obj.Register) {
                 output.append(colorize(obj.Register.msg, "green"))
-            } else if (obj.ParsingError) {
-                output.append(colorize("Registration failed: " + obj.ParsingError.msg, "red"))
+            } else if (obj.ParseError) {
+                output.append(colorize("Registration failed: " + obj.ParseError.msg, "red"))
             } else if (obj.SuccessfulRegistration) {
                 output.append(colorize(obj.SuccessfulRegistration.msg, "purple"))
             } else if (obj.UnsupportedCommand) {
                 output.append(colorize(obj.UnsupportedCommand.msg, "red"))
             } if (obj.MessageToUser) {
-                output.append(colorize(obj.SendToUser.msg, "green"))
+                output.append(colorize(obj.MessageToUser.msg, "green"))
             } else if (obj.ChatMessage) {
-                output.append(colorize(obj.ChatMsg.from.name + " : " + obj.ChatMsg.msg, "purple"))
+                output.append(colorize(obj.ChatMessage.from.name + " : " + obj.ChatMsg.msg, "purple"))
             } else {
-                
+
             }
-            
+
             output.scrollTop = output.scrollHeight;
         };
 
