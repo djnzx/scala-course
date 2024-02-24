@@ -46,9 +46,9 @@
             } if (obj.MessageToUser) {
                 output.append(colorize(obj.MessageToUser.msg, "green"))
             } else if (obj.ChatMessage) {
-                output.append(colorize(obj.ChatMessage.from.name + " : " + obj.ChatMsg.msg, "purple"))
+                output.append(colorize(obj.ChatMessage.from.name + " : " + obj.ChatMessage.msg, "purple"))
             } else {
-
+                output.append(event.data)
             }
 
             output.scrollTop = output.scrollHeight;

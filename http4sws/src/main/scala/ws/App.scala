@@ -29,7 +29,7 @@ object App extends IOApp.Simple {
     httpRoute = new Routes[IO].endpoints(state, wsHandler)    // f: WebSocketBuilder2[F] => HttpApp[F]
     s1 = Stream.fromQueueUnterminated(q).through(t.publish)   // stream, listening queue and publishing to topic to allow many consumers
     s2 = httpServerStream(httpRoute)                          // stream, processing http / WS requests (forever)
-    s3 = wsKeepAliveStream(t)                                 // stream, constantly publishing WebSocketFrame.Ping to Web Client
+    s3 = wsKeepAliveStream(t)                                 // stream, constantly publishing WebSocketFrame.Ping to Web Client // TODO: we have the same stream inside handle
     s        <- Stream(s1, s2, s3).parJoinUnbounded.compile.drain // run all streams in parallel
   } yield s
 
