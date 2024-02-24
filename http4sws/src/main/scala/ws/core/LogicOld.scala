@@ -6,29 +6,21 @@ import cats.data.Validated
 import cats.data.Validated.Invalid
 import cats.data.Validated.Valid
 import cats.effect.kernel.Ref
+import cats.implicits.*
 import cats.parse.Parser
 import cats.parse.Parser.char
 import cats.parse.Rfc5234.alpha
 import cats.parse.Rfc5234.sp
 import cats.parse.Rfc5234.wsp
-import cats.syntax.all.*
 
-trait InputMessage[F[_]] {
-  def defaultRoom: Validated[String, Room] = Room("room123").valid
-  def parse(
-      userRef: Ref[F, Option[User]],
-      text: String
-    ): F[List[OutputMsg]]
-}
-
-case class TextCommand(left: String, right: Option[String])
-
-object InputMessage {
+object LogicOld {
 
   def make[F[_]: Monad](
       protocol: Protocol[F]
-    ): InputMessage[F] =
-    new InputMessage[F] {
+    ): LogicHandler[F] =
+    new LogicHandler[F] {
+      def defaultRoom: Validated[String, Room] = Room("room123").valid
+
       override def parse(
           userRef: Ref[F, Option[User]],
           text: String
@@ -68,8 +60,8 @@ object InputMessage {
                         .update(_ => Some(u))
                         .flatMap(_ => protocol.enterRoom(u, room))
                         .map(ms => MessageToUser(u, "/help shows all available commands") :: ms)
-                    case e @ ParseError(_, _)       => e.pure[List].pure[F]
-                    case _                            => List.empty[OutputMsg].pure[F]
+                    case e @ ParseError(_, _)      => e.pure[List].pure[F]
+                    case _                         => List.empty[OutputMsg].pure[F]
                   }
               }
             case _                             => UnsupportedCommand(None).pure[List].pure[F]

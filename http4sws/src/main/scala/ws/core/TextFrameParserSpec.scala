@@ -111,8 +111,8 @@ class TextFrameParserSpec extends AnyFunSuite with Matchers with ScalaCheckPrope
       "/rooms"          -> CommandFrame.CommandValid("rooms", List()),
       "/room scala"     -> CommandFrame.CommandValid("room", List("scala")),
       "/room scala abc" -> CommandFrame.CommandValid("room", List("scala", "abc")),
-      "/welcome"        -> CommandFrame.CommandInvalid("welcome"),
-      "/join me"        -> CommandFrame.CommandInvalid("join"),
+      "/welcome"        -> CommandFrame.CommandValid("welcome", List()),
+      "/join me"        -> CommandFrame.CommandValid("join", List("me")),
     )
     val dataL = Table(
       "in",
@@ -263,8 +263,8 @@ class TextFrameParserSpec extends AnyFunSuite with Matchers with ScalaCheckPrope
       "/room"            -> TextFrame.CommandFrame.CommandValid("room", List()),
       "/room scala"      -> TextFrame.CommandFrame.CommandValid("room", List("scala")),
       "/room scala abc"  -> TextFrame.CommandFrame.CommandValid("room", List("scala", "abc")),
-      "/welcome"         -> TextFrame.CommandFrame.CommandInvalid("welcome"),
-      "/join me"         -> TextFrame.CommandFrame.CommandInvalid("join"),
+      "/welcome"         -> TextFrame.CommandFrame.CommandValid("welcome", List()),
+      "/join me"         -> TextFrame.CommandFrame.CommandValid("join", List("me")),
       "hello world"      -> TextFrame.MessageFrame.PublicChatMessage("hello world"),
       "@jim hi"          -> TextFrame.MessageFrame.PrivateChatMessage("jim", "hi"),
       "@tommy follow me" -> TextFrame.MessageFrame.PrivateChatMessage("tommy", "follow me"),

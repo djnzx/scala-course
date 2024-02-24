@@ -57,7 +57,7 @@ object InputFrame {
     import cats.parse.Rfc5234.vchar
     import cats.parse.Rfc5234.wsp
 
-    /** filter for valid commands */
+    /** filter for valid commands, NOT IN USE */
     def isCommandValid(cmd: String): Boolean = Set(
       "help",
       "room",
@@ -68,7 +68,7 @@ object InputFrame {
     /** any command (detected by `/` prefix) */
     val cmdParser: Parser[String] = char('/') *> alpha.rep.string
 
-    /** valid command (filtered by `isCommandValid`), tests only */
+    /** valid command (filtered by `isCommandValid`), tests only, NOT IN USE */
     val validCmdParser: Parser[String] = cmdParser.filter(isCommandValid)
 
     /** list of parameters */
@@ -80,8 +80,11 @@ object InputFrame {
     /** command with parameters filtered by `isCommandValid` */
     val totalCommandParser: Parser[CommandFrame] = cmdWithParametersParser
       .map {
-        case (cmd, params) if isCommandValid(cmd) => CommandValid(cmd, params)
-        case (cmd, _)                             => CommandInvalid(cmd)
+        //
+        case (cmd, params) => CommandValid(cmd, params)
+        // NOT IN USE
+//        case (cmd, params) if isCommandValid(cmd) => CommandValid(cmd, params)
+//        case (cmd, _)                             => CommandInvalid(cmd)
       }
 
     /** private message target (detected by `@` prefix) */

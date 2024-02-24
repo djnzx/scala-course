@@ -7,7 +7,16 @@ import cats.data.Validated.Valid
 import cats.effect.kernel.Ref
 import cats.syntax.all.*
 
-// state manipulation
+/** state manipulation:
+  * {{{
+  *   InputMsg => F[List[OutputMsg]]
+  * }}}
+  *
+  * having output as a List[OutputMsg] enables:
+  * {{{List.empty}}} - drop incoming message
+  * {{{List(one)}}} - emit one message
+  * {{{List(one, two)}}} - emit many message
+  */
 trait Protocol[F[_]] {
   def register(name: String): F[OutputMsg]
   def isUsernameInUse(name: String): F[Boolean]
