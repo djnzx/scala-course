@@ -13,12 +13,21 @@ import cats.parse.Rfc5234.alpha
 import cats.parse.Rfc5234.sp
 import cats.parse.Rfc5234.wsp
 
-object LogicOld {
+trait LogicHandlerOld[F[_]] {
+  def parse(
+    userRef: Ref[F, Option[User]],
+    text: String
+  ): F[List[OutputMsg]]
+}
+
+case class TextCommand(left: String, right: Option[String])
+
+object LogicHandlerOld {
 
   def make[F[_]: Monad](
       protocol: Protocol[F]
-    ): LogicHandler[F] =
-    new LogicHandler[F] {
+    ): LogicHandlerOld[F] =
+    new LogicHandlerOld[F] {
       def defaultRoom: Validated[String, Room] = Room("room123").valid
 
       override def parse(

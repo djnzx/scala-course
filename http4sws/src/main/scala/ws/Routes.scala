@@ -36,7 +36,9 @@ class Routes[F[_]: Files: MonadThrow] extends Http4sDsl[F] {
 
           /** provide metrics */
           case GET -> Root / "metrics"   =>
-            state.get.map(_.metricsAsHtml).flatMap(Ok(_, `Content-Type`(MediaType.text.html)))
+            state.get
+              .map(_.metricsAsHtml)
+              .flatMap(Ok(_, `Content-Type`(MediaType.text.html)))
 
           /** handle WS traffic */
           case GET -> Root / "ws"        => mkWsHandler(wsb)

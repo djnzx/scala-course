@@ -24,7 +24,7 @@ class WsHandler[F[_]: Concurrent: Temporal] {
   def make(
       q: Queue[F, OutputMsg],
       t: Topic[F, OutputMsg],
-      lh: LogicHandler[F],
+      lh: LogicHandlerOld[F],
       protocol: Protocol[F],
     ): WebSocketBuilder2[F] => F[Response[F]] =
     wsb =>
@@ -83,7 +83,7 @@ class WsHandler[F[_]: Concurrent: Temporal] {
 
   private def receive(
       protocol: Protocol[F],
-      im: LogicHandler[F],
+      im: LogicHandlerOld[F],
       uRef: Ref[F, Option[User]],
       q: Queue[F, OutputMsg],
       uQueue: Queue[F, OutputMsg]
@@ -105,7 +105,7 @@ class WsHandler[F[_]: Concurrent: Temporal] {
 
   private def handleWebSocketStream(
       wsf: Stream[F, WebSocketFrame],
-      im: LogicHandler[F],
+      im: LogicHandlerOld[F],
       protocol: Protocol[F],
       uRef: Ref[F, Option[User]]
     ): Stream[F, OutputMsg] =

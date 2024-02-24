@@ -41,7 +41,7 @@ object ChatState {
 
   extension(state: ChatState) {
 
-    def userExists(name: String) =
+    def userExists(name: String): Boolean =
       state.userRooms.exists { case (user, room) => user.value == name }
 
     def findRoom(user: User): Option[(Room, Set[User])] =
