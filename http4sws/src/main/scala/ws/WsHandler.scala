@@ -1,6 +1,5 @@
 package ws
 
-import cats.effect.MonadCancelThrow
 import cats.effect.Ref
 import cats.effect.Temporal
 import cats.effect.kernel.Concurrent
@@ -10,7 +9,6 @@ import cats.syntax.all.*
 import fs2.Pipe
 import fs2.Stream
 import fs2.concurrent.Topic
-import fs2.io.file
 import io.circe.generic.auto.*
 import io.circe.syntax.*
 import org.http4s.Response
@@ -19,32 +17,45 @@ import org.http4s.websocket.WebSocketFrame
 import scala.concurrent.duration.*
 import ws.core.*
 
-class WsHandler[F[_]: Concurrent: Temporal] {
+class WsHandler[F[_]: Concurrent: Temporal](
+    topic: Topic[F, OutputMsg],
+    lh: LogicHandlerOld[F],
+    protocol: Protocol[F]) {
 
-  def make(
-      q: Queue[F, OutputMsg],
-      t: Topic[F, OutputMsg],
-      lh: LogicHandlerOld[F],
-      protocol: Protocol[F],
-    ): WebSocketBuilder2[F] => F[Response[F]] =
-    wsb =>
-      for {
-        uRef   <- Ref.of[F, Option[User]](None)
-        uQueue <- Queue.unbounded[F, OutputMsg]
-        ws     <- wsb.build( // TODO: think how to implement in terms of Pipe[F, WebSocketFrame, WebSocketFrame]
-                    send(t, uQueue, uRef),
-                    receive(protocol, lh, uRef, q, uQueue)
-                  )
-      } yield ws
+  def make(wsb: WebSocketBuilder2[F]): F[Response[F]] =
+    for {
+      uRef   <- Ref.of[F, Option[User]](None)
+      uQueue <- Queue.unbounded[F, OutputMsg]
+      ws     <- wsb.build( // TODO: think how to implement in terms of Pipe[F, WebSocketFrame, WebSocketFrame]
+                  send(uQueue, uRef),
+                  receive(uQueue, uRef)
+                )
+    } yield ws
 
-  private def msgToWsf(msg: OutputMsg): WebSocketFrame =
-    msg match {
-      case KeepAlive          => WebSocketFrame.Ping()
-      case msg: OutputMessage => WebSocketFrame.Text(msg.asJson.noSpaces)
-      case DiscardMessage     => ??? // TODO: think how to eliminate, filtered previously
-    }
+  private def send(
+      uQueue: Queue[F, OutputMsg],
+      uRef: Ref[F, Option[User]]
+    ): Stream[F, WebSocketFrame] = {
 
-  private def filterMsg(
+    def uStream: Stream[F, WebSocketFrame] =
+      Stream
+        .fromQueueUnterminated(uQueue)
+        .filter {
+          case DiscardMessage => false
+          case _              => true
+        }
+        .mapFilter(msgToWsf)
+
+    def topicStream: Stream[F, WebSocketFrame] =
+      topic
+        .subscribe(maxQueued = 1000)
+        .evalFilter(filterMsgF(_, uRef))
+        .mapFilter(msgToWsf)
+
+    Stream(uStream, topicStream).parJoinUnbounded
+  }
+
+  private def filterMsgF(
       msg: OutputMsg,
       userRef: Ref[F, Option[User]]
     ): F[Boolean] =
@@ -58,65 +69,33 @@ class WsHandler[F[_]: Concurrent: Temporal] {
       case _                   => true.pure[F]
     }
 
-  private def send(
-      t: Topic[F, OutputMsg],
-      messages: Queue[F, OutputMsg],
-      uRef: Ref[F, Option[User]]
-    ): Stream[F, WebSocketFrame] = {
+  private def msgToWsf(msg: OutputMsg): Option[WebSocketFrame] =
+    msg match {
+      case KeepAlive          => WebSocketFrame.Ping().some
+      case msg: OutputMessage => WebSocketFrame.Text(msg.asJson.noSpaces).some
+      case DiscardMessage     => None
+    }
 
-    def uStream: Stream[F, WebSocketFrame] =
-      Stream
-        .fromQueueUnterminated(messages)
-        .filter {
-          case DiscardMessage => false
-          case _              => true
-        }
-        .map(msgToWsf)
+  private def wsKeepAliveStream: Stream[F, Nothing] =
+    Stream.awakeEvery[F](30.seconds).as(KeepAlive).through(topic.publish)
 
-    def mainStream: Stream[F, WebSocketFrame] =
-      t.subscribe(maxQueued = 1000)
-        .evalFilter(filterMsg(_, uRef))
-        .map(msgToWsf)
-
-    Stream(uStream, mainStream).parJoinUnbounded
-  }
+  private def wsKeepAliveStream(q: Queue[F, OutputMsg]): Stream[F, Unit] =
+    Stream.awakeEvery[F](30.seconds).as(KeepAlive).evalTap(q.offer).void
 
   private def receive(
-      protocol: Protocol[F],
-      im: LogicHandlerOld[F],
+      uQueue: Queue[F, OutputMsg],
       uRef: Ref[F, Option[User]],
-      q: Queue[F, OutputMsg],
-      uQueue: Queue[F, OutputMsg]
-    ): Pipe[F, WebSocketFrame, Unit] = { wsfs =>
-    handleWebSocketStream(wsfs, im, protocol, uRef)
-      .evalMap { m =>
-        uRef.get.flatMap {
-          case Some(_) => q.offer(m)
-          case None    => uQueue.offer(m)
-        }
+    ): Pipe[F, WebSocketFrame, Unit] =
+    _.flatMap {
+      /** WebSocketFrame => ListMessages */
+      case WebSocketFrame.Text(text, _) => Stream.evalSeq(lh.parse(uRef, text))
+      case WebSocketFrame.Close(_)      => Stream.evalSeq(protocol.disconnect(uRef))
+      case _                            => Stream.empty
+    }.evalMap { m =>
+      uRef.get.flatMap {
+        case Some(_) => topic.publish1(m).void
+        case _       => uQueue.offer(m)
       }
-      .concurrently {
-        Stream
-          .awakeEvery(30.seconds)
-          .as(KeepAlive)
-          .foreach(uQueue.offer)
-      }
-  }
-
-  private def handleWebSocketStream(
-      wsf: Stream[F, WebSocketFrame],
-      im: LogicHandlerOld[F],
-      protocol: Protocol[F],
-      uRef: Ref[F, Option[User]]
-    ): Stream[F, OutputMsg] =
-    wsf.flatMap { sf =>
-      Stream.evalSeq(
-        sf match {
-          case WebSocketFrame.Text(text, _) => im.parse(uRef, text)
-          case WebSocketFrame.Close(_)      => protocol.disconnect(uRef)
-          case f                            => MonadCancelThrow[F].raiseError(new RuntimeException(s"unexpected frame: $f"))
-        }
-      )
-    }
+    }.concurrently(wsKeepAliveStream(uQueue))
 
 }

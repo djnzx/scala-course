@@ -30,19 +30,22 @@ object Room {
     HasStringValue.validate(new Room(name), "Room")
 }
 
-case class ChatState(
-    userRooms: Map[User, Room],       // where user is, this is only for optimisation
-    roomMembers: Map[Room, Set[User]] // room - users
-  )
+case class ChatState(roomMembers: Map[Room, Set[User]])
 
 object ChatState {
 
-  def fresh: ChatState = apply(Map.empty, Map.empty)
+  def fresh: ChatState = apply(Map.empty)
 
   extension(state: ChatState) {
 
+    /** reviewed, based on the implementation */
+
+    /** TODO: to review */
+    def userRooms: Map[User, Room] =
+      state.roomMembers.flatMap { case (room, users) => users.map(user => user -> room) }
+
     def userExists(name: String): Boolean =
-      state.userRooms.exists { case (user, room) => user.value == name }
+      state.roomMembers.exists { case (_, members) => members.exists(_.value == name) }
 
     def findRoom(user: User): Option[(Room, Set[User])] =
       state.roomMembers
@@ -51,20 +54,12 @@ object ChatState {
     def withoutUser(user: User): ChatState =
       findRoom(user) match {
         case None                => state
-        case Some((room, users)) =>
-          ChatState(
-            state.userRooms - user,
-            state.roomMembers.updated(room, users - user)
-          )
+        case Some((room, users)) => ChatState(state.roomMembers.updated(room, users - user))
       }
 
     def withUser(user: User, room: Room): ChatState = {
       val members = state.roomMembers.getOrElse(room, Set.empty) + user
-
-      ChatState(
-        state.userRooms + (user   -> room),
-        state.roomMembers + (room -> members)
-      )
+      ChatState(state.roomMembers + (room -> members))
     }
 
     def usersSorted(room: Room): List[User] =
@@ -77,7 +72,7 @@ object ChatState {
       s"""<!Doctype html>
           |<title>Chat Server State</title>
           |<body>
-          |<pre>Users: ${state.userRooms.keys.size}</pre>
+          |<pre>Users: ${state.roomMembers.foldLeft(0) { case (total, (_, users)) => total + users.size }}</pre>
           |<pre>Rooms: ${state.roomMembers.keys.size}</pre>
           |<pre>Overview:
           |${state.roomMembers.keys.toList

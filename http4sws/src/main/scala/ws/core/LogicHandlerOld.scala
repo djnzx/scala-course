@@ -13,6 +13,8 @@ import cats.parse.Rfc5234.alpha
 import cats.parse.Rfc5234.sp
 import cats.parse.Rfc5234.wsp
 
+// TODO: help message on connect
+// TODO: show `user disconnected` only in the same room
 trait LogicHandlerOld[F[_]] {
   def parse(
     userRef: Ref[F, Option[User]],
