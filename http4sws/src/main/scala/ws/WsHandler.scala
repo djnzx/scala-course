@@ -1,8 +1,7 @@
 package ws
 
+import cats.effect.Async
 import cats.effect.Ref
-import cats.effect.Temporal
-import cats.effect.kernel.Concurrent
 import cats.effect.kernel.Ref
 import cats.effect.std.Queue
 import cats.syntax.all.*
@@ -15,16 +14,22 @@ import org.http4s.Response
 import org.http4s.server.websocket.WebSocketBuilder2
 import org.http4s.websocket.WebSocketFrame
 import scala.concurrent.duration.*
+import sourcecode.FileName.{generate => fn}
+import sourcecode.Line.{generate => ln}
 import ws.core.*
 
-class WsHandler[F[_]: Concurrent: Temporal](
+class WsHandler[F[_]: Async](
     topic: Topic[F, OutputMsg],
     lh: LogicHandlerOld[F],
-    protocol: Protocol[F]) {
+    protocol: Protocol[F])
+    extends DebugThings[F] {
 
   def make(wsb: WebSocketBuilder2[F]): F[Response[F]] =
     for {
-      uRef   <- Ref.of[F, Option[User]](None)
+      uRef   <- {
+        pprint.log("inside make ref created (once per app?)")
+        Ref.of[F, Option[User]](None)
+      }
       uQueue <- Queue.unbounded[F, OutputMsg]
       ws     <- wsb.build( // TODO: think how to implement in terms of Pipe[F, WebSocketFrame, WebSocketFrame]
                   send(uQueue, uRef),
@@ -57,12 +62,12 @@ class WsHandler[F[_]: Concurrent: Temporal](
 
   private def filterMsgF(
       msg: OutputMsg,
-      userRef: Ref[F, Option[User]]
+      uRef: Ref[F, Option[User]]
     ): F[Boolean] =
     msg match {
       case DiscardMessage      => false.pure[F]
       case msg: MessageForUser =>
-        userRef.get.map {
+        uRef.get.map {
           case Some(u) => msg.isForUser(u)
           case None    => false
         }
@@ -86,16 +91,23 @@ class WsHandler[F[_]: Concurrent: Temporal](
       uQueue: Queue[F, OutputMsg],
       uRef: Ref[F, Option[User]],
     ): Pipe[F, WebSocketFrame, Unit] =
-    _.flatMap {
-      /** WebSocketFrame => ListMessages */
-      case WebSocketFrame.Text(text, _) => Stream.evalSeq(lh.parse(uRef, text))
-      case WebSocketFrame.Close(_)      => Stream.evalSeq(protocol.disconnect(uRef))
-      case _                            => Stream.empty
-    }.evalMap { m =>
-      uRef.get.flatMap {
-        case Some(_) => topic.publish1(m).void
-        case _       => uQueue.offer(m)
+    _.flatMap { wsf =>
+      logS("onReceive pipe" -> wsf)(ln, fn) ++
+        (wsf match {
+          /** WebSocketFrame => List[OutputMsg] */
+          case WebSocketFrame.Text(text, _) =>
+            logS("onReceive text" -> text)(ln, fn) ++
+              Stream.evalSeq(lh.parse(uRef, text)) /// 1
+          case WebSocketFrame.Close(_)      => Stream.evalSeq(protocol.disconnect(uRef))
+          case wsf                          => pprint.log("onReceive other" -> wsf); Stream.empty
+        })
+    }
+      .evalMap { m =>
+        uRef.get.flatMap {
+          case Some(_) => topic.publish1(m).void
+          case _       => uQueue.offer(m)
+        }
       }
-    }.concurrently(wsKeepAliveStream(uQueue))
+      .concurrently(wsKeepAliveStream(uQueue))
 
 }

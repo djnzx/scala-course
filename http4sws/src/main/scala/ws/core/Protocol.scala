@@ -25,7 +25,7 @@ trait Protocol[F[_]] {
   def help(user: User): F[OutputMsg]
   def listRooms(user: User): F[List[OutputMsg]]
   def listMembers(user: User): F[List[OutputMsg]]
-  def disconnect(userRef: Ref[F, Option[User]]): F[List[OutputMsg]]
+  def disconnect(uRef: Ref[F, Option[User]]): F[List[OutputMsg]]
 }
 
 object Protocol {
@@ -100,8 +100,8 @@ object Protocol {
           List(MessageToUser(user, memberList))
         }
 
-      override def disconnect(userRef: Ref[F, Option[User]]): F[List[OutputMsg]] = // TODO: seems not clear
-        userRef.get.flatMap {
+      override def disconnect(uRef: Ref[F, Option[User]]): F[List[OutputMsg]] = // TODO: seems not clear
+        uRef.get.flatMap {
           case Some(user) => removeFromCurrentRoom(stateRef, user)
           case None       => List.empty[OutputMsg].pure[F]
         }

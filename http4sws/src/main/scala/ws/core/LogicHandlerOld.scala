@@ -17,9 +17,9 @@ import cats.parse.Rfc5234.wsp
 // TODO: show `user disconnected` only in the same room
 trait LogicHandlerOld[F[_]] {
   def parse(
-    userRef: Ref[F, Option[User]],
-    text: String
-  ): F[List[OutputMsg]]
+      uRef: Ref[F, Option[User]],
+      text: String
+    ): F[List[OutputMsg]]
 }
 
 case class TextCommand(left: String, right: Option[String])
@@ -33,17 +33,21 @@ object LogicHandlerOld {
       def defaultRoom: Validated[String, Room] = Room("room123").valid
 
       override def parse(
-          userRef: Ref[F, Option[User]],
+          uRef: Ref[F, Option[User]],
           text: String
         ): F[List[OutputMsg]] =
         text.trim match {
           case ""  => DiscardMessage.pure[List].pure[F]
           case txt =>
-            userRef.get.flatMap {
-              case Some(u) => processText4Reg(u, txt, protocol)
+            uRef.get.flatMap {
+              case Some(u) =>
+                pprint.log(("handling for registered:", u, txt))
+                processText4Reg(u, txt, protocol)
               case None    =>
                 defaultRoom match {
-                  case Valid(room) => processText4UnReg(txt, protocol, userRef, room)
+                  case Valid(room) =>
+                    pprint.log("handling for non-registered:" -> txt)
+                    processText4UnReg(txt, protocol, uRef, room)
                   case Invalid(e)  => ParseError(None, e).pure[List].pure[F]
                 }
             }
@@ -53,7 +57,7 @@ object LogicHandlerOld {
   private def processText4UnReg[F[_]: Monad](
       text: String,
       protocol: Protocol[F],
-      userRef: Ref[F, Option[User]],
+      uRef: Ref[F, Option[User]],
       room: Room
     ): F[List[OutputMsg]] =
     text.head match {
@@ -67,7 +71,7 @@ object LogicHandlerOld {
                 case false =>
                   protocol.register(n).flatMap {
                     case SuccessfulRegistration(u) =>
-                      userRef
+                      uRef
                         .update(_ => Some(u))
                         .flatMap(_ => protocol.enterRoom(u, room))
                         .map(ms => MessageToUser(u, "/help shows all available commands") :: ms)
