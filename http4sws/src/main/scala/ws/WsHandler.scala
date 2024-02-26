@@ -24,17 +24,46 @@ class WsHandler[F[_]: Async](
     protocol: Protocol[F])
     extends DebugThings[F] {
 
+  val wsfToInputFrame: WebSocketFrame => InputFrame = InputFrame.parse
+  val ifToInputMsg: InputFrame => InputMsg = InputMsg.apply
+  val processMsg: InputMsg => F[List[OutputMsg]] = _ => List.empty.pure[F] // TODO
+  val outputMsgToWsf: OutputMsg => Option[WebSocketFrame] = msgToWsf
+
   def make(wsb: WebSocketBuilder2[F]): F[Response[F]] =
     for {
-      uRef   <- {
-        pprint.log("inside make ref created (once per app?)")
-        Ref.of[F, Option[User]](None)
-      }
+      uRef   <- Ref.of[F, Option[User]](None)
+      _      <- logF(s"created new Ref[Option[User]] for NEW incoming WS connection: $uRef")(ln, fn)
       uQueue <- Queue.unbounded[F, OutputMsg]
-      ws     <- wsb.build( // TODO: think how to implement in terms of Pipe[F, WebSocketFrame, WebSocketFrame]
-                  send(uQueue, uRef),
-                  receive(uQueue, uRef)
-                )
+      _      <- logF(wsb)(ln, fn)
+      ws     <- wsb
+                  .withFilterPingPongs(false)
+                  .withOnClose(protocol.disconnect(uRef) >> logF(s"conn $uRef CLOSED")(ln, fn))
+                  .build((wsfs: Stream[F, WebSocketFrame]) =>
+                    wsfs.evalTap(x => logF(x)(ln, fn))
+                      .map(wsfToInputFrame)
+                      .evalTap(x => logF(x)(ln, fn))
+                      .map(ifToInputMsg)
+                      .evalTap(x => logF(x)(ln, fn))
+                      .evalMap(processMsg)
+                      .flatMap(Stream.emits)
+                      .mapFilter(outputMsgToWsf)
+//                      .concurrently(Stream.awakeEvery[F](10.seconds).as(KeepAlive).th)
+                  )
+    } yield ws
+
+  def make_old(wsb: WebSocketBuilder2[F]): F[Response[F]] =
+    for {
+      uRef   <- Ref.of[F, Option[User]](None)
+      _      <- uRef.get.flatMap(r => logF(s"created new Ref[Option[User]] for NEW incoming WS connection: ${r}")(ln, fn))
+      uQueue <- Queue.unbounded[F, OutputMsg]
+      _      <- logF(wsb)(ln, fn)
+      ws     <- wsb
+                  .withFilterPingPongs(false)
+                  .withOnClose(logF("conn CLOSED")(ln, fn))
+                  .build( // TODO: think how to implement in terms of Pipe[F, WebSocketFrame, WebSocketFrame]
+                    send(uQueue, uRef),
+                    receive(uQueue, uRef)
+                  )
     } yield ws
 
   private def send(
@@ -92,15 +121,16 @@ class WsHandler[F[_]: Async](
       uRef: Ref[F, Option[User]],
     ): Pipe[F, WebSocketFrame, Unit] =
     _.flatMap { wsf =>
-      logS("onReceive pipe" -> wsf)(ln, fn) ++
-        (wsf match {
-          /** WebSocketFrame => List[OutputMsg] */
-          case WebSocketFrame.Text(text, _) =>
-            logS("onReceive text" -> text)(ln, fn) ++
-              Stream.evalSeq(lh.parse(uRef, text)) /// 1
-          case WebSocketFrame.Close(_)      => Stream.evalSeq(protocol.disconnect(uRef))
-          case wsf                          => pprint.log("onReceive other" -> wsf); Stream.empty
-        })
+//      logS("onReceive pipe" -> wsf)(ln, fn) ++
+//        logS("ref" -> uRef)(ln, fn) ++
+      wsf match {
+        /** WebSocketFrame => List[OutputMsg] */
+        case WebSocketFrame.Text(text, _) =>
+//            logS("onReceive text" -> text)(ln, fn) ++
+          Stream.evalSeq(lh.parse(uRef, text)) /// 1
+        case WebSocketFrame.Close(_)      => Stream.evalSeq(protocol.disconnect(uRef))
+        case wsf                          => pprint.log("onReceive other" -> wsf); Stream.empty
+      }
     }
       .evalMap { m =>
         uRef.get.flatMap {
@@ -108,6 +138,6 @@ class WsHandler[F[_]: Async](
           case _       => uQueue.offer(m)
         }
       }
-      .concurrently(wsKeepAliveStream(uQueue))
+      .concurrently(wsKeepAliveStream)
 
 }

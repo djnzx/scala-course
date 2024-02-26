@@ -5,17 +5,19 @@ import cats.Monad
 import cats.data.Validated
 import cats.data.Validated.Invalid
 import cats.data.Validated.Valid
-import cats.effect.kernel.Ref
+import cats.effect.kernel.{Ref, Sync}
 import cats.implicits.*
 import cats.parse.Parser
 import cats.parse.Parser.char
 import cats.parse.Rfc5234.alpha
 import cats.parse.Rfc5234.sp
 import cats.parse.Rfc5234.wsp
+import sourcecode.FileName.{generate => fn}
+import sourcecode.Line.{generate => ln}
 
 // TODO: help message on connect
 // TODO: show `user disconnected` only in the same room
-trait LogicHandlerOld[F[_]] {
+trait LogicHandlerOld[F[_]: Sync] extends DebugThings[F] {
   def parse(
       uRef: Ref[F, Option[User]],
       text: String
@@ -26,7 +28,7 @@ case class TextCommand(left: String, right: Option[String])
 
 object LogicHandlerOld {
 
-  def make[F[_]: Monad](
+  def make[F[_]: Monad:Sync](
       protocol: Protocol[F]
     ): LogicHandlerOld[F] =
     new LogicHandlerOld[F] {
@@ -35,8 +37,11 @@ object LogicHandlerOld {
       override def parse(
           uRef: Ref[F, Option[User]],
           text: String
-        ): F[List[OutputMsg]] =
-        text.trim match {
+        ): F[List[OutputMsg]] = {
+        
+        val log: F[Unit] = uRef.get.flatMap(u => logF(u)(ln, fn))
+        
+        val r = text.trim match {
           case ""  => DiscardMessage.pure[List].pure[F]
           case txt =>
             uRef.get.flatMap {
@@ -52,6 +57,8 @@ object LogicHandlerOld {
                 }
             }
         }
+        log >> r
+      }
     }
 
   private def processText4UnReg[F[_]: Monad](
@@ -65,11 +72,11 @@ object LogicHandlerOld {
         parseToTextCommand(text).fold(
           _ => ParseError(None, "Characters after '/' must be between A-Z or a-z").pure[List].pure[F],
           {
-            case TextCommand("/name", Some(n)) =>
-              protocol.isUsernameInUse(n).flatMap {
+            case TextCommand("/name", Some(name)) =>
+              protocol.isInUse(name).flatMap {
                 case true  => ParseError(None, "User name already in use").pure[List].pure[F]
                 case false =>
-                  protocol.register(n).flatMap {
+                  protocol.validate(name).flatMap {
                     case SuccessfulRegistration(u) =>
                       uRef
                         .update(_ => Some(u))
@@ -79,7 +86,7 @@ object LogicHandlerOld {
                     case _                         => List.empty[OutputMsg].pure[F]
                   }
               }
-            case _                             => UnsupportedCommand(None).pure[List].pure[F]
+            case _                                => UnsupportedCommand(None).pure[List].pure[F]
           }
         )
       case _   => Register(None).pure[List].pure[F]

@@ -18,8 +18,8 @@ import cats.syntax.all.*
   * {{{List(one, two)}}} - emit many message
   */
 trait Protocol[F[_]] {
-  def register(name: String): F[OutputMsg]
-  def isUsernameInUse(name: String): F[Boolean]
+  def validate(name: String): F[OutputMsg]
+  def isInUse(name: String): F[Boolean]
   def enterRoom(user: User, room: Room): F[List[OutputMsg]]
   def chat(user: User, text: String): F[List[OutputMsg]]
   def help(user: User): F[OutputMsg]
@@ -33,13 +33,13 @@ object Protocol {
   def make[F[_]: Monad](stateRef: Ref[F, ChatState]): Protocol[F] =
     new Protocol[F] {
       // it only validates name, doesn't register
-      override def register(name: String): F[OutputMsg] =
+      override def validate(name: String): F[OutputMsg] =
         User.validate(name) match {
-          case Valid(u)   => SuccessfulRegistration(u).pure[F]
+          case Valid(user)   => SuccessfulRegistration(user).pure[F]
           case Invalid(e) => ParseError(None, e).pure[F]
         }
 
-      override def isUsernameInUse(name: String): F[Boolean] = stateRef.get.map(_.userExists(name))
+      override def isInUse(name: String): F[Boolean] = stateRef.get.map(_.userExists(name))
 
       override def enterRoom(user: User, room: Room): F[List[OutputMsg]] =
         stateRef.get.flatMap { state =>
