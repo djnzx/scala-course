@@ -7,7 +7,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import ws.core.InputFrame.TextFrame
 
-class TextFrameParserSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks {
+class TextInputFrameParserSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks {
 
   import InputFrame.p.*
 
@@ -252,7 +252,7 @@ class TextFrameParserSpec extends AnyFunSuite with Matchers with ScalaCheckPrope
   }
 
   test("TOTAL TextParser, Invalid Message as otherwise case") {
-    import ws.core.InputFrame._
+    import ws.core.InputFrame.*
 
     def parse(raw: String): Either[Parser.Error, TextFrame] = totalInputFrameParser.parseAll(raw)
     def parseTotal(raw: String): TextFrame = totalTextParser(raw)

@@ -8,27 +8,31 @@ import fs2.concurrent.Topic
 import org.http4s.HttpApp
 import org.http4s.server.websocket.WebSocketBuilder2
 import scala.concurrent.duration.*
+import sourcecode.FileName.{generate => fn}
+import sourcecode.Line.{generate => ln}
 import ws.core.*
 
-object App extends IOApp.Simple {
+object App extends IOApp.Simple with DebugThings[IO] {
 
-  private def webServerStream(routes: WebSocketBuilder2[IO] => HttpApp[IO]) =
-    Stream.eval(Server.make[IO](routes)).compile.drain
+  private def mkWebServerStream(routes: WebSocketBuilder2[IO] => HttpApp[IO]): Stream[IO, Nothing] =
+    Stream.eval(Server.make[IO](routes))
 
-  private def wsKeepAliveStream(protocol: Protocol[IO]) =
-    Stream.awakeEvery[IO](30.seconds).evalMap(_ => protocol.sendKeepAlive).compile.drain
+  private def mkWsKeepAliveStream(publicTopic: Topic[IO, OutputMsg]): Stream[IO, Nothing] =
+    Stream
+      .awakeEvery[IO](30.seconds)
+      .as(OutputMsg.KeepAlive)
+      .evalTap(m => logF("KeepAliveStream: generated message for publicTopic" -> m)(ln, fn))
+      .through(publicTopic.publish)
 
-  val program = for {
-    publicTopic <- Topic[IO, OutputMsg]                                    // topic to allow broadcast our outgoing message
-    state       <- Ref.of[IO, ChatState[IO]](ChatState.fresh(publicTopic)) // application state
-    protocol    <- IO(Protocol.make[IO](state))                            // having state, we can make a protocol which is essentially f: InputMsg => F[OutputMsg] - TODO
-    logic       <- IO(LogicHandlerOld.make[IO](protocol))                  // basically handler: InputMsg => OutputMsg - TODO: eliminate
-    wsHandler = new WsHandler[IO](logic, protocol).make    // f: WebSocketBuilder2[F] => F[Response[F]]
-    httpRoute = new Routes[IO].endpoints(state, wsHandler) // f: WebSocketBuilder2[F] => HttpApp[F]
-    _           <- webServerStream(httpRoute)                              // http / ws stream (forever)
-    _           <- wsKeepAliveStream(protocol)                             // sw KeepAlive sender
+  override def run: IO[Unit] = for {
+    publicTopic <- Topic[IO, OutputMsg]                                // topic to allow broadcast our outgoing message
+    chatState   <- Ref.of[IO, ChatState[IO]](ChatState.fresh)          // application state
+    wsHandler = new WsHandler[IO](chatState, publicTopic).make // f: WebSocketBuilder2[F] => F[Response[F]]
+    httpRoute = new Routes[IO].endpoints(chatState, wsHandler) // f: WebSocketBuilder2[F] => HttpApp[F]
+    s1 = mkWebServerStream(httpRoute)                          // http / ws stream (forever)
+    s2 = mkWsKeepAliveStream(publicTopic)                      // sw KeepAlive sender
+    _           <- Stream(s1, s2).parJoinUnbounded.compile.drain.start // run Streams in background
+    _           <- IO.never                                            // never terminate app
   } yield ()
-
-  override def run: IO[Unit] = program
 
 }

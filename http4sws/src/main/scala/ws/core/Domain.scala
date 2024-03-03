@@ -1,6 +1,7 @@
 package ws.core
 
 import cats.data.Validated
+import cats.effect.std.Queue
 import cats.syntax.all.*
 import fs2.concurrent.Topic
 
@@ -31,70 +32,72 @@ object Room {
     HasStringValue.validate(new Room(name), "Room")
 }
 
+case class UserState[F[_]](queue: Queue[F, OutputMsg])
+
 case class ChatState[F[_]](
-    publicTopic: Topic[F, OutputMsg],
-    personalTopics: Map[User, Topic[F, OutputMsg]],
-    roomTopics: Map[Room, Topic[F, OutputMsg]],
-    members: Map[Room, Set[User]] // we do need that only to provide "statistics"
+    users: Map[User, UserState[F]]
+//    personalTopics: Map[User, Topic[F, OutputMsg]],
+//    roomTopics: Map[Room, Topic[F, OutputMsg]],
+//    members: Map[Room, Set[User]] // we do need that only to provide "statistics"
   )
 
 object ChatState {
 
-  def fresh[F[_]](publicTopic: Topic[F, OutputMsg]): ChatState[F] = apply(publicTopic, Map.empty, Map.empty, Map.empty)
+  def fresh[F[_]]: ChatState[F] = apply(Map.empty)
 
   extension[F[_]](state: ChatState[F]) {
 
-    /** reviewed, based on the implementation */
+//    /** reviewed, based on the implementation */
+//
+//    /** TODO: to review */
+//    def userRooms: Map[User, Room] =
+//      state.members.flatMap { case (room, users) => users.map(user => user -> room) }
+//
+//    def userExists(name: String): Boolean =
+//      state.members.exists { case (_, members) => members.exists(_.value == name) }
+//
+//    def findRoom(user: User): Option[(Room, Set[User])] =
+//      state.members
+//        .find { case (room, users) => users.contains(user) }
+//
+//    def withoutUser(user: User): ChatState[F] =
+//      findRoom(user) match {
+//        case None                => state
+//        case Some((room, users)) => state.copy(members = state.members.updated(room, users - user))
+//      }
+//
+//    def withUser(user: User, room: Room): ChatState[F] = {
+//      val members = state.members.getOrElse(room, Set.empty) + user
+//      state.copy(members = state.members + (room -> members))
+//    }
+//
+//    def usersSorted(room: Room): List[User] =
+//      state.members
+//        .get(room)
+//        .toList
+//        .flatMap(_.toList.sortBy(_.value))
 
-    /** TODO: to review */
-    def userRooms: Map[User, Room] =
-      state.members.flatMap { case (room, users) => users.map(user => user -> room) }
-
-    def userExists(name: String): Boolean =
-      state.members.exists { case (_, members) => members.exists(_.value == name) }
-
-    def findRoom(user: User): Option[(Room, Set[User])] =
-      state.members
-        .find { case (room, users) => users.contains(user) }
-
-    def withoutUser(user: User): ChatState[F] =
-      findRoom(user) match {
-        case None                => state
-        case Some((room, users)) => state.copy(members = state.members.updated(room, users - user))
-      }
-
-    def withUser(user: User, room: Room): ChatState[F] = {
-      val members = state.members.getOrElse(room, Set.empty) + user
-      state.copy(members = state.members + (room -> members))
-    }
-
-    def usersSorted(room: Room): List[User] =
-      state.members
-        .get(room)
-        .toList
-        .flatMap(_.toList.sortBy(_.value))
-
-    def metricsAsHtml: String =
-      s"""<!Doctype html>
-          |<title>Chat Server State</title>
-          |<body>
-          |<pre>Users: ${state.members.foldLeft(0) { case (total, (_, users)) => total + users.size }}</pre>
-          |<pre>Rooms: ${state.members.keys.size}</pre>
-          |<pre>Overview:
-          |${state.members.keys.toList
-          .map(room =>
-            state.members
-              .getOrElse(room, Set())
-              .map(_.value)
-              .toList
-              .sorted
-              .mkString(s"${room.value} Room Members:\n\t", "\n\t", "")
-          )
-          .mkString("Rooms:\n\t", "\n\t", "")}
-          |</pre>
-          |</body>
-          |</html>
-          """.stripMargin
+    def metricsAsHtml: String = "metrics: TODO"
+//      s"""<!Doctype html>
+//          |<title>Chat Server State</title>
+//          |<body>
+//          |<pre>Users: ${state.members.foldLeft(0) { case (total, (_, users)) => total + users.size }}</pre>
+//          |<pre>Rooms: ${state.members.keys.size}</pre>
+//          |<pre>Overview:
+//          |${state.members.keys.toList
+//          .map(room =>
+//            state.members
+//              .getOrElse(room, Set())
+//              .map(_.value)
+//              .toList
+//              .sorted
+//              .mkString(s"${room.value} Room Members:\n\t", "\n\t", "")
+//          )
+//          .mkString("Rooms:\n\t", "\n\t", "")}
+//          |</pre>
+//          |</body>
+//          |</html>
+//          """.stripMargin
   }
 
 }
