@@ -2,6 +2,7 @@ package ws.core
 
 import cats.data.Validated
 import cats.syntax.all.*
+import fs2.concurrent.Topic
 
 sealed trait HasStringValue {
   def value: String
@@ -30,40 +31,45 @@ object Room {
     HasStringValue.validate(new Room(name), "Room")
 }
 
-case class ChatState(roomMembers: Map[Room, Set[User]])
+case class ChatState[F[_]](
+    publicTopic: Topic[F, OutputMsg],
+    personalTopics: Map[User, Topic[F, OutputMsg]],
+    roomTopics: Map[Room, Topic[F, OutputMsg]],
+    members: Map[Room, Set[User]] // we do need that only to provide "statistics"
+  )
 
 object ChatState {
 
-  def fresh: ChatState = apply(Map.empty)
+  def fresh[F[_]](publicTopic: Topic[F, OutputMsg]): ChatState[F] = apply(publicTopic, Map.empty, Map.empty, Map.empty)
 
-  extension(state: ChatState) {
+  extension[F[_]](state: ChatState[F]) {
 
     /** reviewed, based on the implementation */
 
     /** TODO: to review */
     def userRooms: Map[User, Room] =
-      state.roomMembers.flatMap { case (room, users) => users.map(user => user -> room) }
+      state.members.flatMap { case (room, users) => users.map(user => user -> room) }
 
     def userExists(name: String): Boolean =
-      state.roomMembers.exists { case (_, members) => members.exists(_.value == name) }
+      state.members.exists { case (_, members) => members.exists(_.value == name) }
 
     def findRoom(user: User): Option[(Room, Set[User])] =
-      state.roomMembers
+      state.members
         .find { case (room, users) => users.contains(user) }
 
-    def withoutUser(user: User): ChatState =
+    def withoutUser(user: User): ChatState[F] =
       findRoom(user) match {
         case None                => state
-        case Some((room, users)) => ChatState(state.roomMembers.updated(room, users - user))
+        case Some((room, users)) => state.copy(members = state.members.updated(room, users - user))
       }
 
-    def withUser(user: User, room: Room): ChatState = {
-      val members = state.roomMembers.getOrElse(room, Set.empty) + user
-      ChatState(state.roomMembers + (room -> members))
+    def withUser(user: User, room: Room): ChatState[F] = {
+      val members = state.members.getOrElse(room, Set.empty) + user
+      state.copy(members = state.members + (room -> members))
     }
 
     def usersSorted(room: Room): List[User] =
-      state.roomMembers
+      state.members
         .get(room)
         .toList
         .flatMap(_.toList.sortBy(_.value))
@@ -72,12 +78,12 @@ object ChatState {
       s"""<!Doctype html>
           |<title>Chat Server State</title>
           |<body>
-          |<pre>Users: ${state.roomMembers.foldLeft(0) { case (total, (_, users)) => total + users.size }}</pre>
-          |<pre>Rooms: ${state.roomMembers.keys.size}</pre>
+          |<pre>Users: ${state.members.foldLeft(0) { case (total, (_, users)) => total + users.size }}</pre>
+          |<pre>Rooms: ${state.members.keys.size}</pre>
           |<pre>Overview:
-          |${state.roomMembers.keys.toList
+          |${state.members.keys.toList
           .map(room =>
-            state.roomMembers
+            state.members
               .getOrElse(room, Set())
               .map(_.value)
               .toList

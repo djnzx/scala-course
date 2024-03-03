@@ -33,23 +33,23 @@
         const socket = new WebSocket("ws://localhost:8080/ws");
 
         socket.onmessage = function (event) {
-            let obj = JSON.parse(event.data);
-
-            if (obj.Register) {
-                output.append(colorize(obj.Register.msg, "green"))
-            } else if (obj.ParseError) {
-                output.append(colorize("Registration failed: " + obj.ParseError.msg, "red"))
-            } else if (obj.SuccessfulRegistration) {
-                output.append(colorize(obj.SuccessfulRegistration.msg, "purple"))
-            } else if (obj.UnsupportedCommand) {
-                output.append(colorize(obj.UnsupportedCommand.msg, "red"))
-            } if (obj.MessageToUser) {
-                output.append(colorize(obj.MessageToUser.msg, "green"))
-            } else if (obj.ChatMessage) {
-                output.append(colorize(obj.ChatMessage.from.name + " : " + obj.ChatMessage.msg, "purple"))
-            } else {
-                output.append(event.data)
-            }
+            // let obj = JSON.parse(event.data);
+            //
+            // if (obj.Register) {
+            //     output.append(colorize(obj.Register.msg, "green"))
+            // } else if (obj.ParseError) {
+            //     output.append(colorize("Registration failed: " + obj.ParseError.msg, "red"))
+            // } else if (obj.SuccessfulRegistration) {
+            //     output.append(colorize(obj.SuccessfulRegistration.msg, "purple"))
+            // } else if (obj.UnsupportedCommand) {
+            //     output.append(colorize(obj.UnsupportedCommand.msg, "red"))
+            // } if (obj.MessageToUser) {
+            //     output.append(colorize(obj.MessageToUser.msg, "green"))
+            // } else if (obj.ChatMessage) {
+            //     output.append(colorize(obj.ChatMessage.from.name + " : " + obj.ChatMessage.msg, "purple"))
+            // } else {
+                output.append(colorize(event.data, "black"))
+            // }
 
             output.scrollTop = output.scrollHeight;
         };

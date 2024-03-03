@@ -32,5 +32,4 @@ object StreamFromQueue extends IOApp.Simple {
              s2.evalTap(s => print(sem, "S2" -> s)),
            ).parJoinUnbounded.compile.drain
   } yield s
-
 }

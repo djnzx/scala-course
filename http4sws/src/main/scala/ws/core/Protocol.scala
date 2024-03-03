@@ -4,8 +4,9 @@ import cats.Applicative
 import cats.Monad
 import cats.data.Validated.Invalid
 import cats.data.Validated.Valid
-import cats.effect.kernel.Ref
+import cats.effect.kernel.{Concurrent, Ref}
 import cats.syntax.all.*
+import fs2.*
 
 /** state manipulation:
   * {{{
@@ -30,7 +31,7 @@ trait Protocol[F[_]] {
 
 object Protocol {
 
-  def make[F[_]: Monad](stateRef: Ref[F, ChatState]): Protocol[F] =
+  def make[F[_]: Monad](stateRef: Ref[F, ChatState[F]]): Protocol[F] =
     new Protocol[F] {
       // it only validates name, doesn't register
       override def validate(name: String): F[OutputMsg] =
@@ -78,7 +79,7 @@ object Protocol {
       override def listRooms(user: User): F[List[OutputMsg]] =
         stateRef.get.map { state =>
           val roomList =
-            state.roomMembers.keys
+            state.members.keys
               .map(_.value)
               .toList
               .sorted
@@ -109,11 +110,11 @@ object Protocol {
     }
 
   private def broadcastMessage[F[_]: Applicative](
-      state: ChatState,
+      state: ChatState[F],
       room: Room,
       om: OutputMsg
     ): F[List[OutputMsg]] =
-    state.roomMembers
+    state.members
       .getOrElse(room, Set.empty[User])
       .map { u =>
         om match {
@@ -126,7 +127,7 @@ object Protocol {
       .pure[F]
 
   private def addToRoom[F[_]: Monad](
-      stateRef: Ref[F, ChatState],
+      stateRef: Ref[F, ChatState[F]],
       user: User,
       room: Room
     ): F[List[OutputMsg]] =
@@ -141,7 +142,7 @@ object Protocol {
       }
 
   private def removeFromCurrentRoom[F[_]: Monad](
-      stateRef: Ref[F, ChatState],
+      stateRef: Ref[F, ChatState[F]],
       user: User
     ): F[List[OutputMsg]] =
     stateRef.get.flatMap { state =>

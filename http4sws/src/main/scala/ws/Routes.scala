@@ -25,7 +25,7 @@ class Routes[F[_]: Files: MonadThrow] extends Http4sDsl[F] {
       StaticFile.fromPath(htmlFile, Some(rq)).getOrElseF(NotFound()) // 404 if file not found
     }
 
-  private def metrics(stateRef: Ref[F, ChatState]) =
+  private def metrics(stateRef: Ref[F, ChatState[F]]) =
     HttpRoutes.of[F] { case GET -> Root / "metrics" =>
       stateRef.get.map(_.metricsAsHtml).flatMap(Ok(_, `Content-Type`(MediaType.text.html)))
     }
@@ -34,7 +34,7 @@ class Routes[F[_]: Files: MonadThrow] extends Http4sDsl[F] {
     HttpRoutes.of[F] { case GET -> Root / "ws" => rs }
 
   def endpoints(
-      stateRef: Ref[F, ChatState],
+      stateRef: Ref[F, ChatState[F]],
       mkWsHandler: WebSocketBuilder2[F] => F[Response[F]]
     ): WebSocketBuilder2[F] => HttpApp[F] =
     wsb => (index <+> metrics(stateRef) <+> ws(mkWsHandler(wsb))).orNotFound // 404 if another URL
