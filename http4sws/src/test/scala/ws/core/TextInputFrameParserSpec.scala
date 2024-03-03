@@ -39,35 +39,6 @@ class TextInputFrameParserSpec extends AnyFunSuite with Matchers with ScalaCheck
     }
   }
 
-  test("valid command parser") {
-    def parse(raw: String) = validCmdParser.parseAll(raw)
-
-    val dataR = Table(
-      "in"       -> "out",
-      "/room"    -> "room",
-      "/rooms"   -> "rooms",
-      "/help"    -> "help",
-      "/members" -> "members",
-    )
-
-    val dataL = Table(
-      "in",
-      "/",
-      "wrong",
-      "go",
-      "a",
-    )
-
-    forAll(dataR) { (in, out) =>
-      parse(in) shouldBe out.asRight
-    }
-
-    forAll(dataL) { in =>
-      val x = parse(in)
-      x.toOption shouldBe None
-    }
-  }
-
   test("parameters parser") {
     def parse(raw: String) = parametersParser.parseAll(raw)
 

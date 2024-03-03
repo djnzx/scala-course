@@ -382,14 +382,14 @@ lazy val spring = (project in file("spring"))
 
 lazy val http4sws = (project in file("http4sws"))
   .settings(
-    description := "WebSocket with http4s and cats-parse",
-    Settings.common3,
+    description := "WebSocket with http4s, cats-parse, cats effects, fs2 Streams",
+    Settings.common2,
     libraryDependencies ++= Seq(
-      "org.http4s"    %% "http4s-ember-server" % "0.23.23",
-      "org.http4s"    %% "http4s-circe"        % "0.23.23",
-      "org.http4s"    %% "http4s-dsl"          % "0.23.23",
+      "org.http4s"    %% "http4s-ember-server" % "0.23.25",
+      "org.http4s"    %% "http4s-circe"        % "0.23.25",
+      "org.http4s"    %% "http4s-dsl"          % "0.23.25",
       "io.circe"      %% "circe-generic"       % "0.14.6",
-      "org.typelevel" %% "cats-parse"          % "0.3.10",
-      "ch.qos.logback" % "logback-classic"     % "1.4.11",
+      "org.typelevel" %% "cats-parse"          % "1.0.0",
+      "ch.qos.logback" % "logback-classic"     % "1.4.14",
     )
   )

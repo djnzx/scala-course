@@ -2,8 +2,14 @@ package ws.core
 
 import cats.data.Validated
 import cats.effect.std.Queue
-import cats.syntax.all.*
-import fs2.concurrent.Topic
+import cats.implicits._
+
+sealed trait NotificationType
+object NotificationType {
+  case object User extends NotificationType
+  case object Room extends NotificationType
+  case object Chat extends NotificationType
+}
 
 sealed trait HasStringValue {
   def value: String
@@ -45,9 +51,24 @@ object ChatState {
 
   def fresh[F[_]]: ChatState[F] = apply(Map.empty)
 
-  extension[F[_]](state: ChatState[F]) {
+  implicit class ChatStateOps[F[_]](state: ChatState[F]) {
 
-//    /** reviewed, based on the implementation */
+    /** reviewed, based on the implementation */
+    def contains(user: User): Boolean = state.users.contains(user)
+
+    def withUser(user: User, userState: UserState[F]): ChatState[F] = {
+      val kv: (User, UserState[F]) = (user, userState)
+      state.copy(users = state.users + kv)
+    }
+
+    def withoutUser(user: User): ChatState[F] =
+      state.copy(users = state.users - user)
+
+    def withUserIf(user: User, userState: UserState[F]): (ChatState[F], Boolean) =
+      contains(user) match {
+        case false => withUser(user, userState) -> true
+        case true  => state                     -> false
+      }
 //
 //    /** TODO: to review */
 //    def userRooms: Map[User, Room] =

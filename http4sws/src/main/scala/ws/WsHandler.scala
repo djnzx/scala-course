@@ -2,30 +2,33 @@ package ws
 
 import cats.effect.Async
 import cats.effect.Ref
-import cats.effect.kernel.Ref
 import cats.effect.std.Queue
-import cats.syntax.all.*
+import cats.implicits._
 import fs2.Pipe
 import fs2.Stream
 import fs2.concurrent.Topic
-import io.circe.generic.auto.*
-import io.circe.syntax.*
+import io.circe.generic.auto._
+import io.circe.syntax._
 import org.http4s.Response
 import org.http4s.server.websocket.WebSocketBuilder2
 import org.http4s.websocket.WebSocketFrame
-import scala.concurrent.duration.*
+import scala.concurrent.duration._
 import sourcecode.FileName.{generate => fn}
 import sourcecode.Line.{generate => ln}
-import ws.core.*
+import ws.core.ChatState
+import ws.core.DebugThings
+import ws.core.OutputMsg
+import ws.core._
 
 class WsHandler[F[_]: Async](
-    chatState: Ref[F, ChatState[F]],
+    protocol: Protocol[F],
+    chatStateRef: Ref[F, ChatState[F]],
     publicTopic: Topic[F, OutputMsg])
     extends DebugThings[F] {
 
   def make(wsb: WebSocketBuilder2[F]): F[Response[F]] =
     for {
-      userRef   <- Ref.of[F, Option[User]](None) // we need to know whether current user is authenticated to provide different error messages
+      userRef   <- Ref[F].of[Option[User]](None) // we need to know whether current user is authenticated to provide different error messages
       _         <- logF(s"created new Ref[Option[User]] for NEW incoming WS connection: $userRef")(ln, fn)
       userQueue <- Queue.unbounded[F, OutputMsg] // user's message queue to send him personal messages
       ws        <- wsb
@@ -42,7 +45,35 @@ class WsHandler[F[_]: Async](
       .evalTap(x => logF(x)(ln, fn))
       .map(InputMsg.apply)
       .evalTap(x => logF(x)(ln, fn))
-      .void
+      .evalMap(handle(userRef, userQueue))
+
+  private def handle(userRef: Ref[F, Option[User]], userQueue: Queue[F, OutputMsg])(im: InputMsg): F[Unit] =
+    im match {
+      case InputMsg.Help            => ???
+      case InputMsg.Login(userName) =>
+        protocol
+          .login(userRef, User(userName) -> UserState(userQueue))
+          .flatTap { case (ms, log) => log.traverse_(s => logF(s)(ln, fn)) } // do log
+          .flatMap { case (ms, log) => ms.map(_._1).traverse_(userQueue.offer) } // publish messages to private queue
+      case InputMsg.Logout          =>
+        userRef.get.flatMap {
+          case None       => logF("nobody has logged in")(ln, fn)
+          case Some(user) =>
+            logF("logging out..." -> user)(ln, fn) >>
+              chatStateRef.update(_.withoutUser(user)) >> // modify chat state
+              userRef.update(_ => None) >>                // modify per-connection user status
+              logF("...logged out" -> user)(ln, fn) >>
+              userRef.get.flatMap(x => logF(x)(ln, fn)) >>
+              chatStateRef.get.flatMap(x => logF(x.users)(ln, fn))
+        }
+
+      case InputMsg.InalidCommand(cmd)          => ???
+      case InputMsg.PublicChatMessage(msg)      => ???
+      case InputMsg.PrivateChatMessage(to, msg) => ???
+      case InputMsg.InvalidMessage(details)     => ???
+      case InputMsg.Disconnect                  => ???
+      case InputMsg.ToDiscard                   => ???
+    }
 
   private def send(userRef: Ref[F, Option[User]], userQueue: Queue[F, OutputMsg]): Stream[F, WebSocketFrame] = {
     val userStream: Stream[F, OutputMsg] = Stream.fromQueueUnterminated(userQueue)
@@ -54,35 +85,11 @@ class WsHandler[F[_]: Async](
 
   }
 
-  private def msgToWsf(msg: OutputMsg): Option[WebSocketFrame] =
-    msg match {
-      case OutputMsg.KeepAlive               => WebSocketFrame.Ping().some
-      case msg: OutputMsg.MessageWithPayload => WebSocketFrame.Text(msg.asJson.noSpaces).some
-      case OutputMsg.DiscardMessage          => None
-    }
-
-  //  def make(wsb: WebSocketBuilder2[F]): F[Response[F]] =
-//    for {
-//      uRef   <- Ref.of[F, Option[User]](None)
-//      _      <- logF(s"created new Ref[Option[User]] for NEW incoming WS connection: $uRef")(ln, fn)
-//      uQueue <- Queue.unbounded[F, OutputMsg]
-//      _      <- logF(wsb)(ln, fn)
-//      ws     <- wsb
-//                  .withFilterPingPongs(false)
-//                  .withOnClose(protocol.disconnect(uRef) >> logF(s"conn $uRef CLOSED")(ln, fn))
-//                  .build((wsfs: Stream[F, WebSocketFrame]) =>
-//                    wsfs
-//                      .evalTap(x => logF(x)(ln, fn))
-//                      .map(wsfToInputFrame)
-//                      .evalTap(x => logF(x)(ln, fn))
-//                      .map(ifToInputMsg)
-//                      .evalTap(x => logF(x)(ln, fn))
-//                      .evalMap(processMsg)
-//                      .flatMap(Stream.emits)
-//                      .mapFilter(outputMsgToWsf)
-////                      .concurrently(Stream.awakeEvery[F](10.seconds).as(KeepAlive).th)
-//                  )
-//    } yield ws
+  private def msgToWsf(msg: OutputMsg): Option[WebSocketFrame] = msg match {
+    case OutputMsg.KeepAlive          => WebSocketFrame.Ping().some
+    case msg: OutputMsg.OutputMessage => WebSocketFrame.Text(msg.asJson.noSpaces).some
+    case OutputMsg.ToDiscard          => None
+  }
 
 //  private def send(
 //      uQueue: Queue[F, OutputMsg],

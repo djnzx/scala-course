@@ -8,44 +8,40 @@ object OutputMsg {
   case object KeepAlive extends OutputMsg
 
   /** it's used for filtering purposes internally */
-  case object DiscardMessage extends OutputMsg
+  case object ToDiscard extends OutputMsg
 
-  /** it's convertable to WebSocketFrame */
-  sealed trait MessageWithPayload extends OutputMsg
+  /** has a string message */
+  sealed abstract class OutputMessage(msg: String) extends OutputMsg
 
-  object MessageWithPayload {
+  object OutputMessage {
 
-    /** has a string message */
-    sealed abstract class OutputMessage(msg: String) extends MessageWithPayload
+    /** here we put all parsing errors for input message */
+    final case class ParseError(user: Option[User], msg: String) extends OutputMessage(msg)
 
-    object OutputMessage {
+    /** user not foud, room not found, eta */
+    final case class ErrorMessage(user: Option[User], msg: String) extends OutputMessage(msg)
 
-      /** here we put all parsing errors for input message */
-      final case class ParseError(user: Option[User], msg: String) extends OutputMessage(msg)
+    /** successful parse, unsupported command. TODO */
+    final case class UnsupportedCommand(user: Option[User]) extends OutputMessage("Unsupported command")
 
-      /** user not foud, room not found, eta */
-      final case class ErrorMessage(user: Option[User], msg: String) extends OutputMessage(msg)
+    final case class Register(user: Option[User]) extends OutputMessage("Register your username with the following command:\n/name <username>")
 
-      /** successful parse, unsupported command. TODO */
-      final case class UnsupportedCommand(user: Option[User]) extends OutputMessage("Unsupported command")
+    final case class UserRegistered(user: User) extends OutputMessage(s"${user.value} entered the chat")
+    final case class NameIsOccupied(user: User) extends OutputMessage(s"${user.value} is occupied by someone else")
+    final case class NeedToLogout(user: User) extends OutputMessage(s"${user.value} need to logout before login")
 
-      final case class Register(user: Option[User]) extends OutputMessage("Register your username with the following command:\n/name <username>")
-
-      /** successful registration */
-      final case class SuccessfulRegistration(user: User) extends OutputMessage(s"${user.value} entered the chat")
-
-      sealed abstract class MessageForUser(msg: String) extends OutputMessage(msg) {
-        def isForUser(targetUser: User): Boolean
-      }
-
-      final case class MessageToUser(user: User, msg: String) extends MessageForUser(msg) {
-        def isForUser(targetUser: User): Boolean = targetUser == user
-      }
-
-      final case class ChatMessage(from: User, to: User, msg: String) extends MessageForUser(msg) {
-        def isForUser(targetUser: User): Boolean = targetUser == to
-      }
-
+    sealed abstract class MessageForUser(msg: String) extends OutputMessage(msg) {
+      def isForUser(targetUser: User): Boolean
     }
+
+    final case class MessageToUser(user: User, msg: String) extends MessageForUser(msg) {
+      def isForUser(targetUser: User): Boolean = targetUser == user
+    }
+
+    final case class ChatMessage(from: User, to: User, msg: String) extends MessageForUser(msg) {
+      def isForUser(targetUser: User): Boolean = targetUser == to
+    }
+
   }
+
 }

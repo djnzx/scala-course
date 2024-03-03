@@ -2,7 +2,7 @@ package ws
 
 import cats.MonadThrow
 import cats.effect.kernel.Ref
-import cats.implicits.*
+import cats.implicits._
 import fs2.io.file
 import fs2.io.file.Files
 import org.http4s.HttpApp

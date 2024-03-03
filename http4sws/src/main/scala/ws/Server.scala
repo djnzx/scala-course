@@ -1,7 +1,7 @@
 package ws
 
 import cats.effect.kernel.Async
-import com.comcast.ip4s.*
+import com.comcast.ip4s._
 import fs2.io.net.Network
 import org.http4s.HttpApp
 import org.http4s.ember.server.EmberServerBuilder
