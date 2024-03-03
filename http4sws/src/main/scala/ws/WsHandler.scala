@@ -137,8 +137,4 @@ class WsHandler[F[_]: Async](
           case _       => uQueue.offer(m)
         }
       }
-      .concurrently {
-        Stream.awakeEvery[F](30.seconds).evalTap(_ => protocol.sendKeepAlive)
-      }
-
 }

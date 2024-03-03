@@ -12,6 +12,12 @@ import ws.core.*
 
 object App extends IOApp.Simple {
 
+  private def webServerStream(routes: WebSocketBuilder2[IO] => HttpApp[IO]) =
+    Stream.eval(Server.make[IO](routes)).compile.drain
+
+  private def wsKeepAliveStream(protocol: Protocol[IO]) =
+    Stream.awakeEvery[IO](30.seconds).evalMap(_ => protocol.sendKeepAlive).compile.drain
+
   val program = for {
     publicTopic <- Topic[IO, OutputMsg]                                    // topic to allow broadcast our outgoing message
     state       <- Ref.of[IO, ChatState[IO]](ChatState.fresh(publicTopic)) // application state
@@ -19,8 +25,8 @@ object App extends IOApp.Simple {
     logic       <- IO(LogicHandlerOld.make[IO](protocol))                  // basically handler: InputMsg => OutputMsg - TODO: eliminate
     wsHandler = new WsHandler[IO](logic, protocol).make    // f: WebSocketBuilder2[F] => F[Response[F]]
     httpRoute = new Routes[IO].endpoints(state, wsHandler) // f: WebSocketBuilder2[F] => HttpApp[F]
-    _           <- Stream.eval(Server.make[IO](httpRoute)).compile.drain   // http / ws stream (forever)
-    // TODO: probably it's better to have one KeepAlive generator instead of N-connections, and send KeepAlive(Ping) to public topic
+    _           <- webServerStream(httpRoute)                              // http / ws stream (forever)
+    _           <- wsKeepAliveStream(protocol)                             // sw KeepAlive sender
   } yield ()
 
   override def run: IO[Unit] = program
