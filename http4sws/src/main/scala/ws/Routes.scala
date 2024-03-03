@@ -34,7 +34,7 @@ class Routes[F[_]: Files: MonadThrow] extends Http4sDsl[F] {
     HttpRoutes.of[F] { case GET -> Root / "ws" => rs }
 
   def endpoints(
-      stateRef: Ref[F, ChatState[F]],
+      stateRef: Ref[F, ChatState[F]], // TODO: replace it with protocol, in order not to leak this Ref[ChatState]
       mkWsHandler: WebSocketBuilder2[F] => F[Response[F]]
     ): WebSocketBuilder2[F] => HttpApp[F] =
     wsb => (index <+> metrics(stateRef) <+> ws(mkWsHandler(wsb))).orNotFound // 404 if another URL

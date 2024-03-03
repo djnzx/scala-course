@@ -19,7 +19,7 @@ import sourcecode.Line.{generate => ln}
 import ws.core.*
 
 class WsHandler[F[_]: Async](
-    topic: Topic[F, OutputMsg],
+//    topic: Topic[F, OutputMsg],
     lh: LogicHandlerOld[F],
     protocol: Protocol[F])
     extends DebugThings[F] {
@@ -39,7 +39,8 @@ class WsHandler[F[_]: Async](
                   .withFilterPingPongs(false)
                   .withOnClose(protocol.disconnect(uRef) >> logF(s"conn $uRef CLOSED")(ln, fn))
                   .build((wsfs: Stream[F, WebSocketFrame]) =>
-                    wsfs.evalTap(x => logF(x)(ln, fn))
+                    wsfs
+                      .evalTap(x => logF(x)(ln, fn))
                       .map(wsfToInputFrame)
                       .evalTap(x => logF(x)(ln, fn))
                       .map(ifToInputMsg)
@@ -62,7 +63,7 @@ class WsHandler[F[_]: Async](
                   .withOnClose(logF("conn CLOSED")(ln, fn))
                   .build( // TODO: think how to implement in terms of Pipe[F, WebSocketFrame, WebSocketFrame]
                     send(uQueue, uRef),
-                    receive(uQueue, uRef)
+                    receive(uQueue, uRef, protocol)
                   )
     } yield ws
 
@@ -81,10 +82,13 @@ class WsHandler[F[_]: Async](
         .mapFilter(msgToWsf)
 
     def topicStream: Stream[F, WebSocketFrame] =
-      topic
-        .subscribe(maxQueued = 1000)
-        .evalFilter(filterMsgF(_, uRef))
-        .mapFilter(msgToWsf)
+      Stream
+        .eval(protocol.getPublicTopic)
+        .flatMap { t =>
+          t.subscribeUnbounded
+            .evalFilter(filterMsgF(_, uRef))
+            .mapFilter(msgToWsf)
+        }
 
     Stream(uStream, topicStream).parJoinUnbounded
   }
@@ -110,15 +114,10 @@ class WsHandler[F[_]: Async](
       case DiscardMessage     => None
     }
 
-  private def wsKeepAliveStream: Stream[F, Nothing] =
-    Stream.awakeEvery[F](30.seconds).as(KeepAlive).through(topic.publish)
-
-  private def wsKeepAliveStream(q: Queue[F, OutputMsg]): Stream[F, Unit] =
-    Stream.awakeEvery[F](30.seconds).as(KeepAlive).evalTap(q.offer).void
-
   private def receive(
       uQueue: Queue[F, OutputMsg],
       uRef: Ref[F, Option[User]],
+      protocol: Protocol[F]
     ): Pipe[F, WebSocketFrame, Unit] =
     _.flatMap { wsf =>
 //      logS("onReceive pipe" -> wsf)(ln, fn) ++
@@ -134,10 +133,12 @@ class WsHandler[F[_]: Async](
     }
       .evalMap { m =>
         uRef.get.flatMap {
-          case Some(_) => topic.publish1(m).void
+          case Some(_) => protocol.sendPublicMessage(m)
           case _       => uQueue.offer(m)
         }
       }
-      .concurrently(wsKeepAliveStream)
+      .concurrently {
+        Stream.awakeEvery[F](30.seconds).evalTap(_ => protocol.sendKeepAlive)
+      }
 
 }

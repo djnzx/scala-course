@@ -17,9 +17,10 @@ object App extends IOApp.Simple {
     state       <- Ref.of[IO, ChatState[IO]](ChatState.fresh(publicTopic)) // application state
     protocol    <- IO(Protocol.make[IO](state))                            // having state, we can make a protocol which is essentially f: InputMsg => F[OutputMsg] - TODO
     logic       <- IO(LogicHandlerOld.make[IO](protocol))                  // basically handler: InputMsg => OutputMsg - TODO: eliminate
-    wsHandler = new WsHandler[IO](publicTopic, logic, protocol).make // f: WebSocketBuilder2[F] => F[Response[F]]
-    httpRoute = new Routes[IO].endpoints(state, wsHandler)           // f: WebSocketBuilder2[F] => HttpApp[F]
+    wsHandler = new WsHandler[IO](logic, protocol).make    // f: WebSocketBuilder2[F] => F[Response[F]]
+    httpRoute = new Routes[IO].endpoints(state, wsHandler) // f: WebSocketBuilder2[F] => HttpApp[F]
     _           <- Stream.eval(Server.make[IO](httpRoute)).compile.drain   // http / ws stream (forever)
+    // TODO: probably it's better to have one KeepAlive generator instead of N-connections, and send KeepAlive(Ping) to public topic
   } yield ()
 
   override def run: IO[Unit] = program

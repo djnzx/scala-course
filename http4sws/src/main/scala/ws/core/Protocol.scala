@@ -4,9 +4,9 @@ import cats.Applicative
 import cats.Monad
 import cats.data.Validated.Invalid
 import cats.data.Validated.Valid
-import cats.effect.kernel.{Concurrent, Ref}
+import cats.effect.kernel.Ref
 import cats.syntax.all.*
-import fs2.*
+import fs2.concurrent.Topic
 
 /** state manipulation:
   * {{{
@@ -27,17 +27,29 @@ trait Protocol[F[_]] {
   def listRooms(user: User): F[List[OutputMsg]]
   def listMembers(user: User): F[List[OutputMsg]]
   def disconnect(uRef: Ref[F, Option[User]]): F[List[OutputMsg]]
+  def getPublicTopic: F[Topic[F, OutputMsg]]
+  def sendKeepAlive: F[Unit]
+  def sendPublicMessage(message: OutputMsg): F[Unit]
 }
 
 object Protocol {
 
   def make[F[_]: Monad](stateRef: Ref[F, ChatState[F]]): Protocol[F] =
     new Protocol[F] {
+
+      override def sendPublicMessage(message: OutputMsg): F[Unit] =
+        getPublicTopic.flatTap(_.publish1(message)).void
+
+      override def sendKeepAlive: F[Unit] =
+        sendPublicMessage(KeepAlive)
+
+      override def getPublicTopic: F[Topic[F, OutputMsg]] = stateRef.get.map(_.publicTopic)
+
       // it only validates name, doesn't register
       override def validate(name: String): F[OutputMsg] =
         User.validate(name) match {
-          case Valid(user)   => SuccessfulRegistration(user).pure[F]
-          case Invalid(e) => ParseError(None, e).pure[F]
+          case Valid(user) => SuccessfulRegistration(user).pure[F]
+          case Invalid(e)  => ParseError(None, e).pure[F]
         }
 
       override def isInUse(name: String): F[Boolean] = stateRef.get.map(_.userExists(name))
