@@ -7,41 +7,26 @@ object OutputMsg {
   /** this is alias for WebSocketFrame.Ping */
   case object KeepAlive extends OutputMsg
 
-  /** it's used for filtering purposes internally */
-  case object ToDiscard extends OutputMsg
-
   /** has a string message */
   sealed abstract class OutputMessage(msg: String) extends OutputMsg
 
   object OutputMessage {
 
-    /** here we put all parsing errors for input message */
-    final case class ParseError(user: Option[User], msg: String) extends OutputMessage(msg)
+    /** will be sent personally to user */
+    sealed abstract class PrivateMessage(msg: String) extends OutputMessage(msg)
 
-    /** user not foud, room not found, eta */
-    final case class ErrorMessage(user: Option[User], msg: String) extends OutputMessage(msg)
+    final case class Welcome(msg: String = "please login with /login, or /help") extends PrivateMessage(msg)
+    final case class ParseError(user: Option[User], msg: String)                 extends PrivateMessage(msg)
+    final case class CommandError(user: Option[User], msg: String)               extends PrivateMessage(msg)
+    final case class NameIsOccupied(user: User)                                  extends PrivateMessage(s"${user.value} is occupied by someone else")
+    final case class NeedToLogout(user: User)                                    extends PrivateMessage(s"${user.value} need to logout before login")
+    final case class Help(msg: String)                                           extends PrivateMessage(msg)
 
-    /** successful parse, unsupported command. TODO */
-    final case class UnsupportedCommand(user: Option[User]) extends OutputMessage("Unsupported command")
+    /** will be sent to the whole chat */
+    sealed abstract class PublicMessage(msg: String) extends OutputMessage(msg)
 
-    final case class Register(user: Option[User]) extends OutputMessage("Register your username with the following command:\n/name <username>")
-
-    final case class UserRegistered(user: User) extends OutputMessage(s"${user.value} entered the chat")
-    final case class NameIsOccupied(user: User) extends OutputMessage(s"${user.value} is occupied by someone else")
-    final case class NeedToLogout(user: User) extends OutputMessage(s"${user.value} need to logout before login")
-
-    sealed abstract class MessageForUser(msg: String) extends OutputMessage(msg) {
-      def isForUser(targetUser: User): Boolean
-    }
-
-    final case class MessageToUser(user: User, msg: String) extends MessageForUser(msg) {
-      def isForUser(targetUser: User): Boolean = targetUser == user
-    }
-
-    final case class ChatMessage(from: User, to: User, msg: String) extends MessageForUser(msg) {
-      def isForUser(targetUser: User): Boolean = targetUser == to
-    }
-
+    final case class UserLoggedIn(user: User)  extends PublicMessage(s"${user.value} joined the chat")
+    final case class UserLoggedOut(user: User) extends PublicMessage(s"${user.value} left the chat")
   }
 
 }

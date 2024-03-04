@@ -12,148 +12,80 @@ import io.circe.syntax._
 import org.http4s.Response
 import org.http4s.server.websocket.WebSocketBuilder2
 import org.http4s.websocket.WebSocketFrame
-import scala.concurrent.duration._
 import sourcecode.FileName.{generate => fn}
 import sourcecode.Line.{generate => ln}
-import ws.core.ChatState
 import ws.core.DebugThings
 import ws.core.OutputMsg
+import ws.core.OutputMsg.OutputMessage
 import ws.core._
 
 class WsHandler[F[_]: Async](
-    protocol: Protocol[F],
-    chatStateRef: Ref[F, ChatState[F]],
+    protocolBuilder: Ref[F, Option[User]] => Protocol[F],
     publicTopic: Topic[F, OutputMsg])
     extends DebugThings[F] {
 
   def make(wsb: WebSocketBuilder2[F]): F[Response[F]] =
     for {
-      userRef   <- Ref[F].of[Option[User]](None) // we need to know whether current user is authenticated to provide different error messages
-      _         <- logF(s"created new Ref[Option[User]] for NEW incoming WS connection: $userRef")(ln, fn)
       userQueue <- Queue.unbounded[F, OutputMsg] // user's message queue to send him personal messages
+      userRef   <- Ref[F].of[Option[User]](None) // we need to know whether current user is authenticated to provide different error messages
+      protocol = protocolBuilder(userRef)
+      _         <- logF(s"new protocol instance built for NEW incoming WS connection: $userRef")(ln, fn)
       ws        <- wsb
-                     .withOnClose(logF(s"conn $userRef CLOSED")(ln, fn))
+                     .withOnClose(logF(s"conn $userRef Closed")(ln, fn))
                      .build(
-                       send(userRef, userQueue),
-                       receive(userRef, userQueue)
+                       send(userQueue),
+                       receive(protocol, userQueue)
                      )
     } yield ws
 
-  private def receive(userRef: Ref[F, Option[User]], userQueue: Queue[F, OutputMsg]): Pipe[F, WebSocketFrame, Unit] =
+  private def send(userQueue: Queue[F, OutputMsg]): Stream[F, WebSocketFrame] = {
+    val userStream: Stream[F, OutputMsg] = Stream.fromQueueUnterminated(userQueue) // personal messages
+    val publicStream: Stream[F, OutputMsg] = publicTopic.subscribeUnbounded        // public messages
+
+    (userStream merge publicStream)
+      .evalTap(m => logF("per user stream" -> m)(ln, fn))
+      .map(msgToWsf)
+  }
+
+  private def msgToWsf(msg: OutputMsg): WebSocketFrame = msg match {
+    case OutputMsg.KeepAlive          => WebSocketFrame.Ping()
+    case msg: OutputMsg.OutputMessage => WebSocketFrame.Text(msg.asJson.noSpaces)
+  }
+
+  private def receive(protocol: Protocol[F], userQueue: Queue[F, OutputMsg]): Pipe[F, WebSocketFrame, Unit] =
     _.evalTap(x => logF(x)(ln, fn))
       .map(InputFrame.parse)
       .evalTap(x => logF(x)(ln, fn))
       .map(InputMsg.apply)
       .evalTap(x => logF(x)(ln, fn))
-      .evalMap(handle(userRef, userQueue))
+      .evalMap(handle(protocol, userQueue))
 
-  private def handle(userRef: Ref[F, Option[User]], userQueue: Queue[F, OutputMsg])(im: InputMsg): F[Unit] =
-    im match {
-      case InputMsg.Help            => ???
-      case InputMsg.Login(userName) =>
-        protocol
-          .login(userRef, User(userName) -> UserState(userQueue))
-          .flatTap { case (ms, log) => log.traverse_(s => logF(s)(ln, fn)) } // do log
-          .flatMap { case (ms, log) => ms.map(_._1).traverse_(userQueue.offer) } // publish messages to private queue
-      case InputMsg.Logout          =>
-        userRef.get.flatMap {
-          case None       => logF("nobody has logged in")(ln, fn)
-          case Some(user) =>
-            logF("logging out..." -> user)(ln, fn) >>
-              chatStateRef.update(_.withoutUser(user)) >> // modify chat state
-              userRef.update(_ => None) >>                // modify per-connection user status
-              logF("...logged out" -> user)(ln, fn) >>
-              userRef.get.flatMap(x => logF(x)(ln, fn)) >>
-              chatStateRef.get.flatMap(x => logF(x.users)(ln, fn))
-        }
+  private def handle(protocol: Protocol[F], userQueue: Queue[F, OutputMsg])(im: InputMsg): F[Unit] = {
 
-      case InputMsg.InalidCommand(cmd)          => ???
-      case InputMsg.PublicChatMessage(msg)      => ???
-      case InputMsg.PrivateChatMessage(to, msg) => ???
-      case InputMsg.InvalidMessage(details)     => ???
-      case InputMsg.Disconnect                  => ???
-      case InputMsg.ToDiscard                   => ???
+    def handleMsg: F[Protocol.Outcome] = im match {
+      // modifying app/user state
+      case InputMsg.Login(userName)             => protocol.login(User(userName), UserState(userQueue))
+      case InputMsg.Logout                      => protocol.logout()
+      case InputMsg.Disconnect                  => protocol.disconnect()
+      // reading app/user state
+      case InputMsg.Help                        => protocol.help // this response is based on the state
+      case InputMsg.PublicChatMessage(msg)      => protocol.sendPublic(msg)
+      case InputMsg.PrivateChatMessage(to, msg) => protocol.sendPrivate(msg, to)
+      // aren't accessing app/user state
+      case InputMsg.InvalidCommand(cmd)         => protocol.respond(s"command `$cmd` was wrong, /help for details")
+      case InputMsg.InvalidMessage(details)     => protocol.respond(s"message `$details` was too short")
+      case InputMsg.ToDiscard                   => protocol.ignore
     }
 
-  private def send(userRef: Ref[F, Option[User]], userQueue: Queue[F, OutputMsg]): Stream[F, WebSocketFrame] = {
-    val userStream: Stream[F, OutputMsg] = Stream.fromQueueUnterminated(userQueue)
-    val publicStream: Stream[F, OutputMsg] = publicTopic.subscribeUnbounded
+    /** send to based on the message type */
+    def doSend(msg: OutputMessage): F[Unit] = msg match {
+      case m: OutputMessage.PrivateMessage => userQueue.offer(m)
+      case m: OutputMessage.PublicMessage  => publicTopic.publish1(m).void
+    }
 
-    (userStream merge publicStream)
-      .evalTap(m => logF("user composite stream preparing to convert" -> m)(ln, fn))
-      .mapFilter(msgToWsf)
-
+    handleMsg
+      .flatTap { case (_, logs) => logs.traverse_(s => logF(s)(ln, fn)) } // do log
+      .flatMap { case (msgs, _) => msgs.traverse_(doSend) }
   }
 
-  private def msgToWsf(msg: OutputMsg): Option[WebSocketFrame] = msg match {
-    case OutputMsg.KeepAlive          => WebSocketFrame.Ping().some
-    case msg: OutputMsg.OutputMessage => WebSocketFrame.Text(msg.asJson.noSpaces).some
-    case OutputMsg.ToDiscard          => None
-  }
-
-//  private def send(
-//      uQueue: Queue[F, OutputMsg],
-//      uRef: Ref[F, Option[User]]
-//    ): Stream[F, WebSocketFrame] = {
-//
-//    def uStream: Stream[F, WebSocketFrame] =
-//      Stream
-//        .fromQueueUnterminated(uQueue)
-//        .filter {
-//          case DiscardMessage => false
-//          case _              => true
-//        }
-//        .mapFilter(msgToWsf)
-//
-//    def topicStream: Stream[F, WebSocketFrame] =
-//      Stream
-//        .eval(protocol.getPublicTopic)
-//        .flatMap { t =>
-//          t.subscribeUnbounded
-//            .evalFilter(filterMsgF(_, uRef))
-//            .mapFilter(msgToWsf)
-//        }
-//
-//    // here we build the stream We can't modify later
-//    // since it's used to handle WS traffic
-//    Stream(uStream, topicStream).parJoinUnbounded
-//  }
-//
-//  private def filterMsgF(
-//      msg: OutputMsg,
-//      uRef: Ref[F, Option[User]]
-//    ): F[Boolean] =
-//    msg match {
-//      case DiscardMessage      => false.pure[F]
-//      case msg: MessageForUser =>
-//        uRef.get.map {
-//          case Some(u) => msg.isForUser(u)
-//          case None    => false
-//        }
-//      case _                   => true.pure[F]
-//    }
-//
-//  private def receive(
-//      uQueue: Queue[F, OutputMsg],
-//      uRef: Ref[F, Option[User]],
-//      protocol: Protocol[F]
-//    ): Pipe[F, WebSocketFrame, Unit] =
-//    _.flatMap { wsf =>
-////      logS("onReceive pipe" -> wsf)(ln, fn) ++
-////        logS("ref" -> uRef)(ln, fn) ++
-//      wsf match {
-//        /** WebSocketFrame => List[OutputMsg] */
-//        case WebSocketFrame.Text(text, _) =>
-////            logS("onReceive text" -> text)(ln, fn) ++
-//          Stream.evalSeq(lh.parse(uRef, text)) /// 1
-//        case WebSocketFrame.Close(_)      => Stream.evalSeq(protocol.disconnect(uRef))
-//        case wsf                          => pprint.log("onReceive other" -> wsf); Stream.empty
-//      }
-//    }
-//      .evalMap { m =>
-//        uRef.get.flatMap {
-//          case Some(_) => protocol.sendPublicMessage(m)
-//          case _       => uQueue.offer(m)
-//        }
-//      }
 }

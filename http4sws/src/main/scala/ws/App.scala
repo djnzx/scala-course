@@ -25,15 +25,15 @@ object App extends IOApp.Simple with DebugThings[IO] {
       .through(publicTopic.publish)
 
   override def run: IO[Unit] = for {
-    publicTopic                       <- Topic[IO, OutputMsg]                                // topic to allow broadcast our outgoing message
-    chatState: Ref[IO, ChatState[IO]] <- Ref.of[IO, ChatState[IO]](ChatState.fresh)          // application state
-    protocol = Protocol.make[IO](chatState)
-    wsHandler = new WsHandler[IO](protocol, chatState, publicTopic).make _ // f: WebSocketBuilder2[F] => F[Response[F]]
-    httpRoute = new Routes[IO].endpoints(chatState, wsHandler)             // f: WebSocketBuilder2[F] => HttpApp[F]
-    s1 = mkWebServerStream(httpRoute)                                      // http / ws stream (forever)
-    s2 = mkWsKeepAliveStream(publicTopic)                                  // sw KeepAlive sender
-    _                                 <- Stream(s1, s2).parJoinUnbounded.compile.drain.start // run Streams in background
-    x                                 <- IO.never[Unit]                                      // never terminate app
+    publicTopic <- Topic[IO, OutputMsg]                                // topic to allow broadcast our outgoing message
+    chatState   <- Ref.of[IO, ChatState[IO]](ChatState.fresh)          // application state
+    protocol0 = Protocol.make[IO](chatState) _                   // partially built protocol
+    wsHandler = new WsHandler[IO](protocol0, publicTopic).make _ // f: WebSocketBuilder2[F] => F[Response[F]]
+    httpRoute = new Routes[IO].endpoints(chatState, wsHandler)   // f: WebSocketBuilder2[F] => HttpApp[F]
+    s1 = mkWebServerStream(httpRoute)                            // http / ws stream (forever)
+    s2 = mkWsKeepAliveStream(publicTopic)                        // sw KeepAlive sender
+    _           <- Stream(s1, s2).parJoinUnbounded.compile.drain.start // run Streams in background
+    x           <- IO.never[Unit]                                      // never terminate app
   } yield x
 
 }
