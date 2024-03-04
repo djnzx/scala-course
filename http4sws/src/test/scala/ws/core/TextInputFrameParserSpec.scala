@@ -223,7 +223,7 @@ class TextInputFrameParserSpec extends AnyFunSuite with Matchers with ScalaCheck
   }
 
   test("TOTAL TextParser, Invalid Message as otherwise case") {
-    import ws.core.InputFrame.*
+    import ws.core.InputFrame._
 
     def parse(raw: String): Either[Parser.Error, TextFrame] = totalInputFrameParser.parseAll(raw)
     def parseTotal(raw: String): TextFrame = totalTextParser(raw)
