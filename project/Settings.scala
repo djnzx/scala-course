@@ -4,16 +4,24 @@ import scala.collection.immutable.Seq
 
 object Settings {
 
-  val common2: Seq[Setting[?]] = Seq(
-    scalaVersion := Versions.vScala213,
+  val common: Seq[Setting[?]] = Seq(
     organization := "alexr",
-    version := "2024.02.07",
+    version := "2024.02.22",
+    resolvers ++= Resolvers.all,
     javacOptions ++= CompilerOptions.javacOptions,
+  )
+
+  val common2: Seq[Setting[?]] = common ++ Seq(
+    scalaVersion := Versions.vScala213,
     scalacOptions ++= CompilerOptions.scalacOptions,
     scalacOptions -= ScalacOpts.warningsAsFatals,
-    resolvers ++= Resolvers.all,
     libraryDependencies ++= CompilerPlugins.all,
     libraryDependencies ++= Libraries.testingToolkit2,
+  )
+
+  val common3: Seq[Setting[?]] = common ++ Seq(
+    scalaVersion := Versions.vScala3,
+    libraryDependencies ++= Libraries.testingToolkit3,
   )
 
 }

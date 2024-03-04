@@ -8,10 +8,8 @@ import ScalacOpts.*
 object CompilerOptions {
 
   val javacOptions: Seq[String] =
-    Seq("-source", "11") ++
-      Seq("-target", "11") ++
-      Seq(
-      )
+    Seq("-source", "17") ++
+      Seq("-target", "17")
 
   val scalacOptions: Seq[String] = utf8 ++ Seq(
     feature,
