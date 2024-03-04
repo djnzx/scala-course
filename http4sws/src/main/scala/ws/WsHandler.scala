@@ -17,6 +17,7 @@ import sourcecode.Line.{generate => ln}
 import ws.core.DebugThings
 import ws.core.OutputMsg
 import ws.core.OutputMsg.OutputMessage
+import ws.core.OutputMsg.OutputMessage.Welcome
 import ws.core._
 
 class WsHandler[F[_]: Async](
@@ -36,6 +37,7 @@ class WsHandler[F[_]: Async](
                        send(userQueue),
                        receive(protocol, userQueue)
                      )
+      _         <- userQueue.offer(Welcome())
     } yield ws
 
   private def send(userQueue: Queue[F, OutputMsg]): Stream[F, WebSocketFrame] = {
@@ -72,15 +74,15 @@ class WsHandler[F[_]: Async](
       case InputMsg.PublicChatMessage(msg)      => protocol.sendPublic(msg)
       case InputMsg.PrivateChatMessage(to, msg) => protocol.sendPrivate(msg, to)
       // aren't accessing app/user state
-      case InputMsg.InvalidCommand(cmd)         => protocol.respond(s"command `$cmd` was wrong, /help for details")
-      case InputMsg.InvalidMessage(details)     => protocol.respond(s"message `$details` was too short")
+      case InputMsg.InvalidCommand(cmd)         => protocol.respondBack(s"command `$cmd` was wrong, /help for details")
+      case InputMsg.InvalidMessage(details)     => protocol.respondBack(s"message `$details` was too short")
       case InputMsg.ToDiscard                   => protocol.ignore
     }
 
     /** send to based on the message type */
     def doSend(msg: OutputMessage): F[Unit] = msg match {
-      case m: OutputMessage.PrivateMessage => userQueue.offer(m)
-      case m: OutputMessage.PublicMessage  => publicTopic.publish1(m).void
+      case m: OutputMessage.PrivateMsg => userQueue.offer(m)
+      case m: OutputMessage.PublicMsg  => publicTopic.publish1(m).void
     }
 
     handleMsg

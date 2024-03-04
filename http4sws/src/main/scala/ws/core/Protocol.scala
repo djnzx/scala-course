@@ -18,7 +18,7 @@ trait Protocol[F[_]] {
   def sendPublic(msg: String): F[Protocol.Outcome]
   def sendPrivate(msg: String, to: String): F[Protocol.Outcome]
   // aren't accessing app/user state
-  def respond(message: String): F[Protocol.Outcome]
+  def respondBack(message: String): F[Protocol.Outcome]
   def ignore: F[Protocol.Outcome]
 }
 
@@ -52,29 +52,41 @@ object Protocol {
             }
       }
 
+    private def doLogout(user: User): F[Outcome] = {
+      val ms = UserLoggedOut(user).pure[List]
+      val l1 = s"user logged out $user".pure[F]
+      val l2 = userRef.get.map(_.toString)
+      val l3 = chatStateRef.get.map(_.users.toString)
+      chatStateRef
+        .modify(_.withoutUser(user))
+        .flatMap {
+          case true  =>
+            userRef.update(_ => None) >> // modify per-connection user status
+              List(l1, l2, l3).sequence.map(ms -> _)
+          case false =>
+            val text = s"user `$user`, wrong state !!!"
+            val ms = PrivateMessage(text).pure[List]
+            val l1 = text.pure[List]
+            (ms, l1).pure[F].widen
+        }
+    }
+
     override def logout(): F[Outcome] =
       userRef.get.flatMap {
-        case None           => (List.empty, "nobody has logged in".pure[List]).pure[F].widen
-        case u @ Some(user) =>
-          val ms = UserLoggedOut(user).pure[List]
-          val l1 = s"user logged out $user".pure[F]
-          val l2 = userRef.get.map(_.toString)
-          val l3 = chatStateRef.get.map(_.users.toString)
-          chatStateRef
-            .modify(_.withoutUser(user))
-            .flatMap {
-              case true  =>
-                userRef.update(_ => None) >> // modify per-connection user status
-                  List(l1, l2, l3).sequence.map(ms -> _)
-              case false =>
-                val ms = CommandError(u, "wrong state !!!").pure[List]
-                val l1 = "wrong state !!!".pure[List]
-                (ms, l1).pure[F].widen
-            }
-
+        case None       =>
+          val m = PrivateMessage("to logout you need to be logged in")
+          val l = "nobody has logged in"
+          (List(m), List(l)).pure[F].widen
+        case Some(user) => doLogout(user)
       }
 
-    override def disconnect(): F[Outcome] = ???
+    override def disconnect(): F[Outcome] =
+      userRef.get.flatMap {
+        case None       =>
+          val l = "non-logged user disconnected"
+          (List.empty, List(l)).pure[F].widen
+        case Some(user) => doLogout(user)
+      }
 
     override def help: F[Outcome] =
       userRef.get.flatMap {
@@ -84,7 +96,7 @@ object Protocol {
               |  /help
               |  /login {username}
               |""".stripMargin
-          (Help(text).pure[List], "/help handled".pure[List]).pure[F].widen
+          (PrivateMessage(text).pure[List], "/help handled".pure[List]).pure[F].widen
         case Some(_) =>
           val text =
             """available commands:
@@ -93,18 +105,32 @@ object Protocol {
               |  {message}
               |  @to {message}
               |""".stripMargin
-          (Help(text).pure[List], "/help handled".pure[List]).pure[F].widen
+          (PrivateMessage(text).pure[List], "/help handled".pure[List]).pure[F].widen
       }
 
-    override def sendPublic(msg: String): F[Outcome] = ???
+    override def sendPublic(msg: String): F[Outcome] =
+      userRef.get.flatMap {
+        case None       =>
+          val text = "must be logged in to send message"
+          val m = PrivateMessage(text)
+          val l1 = text
+          (m.pure[List], l1.pure[List]).pure[F].widen
+        case Some(user) =>
+          val ms = PublicMessage(msg, user).pure[List]
+          val l1 = s"public message from:${user.value} $msg".pure[List]
+          (ms, l1).pure[F].widen
+      }
 
     override def sendPrivate(msg: String, to: String): F[Outcome] = ???
 
-    /** general private response */
-    override def respond(message: String): F[Outcome] = ???
+    override def respondBack(message: String): F[Outcome] = {
+      val ms = PrivateMessage(message).pure[List]
+      val l1 = message.pure[List]
+      (ms, l1).pure[F].widen
+    }
 
     override def ignore: F[Outcome] =
-      (List.empty, List.empty).pure[F].widen
+      (List.empty, "ignored".pure[List]).pure[F].widen
 
   }
 }
