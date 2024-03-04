@@ -35,17 +35,15 @@ case class UserState[F[_]](queue: Queue[F, OutputMsg])
 
 case class ChatState[F[_]](
     users: Map[User, UserState[F]],
-    // TODO
-//    rooms: Map[Room, Set[User]]
-  )
+    rooms: Map[Room, Set[User]])
 
 object ChatState {
 
-  def fresh[F[_]]: ChatState[F] = apply(Map.empty)
+  def fresh[F[_]]: ChatState[F] = apply(Map.empty, Map.empty)
 
   implicit class ChatStateOps[F[_]](state: ChatState[F]) {
 
-    private def contains(user: User): Boolean = state.users.contains(user)
+    def userExists(user: User): Boolean = state.users.contains(user)
 
     private def withUser0(user: User, userState: UserState[F]): ChatState[F] = {
       val kv: (User, UserState[F]) = (user, userState)
@@ -57,14 +55,14 @@ object ChatState {
 
     /** not atomic, should be wrapped into `Ref` */
     def withUser(user: User, userState: UserState[F]): (ChatState[F], Boolean) =
-      contains(user) match {
+      userExists(user) match {
         case false => withUser0(user, userState) -> true
         case true  => state                      -> false
       }
 
     /** not atomic, should be wrapped into `Ref` */
     def withoutUser(user: User): (ChatState[F], Boolean) =
-      contains(user) match {
+      userExists(user) match {
         case true  => withoutUser0(user) -> true
         case false => state              -> false
       }

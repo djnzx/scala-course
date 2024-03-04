@@ -22,6 +22,7 @@ import ws.core._
 
 class WsHandler[F[_]: Async](
     protocolBuilder: Ref[F, Option[User]] => Protocol[F],
+    chatState: Ref[F, ChatState[F]],
     publicTopic: Topic[F, OutputMsg])
     extends DebugThings[F] {
 
@@ -62,6 +63,14 @@ class WsHandler[F[_]: Async](
       .evalTap(x => logF(x)(ln, fn))
       .evalMap(handle(protocol, userQueue))
 
+  private def findUserState(user: User): F[Queue[F, OutputMsg]] =
+    chatState.get
+      .map(_.findUserState(user))
+      .map {
+        case None              => ??? // TODO: no user. handle it. it could be only racing issue
+        case Some(toUserState) => toUserState.queue
+      }
+
   private def handle(protocol: Protocol[F], userQueue: Queue[F, OutputMsg])(im: InputMsg): F[Unit] = {
 
     def handleMsg: F[Protocol.Outcome] = im match {
@@ -72,7 +81,7 @@ class WsHandler[F[_]: Async](
       // reading app/user state
       case InputMsg.Help                        => protocol.help // this response is based on the state
       case InputMsg.PublicChatMessage(msg)      => protocol.sendPublic(msg)
-      case InputMsg.PrivateChatMessage(to, msg) => protocol.sendPrivate(msg, to)
+      case InputMsg.PrivateChatMessage(msg, to) => protocol.sendPrivate(msg, to)
       // aren't accessing app/user state
       case InputMsg.InvalidCommand(cmd)         => protocol.respondBack(s"command `$cmd` was wrong, /help for details")
       case InputMsg.InvalidMessage(details)     => protocol.respondBack(s"message `$details` was too short")
@@ -81,9 +90,9 @@ class WsHandler[F[_]: Async](
 
     /** send to based on the message type */
     def doSend(msg: OutputMessage): F[Unit] = msg match {
-      case m: OutputMessage.PrivateMsg                => userQueue.offer(m)
-      case m: OutputMessage.PublicMsg                 => publicTopic.publish1(m).void
-      case OutputMessage.DirectMessage(msg, from, to) => ??? // TODO
+      case m: OutputMessage.PrivateMsg    => userQueue.offer(m)
+      case m: OutputMessage.PublicMsg     => publicTopic.publish1(m).void
+      case m: OutputMessage.DirectMessage => findUserState(m.to).flatMap(q => q.offer(m))
     }
 
     handleMsg

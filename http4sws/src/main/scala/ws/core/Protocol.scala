@@ -124,15 +124,15 @@ object Protocol {
 
     override def sendPrivate(msg: String, to: String): F[Outcome] =
       userRef.get.flatMap {
-        case None           => ??? // TODO: not logged
+        case None           => ??? // TODO: current user not logged in
         case Some(userFrom) =>
           val userTo = User(to)
-          chatStateRef.get.map(_.findUserState(userTo)).flatMap {
-            case None        => ??? // TODO: target not found
-            case Some(state) =>
+          pprint.log(to)
+          chatStateRef.get.map(_.userExists(userTo)).flatMap {
+            case false => ??? // TODO: target user not found (provide a message)
+            case true  =>
               val ms = DirectMessage(msg, userFrom, userTo)
               val l1 = s"direct message `$msg` from `${userFrom.value}`to `$to` prepared to send"
-              val queue: Queue[F, OutputMsg] = state.queue // TODO think how to pass it out here
               (List(ms), List(l1)).pure[F].widen
           }
       }
