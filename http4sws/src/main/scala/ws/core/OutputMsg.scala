@@ -26,6 +26,8 @@ object OutputMsg {
     final case class UserLoggedIn(user: User)               extends PublicMsg(s"${user.value} joined the chat")
     final case class UserLoggedOut(user: User)              extends PublicMsg(s"${user.value} left the chat")
     final case class PublicMessage(msg: String, from: User) extends PublicMsg(s"${from.value}: $msg")
+
+    final case class DirectMessage(msg: String, from: User, to: User) extends OutputMessage(s"${from.value}: $msg")
   }
 
 }

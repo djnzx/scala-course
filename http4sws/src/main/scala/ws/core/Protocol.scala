@@ -3,6 +3,7 @@ package ws.core
 import cats.MonadThrow
 import cats.effect.Ref
 import cats.effect.Sync
+import cats.effect.std.Queue
 import cats.implicits._
 import ws.core.OutputMsg.OutputMessage
 import ws.core.OutputMsg.OutputMessage._
@@ -121,7 +122,20 @@ object Protocol {
           (ms, l1).pure[F].widen
       }
 
-    override def sendPrivate(msg: String, to: String): F[Outcome] = ???
+    override def sendPrivate(msg: String, to: String): F[Outcome] =
+      userRef.get.flatMap {
+        case None           => ??? // TODO: not logged
+        case Some(userFrom) =>
+          val userTo = User(to)
+          chatStateRef.get.map(_.findUserState(userTo)).flatMap {
+            case None        => ??? // TODO: target not found
+            case Some(state) =>
+              val ms = DirectMessage(msg, userFrom, userTo)
+              val l1 = s"direct message `$msg` from `${userFrom.value}`to `$to` prepared to send"
+              val queue: Queue[F, OutputMsg] = state.queue // TODO think how to pass it out here
+              (List(ms), List(l1)).pure[F].widen
+          }
+      }
 
     override def respondBack(message: String): F[Outcome] = {
       val ms = PrivateMessage(message).pure[List]

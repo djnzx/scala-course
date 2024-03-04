@@ -81,8 +81,9 @@ class WsHandler[F[_]: Async](
 
     /** send to based on the message type */
     def doSend(msg: OutputMessage): F[Unit] = msg match {
-      case m: OutputMessage.PrivateMsg => userQueue.offer(m)
-      case m: OutputMessage.PublicMsg  => publicTopic.publish1(m).void
+      case m: OutputMessage.PrivateMsg                => userQueue.offer(m)
+      case m: OutputMessage.PublicMsg                 => publicTopic.publish1(m).void
+      case OutputMessage.DirectMessage(msg, from, to) => ??? // TODO
     }
 
     handleMsg

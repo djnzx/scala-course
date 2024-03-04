@@ -69,6 +69,9 @@ object ChatState {
         case false => state              -> false
       }
 
+    def findUserState(user: User): Option[UserState[F]] =
+      state.users.get(user)
+
     def metricsAsHtml: String = "metrics: TODO"
   }
 
