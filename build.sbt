@@ -100,6 +100,8 @@ lazy val ce3 = (project in file("ce3"))
       // core
       "org.typelevel"               %% "cats-core"             % "2.10.0",
       "org.typelevel"               %% "cats-effect"           % "3.5.3",
+      // stm
+      "io.github.timwspence"        %% "cats-stm"              % "0.13.4",
       // streams
       "co.fs2"                      %% "fs2-core"              % "3.9.4",
       "co.fs2"                      %% "fs2-io"                % "3.9.4",
