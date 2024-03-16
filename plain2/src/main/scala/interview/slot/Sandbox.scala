@@ -38,15 +38,16 @@ object Sandbox {
     val default5: SlotMachine = new LiveSlotMachine(initial5)
   }
 
-  val impl = LiveSlotMachine.default5
-
-  def solve(n: Int) =
-    (1 to n).foldLeft(0 -> 0) { case ((s1, s2), _) =>
-      isWin(impl.spin()) match {
-        case true  => (s1 + 1) -> s2
-        case false => s1       -> (s2 + 1)
+  def analyze(impl: SlotMachine): Double = {
+    val n = 1_000_000
+    val (win, loss) = (1 to n).foldLeft(0 -> 0) { case ((s1, s2), _) =>
+      impl.spin() match {
+        case x if isWin(x) => (s1 + 1) -> s2
+        case _             => s1       -> (s2 + 1)
       }
     }
+    win.toDouble / loss
+  }
 
 }
 
@@ -55,8 +56,9 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
   import Sandbox._
 
   test("1") {
-    val (win, loss) = solve(1_000_000)
-    pprint.log(win.toDouble / loss)
+    val impl = LiveSlotMachine.default5
+    val k = analyze(impl)
+    pprint.log(k)
   }
 
 }
