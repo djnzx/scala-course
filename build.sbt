@@ -90,6 +90,7 @@ lazy val ce2 = project
 
 lazy val ce3 = (project in file("ce3"))
   .enablePlugins(BuildInfoPlugin)
+  .enablePlugins(LaikaPlugin)
   .settings(
     Settings.common2,
     buildInfoPackage := "alexr",
@@ -157,7 +158,11 @@ lazy val ce3 = (project in file("ce3"))
       "com.kubukoz"                 %% "debug-utils"           % "1.1.3",
       Libraries.catsMtl,
       Libraries.jsoup,
-    )
+    ),
+    // laika experiments
+    laikaSite / target := target.value / "docs1",
+    laikaIncludePDF := true,
+    laikaPDF / artifactPath := target.value / "my-docs.pdf"
   )
   .enablePlugins(ScalaxbPlugin)
   .settings(

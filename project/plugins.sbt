@@ -42,5 +42,8 @@ addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.4.1")
 /** no-publish: https://github.com/ChristopherDavenport/sbt-no-publish */
 addSbtPlugin("io.chrisdavenport" % "sbt-no-publish" % "0.1.0")
 
-/** exploring mdoc */
+/** exploring mdoc https://scalameta.org/mdoc/ */
 addSbtPlugin("org.scalameta" % "sbt-mdoc" % "2.5.2")
+
+/** explore laika https://typelevel.org/Laika */
+addSbtPlugin("org.typelevel" % "laika-sbt" % "1.0.1")
