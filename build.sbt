@@ -166,6 +166,16 @@ lazy val ce3 = (project in file("ce3"))
     )
   )
 
+lazy val `ce3-docs` = (project in file("ce3-docs"))
+  .settings(
+    Settings.common2,
+    libraryDependencies += "io.github.cibotech" %% "evilplot" % "0.9.1",
+    mdocVariables := Map(
+      "VERSION" -> version.value
+    )
+  )
+  .enablePlugins(MdocPlugin)
+
 lazy val es68 = (project in file("es68"))
   .settings(
     Settings.common2,

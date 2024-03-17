@@ -14,6 +14,14 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
 
   import Sandbox._
 
+  test("0") {
+    def isScala212a(v: Option[(Long, Long)]): Boolean =
+      v.exists(_._1 == 2) && v.exists(_._2 == 12)
+
+    def isScala212(v: Option[(Long, Long)]): Boolean =
+      v.exists { case (a, b) => a == 2 && b == 12 }
+  }
+
   test("1") {
     id(1) shouldBe 1
   }
