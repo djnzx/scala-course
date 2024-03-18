@@ -5,9 +5,12 @@
   - [github](https://github.com/jdegoes)
 - Gabriel Volpe (Practical Functional Programming Book)
   - [github](https://github.com/gvolpe)
-- Bartosz Milewski (Category Theory)
-  - [blog](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
-  - [youtube](https://www.youtube.com/user/DrBartosz/playlists)
+- Bartosz Milewski
+  - [blog](https://bartoszmilewski.com)
+  - Category Theory. 1[youtube](https://www.youtube.com/watch?v=I8LbkfSSR58&list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_)
+  - Category Theory. 2[youtube](https://www.youtube.com/watch?v=3XTQSx1A3x8&list=PLbgaMIhjbmElia1eCEZNvsVscFef9m0dm)
+  - Category Theory. 3[youtube](https://www.youtube.com/watch?v=F5uEpKwHqdk&list=PLbgaMIhjbmEn64WVX4B08B4h2rOtueWIL)
+  - Parallel & concurrent Haskell [youtube](https://www.youtube.com/playlist?list=PLbgaMIhjbmEm_51-HWv9BQUXcmHYtl4sw)
 - Alexandru nedelcu
   - [blog](https://alexn.org/blog/2020/11/15/managing-database-migrations-scala.html?pk_campaign=reddit&pk_kwd=link)
 - Adam Warski
@@ -32,7 +35,6 @@
   - [site](https://daltyboy11.github.io)
 - Li Haoyi
   - [blog](http://www.lihaoyi.com)
-  - [book](https://github.com/handsonscala/handsonscala)
   - [ammonite](https://www.lihaoyi.com/post/WorkingwithDatabasesusingScalaandQuill.html#ammonite)
   - [Getting Work Done in the Scala REPL](https://vimeo.com/438762977)
 - Daniel Ciocîrlan (Rock The JVM)
@@ -71,9 +73,15 @@
 - [47deg](https://www.47deg.com/blog/tags/scala/)
   - [scalacheck](https://www.youtube.com/watch?v=l5-5w8A-Ong)
 - [Jakub Kozłowski](https://www.youtube.com/channel/UCBSRCuGz9laxVv0rAnn2O9Q/videos)
-  
+- Creative Scala
+  - compiler
+    - https://www.creativescala.org/stoop/
+    - https://github.com/creativescala/stoop
+  - ai / ml basics 
+    - https://www.creativescala.org/case-study-gradient-descent/
+    - https://github.com/creativescala/case-study-gradient-descent
+    
 ### BASIC / LEARNING
-- [fpinscala](https://github.com/alexr007/fpinscala.git)
 - jdg-functional-scala
   - [original](https://github.com/jdegoes/functional-scala.git)
   - [my](https://github.com/alexr007/functional-scala.git)
@@ -142,7 +150,6 @@
 
 ### PURE FP
 - [todo-http4s-doobie](https://github.com/jaspervz/todo-http4s-doobie.git) 
-- [fp-stack-2020-pres](https://github.com/adamw/fp-stack-2020-pres.git)
 - [bootzooka](https://github.com/alexr007/bootzooka.git)
 - [http4s-ddd-example](https://github.com/alexr007/http4s-ddd-example.git)
 - [learn-scala-pfp](https://github.com/alexr007/learn-scala-pfp.git)
@@ -191,8 +198,6 @@
 ### SQL
 - [essential-slick-code](https://github.com/alexr007/essential-slick-code.git)
 - [slick](https://plippe.github.io/blog/2020/06/01/playing-with-scala-slick.html)
-- [scala-sql-compare](https://github.com/softwaremill/scala-sql-compare.git)
-   - [my clone](https://github.com/alexr007/scala-sql-compare.git)
 
 ### ZIO
 - [ZparkIO](https://medium.com/@AyoubFakir/migrating-from-a-plain-spark-application-to-zio-with-zparkio-8fcd5f5da6ab)
@@ -253,6 +258,7 @@
 - [Transaction Ideas](https://habr.com/ru/post/490612/)
 - [async](https://progi.pro/scala-cats-effects-io-async-shift-kak-eto-rabotaet-8408597)
 - [do tagless algebra needs laws](https://www.reddit.com/r/scala/comments/hdqzbv/do_tagless_algebra_needs_laws/)
+- [Disney Streaming](https://medium.com/disney-streaming/tagged/thisweekinscala)
 
 ### implicits
 - [guardian](https://www.theguardian.com/info/developer-blog/2016/dec/22/parental-advisory-implicit-content)
@@ -294,3 +300,59 @@
 
 ### NLP
 - [John Snow Labs Spark-NLP 2.5.4](https://www.reddit.com/r/scala/comments/humsuq/john_snow_labs_sparknlp_254_supporting_apache/)
+
+### parsing
+- Typelevel stack, well maintained [GitHub](https://github.com/typelevel/cats-parse)
+- Noel Welsh, ADT approach
+  - [site](http://www.creativescala.org/case-study-parser)
+  - [GitHub](https://github.com/creativescala/case-study-parser)
+- Haskell inspired [GitHub](https://github.com/j-mie6/parsley)
+- Fast, Macros based [GitHub](https://github.com/com-lihaoyi/fastparse)
+- https://github.com/tpolecat/atto (stopped in 2020)
+
+### xml
+- Parsing [GitHub](https://github.com/lucidsoftware/xtract)
+- Type Classes: https://github.com/TinkoffCreditSystems/phobos - archive!
+- Generation https://github.com/mthaler/xmlconfect - stopped in 2021
+
+### extra
+- [Algorithms #1 (Coursera)](https://www.coursera.org/learn/algorithms-part1)
+- [Algorithms #2 (Coursera)](https://www.coursera.org/learn/algorithms-part2)
+- [GeeksForGeeks:DP](https://www.geeksforgeeks.org/dynamic-programming/)
+  - [TOP20](https://www.geeksforgeeks.org/top-20-dynamic-programming-interview-questions/)
+  - 7/106 0/180 0/49
+- [HackerRank](https://www.hackerrank.com/dashboard)
+- [Codility](https://app.codility.com/programmers/)
+- [Codewars](https://www.codewars.com/dashboard)
+
+### resources to learn Scala
+
+1. [Functional Programming, Simplified: (Scala Edition)](https://www.amazon.com/Functional-Programming-Simplified-Alvin-Alexander/dp/1979788782/ref=as_li_ss_tl?ie=UTF8&linkCode=sl1&tag=devdaily-20&linkId=9f22e2b01b8200c7c984829669b5f382&language=en_US)
+2. [Essen􏰀al Scala](https://books.underscore.io/essential-scala/essential-scala.pdf)
+3. [Scala with Cats, HTML](https://www.scalawithcats.com/dist/scala-with-cats.html)
+4. [Functional Programming in Scala](https://www.amazon.com/Functional-Programming-Scala-Paul-Chiusano/dp/1617290653/ref=pd_bxgy_img_1/139-3868347-7629112?pd_rd_w=CCGTl&pf_rd_p=c64372fa-c41c-422e-990d-9e034f73989b&pf_rd_r=NZK006ZPNG35NY3K7VA5&pd_rd_r=47efe261-bc11-41e7-a116-71e04ef282d0&pd_rd_wg=f2drD&pd_rd_i=1617290653&psc=1)
+5. [Practical FP in Scala: A hands-on approach](https://leanpub.com/pfp-scala)
+6. [Essential Effects](https://essentialeffects.dev)
+7. [Functional and Reactive Domain Modeling](https://www.manning.com/books/functional-and-reactive-domain-modeling)
+
+### extra
+
+1. [Programming in Scala Fifth Edition](https://www.amazon.com/Programming-Scala-Fifth-Odersky/dp/0997148004)
+2. [Zionomicon](https://www.zionomicon.com)
+3. [Essential Slick](https://books.underscore.io/essential-slick/essential-slick-3.pdf)
+4 [debasishg twitter](https://twitter.com/debasishg)
+5 [debasishg blogspot](http://debasishg.blogspot.com/2010/06/scala-implicits-type-classes-here-i.html)
+
+### REPL
+
+- [Scastie (online)](https://scastie.scala-lang.org)
+- [Ammonite (local)](https://ammonite.io)
+
+### scala compiler plugins to manage dependencies
+
+[sbt all plugins](https://www.scala-sbt.org/1.x/docs/Community-Plugins.html)
+
+#### dependencies
+- [sbt explicit dependencies](https://github.com/cb372/sbt-explicit-dependencies)
+- [sbt missing link](https://github.com/scalacenter/sbt-missinglink)
+- [sbt dependencies graph](https://github.com/sbt/sbt-dependency-graph)

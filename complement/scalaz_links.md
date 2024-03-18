@@ -1,4 +1,0 @@
-- [eed3si9n](http://eed3si9n.com/learning-scalaz/)
-- [debasishg twitter](https://twitter.com/debasishg)
-- [debasishg blogspot](http://debasishg.blogspot.com/2010/06/scala-implicits-type-classes-here-i.html)
-- [me](http://eed3si9n.com/learning-scalaz/Enum.html)

@@ -5,6 +5,6 @@
 - [Make your Google Spreadsheets Scala-ble](https://medium.com/@antoine.doeraene/make-your-google-spreadsheets-scala-ble-5695d9dd784f)
 - [Deploying a full stack Scala application on Heroku](https://medium.com/@antoine.doeraene/deploying-a-full-stack-scala-application-on-heroku-6d8093a913b3)
 - [How Type Variance fits into Category Theory](https://medium.com/@antoine.doeraene/how-type-variance-fits-into-category-theory-e662d2c7f522)
-- [SMAkkaR.js #1](https://randomthroughtsfromnowhere.com/2020/06/25/part-1-using-akka-and-react-to-organize-your-single-page-scala-js-application/)
-- [SMAkkaR.js #2](https://randomthroughtsfromnowhere.com/2020/06/26/part-2-using-monocle-and-akka-to-facilitate-model-and-component-reusability-in-a-react-scala-js-application/)
-
+- [](git@github.com:ChristopherDavenport/http4s-scalajsexample.git)
+- ScalaJS Tyrian [GitHub](https://github.com/PurpleKingdomGames/tyrian)
+- 

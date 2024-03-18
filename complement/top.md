@@ -1,4 +1,4 @@
-### top 100 libraries for Functional Scala
+### libraries
 - [cats (composition)](https://typelevel.org/cats/)
 - [cats-effects (effects)](https://typelevel.org/cats-effect/)
 - [circe (JSON)](https://circe.github.io/circe/)
@@ -9,39 +9,14 @@
 - [scalactic](https://www.scalactic.org)
 - [scalacheck](https://scalacheck.org)
 - [scalamock](https://scalamock.org)
-- []()
-- []()
-- []()
 
-### top 10 companies Scala
+### companies
 - [ZIO](https://zio.dev)
 - [scalac](https://scalac.io)
 - [softwaremill](https://softwaremill.com)
 - [47 degree](https://www.47deg.com)
-- []()
-- []()
 
-### top 10 blogs
+### blogs
 - [Li Haoyi](https://www.lihaoyi.com)
 - [John A. De Goes](https://degoes.net)
 - [Riccardo Cardin](http://blog.rcard.in)
-- []()
-- []()
-
-### top 10 audio podcasts
-- []()
-- []()
-
-### top 10 video channels
-- []()
-- []()
-
-### top 100 libraries for Scala, but not so functional
-- []()
-- []()
-- []()
-
-### top 100 books
-- []()
-- []()
-- []()
