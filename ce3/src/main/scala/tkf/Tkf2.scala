@@ -1,5 +1,7 @@
 package tkf
 
+import cats.Applicative
+import cats.effect.IO
 import cats.implicits._
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
@@ -8,103 +10,104 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 import scala.util.chaining.scalaUtilChainingOps
 
-/** На вход Seq[Future[String]] Получить Future[(Seq[String], Seq[Throwable]) - результат агрегации выполненых Future и
-  * исключений
-  */
-object Tkf2 extends App {
+object Tkf2 {
 
-  object common {
+  def refineFuture[A](fa: Future[A])(implicit ec: ExecutionContext): Future[Either[Throwable, A]] =
+    fa.map(Right(_))
+      .recover(Left(_))
 
-    /** make Throwable explicit */
-    def refine[A](fa: Future[A])(implicit ec: ExecutionContext): Future[Either[Throwable, A]] =
-      fa.map(Right(_)).recover(Left(_))
+  def refineIO[A](fa: IO[A]): IO[Either[Throwable, A]] =
+    fa.attempt
 
-    /** repack results */
-    def repack[A](data: Seq[Either[Throwable, A]]): (Seq[A], Seq[Throwable]) =
-      data.foldLeft((Seq.empty[A], Seq.empty[Throwable])) {
-        case ((ss, ts), Left(t))  => (ss, t +: ts)
-        case ((ss, ts), Right(s)) => (s +: ss, ts)
-      }
+  trait Recoverable[F[_]] {
+    def handle[A](fa: F[A]): F[Either[Throwable, A]]
+  }
+
+  object Recoverable {
+
+    implicit def sepFuture(implicit ec: ExecutionContext): Recoverable[Future] = new Recoverable[Future] {
+      override def handle[A](fa: Future[A]): Future[Either[Throwable, A]] =
+        fa.map(Right(_)).recover(Left(_))
+    }
+
+    implicit val sepIO: Recoverable[IO] = new Recoverable[IO] {
+      override def handle[A](fa: IO[A]): IO[Either[Throwable, A]] = fa.attempt
+    }
 
   }
 
-  object ImplementationCatsV1 {
-    import common._
+  def refineF[F[_]: Recoverable, A](fa: F[A]): F[Either[Throwable, A]] =
+    implicitly[Recoverable[F]]
+      .handle(fa)
 
-    def sequenceFutureCats[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
-      xs.map(refine)
-        .sequence
-        .map(repack)
+  def clusterize[A](data: Seq[Either[Throwable, A]]): (Seq[A], Seq[Throwable]) =
+    data.foldLeft((Seq.empty[A], Seq.empty[Throwable])) {
+      case ((ss, ts), Left(t))  => (ss, t +: ts)
+      case ((ss, ts), Right(s)) => (s +: ss, ts)
+    }
 
-    def sequenceCats[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
-      xs.traverse(refine)
-        .map(repack)
+  def map2[A, B, C](fa: Future[A], fb: Future[B])(f: (A, B) => C)(implicit ec: ExecutionContext): Future[C] = for {
+    a <- fa
+    b <- fb
+  } yield f(a, b)
 
-  }
+  def pure[A](a: A) = Future.successful(a)
 
-  object ImplementationCatsV2 {
-    import common.refine
+  def sequencePlain[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext): Future[Seq[A]] =
+    xs.foldLeft(pure(Seq.empty[A])) { (fs, f) =>
+      map2(fs, f)(_ :+ _)
+    }
 
-    def sequenceCats[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
-      xs.traverse(refine)
-        .map(_.partitionEither(_.swap))
+  def repack0[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+    xs.map(refineFuture)
+      .pipe(sequencePlain)
+      .map(clusterize)
 
-  }
+  def repack1[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+    xs.map(refineFuture)
+      .sequence
+      .map(clusterize)
 
-  object ImplementationCatsV3 {
-    import common.refine
+  def repack2[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+    xs.traverse(refineFuture)
+      .map(clusterize)
 
-    def sequenceCats[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
-      xs.traverse(refine)
-        .map(_.separate)
+  def repack3[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+    xs.traverse(refineFuture)
+      .map(_.partitionEither(_.swap))
 
-    def sequenceCats2[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
-      xs.traverse(refine)
-        .map(_.separateFoldable)
+  // 2 passes
+  def repack4[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+    xs.traverse(refineFuture)
+      .map(_.separate)
 
-  }
+  // 1 pass
+  def repack5[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
+    xs.traverse(refineFuture)
+      .map(_.separateFoldable)
 
-  object ImplementationPlain {
+  def repack6[A](xs: Seq[IO[A]]) =
+    xs.traverse(refineIO)
+      .map(_.separateFoldable)
 
-    import common._
+  def repack7[F[_]: Recoverable: Applicative, A](xs: Seq[F[A]]) =
+    xs.traverse(fa => refineF(fa))
+      .map(_.separateFoldable)
 
-    def map2[A, B, C](fa: Future[A], fb: Future[B])(f: (A, B) => C)(implicit ec: ExecutionContext): Future[C] = for {
-      a <- fa
-      b <- fb
-    } yield f(a, b)
-
-    def sequencePlain[A](
-        xs: Seq[Future[A]],
-      )(implicit ec: ExecutionContext,
-      ): Future[Seq[A]] =
-      xs.foldLeft(Future.successful(Seq.empty[A])) { (fs, f) =>
-        map2(fs, f)(_ :+ _)
-      }
-
-    def sequenceCombined[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext): Future[(Seq[A], Seq[Throwable])] =
-      xs.map(refine)
-        .pipe(sequencePlain)
-        .map(repack)
-
-  }
-
-  def impl[A](xs: Seq[Future[A]])(implicit ec: ExecutionContext) =
-    ImplementationCatsV2.sequenceCats[A](xs)
-//    ImplementationPlain.sequenceCombined[A](xs)
 }
 
-class Tkf2Spec extends AnyFunSpec with Matchers {
+class Tkf2 extends AnyFunSpec with Matchers {
 
-  import Tkf2.{impl => sequence}
+  import Tkf2._
   import scala.concurrent.ExecutionContext.Implicits.global
   import scala.concurrent.duration.DurationInt
 
   it("1") {
 
-    val good  = Seq("a", "b")
+    val good = Seq("a", "b")
     val goodF = good.map(Future.successful)
 
-    val bad  = Seq(
+    val bad = Seq(
       new IllegalArgumentException("x"),
       new IllegalArgumentException("z"),
     )
@@ -112,15 +115,16 @@ class Tkf2Spec extends AnyFunSpec with Matchers {
 
     val data = goodF ++ badF
 
-    val fr: Future[(Seq[String], Seq[Throwable])]        = sequence(data)
-    val (outGood, outBad): (Seq[String], Seq[Throwable]) = Await.result(fr, 10.seconds)
+    val fr: Future[(Seq[Throwable], Seq[String])] = repack7(data)
 
-    outGood should contain allElementsOf good
-    outGood should contain noElementsOf bad
+    Await.result(fr, 10.seconds) match {
+      case (outBad, outGood) =>
+        outGood should contain allElementsOf good
+        outGood should contain noElementsOf bad
 
-    outBad should contain allElementsOf bad
-    outBad should contain noElementsOf good
+        outBad should contain allElementsOf bad
+        outBad should contain noElementsOf good
+    }
 
   }
-
 }

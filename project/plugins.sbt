@@ -31,10 +31,10 @@ addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.11.0")
 addSbtPlugin("org.scalaxb" % "sbt-scalaxb" % "1.11.0")
 
 /** ProtoBuf (https://github.com/thesamet/sbt-protoc) */
-addSbtPlugin("com.thesamet" % "sbt-protoc" % "1.0.0")
+addSbtPlugin("com.thesamet" % "sbt-protoc" % "1.0.7")
 
 /** ProtoBuf (https://github.com/scalapb/ScalaPB, https://scalapb.github.io) */
-libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.11.12"
+libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.11.15"
 
 /** named options: (https://github.com/DavidGregory084/sbt-tpolecat) */
 addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.4.1")

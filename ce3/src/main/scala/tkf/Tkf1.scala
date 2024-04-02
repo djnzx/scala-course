@@ -2,17 +2,12 @@ package tkf
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
-
 import scala.annotation.tailrec
 
-/** 1) Cжать последовательность интов Seq(1, 2, 2, 3, 4, 3, 3, 3) => Seq((1, 1), (2, 2), (3, 1), (4, 1), (3, 3))
-  *
-  * Ответ выдать в виде Seq[(Int, Int)] (число из последовательности и число последовательных повторений) 2)
-  * восстановаить исходную последовательность из сжатой
-  */
 object Tkf1 {
 
-  def pack[A](xs: List[A]): List[(A, Int)] = {
+  /** tail recursive */
+  def compress1[A](xs: List[A]): List[(A, Int)] = {
 
     @tailrec
     def go(tail: List[A], cur: Option[(A, Int)], acc: List[(A, Int)]): List[(A, Int)] =
@@ -24,26 +19,53 @@ object Tkf1 {
         case (x :: t, Some(nc))                 => go(t, Some(x, 1), nc +: acc)
       }
 
-    go(xs, None, List.empty) reverse
+    go(xs, None, List.empty).reverse
   }
 
-  def unpack[A](xs: Seq[(A, Int)]): Seq[A] =
-    xs.flatMap { case (n, c) => Seq.fill(c)(n) }
+  def compress2[A](xs: List[A]): List[(A, Int)] =
+    xs.foldLeft(List.empty[(A, Int)]) { (ps, a) =>
+      ps.headOption match {
+        case Some((`a`, c)) => (a -> (c + 1)) :: ps.tail
+        case Some(_)        => (a -> 1) :: ps
+        case None           => List(a -> 1)
+      }
+    }.reverse
+
+  def compress3[A](xs: List[A]): List[(A, Int)] = xs
+    .foldLeft(List.empty[(A, Int)]) {
+      case (Nil, a)                     => List(a -> 1)
+      case ((ac, c) :: t, a) if ac == a => (a -> (c + 1)) :: t
+      case (pp, a)                      => (a -> 1) :: pp
+    }
+    .reverse
+
+  def compress[A](xs: List[A]): List[(A, Int)] = xs
+    .foldLeft(List.empty[(A, Int)]) { (pp, a) =>
+      pp match {
+        case (`a`, c) :: t => (a -> (c + 1)) :: t
+        case _             => (a -> 1) :: pp
+      }
+    }
+    .reverse
+
+  def decompress[A](xs: Seq[(A, Int)]): Seq[A] =
+    xs.flatMap { case (a, n) => Seq.fill(n)(a) }
 
 }
 
-class Tkf1Spec extends AnyFunSpec with Matchers {
+class Tkf1 extends AnyFunSpec with Matchers {
 
-  val unpacked = List(1, 2, 2, 3, 4, 3, 3, 3, 1, 1)
-  val packed = List((1, 1), (2, 2), (3, 1), (4, 1), (3, 3), (1, 2))
+  val raw = "abbcccaabc".toList
+  val zip = List(('a', 1), ('b', 2), ('c', 3), ('a', 2), ('b', 1), ('c', 1))
 
   import Tkf1._
 
   it("pack") {
-    pack(unpacked) shouldEqual packed
+    compress(raw) shouldBe zip
   }
 
   it("unpack") {
-    unpack(packed) shouldEqual unpacked
+    decompress(zip) shouldBe raw
   }
+
 }

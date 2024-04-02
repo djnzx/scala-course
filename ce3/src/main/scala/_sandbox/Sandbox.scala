@@ -7,6 +7,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 object Sandbox {
 
   def id[A](a: A): A = a
+  def absurd[A]: A = ???
 
 }
 

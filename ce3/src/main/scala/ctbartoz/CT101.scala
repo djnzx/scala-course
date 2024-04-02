@@ -1,17 +1,6 @@
 package ctbartoz
 
-import cats._
-import cats.arrow.Profunctor
-import cats.data._
-import cats.implicits.catsSyntaxAlternativeSeparate
-import cats.implicits.catsSyntaxEitherId
-import cats.implicits.catsSyntaxUnite
-import cats.implicits.toBifunctorOps
-import cats.implicits.toContravariantOps
-import cats.implicits.toFunctorOps
-import cats.implicits.toProfunctorOps
-import cats.implicits.toTraverseOps
-//import cats.implicits._
+import cats.implicits._
 
 object CT101 extends App {
 
@@ -49,15 +38,13 @@ object CT101 extends App {
 
   object FlattenVsUnite {
     val xs: List[Vector[Int]] = List(Vector(1, 2), Vector(3, 4))
-    // F[G[A] (FlatMap[F], Alternative[F], Foldable[G]) => F[A]
     // Alternative = Applicative + SemigroupK
-    val r2: List[Int]         = xs.unite
-    val r1: List[Int]         = xs.flatten // (implicit iterableOnce: A => IterableOnce[B])
+    val r2: List[Int]         = xs.unite   // implicit FlatMap[F], Alternative[F], Foldable[G] for any F[G[A]]
+    val r1: List[Int]         = xs.flatten // implicit iterableOnce: A => IterableOnce[B]
   }
 
   object RepackFutures {
-    import scala.concurrent.ExecutionContext
-    import scala.concurrent.Future
+    import scala.concurrent.{ExecutionContext, Future}
 
     def repack[A](fs: List[Future[A]])(implicit ec: ExecutionContext): Future[(List[Throwable], List[A])] = {
       def refine(fa: Future[A]): Future[Either[Throwable, A]] = fa.map(_.asRight).recover(_.asLeft)
@@ -69,72 +56,4 @@ object CT101 extends App {
 
   }
 
-  def repackEithers[A, B](xs: List[Either[A, B]]): (List[A], List[B]) = xs.separate
-
-  def repackTuples[A, B](xs: List[(A, B)]): (List[A], List[B]) = xs.separate
-
-  val a = repackTuples(
-    List(
-      (1, "a"),
-      (2, "b"),
-      (3, "c"),
-    )
-  )
-//  pprint.pprintln(a)
-
-  val b = repackEithers(
-    List(
-      Left(1),
-      Right("a"),
-      Left(2),
-      Right("b")
-    )
-  )
-//  pprint.pprintln(b)
-
-  object bi {
-    val x: Either[String, Int]            = ???
-    val y: Either[Option[Double], String] = x.bimap(_.toDoubleOption, _.toString)
-  }
-
-  object profunctor {
-
-    def f(a: Int): Float = a.toFloat
-
-    def pre(a: String): Int = a.length
-
-    def post(a: Float): Double = a.toDouble
-
-    val comb1: String => Double = (pre _) andThen f andThen post
-
-    val comb2a: String => Double = (f _).dimap(pre)(post)
-    val comb2b: String => Float  = (f _).dimap(pre)(identity)
-
-    val comb3: Int => Double = (f _).map(post)
-    val comb3a: Int => Double = (f _).rmap(post)
-    val comb4: String => Float = (f _).lmap(pre)
-
-    val pf = toProfunctorOps(f _)
-
-    type ToString[A] = A => String
-
-    // cats contramap requires type constructor with one hole to derive contravariant
-    val f10a                = (x: Int) => s"original: $x"
-    val f10c: ToString[Int] = (x: Int) => s"original: $x"
-    val f11                 = f10c.contramap((s: String) => s.length)
-
-    val r: String = f11("ten")
-
-    implicit def mkFunctionContravariant[C]: Contravariant[* => C] =
-      new Contravariant[* => C] {
-        override def contramap[A, B](fac: A => C)(fba: B => A): B => C =
-          (b: B) => {
-            val a: A = fba(b)
-            val c: C = fac(a)
-            c
-          }
-      }
-  }
-
-  pprint.pprintln(profunctor.r)
 }
