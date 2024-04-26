@@ -1,4 +1,4 @@
-package alexr.k8artifact.domain
+package alexr.explore.domain
 
 import io.circe.Encoder
 import io.circe.generic.semiauto.deriveEncoder

@@ -1,4 +1,5 @@
-import sbtbuildinfo.BuildInfoOption
+import scala.sys.process.*
+import scala.util.Try
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
@@ -89,13 +90,9 @@ lazy val ce2 = project
   )
 
 lazy val ce3 = (project in file("ce3"))
-  .enablePlugins(BuildInfoPlugin)
   .enablePlugins(LaikaPlugin)
   .settings(
     Settings.common2,
-    buildInfoPackage := "alexr",
-    buildInfoOptions ++= Seq(BuildInfoOption.BuildTime, BuildInfoOption.ToMap),
-    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion /*, libraryDependencies */ ),
     description := "CE3-based-related",
     libraryDependencies ++= Seq(
       // core
@@ -269,6 +266,66 @@ lazy val k8a = (project in file("k8a"))
       "org.http4s"       %% "http4s-circe"         % "1.0.0-M36",
       "io.circe"         %% "circe-generic-extras" % "0.14.2"
     )
+  )
+
+/**  - create image: `sbt k8d/docker:publishLocal`
+  *  - see what's created: `docker images | grep explore-docker-plugin`
+  *  - look for the layers: `brew install dive`
+  *  - run: `docker run explore-docker-plugin:1.2.3`
+  *  - remove ALL containers created: `docker rm -vf $(docker ps -aq)`
+  *  - remove ALL images created: `docker rmi -f $(docker images -aq)`
+  *  - remove ALL docker artifacts: `docker system prune -a`
+  */
+val noopProcessLogger: ProcessLogger = ProcessLogger(_ => (), _ => ())
+def run(cmd: String): Option[String] = Try(cmd.split(" ").toSeq.!!(noopProcessLogger).trim).toOption
+def git(cmd: String): Option[String] = run(s"git $cmd")
+def hash: Option[String] = git("rev-parse --short HEAD")
+def branch: Option[String] = git("rev-parse --abbrev-ref HEAD")
+
+lazy val k8d = (project in file("k8d"))
+  .enablePlugins(BuildInfoPlugin)
+  .enablePlugins(JavaAppPackaging, DockerPlugin)
+  .settings(
+    // https://github.com/sbt/sbt-buildinfo
+    // https://www.youtube.com/watch?v=sAt0mwOVKAM
+    // https://github.com/DevInsideYou/buildinfo/tree/main
+    buildInfoPackage := "alexr.explore.meta",
+    buildInfoObject := "BuildInfoImpl",
+    buildInfoOptions ++= Seq(
+      BuildInfoOption.Traits("BuildInfo"),
+      BuildInfoOption.BuildTime,
+    ),
+    buildInfoKeys ++= Seq[BuildInfoKey](
+      "branch" -> branch,
+      "hash"   -> hash,
+    ),
+    // https://www.scala-sbt.org/sbt-native-packager/formats/docker.html
+    /** https://hub.docker.com/_/eclipse-temurin
+      * openjdk:8-jre-alpine                - 89 Mb
+      * openjdk:8-alpine                    - 109 Mb
+      * eclipse-temurin:8-jre               - 219 Mb
+      * eclipse-temurin:8-jre-jammy         - 219 Mb
+      * eclipse-temurin:17.0.11_9-jre-jammy - 253 Mb
+      * eclipse-temurin:22-jre-jammy        - 271 Mb
+      */
+    dockerBaseImage := "eclipse-temurin:8-jre",
+    // group layers to optimize the docker build
+    dockerGroupLayers := {
+      case (_, path) if path.startsWith("alexr") => 2
+      case _                                     => 1
+    },
+    // https://piotrminkowski.com/2023/11/07/slim-docker-images-for-java/
+    /** -Dqwe=asd goes to JVM PROPERTIES
+      * abc123 goes to MAIN AGRS
+      */
+    dockerCmd := Seq("-Dqwe=asd", "abc123"),
+    /** this goes to ENVIRONMENT */
+    dockerEnvVars ++= Map("asd" -> "zxc"),
+    Docker / packageName := "explore-docker-plugin",
+    Docker / version := "1.2.3",
+    // other things
+    Settings.common2.init,
+    libraryDependencies += LibrariesLihaoyi.pprint,
   )
 
 lazy val fp_red = (project in file("fp_red"))

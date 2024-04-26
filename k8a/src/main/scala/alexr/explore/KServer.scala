@@ -1,7 +1,7 @@
-package alexr.k8artifact
+package alexr.explore
 
-import alexr.k8artifact.domain.Quotes
-import alexr.k8artifact.domain.Quotes.Impl
+import alexr.explore.domain.Quotes
+import alexr.explore.domain.Quotes.Impl
 import cats.effect.IO
 import cats.effect.IOApp
 import org.http4s.blaze.server.BlazeServerBuilder

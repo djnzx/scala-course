@@ -13,22 +13,19 @@ addDependencyTreePlugin
 /** Metals (https://scalacenter.github.io/bloop/docs/build-tools/sbt)
   * moved to the different file, to allow Metals plugin manage it automatically
   */
-//addSbtPlugin("ch.epfl.scala" % "sbt-bloop" % "1.5.6")
+//addSbtPlugin("ch.epfl.scala" % "sbt-bloop" % "1.5.17")
 
 /** NativePackager (https://github.com/sbt/sbt-native-packager) */
-addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.9.16")
-
-/** https://github.com/spray/sbt-revolver */
-//addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
-
-/** scalatest section */
-//addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.10")
+addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.10.0")
 
 /** https://github.com/sbt/sbt-buildinfo */
-addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.11.0")
+addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.12.0")
+
+/** https://github.com/spray/sbt-revolver */
+//addSbtPlugin("io.spray" % "sbt-revolver" % "0.10.0")
 
 /** XML binding (https://github.com/eed3si9n/scalaxb, https://scalaxb.org/sbt-scalaxb) */
-addSbtPlugin("org.scalaxb" % "sbt-scalaxb" % "1.11.0")
+addSbtPlugin("org.scalaxb" % "sbt-scalaxb" % "1.12.0")
 
 /** ProtoBuf (https://github.com/thesamet/sbt-protoc) */
 addSbtPlugin("com.thesamet" % "sbt-protoc" % "1.0.7")

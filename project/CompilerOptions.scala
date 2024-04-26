@@ -7,9 +7,9 @@ import ScalacOpts.*
   */
 object CompilerOptions {
 
-  val javacOptions: Seq[String] =
-    Seq("-source", "17") ++
-      Seq("-target", "17")
+  val javacOptions: Seq[String] = Seq.empty
+//    Seq("-source", "17") ++ // source defaults == runtime JDK
+//      Seq("-target", "17")
 
   val scalacOptions: Seq[String] = utf8 ++ Seq(
     feature,

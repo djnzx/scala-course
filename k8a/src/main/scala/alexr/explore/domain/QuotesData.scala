@@ -1,4 +1,4 @@
-package alexr.k8artifact.domain
+package alexr.explore.domain
 
 import scala.util.Random
 

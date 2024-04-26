@@ -1,7 +1,7 @@
-package alexr.k8artifact
+package alexr.explore
 
-import alexr.k8artifact.domain.Quote
-import alexr.k8artifact.domain.Quotes
+import alexr.explore.domain.Quote
+import alexr.explore.domain.Quotes
 import cats.effect.Sync
 import cats.implicits._
 import java.net.InetAddress
