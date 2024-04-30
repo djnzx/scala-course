@@ -10,13 +10,13 @@ object Tkf1 {
   def compress1[A](xs: List[A]): List[(A, Int)] = {
 
     @tailrec
-    def go(tail: List[A], cur: Option[(A, Int)], acc: List[(A, Int)]): List[(A, Int)] =
-      (tail, cur) match {
+    def go(xs: List[A], cur: Option[(A, Int)], acc: List[(A, Int)]): List[(A, Int)] =
+      (xs, cur) match {
         case (Nil, None)                        => acc
-        case (Nil, Some(nc))                    => nc +: acc
+        case (Nil, Some(nc))                    => nc :: acc
         case (x :: t, None)                     => go(t, Some(x, 1), acc)
         case (x :: t, Some((n, cnt))) if x == n => go(t, Some(n, cnt + 1), acc)
-        case (x :: t, Some(nc))                 => go(t, Some(x, 1), nc +: acc)
+        case (x :: t, Some(nc))                 => go(t, Some(x, 1), nc :: acc)
       }
 
     go(xs, None, List.empty).reverse
@@ -61,7 +61,7 @@ class Tkf1 extends AnyFunSpec with Matchers {
   import Tkf1._
 
   it("pack") {
-    compress(raw) shouldBe zip
+    compress1(raw) shouldBe zip
   }
 
   it("unpack") {
