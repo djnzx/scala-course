@@ -11,8 +11,8 @@ import scala.io.StdIn
 // https://typelevel.org/cats-effect/docs/faq
 object TimedInputApp4 extends IOApp.Simple {
 
-  def printLine[F[_]: Sync](s: String): F[Unit] = F.blocking(println(s))
-  def readLine[F[_]: Async]: F[String]          = F.cancelable(F.blocking(StdIn.readLine), ().pure[F])
+  def printLine[F[_]](s: String)(implicit F: Sync[F]): F[Unit] = F.blocking(println(s))
+  def readLine[F[_]](implicit F: Async[F]): F[String]          = F.cancelable(F.blocking(StdIn.readLine), ().pure[F])
 
   def app[F[_]: Applicative: Async] = for {
     _ <- printLine("Enter value:")

@@ -34,7 +34,7 @@ object Twice {
   )
 }
 
-class HttpServiceBinding[F[_]: Monad: Functor: Sync] extends CirceEntityEncoder with CirceEntityDecoder {
+class HttpServiceBinding[F[_]: Monad: Functor](implicit F: Sync[F]) extends CirceEntityEncoder with CirceEntityDecoder {
 
   val service: ServiceImplementation[F] = new ServiceImplementation[F]
   def ok[A](a: A)(implicit ea: EntityEncoder[F, A]): Response[F] = Response[F](status = Ok).withEntity(a)

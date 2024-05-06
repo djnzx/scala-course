@@ -21,7 +21,7 @@ object DebugSyntax {
     val initial = TraceState(None, false, false)
   }
 
-  implicit class DebugOps[F[_]: Monad: Sync: Console, A](fa: F[A]) {
+  implicit class DebugOps[F[_]: Monad: Sync, A](fa: F[A])(implicit F: Console[F]) {
     def debugW(implicit ts: Ref[F, TraceState]): F[A] =
       fa.flatTap { a =>
         val colored = pprint.apply(a)
@@ -35,7 +35,7 @@ object DebugSyntax {
       }
   }
 
-  implicit class DebugStreamOps[F[_]: Sync: Console, A](as: Stream[F, A]) {
+  implicit class DebugStreamOps[F[_]: Console, A](as: Stream[F, A])(implicit F: Sync[F]) {
     def debugW(implicit ts: Ref[F, TraceState]): Stream[F, A] =
       as.evalTap(a => F.delay(a).debugW)
   }

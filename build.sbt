@@ -181,7 +181,7 @@ lazy val `ce3-docs` = (project in file("ce3-docs"))
 lazy val es68 = (project in file("es68"))
   .settings(
     Settings.common2,
-    crossScalaVersions := Seq("2.12.18", "2.13.12"),
+    crossScalaVersions := Seq(Versions.vScala212, Versions.vScala213),
     description := "Elastic Search 6.8 Learning",
     libraryDependencies ++= Seq(
       "com.sksamuel.elastic4s" %% "elastic4s-core"       % "6.7.8",

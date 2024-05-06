@@ -45,11 +45,11 @@ object Reader0PlainComposition {
       fb.flatMap(g)
     }
 
-  /** composition inside the context, syntax by `betterMonadicFor` */
-  def composition3d[F[_]: Monad, A, B, C](f: A => F[B], g: B => F[C]): A => F[C] =
-    a => {
-      val fb = f(a)
-      F.flatMap(fb)(g)
-    }
+//  /** composition inside the context, syntax by `context-applied` */
+//  def composition3d[F[_]: Monad, A, B, C](f: A => F[B], g: B => F[C]): A => F[C] =
+//    a => {
+//      val fb = f(a)
+//      F.flatMap(fb)(g)
+//    }
 
 }

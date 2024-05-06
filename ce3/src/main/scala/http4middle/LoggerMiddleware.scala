@@ -128,7 +128,7 @@ object LoggerMiddleware {
   def logRequest[F[_]: Sync](rq: Request[F]): F[Unit] =
     Sync[F].delay(println(s"L: Before: $rq"))
 
-  def logResponseHandled[F[_]: Sync](rs: Response[F]): F[Unit] = for {
+  def logResponseHandled[F[_]](rs: Response[F])(implicit F: Sync[F]): F[Unit] = for {
     _ <- F.delay(println(s"L: After: $rs"))
     body <- rs.body.through(text.utf8.decode).compile.string
     _ <- F.delay(println(s"Body: $body"))
