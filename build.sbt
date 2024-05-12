@@ -354,25 +354,12 @@ lazy val lihaoyi = (project in file("lihaoyi"))
     )
   )
 
-/** a lot of dirty, mixed code Needs to be polished */
-// https://alvinalexander.com/scala/sbt-how-specify-main-method-class-to-run-in-project
 lazy val mix = (project in file("mix"))
   .settings(
     Settings.common2,
     libraryDependencies ++= Seq(
-      "io.getquill"      %% "quill-jdbc"                 % "3.5.1",
-      "org.flywaydb"      % "flyway-core"                % "6.4.2",
-      "org.http4s"       %% "http4s-blaze-server"        % "0.21.34",
-      Libraries.sqlPostgres,
+      "org.flywaydb" % "flyway-core" % "6.4.2",
       Libraries.jsoup,
-      "net.ruippeixotog" %% "scala-scraper"              % "3.0.0",
-      "org.typelevel"    %% "simulacrum"                 % "1.0.1",
-      "org.scalaz"       %% "scalaz-core"                % "7.3.7",
-      "com.propensive"   %% "contextual"                 % "1.2.1",
-      Libraries.refinedCore,
-      Libraries.refinedScalaz,
-      "io.jsonwebtoken"   % "jjwt"                       % "0.9.1",
-      "org.scalaz"       %% "scalaz-deriving-jsonformat" % "2.0.0-M5"
     ),
   )
 
@@ -390,8 +377,9 @@ lazy val plain2 = (project in file("plain2"))
   .settings(
     Settings.common2,
     libraryDependencies ++= Seq(
+      "org.typelevel"              %% "cats-core"   % "2.10.0",
       "io.chymyst"                 %% "curryhoward" % "0.3.8",
-      "com.softwaremill.quicklens" %% "quicklens"   % "1.9.6",
+      "com.softwaremill.quicklens" %% "quicklens"   % "1.9.7",
     )
   )
 
@@ -401,12 +389,13 @@ lazy val plain3 = (project in file("plain3"))
     description := "Example sbt project that compiles using Scala 3"
   )
 
+/** starting from 3.2.0 it has 2.13 support */
 lazy val sparkx = (project in file("sparkx"))
   .settings(
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.apache.spark" %% "spark-core" % "3.4.1",
-      "org.apache.spark" %% "spark-sql"  % "3.4.1"
+      "org.apache.spark" %% "spark-core" % "3.5.1",
+      "org.apache.spark" %% "spark-sql"  % "3.5.1"
     ),
   )
 

@@ -1,2 +1,0 @@
-- [Jsoup main page](https://jsoup.org)
-- [Jsoup select syntax](https://jsoup.org/cookbook/extracting-data/selector-syntax)
