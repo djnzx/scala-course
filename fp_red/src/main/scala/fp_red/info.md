@@ -1,8 +1,8 @@
 ### links
 
-- [red book - 10](https://livebook.manning.com/book/functional-programming-in-scala/chapter-10/)
-- [original location](https://github.com/fpinscala/fpinscala)
-- [my clone](https://github.com/alexr007/fpinscala/tree/master/exercises/src/main/scala/fpinscala)
+- Red Book Chapter 10 @[Manning](https://livebook.manning.com/book/functional-programming-in-scala/chapter-10/)
+- Original [GitHub](https://github.com/fpinscala/fpinscala)
+- My clone[GitHub](https://github.com/alexr007/fpinscala/tree/master/exercises/src/main/scala/fpinscala)
 
 ### chapters
 

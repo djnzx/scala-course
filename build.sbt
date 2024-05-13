@@ -425,12 +425,18 @@ lazy val zio2 = (project in file("zio2"))
     description := "ZIO v2",
     Settings.common2,
     libraryDependencies ++= Seq(
-      "dev.zio" %% "zio"          % "2.0.16",
-      "dev.zio" %% "zio-streams"  % "2.0.16",
-      "dev.zio" %% "zio-test"     % "2.0.16",
-      "dev.zio" %% "zio-test-sbt" % "2.0.16" % Test
+      "org.typelevel" %% "cats-core"                % "2.10.0",
+      "com.beachape"  %% "enumeratum"               % "1.7.3",
+      "dev.zio"       %% "zio"                      % "2.1.1",
+      "dev.zio"       %% "zio-streams"              % "2.1.1",
+      "dev.zio"       %% "zio-json"                 % "0.6.2",
+      "dev.zio"       %% "zio-logging"              % "2.2.3",
+      "dev.zio"       %% "zio-logging-slf4j-bridge" % "2.2.3",
+      "dev.zio"       %% "zio-interop-cats"         % "23.1.0.2",
+      "dev.zio"       %% "zio-test"                 % "2.1.1" % Test,
+      "dev.zio"       %% "zio-test-sbt"             % "2.1.1" % Test,
     ),
-    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
+    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
   )
 
 lazy val spring = (project in file("spring"))
