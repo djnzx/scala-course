@@ -21,6 +21,18 @@ object Fs2ReadKafkaApp extends IOApp.Simple {
   def processRecord(r: ConsumerRecord[String, String]): IO[(String, String)] =
     (r.key -> r.value).pure[IO]
 
+  // TODO: idea: pass `generic (untyped) consumer as a parameter`
+  //  and reuse generic consumer
+  def mkTypedConsumer[F[_], K, V](
+    keyDeserializer: KeyDeserializer[F, K],
+    valueDeserializer: ValueDeserializer[F, V]
+  ): ConsumerSettings[F, K, V] =
+    ConsumerSettings
+      .apply[F, K, V](keyDeserializer, valueDeserializer)
+      .withAutoOffsetReset(AutoOffsetReset.Earliest)
+      .withBootstrapServers(serverIp)
+      .withGroupId(consumerGroupId)
+
   val consumerSettings = ConsumerSettings[IO, String, String]
     .withAutoOffsetReset(AutoOffsetReset.Earliest)
     .withBootstrapServers(serverIp)

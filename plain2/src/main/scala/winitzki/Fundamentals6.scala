@@ -1,9 +1,11 @@
 package winitzki
 
-import cats.implicits.toFunctorOps
+import cats._
+import cats.implicits._
+import scala.concurrent.duration._
 import scala.reflect.runtime.universe._
 
-// funcctors and contrafunctors
+// functors and contrafunctors
 // page 170
 class Fundamentals6 extends Base {
 
@@ -308,6 +310,208 @@ class Fundamentals6 extends Base {
     final case class P[A, B](a: A, b: B, c: Int)       extends S[A, B]
     final case class Q[A, B](d: Int => A, e: Int => B) extends S[A, B]
     final case class R[A, B](f: A => A, g: A => B)     extends S[A, B]
+    // A - co/contra => invariant
     // B - wrapper / right side => covariant
   }
+
+  test("6.2") {
+    // functor identity
+//    x.map(identity) == x
+    // functor composition
+//    x.map(f andThen g) == x.map(f).map(g)
+  }
+
+  test("6.2.2") {
+    // bifunctor - just two-hole functor
+  }
+
+  test("6.2.3.2 - const") {
+    type Const[Z, A] = Z
+
+    def fmap[A, B, Z](f: A => B): Const[Z, A] => Const[Z, B] = identity[Z]
+  }
+
+  test("6.2.3.2 - product") {
+    def fmap[A, B, L[_]: Functor, M[_]: Functor](f: A => B): (L[A], M[A]) => (L[B], M[B]) = {
+      case (la, ma) => (la.map(f), ma.map(f))
+    }
+  }
+
+  test("6.2.3.3 - coproduct") {
+    def fmap[A, B, P[_]: Functor, Q[_]: Functor](f: A => B): Either[P[A], Q[A]] => Either[P[B], Q[B]] = {
+      case Left(pa)  => Left(Functor[P].fmap(pa)(f))
+      case Right(qa) => Right(Functor[Q].fmap(qa)(f))
+    }
+  }
+
+  test("6.2.3.5 - exponential - applying one by one - understanding") {
+
+    def fmap[A, B, C[_]: Contravariant, P[_]: Functor](f: A => B)(h: C[A] => P[A]): C[B] => P[B] =
+      (cb: C[B]) => {
+        // pre-composition
+        val ca: C[A] = Contravariant[C].contramap(cb)(f)
+        // apply h
+        val pa: P[A] = h(ca)
+        // post-composition
+        val pb: P[B] = Functor[P].fmap(pa)(f)
+
+        pb
+      }
+  }
+
+  test("6.2.3.5 - exponential - exploring things") {
+
+    def fmap[A, B, C[_]: Contravariant, P[_]: Functor](f: A => B)(h: C[A] => P[A]): C[B] => P[B] = {
+      // pre-composition
+      val `c[b] => c[a]` = (cb: C[B]) => Contravariant[C].contramap(cb)(f)
+
+      // post-composition
+      val `p[a] => p[b]` = (pa: P[A]) => Functor[P].fmap(pa)(f)
+
+      // via natural application - hard
+      val full = (cb: C[B]) => `p[a] => p[b]`(h(`c[b] => c[a]`(cb)))
+
+      // full composition via compose - better, but still hard
+      `p[a] => p[b]` compose h compose `c[b] => c[a]`
+
+      // full composition via profunctor - better
+      h.dimap(`c[b] => c[a]`)(`p[a] => p[b]`)
+
+      // full composition in a natural way - nice
+      `c[b] => c[a]` andThen h andThen `p[a] => p[b]`
+
+      // full composition in an arrow syntax - perfect
+      `c[b] => c[a]` >>> h >>> `p[a] => p[b]`
+    }
+
+  }
+
+  test("6.2.3.6") {
+
+    def fmap[A, B, P[_]: Functor, Q[_]: Functor](f: A => B): P[Q[A]] => P[Q[B]] = {
+      // getting functor inside Q
+      val `q[a] => q[b]` = (qa: Q[A]) => Functor[Q].fmap(qa)(f)
+      // applying inside P
+      (pqa: P[Q[A]]) => Functor[P].fmap(pqa)(`q[a] => q[b]`)
+    }
+
+    // Semigroup[Long]
+    val combinerLong: Semigroup[Long] = Semigroup[Long]
+
+    // we know how
+    def longToDuration: Long => FiniteDuration = Duration.fromNanos
+
+    // we also know
+    def durationToLong: FiniteDuration => Long = _.toNanos
+
+    // now we can derive Semigroup[FiniteDuration] (profunctor)
+    val combiner = Invariant[Semigroup].imap(combinerLong)(longToDuration)(durationToLong)
+
+    import scala.concurrent.duration._
+    // it takes type A, converts to B, does B |+| B, converts to A back
+    val combined: FiniteDuration = combiner.combine(2.seconds, 3.seconds)
+
+    sealed trait List[A]
+    final case class Empty[A]()                      extends List[A]
+    final case class Head[A](head: A, tail: List[A]) extends List[A]
+
+    sealed trait Tree2[A]
+    final case class Leaf[A](a: A)                       extends Tree2[A]
+    final case class Branch[A](x: Tree2[A], y: Tree2[A]) extends Tree2[A]
+
+    sealed trait TreeN[A]
+    final case class LeafN[A](a: A)                extends TreeN[A]
+    final case class BranchN[A](xs: Seq[TreeN[A]]) extends TreeN[A]
+
+  }
+
+  test("50 shades of composition") {
+    // 1. our function (x => x * 10)
+    val x10: Int => Int = x => x * 10
+    // 2. our prefix function
+    val prefix = (x: Double) => x.ceil.toInt
+
+    // compose #0 in terms of scala syntax
+    val combo0: Double => Int = x => x10(prefix(x))
+    // compose #1 in terms of andThen standard library
+    val combo1: Double => Int = prefix andThen x10
+    // compose #3 in terms of andThen standard library
+    val combo2: Double => Int = x10 compose prefix
+    // compose #2 in terms of cats.arrow.Compose[F[_, _]]
+    val combo3: Double => Int = prefix >>> x10
+    // compose #4 in terms of cats.arrow.Compose[F[_, _]]
+    val combo4: Double => Int = x10 <<< prefix
+    // compose #5 in terms of cats.arrow.Profunctor[F[_, _]]
+    val combo5: Double => Int = x10.lmap(prefix)
+    // compose #6 in terms of cats.arrow.Profunctor[F[_, _]]
+    val combo6: Double => Int = prefix.rmap(x10)
+
+    // compose #7 in terms of cats.Functor[F[_]] - andThen
+    type F[A] = Double => A
+    // F[Int] means "It will provide an Int, eventually"
+    val combo7: F[Int] = Functor[F].fmap(prefix)(x10)
+
+    // compose #8 in terms of cats.Contravariant[F[_]] - compose
+    type G[A] = A => Int
+    // G[Int] means "It will consume an Int"
+    val x10g: G[Int] = x => x * 10
+    // G[Double] means "I will consume a Double" (after composition)
+    val combo8: G[Double] = Contravariant[G].contramap(x10g)(prefix)
+
+    // initially it was consuming an Int (f: G[Int] = x => x * 10)
+    // after providing f: Double => Int, it will be consuming a Double
+    // `G[Int]` becomes `G[Double]`
+    // but due to the contravariance semantics it looks vise versa:
+    // when `G[Int]` is consumed - `G[Double]` is emitted
+    val gg11: G[Int] => G[Double] = (g: G[Int]) => Contravariant[G].contramap(g)(prefix)
+    val gg12: G[Int] => F[Int] = (g: G[Int]) => Contravariant[G].contramap(g)(prefix)
+
+    /** compiler can be used af a proof of our assumptions! */
+    val gg21: F[Int] => F[Int] = (fba: F[Int]) => Contravariant[G].contramap(x10g)(fba)
+    val gg22: F[Int] => G[Double] = (fba: F[Int]) => Contravariant[G].contramap(x10g)(fba)
+    val gg23: G[Double] => F[Int] = (fba: F[Int]) => Contravariant[G].contramap(x10g)(fba)
+    val gg24: G[Double] => G[Double] = (fba: F[Int]) => Contravariant[G].contramap(x10g)(fba)
+
+    val gg25: F[Int] => F[Int] = (fba: G[Double]) => Contravariant[G].contramap(x10g)(fba)
+    val gg26: F[Int] => G[Double] = (fba: G[Double]) => Contravariant[G].contramap(x10g)(fba)
+    val gg27: G[Double] => F[Int] = (fba: G[Double]) => Contravariant[G].contramap(x10g)(fba)
+    val gg28: G[Double] => G[Double] = (fba: G[Double]) => Contravariant[G].contramap(x10g)(fba)
+
+    // assertions
+    Seq(
+      combo0,
+      combo1,
+      combo2,
+      combo3,
+      combo4,
+      combo5,
+      combo6,
+      combo7,
+      combo8,
+      gg11(x10g),
+      gg12(x10g),
+      gg21(prefix),
+      gg22(prefix),
+      gg23(prefix),
+      gg24(prefix),
+      gg25(prefix),
+      gg26(prefix),
+      gg27(prefix),
+      gg28(prefix),
+    )
+      .foreach(f => f(3.5) shouldBe 40)
+  }
+
+  test("arrow, compose, category") {
+    val f: Int => Int = _ + 1
+    val g: Int => Int = _ * 100
+
+    val h1: Int => Int = f >>> g // f andThen g
+    h1(3) shouldBe 400
+
+    val h2: Int => Int = f <<< g // g andThen f
+    h2(3) shouldBe 301
+  }
+
+  test("6.2.6.4 - p 204") {}
 }

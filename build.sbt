@@ -5,6 +5,25 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val v = Versions
 
+lazy val sandbox = (project in file("sandbox"))
+  .settings(
+    Settings.common2,
+    description := "sandbox, cat effects 3 based",
+    libraryDependencies ++= Seq(
+      "co.fs2"       %% "fs2-core"              % "3.9.4",
+      "co.fs2"       %% "fs2-io"                % "3.9.4",
+      // enum
+      "com.beachape" %% "enumeratum"            % "1.7.3",
+      "com.beachape" %% "enumeratum-circe"      % "1.7.3",
+      "com.beachape" %% "enumeratum-cats"       % "1.7.3",
+      "com.beachape" %% "enumeratum-scalacheck" % "1.7.3",
+      // json
+      "io.circe"     %% "circe-parser"          % "0.14.7",
+      "io.circe"     %% "circe-generic-extras"  % "0.14.3",
+      "io.circe"     %% "circe-fs2"             % "0.14.1",
+    ),
+  )
+
 lazy val avro101 = (project in file("avro101"))
   .settings(
     scalaVersion := v.vScala212,

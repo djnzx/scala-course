@@ -62,4 +62,55 @@ class PartialFundamentals extends AnyFunSuite with Matchers {
     an[MatchError] shouldBe thrownBy(f3(5))
   }
 
+  class Dog
+  case class Shepherd() extends Dog
+  case class Laika()    extends Dog
+  // orElse[A1 <: A, B0 >: B](that: PartialFunction[A1, B0]): PartialFunction[A1, B0]
+  // B0 - is the most common type
+
+  test("partial - covariant in the result position") {
+    val f1: PartialFunction[Int, Shepherd] = {
+      case 1 => Shepherd()
+    }
+
+    val f2: PartialFunction[Int, Laika] = {
+      case 2 => Laika()
+    }
+
+    // during orElse Laika is treated as a Dog
+    // and whole result "widened" to Dog
+    val f3: PartialFunction[Int, Dog] = f1 orElse f2
+
+    f3(1) shouldBe Shepherd()
+    f3(2) shouldBe Laika()
+  }
+
+  test("partial - contravarint in the argument position - consuming type is proper but absurd") {
+    trait A
+    case class A1() extends A
+    case class A2() extends A
+
+    val f1: PartialFunction[A1, Int] = {
+      case A1() => 1
+    }
+    val f2: PartialFunction[A2, Int] = {
+      case A2() => 2
+    }
+    // if they are different leafs => we end up with a type requires both
+    // so we need to be both types at the same moment ))
+    val f3: PartialFunction[A2 with A1, Int] = f1 orElse f2
+  }
+
+  test("partial - contravarint in the argument position - 2") {
+    trait A0
+    trait A1 extends A0
+
+    val f0: PartialFunction[A0, Int] = _ => 1
+    val f1: PartialFunction[A1, Int] = _ => 2
+
+    // if consuming parameters on the same hierarchy
+    // as a result the most special type will be picked
+    val f2: PartialFunction[A1, Int] = f0 orElse f1
+  }
+
 }
