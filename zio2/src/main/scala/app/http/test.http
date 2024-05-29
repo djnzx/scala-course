@@ -1,4 +1,5 @@
-### GET request to example server
-GET http://localhost:8080/test/hello
+### GET
+GET http://localhost:8080/test/CID-43abc787-7e1b-4310-b558-7c539669344a
 
-###
+### GET
+GET http://localhost:8080/test/CID-43abc787-7e1b-4310-b5587c539669344a

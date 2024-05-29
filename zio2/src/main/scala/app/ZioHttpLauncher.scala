@@ -1,9 +1,10 @@
 package app
 
 import java.net.InetSocketAddress
+import java.util.UUID
+import scala.util.Try
 import sttp.tapir
-import sttp.tapir.Endpoint
-import sttp.tapir.EndpointInput
+import sttp.tapir.DecodeResult
 import sttp.tapir.server.ziohttp.ZioHttpInterpreter
 import sttp.tapir.ztapir._
 import zio._
@@ -13,41 +14,54 @@ import zio.http.Server
   */
 object ZioHttpLauncher extends ZIOAppDefault {
 
-  /** pathSegment parse */
-  def configIdPathSegment: EndpointInput.PathCapture[String] =
+  case class ConfigId(uuid: UUID) {
+    def show = ConfigId.prefix.concat(uuid.toString)
+  }
+  object ConfigId {
+    private val prefix = "CID-"
+    def parse(s: String): Option[ConfigId] =
+      Option(s)
+        .filter(_.startsWith(prefix))
+        .map(_.stripPrefix(prefix))
+        .flatMap(s => Try(UUID.fromString(s)).toOption)
+        .map { x => pprint.log(x); x }
+        .map(ConfigId.apply)
+  }
+
+  def configIdPathSegment =
     tapir
       .path[String]("item")
+      .mapDecode { s =>
+        ConfigId.parse(s) match {
+          case Some(value) => DecodeResult.Value(value)
+          case None        => DecodeResult.Error(s, new RuntimeException)
+        }
+      }(_.show)
 
-  /** endpoint definition */
-  val test123: Endpoint[Unit, String, Unit, RuntimeFlags, Any] =
+  val test123def =
     endpoint
-      //      .in(stringBody)
-      //      .out(plainBody[Int])
       .get
       .in("test")
       .in(configIdPathSegment)
-      .out(plainBody[Int])
+      .out(plainBody[String])
 
-  /** wiring implementation */
-  val test123impl = test123
-    .zServerLogic(mkMsg)
+  def myLogic(x: ConfigId) = ZIO.succeed(x.uuid.toString.toLowerCase)
 
-  def mkMsg(s: String) = ZIO.succeed(s.length)
+  val test123impl = test123def
+    .zServerLogic(myLogic)
 
   override def run = {
 
     val httpEndpoints = ZioHttpInterpreter()
       .toHttp(test123impl)
 
-    val cfgLayer: ZLayer[Any, Nothing, Server.Config] = ZLayer {
+    val webServerConfig: ZLayer[Any, Nothing, Server.Config] = ZLayer {
       ZIO.succeed(Server.Config.default.binding(new InetSocketAddress(8080)))
     }
 
-    Server.serve(httpEndpoints)
-      .provide(
-        Server.live,
-        cfgLayer
-      )
+    Server
+      .serve(httpEndpoints)
+      .provide(Server.live, webServerConfig)
   }
 
 }
