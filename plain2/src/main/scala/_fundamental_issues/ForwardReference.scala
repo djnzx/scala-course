@@ -1,6 +1,6 @@
-package fwd
+package _fundamental_issues
 
-object ForwardReferenceProblem extends App {
+object ForwardReference extends App {
 
   val x = y
   val y = 5

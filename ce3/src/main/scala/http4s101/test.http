@@ -1,0 +1,6 @@
+###
+GET http://localhost:8080/hello/12
+
+###
+GET http://localhost:8080/hello
+
