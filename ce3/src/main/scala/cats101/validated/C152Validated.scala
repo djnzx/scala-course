@@ -1,4 +1,4 @@
-package cats101
+package cats101.validated
 
 import cats.Semigroupal
 import cats.data.Validated
@@ -50,7 +50,7 @@ object C152Validated extends App {
   val v2d: Validated[List[String], Int]     = List("Shit!").invalid[Int]
 
   // #4 pure and raiseError respectively
-  import cats.syntax.applicative._      // pure
+  import cats.syntax.applicative._
   import cats.syntax.applicativeError._ // raiseError
 
   type ErrorOr[A] = Validated[List[String], A]

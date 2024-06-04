@@ -1,4 +1,4 @@
-package cats101
+package cats101.validated
 
 import cats.data.{NonEmptyList, Validated}
 import cats.implicits._

@@ -1,9 +1,9 @@
-package cats101
+package cats101.validated
 
 import cats.data.Validated
-import cats.syntax.either._
-import cats.syntax.apply._
 import cats.instances.list._
+import cats.syntax.apply._
+import cats.syntax.either._
 
 object C158ValidatedExercise extends App {
 

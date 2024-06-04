@@ -1,11 +1,10 @@
-package cats101
+package cats101.validated
 
 import cats.data.{NonEmptyList, Validated}
 
 object C210UseCase10Recap extends App {
   import C206UseCase10ValidPredFlatMap.Check
   import C206UseCase10ValidatedPred._
-
   import cats.syntax.apply._
 
   /**

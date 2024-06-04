@@ -1,4 +1,4 @@
-package cats101
+package cats101.validated
 
 object C201UseCase10ValidADT extends App {
   import cats.Semigroup

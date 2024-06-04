@@ -1,9 +1,9 @@
-package cats101
+package cats101.validated
 
 object C202UseCase10Validated extends App {
   import cats.Semigroup
-  import cats.instances.list._
   import cats.data.Validated
+  import cats.instances.list._
   import cats.syntax.apply._     // mapN
 
   type CheckFn[E, A] = A => Validated[E, A]

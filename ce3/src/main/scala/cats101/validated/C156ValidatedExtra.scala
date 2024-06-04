@@ -1,10 +1,8 @@
-package cats101
+package cats101.validated
 
 import cats.data.Validated
-import cats.instances.list._
-import cats.syntax.apply._
-import cats.syntax.validated._
 import cats.syntax.either._
+import cats.syntax.validated._
 
 object C156ValidatedExtra extends App {
   val v1: Validated[Nothing, Int] = 123.valid.map(_ * 100)

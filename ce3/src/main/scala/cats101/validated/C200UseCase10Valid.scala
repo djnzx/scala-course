@@ -1,4 +1,4 @@
-package cats101
+package cats101.validated
 
 object C200UseCase10Valid extends App {
   /**
@@ -24,7 +24,7 @@ object C200UseCase10Valid extends App {
     * keep constraints as small as possible
     */
   import cats.Semigroup
-  import cats.instances.list._   // Semigroup
+  import cats.instances.list._
   import cats.syntax.semigroup._ // |+|
   // via .combine()
   val semi = Semigroup[List[String]]

@@ -1,8 +1,7 @@
-package cats101
+package cats101.validated
 
 import cats.Semigroupal
 import cats.data.Validated
-import cats.instances.string._
 import cats.instances.list._
 import cats.syntax.apply._
 import cats.syntax.validated._

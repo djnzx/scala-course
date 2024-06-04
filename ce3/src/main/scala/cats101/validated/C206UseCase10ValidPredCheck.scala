@@ -1,13 +1,13 @@
-package cats101
+package cats101.validated
 
 import cats.Semigroup
 
 object C206UseCase10ValidPredCheck extends App {
 
+  import C206UseCase10ValidatedPred._
   import cats.data.Validated
   import cats.data.Validated.{Invalid, Valid}
   import cats.instances.list._
-  import C206UseCase10ValidatedPred._
 
   sealed trait Check[E, A, B] {
     import Check._

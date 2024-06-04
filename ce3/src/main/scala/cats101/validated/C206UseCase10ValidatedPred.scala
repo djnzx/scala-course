@@ -1,4 +1,4 @@
-package cats101
+package cats101.validated
 
 import cats.Semigroup
 
@@ -6,8 +6,8 @@ object C206UseCase10ValidatedPred extends App {
   import cats.data.Validated
   import cats.data.Validated.{Invalid, Valid}
   import cats.instances.list._
-  import cats.syntax.apply._     // mapN
-  import cats.syntax.semigroup._ // |+|
+  import cats.syntax.apply._
+  import cats.syntax.semigroup._
   import cats.syntax.validated._ // .valid, .invalid
 
   type CheckFn[E, A] = A => Validated[E, A]
