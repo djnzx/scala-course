@@ -6,7 +6,7 @@ object Settings {
 
   val common: Seq[Setting[?]] = Seq(
     organization := "alexr",
-    version := "2024.04.27",
+    version := "2024.06.25",
     resolvers ++= Resolvers.all,
     javacOptions ++= CompilerOptions.javacOptions,
   )

@@ -6,7 +6,7 @@ import io.circe.generic.AutoDerivation
 import io.circe.generic.extras.Configuration
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
 import io.circe.generic.extras.semiauto.deriveConfiguredEncoder
-import io.scalaland.chimney.dsl.TransformerOps
+import io.scalaland.chimney.dsl._
 
 import java.time.Instant
 import java.time.LocalDateTime

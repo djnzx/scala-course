@@ -4,7 +4,6 @@ import cats.implicits.toFunctorOps
 import io.kubernetes.client.openapi.apis.CoreV1Api
 import io.kubernetes.client.openapi.models._
 import io.kubernetes.client.util.Config
-
 import scala.jdk.CollectionConverters.MapHasAsScala
 
 object K8ReadSecretAndMapApp extends App {
@@ -16,13 +15,16 @@ object K8ReadSecretAndMapApp extends App {
   val kConfig = Config.defaultClient
   val kApi = new CoreV1Api(kConfig)
   def obtainSecret(secretName: String)(implicit namespace: Namespace) = kApi
-    .readNamespacedSecret(secretName, namespace.value, null)
+    .readNamespacedSecret(secretName, namespace.value)
+    .execute()
     .getData
     .asScala
     .toMap
     .fmap(new String(_)) // secrets are Array[Byte]
+
   def obtainConfigMap(secretName: String)(implicit namespace: Namespace) = kApi
-    .readNamespacedConfigMap(secretName, namespace.value, null)
+    .readNamespacedConfigMap(secretName, namespace.value)
+    .execute()
     .getData
     .asScala
     .toMap

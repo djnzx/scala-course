@@ -10,8 +10,8 @@ lazy val sandbox = (project in file("sandbox"))
     Settings.common2,
     description := "sandbox, cat effects 3 based",
     libraryDependencies ++= Seq(
-      "co.fs2"       %% "fs2-core"              % "3.9.4",
-      "co.fs2"       %% "fs2-io"                % "3.9.4",
+      "co.fs2"       %% "fs2-core"              % "3.10.2",
+      "co.fs2"       %% "fs2-io"                % "3.10.2",
       // enum
       "com.beachape" %% "enumeratum"            % "1.7.3",
       "com.beachape" %% "enumeratum-circe"      % "1.7.3",
@@ -34,8 +34,8 @@ lazy val avro101 = (project in file("avro101"))
     libraryDependencies ++= Libraries.testingToolkit2,
     libraryDependencies ++= Seq(
       Libraries.cats,
-      "org.apache.avro"   % "avro"                % "1.11.0",
-      "org.apache.kafka" %% "kafka-streams-scala" % "3.4.0",
+      "org.apache.avro"   % "avro"                % "1.11.3",
+      "org.apache.kafka" %% "kafka-streams-scala" % "3.7.0",
     )
   )
 
@@ -115,56 +115,56 @@ lazy val ce3 = (project in file("ce3"))
     description := "CE3-based-related",
     libraryDependencies ++= Seq(
       // core
-      "org.typelevel"               %% "cats-core"             % "2.10.0",
+      "org.typelevel"               %% "cats-core"             % "2.12.0",
       "org.typelevel"               %% "cats-effect"           % "3.5.3",
       // stm
-      "io.github.timwspence"        %% "cats-stm"              % "0.13.4",
+      "io.github.timwspence"        %% "cats-stm"              % "0.13.5",
       // streams
-      "co.fs2"                      %% "fs2-core"              % "3.9.4",
-      "co.fs2"                      %% "fs2-io"                % "3.9.4",
-      "co.fs2"                      %% "fs2-reactive-streams"  % "3.9.4",
+      "co.fs2"                      %% "fs2-core"              % "3.10.2",
+      "co.fs2"                      %% "fs2-io"                % "3.10.2",
+      "co.fs2"                      %% "fs2-reactive-streams"  % "3.10.2",
       // enum
       "com.beachape"                %% "enumeratum"            % "1.7.3",
       "com.beachape"                %% "enumeratum-circe"      % "1.7.3",
-      "com.beachape"                %% "enumeratum-doobie"     % "1.7.3",
+      "com.beachape"                %% "enumeratum-doobie"     % "1.7.3", // 1.7.4 depends on doobie 1.0.0-RC4
       "com.beachape"                %% "enumeratum-cats"       % "1.7.3",
       "com.beachape"                %% "enumeratum-scalacheck" % "1.7.3",
       // json
-      "io.circe"                    %% "circe-parser"          % "0.14.6",
-      "io.circe"                    %% "circe-optics"          % "0.14.1", // 0.15.0
+      "io.circe"                    %% "circe-parser"          % "0.14.7",
+      "io.circe"                    %% "circe-optics"          % "0.15.0", // 0.15.0
       "io.circe"                    %% "circe-generic-extras"  % "0.14.3",
-      "io.circe"                    %% "circe-yaml"            % "0.14.2", // 0.15.1
+      "io.circe"                    %% "circe-yaml"            % "1.15.0", // 0.15.0
       "io.circe"                    %% "circe-fs2"             % "0.14.1",
-      "io.circe"                    %% "circe-shapes"          % "0.14.6",
-      "io.circe"                    %% "circe-testing"         % "0.14.6",
+      "io.circe"                    %% "circe-shapes"          % "0.14.7",
+      "io.circe"                    %% "circe-testing"         % "0.14.7",
       // cats logging
-      "org.typelevel"               %% "log4cats-core"         % "2.6.0",
-      "org.typelevel"               %% "log4cats-slf4j"        % "2.6.0",
+      "org.typelevel"               %% "log4cats-core"         % "2.7.0",
+      "org.typelevel"               %% "log4cats-slf4j"        % "2.7.0",
       //
-      "com.github.fd4s"             %% "fs2-kafka"             % "3.2.0",
-      "org.typelevel"               %% "cats-parse"            % "0.3.10",
-      "com.github.cb372"            %% "cats-retry"            % "3.1.0",
+      "com.github.fd4s"             %% "fs2-kafka"             % "3.5.1",
+      "org.typelevel"               %% "cats-parse"            % "1.0.0",
+      "com.github.cb372"            %% "cats-retry"            % "3.1.3",
       "org.typelevel"               %% "munit-cats-effect-3"   % "1.0.7",
       // http
-      "org.http4s"                  %% "http4s-core"           % "0.23.23",
-      "org.http4s"                  %% "http4s-dsl"            % "0.23.18",
-      "org.http4s"                  %% "http4s-circe"          % "0.23.19",
-      "org.http4s"                  %% "http4s-blaze-server"   % "0.23.15",
-      "org.http4s"                  %% "http4s-blaze-client"   % "0.23.15",
-      "org.http4s"                  %% "http4s-ember-server"   % "0.23.18",
-      "org.http4s"                  %% "http4s-ember-client"   % "0.23.18",
+      "org.http4s"                  %% "http4s-core"           % "0.23.27",
+      "org.http4s"                  %% "http4s-dsl"            % "0.23.27",
+      "org.http4s"                  %% "http4s-circe"          % "0.23.27",
+      "org.http4s"                  %% "http4s-ember-server"   % "0.23.27",
+      "org.http4s"                  %% "http4s-ember-client"   % "0.23.27",
+      "org.http4s"                  %% "http4s-blaze-server"   % "0.23.16",
+      "org.http4s"                  %% "http4s-blaze-client"   % "0.23.16",
       // tapir
-      "com.softwaremill.sttp.tapir" %% "tapir-core"            % "1.7.2",
-      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"      % "1.7.2",
-      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"   % "1.7.2",
-      "org.scalameta"               %% "scalameta"             % "4.8.11",
+      "com.softwaremill.sttp.tapir" %% "tapir-core"            % "1.10.8",
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"      % "1.10.8",
+      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"   % "1.10.8",
+      "org.scalameta"               %% "scalameta"             % "4.9.4",
       // other
-      "io.kubernetes"                % "client-java-api"       % "18.0.0",
-      "io.kubernetes"                % "client-java"           % "18.0.0",
-      "jakarta.mail"                 % "jakarta.mail-api"      % "2.1.1",
-      "io.scalaland"                %% "chimney"               % "0.7.5",
-      "org.tpolecat"                %% "skunk-core"            % "0.6.3",
-      "io.7mind.izumi"              %% "logstage-core"         % "1.2.5",
+      "io.kubernetes"                % "client-java-api"       % "20.0.1",
+      "io.kubernetes"                % "client-java"           % "20.0.1",
+      "jakarta.mail"                 % "jakarta.mail-api"      % "2.1.3",
+      "io.scalaland"                %% "chimney"               % "1.0.0",
+      "org.tpolecat"                %% "skunk-core"            % "0.6.4",
+      "io.7mind.izumi"              %% "logstage-core"         % "1.2.8",
       Libraries.doobieCore,
       Libraries.doobiePg,
       Libraries.sqlPostgres,
