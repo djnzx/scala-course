@@ -1,6 +1,7 @@
 package cats101.validated
 
-import cats.data.Validated.{Invalid, Valid}
+import cats.data.Validated.Invalid
+import cats.data.Validated.Valid
 import cats.data._
 import cats.implicits._
 import cats.kernel.Semigroup
@@ -87,9 +88,9 @@ class ValidatedSandbox extends AnyFunSuite with Matchers with ScalaCheckProperty
     List(x1, x2, x3, x4).sequence shouldBe NonEmptyList.of("E1", "E2", "E3", "E4").invalid
   }
 
-  test("validated traverse") {
+  test("traverse with ValidatedNel[E, A]") {
 
-    def validateIt(raw: String) =
+    def validateIt(raw: String): ValidatedNel[String, Int] =
       raw.toIntOption
         .fold(raw.invalidNel[Int])(_.valid)
 
@@ -101,6 +102,32 @@ class ValidatedSandbox extends AnyFunSuite with Matchers with ScalaCheckProperty
 
   }
 
+  test("traverse with Validated[E, A]") {
+
+    def validateIt(raw: String): Validated[String, Int] =
+      raw.toIntOption
+        .fold(raw.invalid[Int])(_.valid)
+
+    def validateItNel1(raw: String): ValidatedNel[String, Int] =
+      validateIt(raw)
+        .leftMap(x => NonEmptyList.of(x))
+
+    val validateItNel2 =
+      (validateIt _).andThen(_.leftMap(x => NonEmptyList.of(x)))
+
+    def mkNel[E, A](v: Validated[E, A]): ValidatedNel[E, A] = v.leftMap(x => NonEmptyList.of(x))
+
+    val validateItNel3 =
+      (validateIt _) >>> (mkNel _)
+
+    /** keeps all results if they are good */
+    List("1", "2", "3").traverse(validateItNel1) shouldBe List(1, 2, 3).valid
+
+    /** keep all errors if at least one of them is bad */
+    List("1", "2", "3", "4x", "5z").traverse(validateItNel2) shouldBe NonEmptyList.of("4x", "5z").invalid
+
+  }
+
   test("indexed validation") {
 
     def mkIndexed[A](xs: Seq[A]) = LazyList.from(1) zip xs
@@ -109,9 +136,9 @@ class ValidatedSandbox extends AnyFunSuite with Matchers with ScalaCheckProperty
       raw.toDoubleOption
         .fold(raw.invalid[Double])(_.valid)
 
-    def validateIndexed[A, E, B](f: A => Validated[E, B], data: Seq[A]) = {
+    def validateIndexedV1[A, E, B](f: A => Validated[E, B], data: Seq[A]) = {
       val validated = data.map(f)
-      val validatedIndexed = mkIndexed(validated)
+      val validatedIndexed = mkIndexed(validated) // indexes from 1
       val validatedIndexedOnlyErrors = validatedIndexed.map {
         case (idx, Invalid(e)) => Invalid(idx -> e)
         case (_, Valid(x))     => Valid(x)
@@ -121,8 +148,43 @@ class ValidatedSandbox extends AnyFunSuite with Matchers with ScalaCheckProperty
         .sequence
     }
 
-    validateIndexed(validateIt, List("11", "22", "33")) shouldBe List(11.0, 22.0, 33.0).valid
-    validateIndexed(validateIt, List("11", "22", "33", "boom", "blah")) shouldBe NonEmptyList.of(4 -> "boom", 5 -> "blah").invalid
+    def validateIndexedV2[A, E, B](f: A => Validated[E, B], xs: Seq[A]) =
+      xs.map(f)
+        .mapWithIndex { // indexes from 0
+          case (Valid(x), _)     => Valid(x)
+          case (Invalid(e), idx) => Invalid(idx -> e)
+        }
+        .traverse(_.leftMap(x => NonEmptyList.of(x)))
+
+    def validateIndexedV3[A, E, B](f: A => Validated[E, B], xs: Seq[A]) =
+      xs.map(f)
+        .mapWithIndex {
+          case (Valid(x), _)     => Valid(x)
+          case (Invalid(e), idx) => (idx -> e).invalidNel
+        }
+        .sequence
+
+    def validateIndexedV4[A, E, B](f: A => Validated[E, B], xs: Seq[A]) =
+      xs.map(f)
+        .zipWithIndex
+        .traverse {
+          case (Valid(x), _)     => Valid(x)
+          case (Invalid(e), idx) => (idx -> e).invalidNel
+        }
+
+    def validateIndexedV5[A, E, B](f: A => Validated[E, B], xs: Seq[A]) =
+      xs.mapWithIndex { case (x, idx) => f(x).leftMap(x => NonEmptyList.of(idx -> x)) }
+        .sequence
+
+    validateIndexedV1(validateIt, List("11", "22", "33")) shouldBe List(11.0, 22.0, 33.0).valid
+    validateIndexedV2(validateIt, List("11", "22", "33")) shouldBe List(11.0, 22.0, 33.0).valid
+    validateIndexedV3(validateIt, List("11", "22", "33")) shouldBe List(11.0, 22.0, 33.0).valid
+
+    validateIndexedV1(validateIt, List("11", "22", "33", "boom", "blah")) shouldBe NonEmptyList.of(4 -> "boom", 5 -> "blah").invalid
+    validateIndexedV2(validateIt, List("11", "22", "33", "boom", "blah")) shouldBe NonEmptyList.of(3 -> "boom", 4 -> "blah").invalid
+    validateIndexedV3(validateIt, List("11", "22", "33", "boom", "blah")) shouldBe NonEmptyList.of(3 -> "boom", 4 -> "blah").invalid
+    validateIndexedV4(validateIt, List("11", "22", "33", "boom", "blah")) shouldBe NonEmptyList.of(3 -> "boom", 4 -> "blah").invalid
+    validateIndexedV5(validateIt, List("11", "22", "33", "boom", "blah")) shouldBe NonEmptyList.of(3 -> "boom", 4 -> "blah").invalid
   }
 
 }
