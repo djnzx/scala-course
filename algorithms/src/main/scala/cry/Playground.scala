@@ -1,15 +1,14 @@
 package cry
 
 import cry.Utils.{byteToHex, bytesToHex}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 import java.security.MessageDigest
 import java.util.Base64
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 
 /** https://www.manning.com/books/real-world-cryptography
   * https://mvnrepository.com/artifact/org.bouncycastle?sort=popular

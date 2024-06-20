@@ -52,8 +52,8 @@ lazy val munitx = (project in file("munitx"))
   .settings(
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.scalameta" %% "munit"            % "1.0.0-M8",
-      "org.scalameta" %% "munit-scalacheck" % "1.0.0-M8"
+      "org.scalameta" %% "munit"            % "1.0.0",
+      "org.scalameta" %% "munit-scalacheck" % "1.0.0"
     )
   )
 
@@ -61,8 +61,8 @@ lazy val algorithms = (project in file("algorithms"))
   .settings(
     Settings.common2,
     // compiled with JDK17
-    libraryDependencies += "org.springframework.security" % "spring-security-crypto" % "6.1.2",
-    libraryDependencies += "co.fs2"                      %% "fs2-core"               % "3.9.3",
+    libraryDependencies += "org.springframework.security" % "spring-security-crypto" % "6.3.0",
+    libraryDependencies += "co.fs2"                      %% "fs2-core"               % "3.10.2",
   )
 
 lazy val amt = (project in file("amt"))
@@ -126,14 +126,14 @@ lazy val ce3 = (project in file("ce3"))
       // enum
       "com.beachape"                %% "enumeratum"            % "1.7.3",
       "com.beachape"                %% "enumeratum-circe"      % "1.7.3",
-      "com.beachape"                %% "enumeratum-doobie"     % "1.7.3", // 1.7.4 depends on doobie 1.0.0-RC4
+      "com.beachape"                %% "enumeratum-doobie"     % "1.7.3", // 1.7.4 brings doobie 1.0.0-RC4
       "com.beachape"                %% "enumeratum-cats"       % "1.7.3",
       "com.beachape"                %% "enumeratum-scalacheck" % "1.7.3",
       // json
       "io.circe"                    %% "circe-parser"          % "0.14.7",
-      "io.circe"                    %% "circe-optics"          % "0.15.0", // 0.15.0
+      "io.circe"                    %% "circe-optics"          % "0.14.1", // 0.15.0
       "io.circe"                    %% "circe-generic-extras"  % "0.14.3",
-      "io.circe"                    %% "circe-yaml"            % "1.15.0", // 0.15.0
+      "io.circe"                    %% "circe-yaml"            % "0.14.2", // 0.15.1
       "io.circe"                    %% "circe-fs2"             % "0.14.1",
       "io.circe"                    %% "circe-shapes"          % "0.14.7",
       "io.circe"                    %% "circe-testing"         % "0.14.7",
@@ -154,7 +154,7 @@ lazy val ce3 = (project in file("ce3"))
       "org.http4s"                  %% "http4s-blaze-server"   % "0.23.16",
       "org.http4s"                  %% "http4s-blaze-client"   % "0.23.16",
       // tapir
-      "com.softwaremill.sttp.tapir" %% "tapir-core"            % "1.10.8",
+      "com.softwaremill.sttp.tapir" %% "tapir-core"            % "1.10.9",
       "com.softwaremill.sttp.tapir" %% "tapir-json-circe"      % "1.10.8",
       "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"   % "1.10.8",
       "org.scalameta"               %% "scalameta"             % "4.9.4",
@@ -162,9 +162,9 @@ lazy val ce3 = (project in file("ce3"))
       "io.kubernetes"                % "client-java-api"       % "20.0.1",
       "io.kubernetes"                % "client-java"           % "20.0.1",
       "jakarta.mail"                 % "jakarta.mail-api"      % "2.1.3",
-      "io.scalaland"                %% "chimney"               % "1.0.0",
+      "io.scalaland"                %% "chimney"               % "1.1.0",
       "org.tpolecat"                %% "skunk-core"            % "0.6.4",
-      "io.7mind.izumi"              %% "logstage-core"         % "1.2.8",
+      "io.7mind.izumi"              %% "logstage-core"         % "1.2.10",
       Libraries.doobieCore,
       Libraries.doobiePg,
       Libraries.sqlPostgres,
@@ -197,55 +197,6 @@ lazy val `ce3-docs` = (project in file("ce3-docs"))
   )
   .enablePlugins(MdocPlugin)
 
-lazy val es68 = (project in file("es68"))
-  .settings(
-    Settings.common2,
-    crossScalaVersions := Seq(Versions.vScala212, Versions.vScala213),
-    description := "Elastic Search 6.8 Learning",
-    libraryDependencies ++= Seq(
-      "com.sksamuel.elastic4s" %% "elastic4s-core"       % "6.7.8",
-      "com.sksamuel.elastic4s" %% "elastic4s-http"       % "6.7.8",
-      "com.beachape"           %% "enumeratum"           % "1.7.2",
-      "com.beachape"           %% "enumeratum-circe"     % "1.7.2",
-      "io.circe"               %% "circe-parser"         % "0.14.6",
-      "io.circe"               %% "circe-generic-extras" % "0.14.3",
-      "org.typelevel"          %% "cats-core"            % "2.10.0",
-      "com.github.pureconfig"  %% "pureconfig"           % "0.17.4",
-    ),
-  )
-
-lazy val es68s_akka = (project in file("es68s_akka"))
-  .settings(Settings.common2)
-  .dependsOn(es68)
-  .settings(
-    libraryDependencies += "com.typesafe.akka" %% "akka-stream" % "2.6.21"
-  )
-
-lazy val es68s_ce = (project in file("es68s_ce"))
-  .settings(Settings.common2)
-  .dependsOn(es68)
-  .settings(
-    libraryDependencies += "co.fs2" %% "fs2-core" % "3.9.2"
-  )
-
-lazy val es68s_zio = (project in file("es68s_zio"))
-  .settings(Settings.common2)
-  .dependsOn(es68)
-  .settings(
-    libraryDependencies += "dev.zio" %% "zio-streams" % "2.0.15"
-  )
-
-lazy val es89 = (project in file("es89"))
-  .settings(
-    Settings.common2,
-    description := "Elastic Search 8 Learning",
-    libraryDependencies ++= Seq(
-      "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % "8.9.2",
-      "com.sksamuel.elastic4s" %% "elastic4s-testkit"       % "8.9.2",
-      "org.typelevel"          %% "cats-core"               % "2.10.0",
-    ),
-  )
-
 lazy val httpt = (project in file("httpt"))
   .settings(
     Settings.common2,
@@ -256,8 +207,8 @@ lazy val httpt = (project in file("httpt"))
       "org.http4s"    %% "http4s-ember-server" % "1.0.0-M39", // 13.07.2023
       "org.http4s"    %% "http4s-blaze-server" % "1.0.0-M38", //  4.01.2023
       "org.http4s"    %% "http4s-jetty-server" % "1.0.0-M32",
-      "org.typelevel" %% "log4cats-core"       % "2.6.0",
-      "org.typelevel" %% "log4cats-slf4j"      % "2.6.0"
+      "org.typelevel" %% "log4cats-core"       % "2.7.0",
+      "org.typelevel" %% "log4cats-slf4j"      % "2.7.0"
     ),
     dependencyOverrides ++= Seq(
       "org.http4s" %% "http4s-core"   % "1.0.0-M39",
@@ -444,15 +395,15 @@ lazy val zio2 = (project in file("zio2"))
     description := "ZIO v2",
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-core"                % "2.10.0",
+      "org.typelevel" %% "cats-core"                % "2.12.0",
       "com.beachape"  %% "enumeratum"               % "1.7.3",
-      "dev.zio"       %% "zio"                      % "2.1.1",
-      "dev.zio"       %% "zio-streams"              % "2.1.1",
-      "dev.zio"       %% "zio-json"                 % "0.6.2",
-      "dev.zio"       %% "zio-logging"              % "2.2.3",
-      "dev.zio"       %% "zio-logging-slf4j-bridge" % "2.2.3",
+      "dev.zio"       %% "zio"                      % "2.1.3",
+      "dev.zio"       %% "zio-streams"              % "2.1.3",
+      "dev.zio"       %% "zio-json"                 % "0.7.0",
+      "dev.zio"       %% "zio-logging"              % "2.3.0",
+      "dev.zio"       %% "zio-logging-slf4j-bridge" % "2.3.0",
       "dev.zio"       %% "zio-interop-cats"         % "23.1.0.2",
-      "dev.zio"       %% "zio-test"                 % "2.1.1" % Test,
+      "dev.zio"       %% "zio-test"                 % "2.1.3" % Test,
       "dev.zio"       %% "zio-test-sbt"             % "2.1.1" % Test,
     ),
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
@@ -463,8 +414,8 @@ lazy val spring = (project in file("spring"))
     description := "SpringBoot Experiments",
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.projectlombok"        % "lombok"                  % "1.18.30",
-      "org.springframework.boot" % "spring-boot-starter-web" % "3.2.2",
+      "org.projectlombok"        % "lombok"                  % "1.18.32",
+      "org.springframework.boot" % "spring-boot-starter-web" % "3.2.6",
     ),
   )
 
@@ -473,11 +424,11 @@ lazy val http4sws = (project in file("http4sws"))
     description := "WebSocket with http4s, cats-parse, cats effects, fs2 Streams",
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.http4s"    %% "http4s-ember-server" % "0.23.25",
-      "org.http4s"    %% "http4s-circe"        % "0.23.25",
-      "org.http4s"    %% "http4s-dsl"          % "0.23.25",
-      "io.circe"      %% "circe-generic"       % "0.14.6",
+      "org.http4s"    %% "http4s-dsl"          % "0.23.27",
+      "org.http4s"    %% "http4s-circe"        % "0.23.27",
+      "org.http4s"    %% "http4s-ember-server" % "0.23.27",
+      "io.circe"      %% "circe-generic"       % "0.14.7",
       "org.typelevel" %% "cats-parse"          % "1.0.0",
-      "ch.qos.logback" % "logback-classic"     % "1.4.14",
+      "ch.qos.logback" % "logback-classic"     % "1.5.6",
     )
   )
