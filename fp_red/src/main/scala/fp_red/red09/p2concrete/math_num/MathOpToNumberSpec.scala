@@ -1,10 +1,11 @@
 package fp_red.red09.p2concrete.math_num
 
+import fp_red.red09.p0trait.ParseError
 import fp_red.red09.p1impl.Reference
+import fp_red.red09.p2concrete.math.BiTree
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.funspec.AnyFunSpec
 
-// 1
 class MathOpToNumberSpec extends AnyFunSpec with Matchers {
   val R = Reference
   
@@ -21,7 +22,11 @@ class MathOpToNumberSpec extends AnyFunSpec with Matchers {
         "1-2*3",
         "(1-2)*-3",
         "((1-2)*(3+4))/5-1",
-      ).foreach { s => pprint.log(R.run(built)(s)) }
+      ).foreach { input =>
+        val parser: String => Either[ParseError, BiTree.Expr[Int]] = R.run(built)
+        val parsed: Either[ParseError, BiTree.Expr[Int]] = parser(input)
+        pprint.log(parsed)
+      }
     }
   }
 
