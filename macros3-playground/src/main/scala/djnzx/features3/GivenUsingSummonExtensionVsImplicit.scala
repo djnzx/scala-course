@@ -1,4 +1,4 @@
-package rock
+package djnzx.features3
 
 object GivenUsingSummonExtensionVsImplicit extends App {
 

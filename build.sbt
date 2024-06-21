@@ -126,7 +126,7 @@ lazy val ce3 = (project in file("ce3"))
       // enum
       "com.beachape"                %% "enumeratum"            % "1.7.3",
       "com.beachape"                %% "enumeratum-circe"      % "1.7.3",
-      "com.beachape"                %% "enumeratum-doobie"     % "1.7.3", // 1.7.4 brings doobie 1.0.0-RC4
+      "com.beachape"                %% "enumeratum-doobie"     % "1.7.3",  // 1.7.4 brings doobie 1.0.0-RC4
       "com.beachape"                %% "enumeratum-cats"       % "1.7.3",
       "com.beachape"                %% "enumeratum-scalacheck" % "1.7.3",
       // json
@@ -353,12 +353,6 @@ lazy val plain2 = (project in file("plain2"))
     )
   )
 
-lazy val plain3 = (project in file("plain3"))
-  .settings(
-    scalaVersion := v.vScala3,
-    description := "Example sbt project that compiles using Scala 3"
-  )
-
 /** starting from 3.2.0 it has 2.13 support */
 lazy val sparkx = (project in file("sparkx"))
   .settings(
@@ -431,4 +425,33 @@ lazy val http4sws = (project in file("http4sws"))
       "org.typelevel" %% "cats-parse"          % "1.0.0",
       "ch.qos.logback" % "logback-classic"     % "1.5.6",
     )
+  )
+
+lazy val `macros2-core` = (project in file("macros2-core"))
+  .settings(
+    libraryDependencies ++= Seq(
+      "co.fs2" %% "fs2-io" % "3.10.2",
+    ),
+    Settings.common2,
+  )
+
+lazy val `macros2-playground` = (project in file("macros2-playground"))
+  .dependsOn(`macros2-core`)
+  .settings(
+    Settings.common2,
+  )
+
+lazy val `macros3-core` = (project in file("macros3-core"))
+  .settings(
+    libraryDependencies ++= Seq(
+      "co.fs2" %% "fs2-io" % "3.10.2",
+    ),
+    Settings.common3,
+  )
+
+/** and not only macros... */
+lazy val `macros3-playground` = (project in file("macros3-playground"))
+  .dependsOn(`macros3-core`)
+  .settings(
+    Settings.common3,
   )

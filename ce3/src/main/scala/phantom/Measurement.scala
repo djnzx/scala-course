@@ -1,10 +1,10 @@
-package measurement
+package phantom
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.Checkers
 
-object PhantomTypeParameter {
+object Measurement {
 
   trait Describe[A] {
     def name: String
@@ -15,11 +15,11 @@ object PhantomTypeParameter {
 
   trait MeasureUnit
   trait Length extends MeasureUnit
-  trait KM extends Length
-  trait MI extends Length
+  trait KM     extends Length
+  trait MI     extends Length
   trait Weight extends MeasureUnit
-  trait KG extends Weight
-  trait LB extends Weight
+  trait KG     extends Weight
+  trait LB     extends Weight
 
   trait DescribeInstances {
     implicit val describeKM: Describe[KM] = Describe[KM]("km")
@@ -48,7 +48,7 @@ object PhantomTypeParameter {
   trait LengthConversionInstances {
     implicit val c1 = QtyConversion[KM, KM](1.0)
     implicit val c2 = QtyConversion[MI, MI](1.0)
-    implicit val c3 = QtyConversion[MI, KM](1.60934) // 1 mi = 1.60934 km
+    implicit val c3 = QtyConversion[MI, KM](1.60934)     // 1 mi = 1.60934 km
     implicit val c4 = QtyConversion[KM, MI](1 / 1.60934) // 1 km = 0.62137 mi
   }
   trait MassConversionInstances {
@@ -91,20 +91,20 @@ object PhantomTypeParameter {
 class PhantomTypeParameterSpec extends AnyFunSpec with Matchers with Checkers {
 
   // syntax
-  import PhantomTypeParameter.DoubleLiftSyntax._
-  import PhantomTypeParameter.QuantitySyntax._
+  import Measurement.DoubleLiftSyntax._
+  import Measurement.QuantitySyntax._
   // types
-  import PhantomTypeParameter._
+  import Measurement._
 
   describe("experiments") {
-    val q1: Quantity[KM] = 1.km // 1.0 km
-    val q2: Quantity[MI] = q1.to[MI] // 0.62137 mi
+    val q1: Quantity[KM] = 1.km        // 1.0 km
+    val q2: Quantity[MI] = q1.to[MI]   // 0.62137 mi
     val q3: Quantity[KM] = 1.km + 2.km // 3 km
     val q4: Quantity[MI] = 2.mi + 3.mi // 5 mi
     val q5: Quantity[KM] = 1.km + 1.mi // 1.0 + 1.6... = 2.60934 km
     val q6: Quantity[MI] = 1.mi + 1.km // 1.0 + 0.6... = 1.62137 mi
-    val d1: Double = q1.as[KM] // 1.0
-    val d2: Double = q1.as[MI] // 0.62137
+    val d1: Double = q1.as[KM]         // 1.0
+    val d2: Double = q1.as[MI]         // 0.62137
 
     println(q1)
     println(q2)
@@ -115,8 +115,8 @@ class PhantomTypeParameterSpec extends AnyFunSpec with Matchers with Checkers {
     println(d1)
     println(d2)
 
-    println(1.kg + 1.lb) // 1.4545454545454546 kg
-    println(1.lb + 1.kg) // 3.2 lb
+    println(1.kg + 1.lb)           // 1.4545454545454546 kg
+    println(1.lb + 1.kg)           // 3.2 lb
     println(1.kg / 2 + 1.lb * 2.2) // 1.5 kg
   }
 

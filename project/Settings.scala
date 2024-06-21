@@ -22,6 +22,7 @@ object Settings {
   val common3: Seq[Setting[?]] = common ++ Seq(
     scalaVersion := Versions.vScala3,
     libraryDependencies ++= Libraries.testingToolkit3,
+    scalacOptions ++= CompilerOptions.scalacOptions3,
   )
 
 }

@@ -39,4 +39,13 @@ object CompilerOptions {
 //    "-opt:l:inline",
 //    "-opt-inline-from:<source>",
   )
+
+  val scalacOptions3: Seq[String] = Seq(
+//    "-Ysafe-init",      // make forward reference a warning
+//    "-Xfatal-warnings", // make all waring as fatal
+//    "-Wconf:cat=other-match-analysis:error",
+//    "-Wconf:cat=exhaustivity:error",
+//    "-Werror"
+  )
+
 }
