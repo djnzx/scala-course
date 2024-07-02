@@ -373,6 +373,8 @@ lazy val typesafe = (project in file("typesafe"))
       "com.typesafe.akka"  %% "akka-actor"           % "2.6.21",
       "com.typesafe.akka"  %% "akka-actor-typed"     % "2.6.21",
       "com.typesafe.akka"  %% "akka-stream"          % "2.6.21",
+      "com.typesafe.akka"  %% "akka-stream-kafka"    % "2.0.7",
+      "com.typesafe.akka"  %% "akka-stream-contrib"  % "0.10",
       "org.reactivestreams" % "reactive-streams"     % "1.0.4",
       "com.typesafe.akka"  %% "akka-http"            % "10.5.0",
       "com.typesafe.akka"  %% "akka-http-spray-json" % "10.5.0",
