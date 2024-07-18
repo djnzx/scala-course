@@ -13,12 +13,12 @@ lazy val sandbox = (project in file("sandbox"))
       "co.fs2"       %% "fs2-core"              % "3.10.2",
       "co.fs2"       %% "fs2-io"                % "3.10.2",
       // enum
-      "com.beachape" %% "enumeratum"            % "1.7.3",
-      "com.beachape" %% "enumeratum-circe"      % "1.7.3",
-      "com.beachape" %% "enumeratum-cats"       % "1.7.3",
-      "com.beachape" %% "enumeratum-scalacheck" % "1.7.3",
+      "com.beachape" %% "enumeratum"            % "1.7.4",
+      "com.beachape" %% "enumeratum-circe"      % "1.7.4",
+      "com.beachape" %% "enumeratum-cats"       % "1.7.4",
+      "com.beachape" %% "enumeratum-scalacheck" % "1.7.4",
       // json
-      "io.circe"     %% "circe-parser"          % "0.14.7",
+      "io.circe"     %% "circe-parser"          % "0.14.9",
       "io.circe"     %% "circe-generic-extras"  % "0.14.3",
       "io.circe"     %% "circe-fs2"             % "0.14.1",
     ),
@@ -52,8 +52,11 @@ lazy val munitx = (project in file("munitx"))
   .settings(
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.scalameta" %% "munit"            % "1.0.0",
-      "org.scalameta" %% "munit-scalacheck" % "1.0.0"
+      "org.scalameta" %% "munit"             % "1.0.0",
+      "org.scalameta" %% "munit-scalacheck"  % "1.0.0",
+      "org.typelevel" %% "munit-cats-effect" % "2.0.0",
+      "org.tpolecat"  %% "skunk-core"        % "0.6.4",
+      "org.postgresql" % "postgresql"        % "42.7.3",
     )
   )
 

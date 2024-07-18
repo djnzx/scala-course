@@ -43,10 +43,10 @@ object PetService {
                 _  <- IO.println(s"Trying to insert $p")
                 sp <- xa.savepoint
                 _  <- pc.execute(p).recoverWith {
-                  case SqlState.UniqueViolation(ex) =>
-                    IO.println(s"Unique violation: ${ex.constraintName.getOrElse("<unknown>")}, rolling back...") *>
-                      xa.rollback(sp)
-                }
+                        case SqlState.UniqueViolation(ex) =>
+                          IO.println(s"Unique violation: ${ex.constraintName.getOrElse("<unknown>")}, rolling back...") *>
+                            xa.rollback(sp)
+                      }
               } yield ()
             }
           }
@@ -57,12 +57,12 @@ object PetService {
 
 }
 
-object Skunk07Transaction extends SkunkExploreApp {
+object SkunkTransaction extends IOApp.Simple with SkunkConnection {
 
   // a resource that creates and drops a temporary table
   def withPetsTable(s: Session[IO]): Resource[IO, Unit] = {
     val alloc = s.execute(sql"CREATE TEMP TABLE pets (name varchar unique, age int2)".command).void
-    val free  = s.execute(sql"DROP TABLE pets".command).void
+    val free = s.execute(sql"DROP TABLE pets".command).void
     Resource.make(alloc)(_ => free)
   }
 
@@ -80,9 +80,9 @@ object Skunk07Transaction extends SkunkExploreApp {
 
   val resource: Resource[IO, PetService[IO]] =
     for {
-      s <- sessionR
-      _ <- withPetsTable(s)
-      _ <- withTransactionStatusLogger(s)
+      s  <- session
+      _  <- withPetsTable(s)
+      _  <- withTransactionStatusLogger(s)
       ps <- Resource.eval(PetService.fromSession(s))
     } yield ps
 
@@ -93,12 +93,12 @@ object Skunk07Transaction extends SkunkExploreApp {
     Pet("Steve", 9)
   )
 
-  override val app: IO[Unit] =
+  override val run: IO[Unit] =
     resource.use { ps =>
       for {
-        _ <- ps.tryInsertAll(pets)
+        _   <- ps.tryInsertAll(pets)
         all <- ps.selectAll
-        _ <- all.traverse_(p => IO.println(p))
+        _   <- all.traverse_(p => IO.println(p))
       } yield ExitCode.Success
     }
 }
