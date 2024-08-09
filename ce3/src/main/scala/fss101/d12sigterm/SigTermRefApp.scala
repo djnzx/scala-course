@@ -52,7 +52,7 @@ object SigTermRefApp extends IOApp.Simple {
       .flatMap { ref =>
 
         val finalizer =
-          IO.println("SIGTERM! handled") >> report(ref)
+          IO.println("finally") >> report(ref)
 
         infiniteStream(ref)
           .interruptWhen(haltSignal)
