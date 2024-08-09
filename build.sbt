@@ -10,17 +10,19 @@ lazy val sandbox = (project in file("sandbox"))
     Settings.common2,
     description := "sandbox, cat effects 3 based",
     libraryDependencies ++= Seq(
-      "co.fs2"       %% "fs2-core"              % "3.10.2",
-      "co.fs2"       %% "fs2-io"                % "3.10.2",
+      "co.fs2"        %% "fs2-core"              % "3.10.2",
+      "co.fs2"        %% "fs2-io"                % "3.10.2",
       // enum
-      "com.beachape" %% "enumeratum"            % "1.7.4",
-      "com.beachape" %% "enumeratum-circe"      % "1.7.4",
-      "com.beachape" %% "enumeratum-cats"       % "1.7.4",
-      "com.beachape" %% "enumeratum-scalacheck" % "1.7.4",
+      "com.beachape"  %% "enumeratum"            % "1.7.4",
+      "com.beachape"  %% "enumeratum-circe"      % "1.7.4",
+      "com.beachape"  %% "enumeratum-cats"       % "1.7.4",
+      "com.beachape"  %% "enumeratum-scalacheck" % "1.7.4",
       // json
-      "io.circe"     %% "circe-parser"          % "0.14.9",
-      "io.circe"     %% "circe-generic-extras"  % "0.14.3",
-      "io.circe"     %% "circe-fs2"             % "0.14.1",
+      "io.circe"      %% "circe-parser"          % "0.14.9",
+      "io.circe"      %% "circe-generic-extras"  % "0.14.3",
+      "io.circe"      %% "circe-fs2"             % "0.14.1",
+      // twiddles
+      "org.typelevel" %% "twiddles-core"         % "0.9.0",
     ),
   )
 
