@@ -1,8 +1,0 @@
-{
-  "name": "Jackery",
-  "age": 66,
-  "address": {
-    "street": "Broadway",
-    "house": 123
-  }
-}

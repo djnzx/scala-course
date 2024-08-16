@@ -30,6 +30,7 @@
 - git@github.com:djnzx/concurrency-in-practice-java.git
 - git@github.com:djnzx/learning-scala3.git
 - git@github.com:djnzx/scala-99.git
+- git@github.com:djnzx/scala-avro-kafka-flows.git
 
 ### others - notable!
 - Adam Warski (https://github.com/adamw)

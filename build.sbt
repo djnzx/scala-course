@@ -19,26 +19,11 @@ lazy val sandbox = (project in file("sandbox"))
       "com.beachape"  %% "enumeratum-scalacheck" % "1.7.4",
       // json
       "io.circe"      %% "circe-parser"          % "0.14.9",
-      "io.circe"      %% "circe-generic-extras"  % "0.14.3",
+      "io.circe"      %% "circe-generic-extras"  % "0.14.4",
       "io.circe"      %% "circe-fs2"             % "0.14.1",
       // twiddles
       "org.typelevel" %% "twiddles-core"         % "0.9.0",
     ),
-  )
-
-lazy val avro101 = (project in file("avro101"))
-  .settings(
-    scalaVersion := v.vScala212,
-    javacOptions ++= CompilerOptions.javacOptions,
-    scalacOptions ++= CompilerOptions.scalacOptions,
-    scalacOptions -= ScalacOpts.warningsAsFatals, // we are learning, there is no sense to be so strict
-    scalacOptions -= ScalacOpts.macroAnnotations, // 2.12 doesn't have it
-    libraryDependencies ++= Libraries.testingToolkit2,
-    libraryDependencies ++= Seq(
-      Libraries.cats,
-      "org.apache.avro"   % "avro"                % "1.11.3",
-      "org.apache.kafka" %% "kafka-streams-scala" % "3.7.0",
-    )
   )
 
 lazy val mono101 = (project in file("mono101"))
@@ -121,7 +106,7 @@ lazy val ce3 = (project in file("ce3"))
     libraryDependencies ++= Seq(
       // core
       "org.typelevel"               %% "cats-core"             % "2.12.0",
-      "org.typelevel"               %% "cats-effect"           % "3.5.3",
+      "org.typelevel"               %% "cats-effect"           % "3.5.4",
       // stm
       "io.github.timwspence"        %% "cats-stm"              % "0.13.5",
       // streams
@@ -131,13 +116,13 @@ lazy val ce3 = (project in file("ce3"))
       // enum
       "com.beachape"                %% "enumeratum"            % "1.7.3",
       "com.beachape"                %% "enumeratum-circe"      % "1.7.3",
-      "com.beachape"                %% "enumeratum-doobie"     % "1.7.3",  // 1.7.4 brings doobie 1.0.0-RC4
       "com.beachape"                %% "enumeratum-cats"       % "1.7.3",
+      "com.beachape"                %% "enumeratum-doobie"     % "1.7.3",  // 1.7.4 brings doobie 1.0.0-RC4
       "com.beachape"                %% "enumeratum-scalacheck" % "1.7.3",
       // json
-      "io.circe"                    %% "circe-parser"          % "0.14.7",
+      "io.circe"                    %% "circe-parser"          % "0.14.9",
       "io.circe"                    %% "circe-optics"          % "0.14.1", // 0.15.0
-      "io.circe"                    %% "circe-generic-extras"  % "0.14.3",
+      "io.circe"                    %% "circe-generic-extras"  % "0.14.4",
       "io.circe"                    %% "circe-yaml"            % "0.14.2", // 0.15.1
       "io.circe"                    %% "circe-fs2"             % "0.14.1",
       "io.circe"                    %% "circe-shapes"          % "0.14.7",
@@ -159,10 +144,10 @@ lazy val ce3 = (project in file("ce3"))
       "org.http4s"                  %% "http4s-blaze-server"   % "0.23.16",
       "org.http4s"                  %% "http4s-blaze-client"   % "0.23.16",
       // tapir
-      "com.softwaremill.sttp.tapir" %% "tapir-core"            % "1.10.9",
-      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"      % "1.10.8",
-      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"   % "1.10.8",
-      "org.scalameta"               %% "scalameta"             % "4.9.4",
+      "com.softwaremill.sttp.tapir" %% "tapir-core"            % "1.11.1",
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"      % "1.11.1",
+      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"   % "1.11.1",
+      "org.scalameta"               %% "scalameta"             % "4.9.9",
       // other
       "io.kubernetes"                % "client-java-api"       % "20.0.1",
       "io.kubernetes"                % "client-java"           % "20.0.1",
@@ -170,8 +155,9 @@ lazy val ce3 = (project in file("ce3"))
       "io.scalaland"                %% "chimney"               % "1.1.0",
       "org.tpolecat"                %% "skunk-core"            % "0.6.4",
       "io.7mind.izumi"              %% "logstage-core"         % "1.2.10",
-      Libraries.doobieCore,
-      Libraries.doobiePg,
+      "org.tpolecat"                %% "doobie-core"           % "1.0.0-RC2",
+      "org.tpolecat"                %% "doobie-postgres"       % "1.0.0-RC2",
+      "org.tpolecat"                %% "doobie-hikari"         % "1.0.0-RC2",
       Libraries.sqlPostgres,
       Libraries.newtype,
       Libraries.refinedCore,
@@ -207,17 +193,17 @@ lazy val httpt = (project in file("httpt"))
     Settings.common2,
     description := "HTTP load tests",
     libraryDependencies ++= Seq(
-      "org.http4s"    %% "http4s-dsl"          % "1.0.0-M39",
-      "org.http4s"    %% "http4s-circe"        % "1.0.0-M39",
-      "org.http4s"    %% "http4s-ember-server" % "1.0.0-M39", // 13.07.2023
-      "org.http4s"    %% "http4s-blaze-server" % "1.0.0-M38", //  4.01.2023
+      "org.http4s"    %% "http4s-dsl"          % "1.0.0-M41",
+      "org.http4s"    %% "http4s-circe"        % "1.0.0-M41",
+      "org.http4s"    %% "http4s-ember-server" % "1.0.0-M41",
+      "org.http4s"    %% "http4s-blaze-server" % "1.0.0-M40",
       "org.http4s"    %% "http4s-jetty-server" % "1.0.0-M32",
       "org.typelevel" %% "log4cats-core"       % "2.7.0",
       "org.typelevel" %% "log4cats-slf4j"      % "2.7.0"
     ),
     dependencyOverrides ++= Seq(
-      "org.http4s" %% "http4s-core"   % "1.0.0-M39",
-      "org.http4s" %% "http4s-server" % "1.0.0-M39"
+      "org.http4s" %% "http4s-core"   % "1.0.0-M41",
+      "org.http4s" %% "http4s-server" % "1.0.0-M41"
     )
   )
 
@@ -329,15 +315,6 @@ lazy val lihaoyi = (project in file("lihaoyi"))
     )
   )
 
-lazy val mix = (project in file("mix"))
-  .settings(
-    Settings.common2,
-    libraryDependencies ++= Seq(
-      "org.flywaydb" % "flyway-core" % "6.4.2",
-      Libraries.jsoup,
-    ),
-  )
-
 /** protobuf experiments */
 lazy val pbx = (project in file("pbx"))
   .enablePlugins(ScalaxbPlugin)
@@ -352,7 +329,7 @@ lazy val plain2 = (project in file("plain2"))
   .settings(
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.typelevel"              %% "cats-core"   % "2.10.0",
+      "org.typelevel"              %% "cats-core"   % "2.12.0",
       "io.chymyst"                 %% "curryhoward" % "0.3.8",
       "com.softwaremill.quicklens" %% "quicklens"   % "1.9.7",
     )
@@ -387,7 +364,7 @@ lazy val typesafe = (project in file("typesafe"))
       "com.typesafe.slick" %% "slick-hikaricp"       % "3.4.1",
       "com.typesafe.play"  %% "play-json"            % "2.9.4",
       "com.typesafe"        % "config"               % "1.4.2",
-      "ch.qos.logback"      % "logback-classic"      % "1.4.7"
+      "ch.qos.logback"      % "logback-classic"      % "1.5.7"
     )
   )
 
@@ -415,8 +392,8 @@ lazy val spring = (project in file("spring"))
     description := "SpringBoot Experiments",
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.projectlombok"        % "lombok"                  % "1.18.32",
-      "org.springframework.boot" % "spring-boot-starter-web" % "3.2.6",
+      "org.projectlombok"        % "lombok"                  % "1.18.34",
+      "org.springframework.boot" % "spring-boot-starter-web" % "3.3.2",
     ),
   )
 
@@ -428,9 +405,9 @@ lazy val http4sws = (project in file("http4sws"))
       "org.http4s"    %% "http4s-dsl"          % "0.23.27",
       "org.http4s"    %% "http4s-circe"        % "0.23.27",
       "org.http4s"    %% "http4s-ember-server" % "0.23.27",
-      "io.circe"      %% "circe-generic"       % "0.14.7",
+      "io.circe"      %% "circe-generic"       % "0.14.9",
       "org.typelevel" %% "cats-parse"          % "1.0.0",
-      "ch.qos.logback" % "logback-classic"     % "1.5.6",
+      "ch.qos.logback" % "logback-classic"     % "1.5.7",
     )
   )
 

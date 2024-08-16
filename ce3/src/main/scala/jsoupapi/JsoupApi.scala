@@ -1,4 +1,4 @@
-package hr_parse
+package jsoupapi
 
 import org.jsoup.select.Elements
 
