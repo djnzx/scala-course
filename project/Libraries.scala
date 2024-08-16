@@ -12,12 +12,6 @@ object Libraries {
   val catsLaws              = "org.typelevel"              %% "cats-laws"                 % "2.10.0"
   val catsMtl               = "org.typelevel"              %% "cats-mtl"                  % "1.3.1"
   val catsRetry             = "com.github.cb372"           %% "cats-retry"                % "3.1.0"
-  // postgreSQL related
-  val doobieCore            = "org.tpolecat"               %% "doobie-core"               % "1.0.0-RC2"
-  val doobiePg              = "org.tpolecat"               %% "doobie-postgres"           % "1.0.0-RC2"
-  val doobieHikari          = "org.tpolecat"               %% "doobie-hikari"             % "1.0.0-RC2"
-  val skunkCore             = "org.tpolecat"               %% "skunk-core"                % "1.0.0-M1" // no more 2.12
-  val skunkCirce            = "org.tpolecat"               %% "skunk-circe"               % "1.0.0-M1"
   val sqlPostgres           = "org.postgresql"              % "postgresql"                % "42.6.0"
   //
   val http4sJwtAuth         = "dev.profunktor"             %% "http4s-jwt-auth"           % "1.2.1"

@@ -1,11 +1,12 @@
-import sbt.Resolver
+import sbt.*
 
 object Resolvers {
 
   val all = Seq(
     Resolver.mavenLocal,
     Resolver.mavenCentral,
-//    Resolver.typesafeRepo("releases"),
+    "confluent" at "https://packages.confluent.io/maven/",
+    Resolver.typesafeRepo("releases"),
 //    Resolver.sonatypeRepo("releases"),
 //    Resolver.sonatypeRepo("snapshots"),
     Repos.artima,
