@@ -1,6 +1,10 @@
 package el_meter
 
 import io.circe.generic.AutoDerivation
+import io.scalaland.chimney.Transformer
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 object model {
 
@@ -59,5 +63,80 @@ object model {
     data: RawData
   )
   object RawResponse extends AutoDerivation
+
+  case class Item(
+    name: String,
+    unit: String,
+    value: Double
+  )
+
+  case class Data(
+    V1: Item,
+    A1: Item,
+    W1: Item,
+    PF1: Item,
+    //
+    V2: Item,
+    A2: Item,
+    W2: Item,
+    PF2: Item,
+    //
+    V3: Item,
+    A3: Item,
+    W3: Item,
+    PF3: Item,
+    //
+    A: Item,
+    W: Item,
+  )
+
+  case class DataLine(
+    time: LocalDateTime,
+    data: Data
+  )
+
+  case class DataWattOnly(
+    W1: Item,
+    W2: Item,
+    W3: Item,
+    W: Item,
+  )
+  case class DataLineWattOnlyDetailed(
+    time: LocalDateTime,
+    data: DataWattOnly
+  )
+
+  case class DataLineWattOnlyShort(
+    time: LocalDateTime,
+    W1: Double,
+    W2: Double,
+    W3: Double,
+    W: Double,
+  )
+
+  def round1(x: Double): Double = (x * 10).round.toDouble / 10
+
+  implicit val tr0: Transformer[String, LocalDateTime] = (src: String) =>
+    LocalDateTime.ofInstant(
+      Instant.ofEpochSecond(src.toInt),
+      ZoneOffset.ofHours(3)
+    )
+
+  implicit val tr1: Transformer[RawItem, Item] = Transformer.define[RawItem, Item]
+    .withFieldComputed(_.value, r => round1(r.value.toDouble))
+    .buildTransformer
+
+  implicit val tr2: Transformer[RawData, Data] = Transformer.derive[RawData, Data]
+
+  implicit val tr3: Transformer[Data, DataWattOnly] = Transformer.derive[Data, DataWattOnly]
+
+  implicit val tr4: Transformer[DataLine, DataLineWattOnlyDetailed] = Transformer.derive[DataLine, DataLineWattOnlyDetailed]
+
+  implicit val tr6 = Transformer.define[DataLineWattOnlyDetailed, DataLineWattOnlyShort]
+    .withFieldComputed(_.W1, _.data.W1.value)
+    .withFieldComputed(_.W2, _.data.W2.value)
+    .withFieldComputed(_.W3, _.data.W3.value)
+    .withFieldComputed(_.W, _.data.W.value)
+    .buildTransformer
 
 }

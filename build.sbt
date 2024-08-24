@@ -152,7 +152,7 @@ lazy val ce3 = (project in file("ce3"))
       "io.kubernetes"                % "client-java-api"       % "20.0.1",
       "io.kubernetes"                % "client-java"           % "20.0.1",
       "jakarta.mail"                 % "jakarta.mail-api"      % "2.1.3",
-      "io.scalaland"                %% "chimney"               % "1.1.0",
+      "io.scalaland"                %% "chimney"               % "1.4.0",
       "org.tpolecat"                %% "skunk-core"            % "0.6.4",
       "io.7mind.izumi"              %% "logstage-core"         % "1.2.10",
       "org.tpolecat"                %% "doobie-core"           % "1.0.0-RC2",
