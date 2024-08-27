@@ -4,6 +4,10 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.DurationInt
+import scala.concurrent.{Await, Future}
+
 object Sandbox {
 
   def id[A](a: A): A = a
@@ -14,6 +18,36 @@ object Sandbox {
 class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks {
 
   import Sandbox._
+
+  test("123") {
+    case class Person(age: Int, name: String)
+    def getAge = Future(123)
+    def getName = Future("Jim")
+
+    val fp: Future[Person] =
+      getName.flatMap(n =>
+        getAge.map(a =>
+          Person(a, n)
+        )
+      )
+    val p: Person = Await.result(fp, 10.seconds)
+
+
+
+
+  }
+
+  test("11") {
+    pprint.log(math.acos(0.96))
+    pprint.log(math.sin(math.acos(0.96)))
+    pprint.log(math.acos(1))
+    pprint.log(math.sin(math.acos(1)))
+    pprint.log(math.acos(0.95))
+    pprint.log(math.sin(math.acos(0.95)))
+    pprint.log(math.acos(0.65))
+    pprint.log(math.sin(math.acos(0.65)))
+  }
+
 
   test("0") {
     def isScala212a(v: Option[(Long, Long)]): Boolean =
