@@ -4,7 +4,6 @@ import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 import cats.implicits._
 import io.scalaland.chimney.Transformer
-
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -22,10 +21,10 @@ import org.http4s.implicits.http4sLiteralsSyntax
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import retry.{RetryDetails, RetryPolicy}
+import retry.RetryDetails
+import retry.RetryPolicy
 import retry.implicits.retrySyntaxError
 import retryideas.RetryApp.x
-
 import scala.concurrent.duration.DurationInt
 
 object Http {
@@ -99,6 +98,16 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
 
   test("streamed") {
 
+    // we can have Ref[Option[LocalDateLime]
+    // to track electricity absence
+    // and send email once electricity is restored
+
+    // java.lang.IllegalStateException: supervisor already shutdown
+    //	at get @ fs2.internal.Scope.openScope(Scope.scala:275)
+    //	at get @ fs2.internal.Scope.openScope(Scope.scala:275)
+    //	at unique @ fs2.Compiler$Target$ConcurrentTarget.unique(Compiler.scala:194)
+    //	at deferred @ fs2.internal.InterruptContext$.$anonfun$apply$1(InterruptContext.scala:114)
+
     val policy: RetryPolicy[IO] = {
       import retry.RetryPolicies._
       // 6 retries starting from 1 gives us +1 +2 +4 +8 +16 +32 = 63 sec ~= 1 min
@@ -110,7 +119,7 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
     }
 
     val onError = (t: Throwable, d: RetryDetails) =>
-      IO { println(LocalDateTime.now -> "device inaccessible retrying...") }
+      IO(println(LocalDateTime.now -> "device inaccessible retrying..."))
 
     val getDataWithRetry = getData
       .retryingOnAllErrors(policy, onError)
