@@ -3,28 +3,19 @@ package el_meter
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 import cats.implicits._
-import io.scalaland.chimney.Transformer
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import javax.swing.text.DateFormatter
-import org.http4s.Method
-import org.http4s.Request
-import org.http4s.Status.BadRequest
-import org.http4s.Status.ClientError
-import org.http4s.Status.Successful
-import org.http4s.Status.TooManyRequests
+import org.http4s.{Method, Request}
+import org.http4s.Status.{ClientError, Successful, TooManyRequests}
 import org.http4s.blaze.client.BlazeClientBuilder
 import org.http4s.circe.CirceEntityCodec.circeEntityDecoder
 import org.http4s.implicits.http4sLiteralsSyntax
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import retry.RetryDetails
-import retry.RetryPolicy
+import retry.{RetryDetails, RetryPolicy}
 import retry.implicits.retrySyntaxError
-import retryideas.RetryApp.x
+
+import java.time.{Instant, LocalDateTime, ZoneOffset}
+import java.time.format.DateTimeFormatter
 import scala.concurrent.duration.DurationInt
 
 object Http {
@@ -110,8 +101,8 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
 
     val policy: RetryPolicy[IO] = {
       import retry.RetryPolicies._
-      // 6 retries starting from 1 gives us +1 +2 +4 +8 +16 +32 = 63 sec ~= 1 min
-      val growing: RetryPolicy[IO] = limitRetries[IO](5) join exponentialBackoff[IO](1.second)
+      // 6 retries starting from 1 gives us +1 +2 +4 +8 +16 = 31 sec ~= 1 min
+      val growing: RetryPolicy[IO] = limitRetries[IO](4) join exponentialBackoff[IO](1.second)
       // constant never terminating retry
       val constant: RetryPolicy[IO] = constantDelay[IO](10.seconds)
 

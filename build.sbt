@@ -127,6 +127,10 @@ lazy val ce3 = (project in file("ce3"))
       "io.circe"                    %% "circe-fs2"             % "0.14.1",
       "io.circe"                    %% "circe-shapes"          % "0.14.7",
       "io.circe"                    %% "circe-testing"         % "0.14.7",
+      // munit
+      "org.scalameta"               %% "munit"                 % "1.0.0",
+      "org.scalameta"               %% "munit-scalacheck"      % "1.0.0",
+      "org.typelevel"               %% "munit-cats-effect"     % "2.0.0",
       // cats logging
       "org.typelevel"               %% "log4cats-core"         % "2.7.0",
       "org.typelevel"               %% "log4cats-slf4j"        % "2.7.0",
@@ -134,7 +138,6 @@ lazy val ce3 = (project in file("ce3"))
       "com.github.fd4s"             %% "fs2-kafka"             % "3.5.1",
       "org.typelevel"               %% "cats-parse"            % "1.0.0",
       "com.github.cb372"            %% "cats-retry"            % "3.1.3",
-      "org.typelevel"               %% "munit-cats-effect-3"   % "1.0.7",
       // http
       "org.http4s"                  %% "http4s-core"           % "0.23.27",
       "org.http4s"                  %% "http4s-dsl"            % "0.23.27",
@@ -381,6 +384,7 @@ lazy val zio2 = (project in file("zio2"))
       "dev.zio"       %% "zio-logging"              % "2.3.0",
       "dev.zio"       %% "zio-logging-slf4j-bridge" % "2.3.0",
       "dev.zio"       %% "zio-interop-cats"         % "23.1.0.2",
+      "dev.zio"       %% "zio-mock"                 % "1.0.0-RC12",
       "dev.zio"       %% "zio-test"                 % "2.1.3" % Test,
       "dev.zio"       %% "zio-test-sbt"             % "2.1.1" % Test,
     ),
