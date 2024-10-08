@@ -21,8 +21,8 @@ object Playground extends App {
 
   def describeUtfContent(utf: String): Unit = {
     val bytes: Array[Byte] = utf.getBytes
-    val per_char           = bytes.length / utf.codePoints().count().toInt
-    val dec: Array[Int]    = bytes.map(b => b & 0xff)
+    val per_char = bytes.length / utf.codePoints().count().toInt
+    val dec: Array[Int] = bytes.map(b => b & 0xff)
     val hex: Array[String] = bytes.map(b => "%02X".format(b))
     val bin: Array[String] = bytes.zipWithIndex.map { case (b, i) =>
       mkColored(
@@ -56,7 +56,8 @@ object Playground extends App {
     "hello",
     "Привет",
     "नमस्ते",
-    "😀🤪😐🙄"
+    "😀🤪😐🙄",
+    "Ы"
   ).foreach(describeUtfContent)
 
 }

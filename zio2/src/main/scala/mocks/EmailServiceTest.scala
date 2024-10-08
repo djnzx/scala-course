@@ -9,6 +9,7 @@ import zio.mock._
 import zio.test._
 
 // https://github.com/zio/zio-mock
+// https://zio.dev/zio-mock/mock/
 // TODO: https://github.com/kitlangton/stubby
 object EmailServiceTest extends ZIOSpecDefault {
 

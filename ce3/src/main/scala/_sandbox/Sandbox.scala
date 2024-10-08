@@ -3,10 +3,10 @@ package _sandbox
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-
+import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
-import scala.concurrent.{Await, Future}
 
 object Sandbox {
 
@@ -32,9 +32,6 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
       )
     val p: Person = Await.result(fp, 10.seconds)
 
-
-
-
   }
 
   test("11") {
@@ -47,7 +44,6 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
     pprint.log(math.acos(0.65))
     pprint.log(math.sin(math.acos(0.65)))
   }
-
 
   test("0") {
     def isScala212a(v: Option[(Long, Long)]): Boolean =
