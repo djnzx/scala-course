@@ -3,6 +3,9 @@ package _sandbox
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+
+import java.time.{LocalDateTime, ZoneOffset}
+import java.time.format.DateTimeFormatter
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -18,6 +21,64 @@ object Sandbox {
 class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks {
 
   import Sandbox._
+
+  test("ldt") {
+    val x = LocalDateTime.now.atZone(ZoneOffset.of("+3"))
+    val s = x.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+    println(s)
+  }
+
+
+  test("555") {
+    val x: Int = 5
+    val y: Int = 5
+
+    println(x == y)
+
+    case class Pizza(name: String)
+
+    object Pizza {
+      val errorMessage = "Pizza must be 10+ size"
+    }
+
+//    p1.errorMessage
+    val m = Pizza.errorMessage
+
+    val p1 = Pizza("M")
+    val p2 = Pizza("M")
+
+    println(p1 == p2)  // true
+    println(p1.equals(p2))  // true
+    println(p1.eq(p2)) // false
+  }
+
+  test("allmatch") {
+    val x = Seq.empty[Int].forall(_ > 0)
+    pprint.log(x)
+  }
+
+  test("5") {
+    val x = Seq.empty[Int].forall(_ > 0)
+    pprint.log(x) // true
+    val y = Seq.empty[Int].exists(_ > 0)
+    pprint.log(y) // false
+  }
+
+  test("2") {
+    Seq.empty[Int] match {
+      case Seq(1) => ???
+      case Seq()  => println("empty!")
+      case _      => ???
+    }
+  }
+
+  test("3") {
+    Set.empty[Int] match {
+      case Seq(1) => ???
+      case Seq()  => println("empty!")
+      case _      => ???
+    }
+  }
 
   test("123") {
     case class Person(age: Int, name: String)

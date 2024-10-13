@@ -35,6 +35,11 @@ class MuhaSlon extends AnyFunSuite with Matchers with ScalaCheckPropertyChecks w
 
   def solve: List[List[Int]] = comb(1 to 8 toList).filter(isValid)
 
+  test("combination count") { // 40000
+    val n = comb(1 to 8 toList).size
+    pprint.log(n)
+  }
+
   test("mkN") {
     mkN() shouldBe 0
     mkN(1, 2, 3) shouldBe 123
