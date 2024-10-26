@@ -130,3 +130,8 @@ I thought I knew Scala...
   - circe
   - shapeless
 - kafka streams processing
+
+### 2024 notes
+
+- scala-99 code migrated [there](https://github.com/djnzx/scala-99)
+- algorithm-related started migrating [there](https://github.com/djnzx/algorithms)

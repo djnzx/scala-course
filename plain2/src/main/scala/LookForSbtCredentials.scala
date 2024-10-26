@@ -1,6 +1,4 @@
-package playgound
-
-object Env extends App {
+object LookForSbtCredentials extends App {
 
   private def readFile(path: String): String = {
     val source = scala.io.Source.fromFile(path)

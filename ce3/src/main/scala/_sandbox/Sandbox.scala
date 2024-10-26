@@ -28,6 +28,10 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
     println(s)
   }
 
+  test("convert") {
+    val x: Int =         "abc".toInt // or Exception
+    val y: Option[Int] = "abc".toIntOption // never throw Exception
+  }
 
   test("555") {
     val x: Int = 5

@@ -1,8 +1,23 @@
 ## some repositories I have ever cloned to learn
 
+- [all my repos](https://github.com/djnzx?tab=repositories)
+
 ### mine - rust
 - git@github.com:djnzx/learning-rust.git
-- git@github.com:djnzx/rust-minigrep.git
+- git@github.com:djnzx/rust-course.git
+- git@github.com:djnzx/rust-tasks-solved.git
+
+### mine - rust - student templates
+- https://github.com/djnzx/rust-template
+- https://github.com/djnzx/rust-2xx-practice
+- https://github.com/djnzx/rust-223
+- https://github.com/djnzx/rust-221on
+- https://github.com/djnzx/rust-222on
+
+### rust - applications
+- [simple console app](https://github.com/djnzx/rust-minigrep)
+- [simple web-server](https://github.com/djnzx/rust-web)
+- [app to configure USB keyboard](https://github.com/djnzx/ch57x-keyboard-tool)
 
 ### mine - haskell
 - git@github.com:djnzx/learning-haskell-0.git
@@ -11,7 +26,11 @@
 - git@github.com:djnzx/learning-haskell-fp.git
 - git@github.com:tsoding/haskell-json.git
 
-### mine - scala
+### mine - scala+
+- git@github.com:djnzx/scala-course.git
+- git@github.com:djnzx/scala-99.git
+- git@github.com:djnzx/algorithms.git
+- 
 - git@github.com:djnzx/scala-fullstack.git
 - git@github.com:djnzx/learning-chartreuse.git
 - git@github.com:djnzx/learning-doodle.git
@@ -25,11 +44,9 @@
 - git@github.com:djnzx/sbt-plugin-usage.git
 - git@github.com:djnzx/scala-play-heroku.git
 - git@github.com:djnzx/scala-template.git
-- git@github.com:djnzx/scala-template.git
 - git@github.com:djnzx/scala-min-for-java-devs.git
 - git@github.com:djnzx/concurrency-in-practice-java.git
 - git@github.com:djnzx/learning-scala3.git
-- git@github.com:djnzx/scala-99.git
 - git@github.com:djnzx/scala-avro-kafka-flows.git
 
 ### others - notable!
@@ -106,14 +123,16 @@
   - git@github.com:djnzx/scala-httpserver-dockerized.git
 
 ### dan-it
-- git@github.com:djnzx/java-course-development.git
-- git@gitlab.com:dan-it/groups/fs-1-online.git
-- git@gitlab.com:dan-it/groups/fs-4-online.git
-- git@gitlab.com:dan-it/groups/fs6-online.git
-- git@gitlab.com:dan-it/groups/fs7-online.git
+
+- git@gitlab.com:dan-it/groups/fs_10.git
 - git@gitlab.com:dan-it/groups/fs8-online.git
+- git@gitlab.com:dan-it/groups/fs7-online.git
+- git@gitlab.com:dan-it/groups/fs6-online.git
+- git@gitlab.com:dan-it/groups/fs-4-online.git
+- git@gitlab.com:dan-it/groups/fs-1-online.git
 - git@gitlab.com:dan-it/java-course-development/java-homework.git
 - git@gitlab.com:dan-it/az-groups/az-be5
+- git@github.com:djnzx/java-course-development.git
 - git@github.com:djnzx/abb-finals-be3-be4.git
 - git@github.com:djnzx/abb-be1.git
 - git@github.com:djnzx/abb-be2.git
@@ -184,4 +203,3 @@
 - git@github.com:djnzx/ultimate8.git
 - git@github.com:djnzx/spring-steps.git
 - git@github.com:djnzx/spring-kafka-postgres-docker.git
-  git@github.com:djnzx/algorithms.git
