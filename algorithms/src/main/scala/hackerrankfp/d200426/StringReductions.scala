@@ -1,7 +1,6 @@
 package hackerrankfp.d200426
 
 /**
-  * https://www.hackerrank.com/challenges/string-reductions/problem
   * https://www.hackerrank.com/challenges/remove-duplicates/problem
   */
 object StringReductions {
