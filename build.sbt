@@ -51,7 +51,7 @@ lazy val algorithms = (project in file("algorithms"))
   .settings(
     Settings.common2,
     // compiled with JDK17
-    libraryDependencies += "org.projectlombok" % "lombok" % "1.18.34" % Provided,
+    libraryDependencies += "org.projectlombok"            % "lombok"                 % "1.18.34" % Provided,
     libraryDependencies += "org.springframework.security" % "spring-security-crypto" % "6.3.0",
     libraryDependencies += "co.fs2"                      %% "fs2-core"               % "3.10.2",
   )
@@ -107,13 +107,12 @@ lazy val ce3 = (project in file("ce3"))
     libraryDependencies ++= Seq(
       // core
       "org.typelevel"               %% "cats-core"                    % "2.12.0",
-      "org.typelevel"               %% "cats-effect"                  % "3.5.4",
+      "org.typelevel"               %% "cats-effect"                  % "3.5.7",
       // stm
       "io.github.timwspence"        %% "cats-stm"                     % "0.13.5",
       // streams
-      "co.fs2"                      %% "fs2-core"                     % "3.10.2",
-      "co.fs2"                      %% "fs2-io"                       % "3.10.2",
-      "co.fs2"                      %% "fs2-reactive-streams"         % "3.10.2",
+      "co.fs2"                      %% "fs2-core"                     % "3.11.0",
+      "co.fs2"                      %% "fs2-io"                       % "3.11.0",
       // enum
       "com.beachape"                %% "enumeratum"                   % "1.7.3",
       "com.beachape"                %% "enumeratum-circe"             % "1.7.3",
@@ -136,7 +135,7 @@ lazy val ce3 = (project in file("ce3"))
       "org.typelevel"               %% "log4cats-core"                % "2.7.0",
       "org.typelevel"               %% "log4cats-slf4j"               % "2.7.0",
       //
-      "com.github.fd4s"             %% "fs2-kafka"                    % "3.5.1",
+      "com.github.fd4s"             %% "fs2-kafka"                    % "3.6.0",
       "org.typelevel"               %% "cats-parse"                   % "1.0.0",
       "com.github.cb372"            %% "cats-retry"                   % "3.1.3",
       // http
@@ -173,6 +172,10 @@ lazy val ce3 = (project in file("ce3"))
       "com.google.apis"              % "google-api-services-calendar" % "v3-rev20240705-2.0.0",
       "com.google.oauth-client"      % "google-oauth-client-jetty"    % "1.36.0",
       "com.google.api-client"        % "google-api-client"            % "2.7.0",
+      "com.github.fd4s"             %% "vulcan"                       % "1.11.1", // apache avro + cats-free monad
+      "com.github.fd4s"             %% "vulcan-generic"               % "1.11.1", // vulcan + shapeless + magnolia
+      "com.github.fd4s"             %% "vulcan-enumeratum"            % "1.11.1", // vulcan + vulcan-generic + enumeratum
+      "com.github.fd4s"             %% "fs2-kafka-vulcan"             % "3.6.0",
     ),
     // laika experiments
     laikaSite / target := target.value / "docs1",
@@ -348,8 +351,8 @@ lazy val sparkx = (project in file("sparkx"))
   .settings(
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.apache.spark" %% "spark-core" % "3.5.1",
-      "org.apache.spark" %% "spark-sql"  % "3.5.1"
+      "org.apache.spark" %% "spark-core" % "3.5.3",
+      "org.apache.spark" %% "spark-sql"  % "3.5.3"
     ),
   )
 

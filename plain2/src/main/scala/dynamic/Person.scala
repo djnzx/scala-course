@@ -12,7 +12,7 @@ case class Person(name: String) extends Dynamic {
   def applyDynamic(method: String)(p1: Int) =
     println(s"$name is ${method}ing on $p1 meters")
 
-  /** p.age = 33б p.smart = true */
+  /** p.age = 33, p.smart = true */
   def updateDynamic(field: String)(value: Any) =
     println(s"updating filed $field with value $value")
 
