@@ -3,6 +3,13 @@ package fraction
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
+/**
+ * Дробь 1/998001
+ * имеет период 2997. Если посмотреть на калькуляторе - то выглядит это так:
+ * 0,000 001 002 003 004 ...
+ * Трехзначные наборы цифр не повторяются, но...
+ * 2997 - не 3000, то есть какой-то одной (ровно одной!) трехзначной комбинации в периоде не будет.
+ */
 object FractionDigits {
 
   def div(a: Int, b: Int, nDigitsAfterComma: Int): String = {
