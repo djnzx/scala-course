@@ -6,7 +6,6 @@ object Libraries {
   val newtype               = "io.estatico"                %% "newtype"                   % "0.4.4"
   val refinedCore           = "eu.timepit"                 %% "refined"                   % "0.10.3"
   val refinedCats           = "eu.timepit"                 %% "refined-cats"              % "0.10.3"
-  val refinedScalaz         = "eu.timepit"                 %% "refined-scalaz"            % "0.10.3"
   // basic functional abstractions
   val cats                  = "org.typelevel"              %% "cats-core"                 % "2.10.0"
   val catsLaws              = "org.typelevel"              %% "cats-laws"                 % "2.10.0"
@@ -23,26 +22,24 @@ object Libraries {
   val logback               = "ch.qos.logback"              % "logback-classic"           % "1.4.7"
   // https://scalacheck.org
   // https://mvnrepository.com/artifact/org.scalacheck/scalacheck
-  val scalaCheck            = "org.scalacheck"             %% "scalacheck"                % "1.17.0"
+  val scalaCheck            = "org.scalacheck"             %% "scalacheck"                % "1.18.1"
   // https://www.scalatest.org
   // https://mvnrepository.com/artifact/org.scalatest/scalatest
-  val scalaTest             = "org.scalatest"              %% "scalatest"                 % "3.2.17"
-  val scalaTestShould       = "org.scalatest"              %% "scalatest-shouldmatchers"  % "3.2.17"
-  val scalaTestFunSpec      = "org.scalatest"              %% "scalatest-funspec"         % "3.2.17"
+  val scalaTest             = "org.scalatest"              %% "scalatest"                 % "3.2.19"
   // https://github.com/alexarchambault/scalacheck-shapeless
   val scalaCheckShapeless   = "com.github.alexarchambault" %% "scalacheck-shapeless_1.16" % "1.3.1"
   // https://www.scalactic.org
   // https://mvnrepository.com/artifact/org.scalactic/scalactic
   // val scalactic_ = "org.scalactic" %% "scalactic" % Versions.scalaTest
-  val scalaCheckIntegration = "org.scalatestplus"          %% "scalacheck-1-17"           % "3.2.17.0"
-  val scalaMockito          = "org.mockito"                %% "mockito-scala-scalatest"   % "1.17.30"  // tr: "org.mockito" % "mockito-core" % "4.8.1"
+  val scalaCheckIntegration = "org.scalatestplus"          %% "scalacheck-1-18"           % "3.2.19.0"
+  val scalaMockito          = "org.mockito"                %% "mockito-scala-scalatest"   % "1.17.37"  // tr: "org.mockito" % "mockito-core" % "4.8.1"
   // https://index.scala-lang.org/ghik/silencer/silencer-plugin/1.4.2?target=_2.13
   // look for the plugin corresponding
   val silencerAnnotation    = "com.github.ghik"             % "silencer-lib"              % "1.6.0" % Provided cross CrossVersion.full
 
   val testingToolkit2: Seq[ModuleID] = Seq(
     scalaTest,              // runners, matchers
-    scalaCheck,             // property based testing
+    scalaCheck,             // property-based testing
     scalaCheckIntegration,  // scalaTest integration
     scalaCheckShapeless,    // Shapeless scalacheck Arbitrary[A] derivation, doesn't have scala3 things
     scalaMockito,           // mock traits/classes, doesn't have scala3 things
@@ -51,7 +48,7 @@ object Libraries {
 
   val testingToolkit3: Seq[ModuleID] = Seq(
     scalaTest,              // runners, matchers
-    scalaCheck,             // property based testing
+    scalaCheck,             // property-based testing
     scalaCheckIntegration,  // scalaTest integration
     LibrariesLihaoyi.pprint // println colored + colored console output + implicits to get source module/file/line/etc
   )

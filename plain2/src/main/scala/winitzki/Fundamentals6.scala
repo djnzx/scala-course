@@ -405,11 +405,11 @@ class Fundamentals6 extends Base {
     def durationToLong: FiniteDuration => Long = _.toNanos
 
     // now we can derive Semigroup[FiniteDuration] (profunctor)
-    val combiner = Invariant[Semigroup].imap(combinerLong)(longToDuration)(durationToLong)
+    val combiner: Semigroup[FiniteDuration] = Invariant[Semigroup].imap(combinerLong)(longToDuration)(durationToLong)
 
-    import scala.concurrent.duration._
     // it takes type A, converts to B, does B |+| B, converts to A back
-    val combined: FiniteDuration = combiner.combine(2.seconds, 3.seconds)
+    val combined1: FiniteDuration = combiner.combine(2.seconds, 3.seconds)
+    val combined2: FiniteDuration = 2.seconds |+| 3.seconds
 
     sealed trait List[A]
     final case class Empty[A]()                      extends List[A]
@@ -513,5 +513,8 @@ class Fundamentals6 extends Base {
     h2(3) shouldBe 301
   }
 
-  test("6.2.6.4 - p 204") {}
+  test("6.2.4 - p 204 ???") {
+    type Const[Z, A] = Z
+    def cmap[Z, A, B](f: B => A): Const[Z, A] => Const[Z, B] = identity[Z]
+  }
 }
