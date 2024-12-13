@@ -7,20 +7,30 @@ import org.scalatest.matchers.should.Matchers
 class LearningMockitoSpy extends AnyFunSuite with Matchers with IdiomaticMockito {
 
   class Calculator {
-    def add0(a: Int, b: Int): Int = a + b
+    def add0(a: Int, b: Int): Int = ???
     def add(a: Int, b: Int): Int = add0(a, b)
-
-    def sub(a: Int, b: Int): Int = a - b
   }
 
-  val realCalculator = new Calculator
-  val spyCalculator = spy(realCalculator)
+  val realCalc = new Calculator
 
-  test("1") {
-    spyCalculator.add0(1, 2).returns(113)
+  test("partial mock with Java-ish API") {
+    val spyCalc = spy(realCalc)
+    org.mockito.Mockito.doReturn(113).when(spyCalc).add0(1, 2)
 
-    val x = spyCalculator.add(1, 2)
-    pprint.log(x) // 113
+    val outcome = spyCalc.add(1, 2)
+
+    outcome shouldBe 113
+    spyCalc.add0(1, 2) wasCalled once
   }
 
+  test("partial mock with Scala API") {
+    val spyCalc = spy(realCalc)
+    // but it's not asy to bring it into the scope by mixing traits
+    org.mockito.MockitoSugar.doReturn(113).when(spyCalc).add0(1, 2)
+
+    val result = spyCalc.add(1, 2)
+
+    result shouldBe 113
+    spyCalc.add0(1, 2) wasCalled once
+  }
 }
