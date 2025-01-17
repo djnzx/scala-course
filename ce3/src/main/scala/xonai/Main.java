@@ -272,7 +272,7 @@ public class Main {
       System.arraycopy(filtered4, i4, filtered5, size5, size4 - i4);
       size5 += size4 - i4;
     }
-    System.out.printf("%s - %s\n", Arrays.toString(filtered5), size5);
+//    System.out.printf("%s - %s\n", Arrays.toString(filtered5), size5);
 
     // final copy
     FilteredBatch output = new FilteredBatch();
@@ -344,8 +344,29 @@ public class Main {
    */
   public static AggregatedBatch aggregate(FilteredBatch input) {
     AggregatedBatch output = new AggregatedBatch();
+    output.numRows = 1;
 
-    // TODO: Compute the output batch.
+    double total_price = 0;
+    double total_discount = 0;
+
+    int d05count = 0;
+    double d05totalPrice = 0;
+
+    for (int i = 0; i < input.numRows; i++) {
+      double price = input.price[i];
+      double discount = input.discount[i];
+
+      total_discount += price * discount;
+      total_price += price;
+
+      if (Math.abs(discount - 0.05) < 0.000001d) {
+        d05count++;
+        d05totalPrice += price;
+      }
+    }
+
+    output.discount_ratio = new double[]{ 100.0 * (total_discount / total_price) };
+    output.avg_price = new double[]{ d05totalPrice/d05count};
 
     return output;
   }
