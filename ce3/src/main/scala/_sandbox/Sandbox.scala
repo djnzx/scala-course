@@ -1,11 +1,12 @@
 package _sandbox
 
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-
-import java.time.{LocalDateTime, ZoneOffset}
-import java.time.format.DateTimeFormatter
+import scala.collection.Searching
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -22,6 +23,36 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
 
   import Sandbox._
 
+  test("lists") {
+
+    val xx: Nothing = throw new Exception()
+
+    val q: Int = xx
+    val z: String = xx
+
+    val x: Option[Int] = Some(4)
+
+    x match {
+      case Some(value) => ???
+      case None        => ???
+    }
+
+    val l1 = List(1, 2, 3)
+
+    val l2s = List(
+      List(10, 11, 12), // l2
+      List(20, 21, 22),
+      List(30, 31, 32),
+    )
+
+    // 1 2 3 10 11 12
+    // 1 2 3 20 21 22
+    // 1 2 3 30 31 32
+
+    val ls3 = l2s.map(l1 ++ _)
+    pprint.log(ls3)
+  }
+
   test("ldt") {
     val x = LocalDateTime.now.atZone(ZoneOffset.of("+3"))
     val s = x.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
@@ -29,7 +60,7 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
   }
 
   test("convert") {
-    val x: Int =         "abc".toInt // or Exception
+    val x: Int = "abc".toInt               // or Exception
     val y: Option[Int] = "abc".toIntOption // never throw Exception
   }
 
@@ -51,9 +82,9 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
     val p1 = Pizza("M")
     val p2 = Pizza("M")
 
-    println(p1 == p2)  // true
-    println(p1.equals(p2))  // true
-    println(p1.eq(p2)) // false
+    println(p1 == p2)      // true
+    println(p1.equals(p2)) // true
+    println(p1.eq(p2))     // false
   }
 
   test("allmatch") {
