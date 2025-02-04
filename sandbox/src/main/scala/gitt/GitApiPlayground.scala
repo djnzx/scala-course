@@ -59,6 +59,7 @@ class GitApiPlayground extends AnyFunSuite with Matchers {
     pprint.log(is_dirty)
   }
 
+
   test("HEAD hash") {
     // full hash of the HEAD of the current branch
     // like this: a98211925086b3ff0b2f7433add6047267b0bce5
