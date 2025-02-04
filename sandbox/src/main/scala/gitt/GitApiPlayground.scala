@@ -1,13 +1,13 @@
 package gitt
 
 import java.io.File
-import org.eclipse.jgit.api.{Git, Status}
+import java.util
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.lib.Repository
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
-
-import java.util
 
 class GitApiPlayground extends AnyFunSuite with Matchers {
 
@@ -19,10 +19,9 @@ class GitApiPlayground extends AnyFunSuite with Matchers {
     pprint.log(x)
   }
 
-  /**
-   * GitApiPlayground.scala:24 x: Ref[refs/heads/maste2=0ec5f80d445b5f916e4fdd4e5f5287577cfdcf74(-1)]
-   * GitApiPlayground.scala:24 x: Ref[refs/heads/master=0ec5f80d445b5f916e4fdd4e5f5287577cfdcf74(-1)]
-   */
+  /** GitApiPlayground.scala:24 x: Ref[refs/heads/maste2=0ec5f80d445b5f916e4fdd4e5f5287577cfdcf74(-1)]
+    * GitApiPlayground.scala:24 x: Ref[refs/heads/master=0ec5f80d445b5f916e4fdd4e5f5287577cfdcf74(-1)]
+    */
   test("list of branches with their HEAD commit hashes") {
     val xs = git.branchList().call()
     xs.forEach { x: Ref =>
@@ -50,7 +49,24 @@ class GitApiPlayground extends AnyFunSuite with Matchers {
     // set of files with uncommited changes
     // GitApiPlayground.scala:49 x.getUncommittedChanges: [sandbox/src/main/scala/gitt/GitApiPlayground.scala]
     val x: util.Set[String] = git.status.call.getUncommittedChanges
+    // true  when we have uncommited things
+    // false when everything is commited
     pprint.log(x.isEmpty)
+  }
+
+  test("isDirty") {
+    val is_dirty = !git.status.call.getUncommittedChanges.isEmpty
+    pprint.log(is_dirty)
+  }
+
+  test("HEAD hash") {
+    // full hash of the HEAD of the current branch
+    // like this: a98211925086b3ff0b2f7433add6047267b0bce5
+    val oId: ObjectId = repo.resolve("HEAD")
+    pprint.log(oId.name()) // full 160-bit (20-byte)
+
+    val hash7 = repo.newObjectReader.abbreviate(oId).name
+    pprint.log(hash7)
   }
 
 }
