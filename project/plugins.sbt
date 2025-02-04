@@ -44,3 +44,8 @@ addSbtPlugin("org.scalameta" % "sbt-mdoc" % "2.5.2")
 
 /** explore laika https://typelevel.org/Laika */
 addSbtPlugin("org.typelevel" % "laika-sbt" % "1.0.1")
+
+/** explore git interop during the build flow
+  * https://github.com/abdolence/sbt-gcs-resolver
+  */
+addSbtPlugin("org.latestbit" % "sbt-gcs-plugin" % "1.12.0")

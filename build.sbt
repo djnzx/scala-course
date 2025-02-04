@@ -10,19 +10,21 @@ lazy val sandbox = (project in file("sandbox"))
     Settings.common2,
     description := "sandbox, cat effects 3 based",
     libraryDependencies ++= Seq(
-      "co.fs2"        %% "fs2-core"              % "3.10.2",
-      "co.fs2"        %% "fs2-io"                % "3.10.2",
+      "co.fs2"          %% "fs2-core"              % "3.10.2",
+      "co.fs2"          %% "fs2-io"                % "3.10.2",
       // enum
-      "com.beachape"  %% "enumeratum"            % "1.7.4",
-      "com.beachape"  %% "enumeratum-circe"      % "1.7.4",
-      "com.beachape"  %% "enumeratum-cats"       % "1.7.4",
-      "com.beachape"  %% "enumeratum-scalacheck" % "1.7.4",
+      "com.beachape"    %% "enumeratum"            % "1.7.4",
+      "com.beachape"    %% "enumeratum-circe"      % "1.7.4",
+      "com.beachape"    %% "enumeratum-cats"       % "1.7.4",
+      "com.beachape"    %% "enumeratum-scalacheck" % "1.7.4",
       // json
-      "io.circe"      %% "circe-parser"          % "0.14.9",
-      "io.circe"      %% "circe-generic-extras"  % "0.14.4",
-      "io.circe"      %% "circe-fs2"             % "0.14.1",
+      "io.circe"        %% "circe-parser"          % "0.14.9",
+      "io.circe"        %% "circe-generic-extras"  % "0.14.4",
+      "io.circe"        %% "circe-fs2"             % "0.14.1",
       // twiddles
-      "org.typelevel" %% "twiddles-core"         % "0.9.0",
+      "org.typelevel"   %% "twiddles-core"         % "0.9.0",
+      // git
+      "org.eclipse.jgit" % "org.eclipse.jgit"      % "7.1.0.202411261347-r",
     ),
   )
 
@@ -51,7 +53,7 @@ lazy val algorithms = (project in file("algorithms"))
   .settings(
     Settings.common2,
     // compiled with JDK17
-    libraryDependencies += "org.projectlombok" % "lombok" % "1.18.34" % Provided,
+    libraryDependencies += "org.projectlombok"            % "lombok"                 % "1.18.34" % Provided,
     libraryDependencies += "org.springframework.security" % "spring-security-crypto" % "6.3.0",
     libraryDependencies += "co.fs2"                      %% "fs2-core"               % "3.10.2",
   )
