@@ -30,14 +30,28 @@ class Lit extends AnyFunSuite {
     println(n) // 59
   }
 
+  def count() = l.flatMap(split)
+    .groupBy(identity)
+    .fmap(_.size)
+
+  test("no ref") {
+    val cnt = count()
+    (1 to 115)
+      .map(n => n -> cnt.get(n))
+      .map {
+        case (n, Some(c)) => s"$n - $c"
+        case (n, _) => n.toString
+      }
+      .foreach(println)
+  }
+
   test("number with quantity") {
-    val xs1 = l.flatMap(split)
-      .groupBy(identity)
-      .fmap(_.size)
+    val xs1 = count()
       .toList
       .sortBy { case (k, _) => k }
 
-    pprint.log(xs1)
+//    pprint.log(xs1)
+    xs1.foreach{ case (n, c) => println(s"$n -> $c")}
 
   }
 
