@@ -8,14 +8,20 @@ import org.http4s.dsl.io.->
 import org.http4s.dsl.io._
 import org.http4s.implicits._
 
+import java.time.LocalDateTime
+
 object Http4sLauncher extends IOApp.Simple {
+
+  val now: IO[LocalDateTime] =
+    IO.realTimeInstant
+      .map(LocalDateTime.ofInstant(_, java.time.ZoneId.systemDefault()))
 
   val routes = HttpRoutes.of[IO] {
     // unparsed url
     case GET -> path =>
       path.segments
       pprint.log(path)
-      Ok(path.segments.mkString)
+      now.flatMap(Ok(_))
 
 //    // only first segment (String)
 //    case GET -> Root / path =>

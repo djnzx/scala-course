@@ -4,8 +4,8 @@ object Libraries {
   val shapeless             = "com.chuusai"                %% "shapeless"                 % "2.3.10"
   // types-related
   val newtype               = "io.estatico"                %% "newtype"                   % "0.4.4"
-  val refinedCore           = "eu.timepit"                 %% "refined"                   % "0.10.3"
-  val refinedCats           = "eu.timepit"                 %% "refined-cats"              % "0.10.3"
+  val refinedCore           = "eu.timepit"                 %% "refined"                   % "0.11.3"
+  val refinedCats           = "eu.timepit"                 %% "refined-cats"              % "0.11.3"
   // basic functional abstractions
   val cats                  = "org.typelevel"              %% "cats-core"                 % "2.10.0"
   val catsLaws              = "org.typelevel"              %% "cats-laws"                 % "2.10.0"
@@ -17,7 +17,7 @@ object Libraries {
   val redis4catsEffects     = "dev.profunktor"             %% "redis4cats-effects"        % "1.5.0"
   val redis4catsLog4cats    = "dev.profunktor"             %% "redis4cats-log4cats"       % "1.5.0"
   //
-  val jsoup                 = "org.jsoup"                   % "jsoup"                     % "1.16.1"
+  val jsoup                 = "org.jsoup"                   % "jsoup"                     % "1.19.1"
   // logging runtime
   val logback               = "ch.qos.logback"              % "logback-classic"           % "1.4.7"
   // https://scalacheck.org
