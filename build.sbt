@@ -39,11 +39,12 @@ lazy val munitx = (project in file("munitx"))
   .settings(
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.scalameta" %% "munit"             % "1.0.0",
-      "org.scalameta" %% "munit-scalacheck"  % "1.0.0",
-      "org.typelevel" %% "munit-cats-effect" % "2.0.0",
-      "org.tpolecat"  %% "skunk-core"        % "0.6.4",
-      "org.postgresql" % "postgresql"        % "42.7.3",
+      "org.scalameta"    %% "munit"             % "1.1.1",
+      "org.scalameta"    %% "munit-scalacheck"  % "1.1.0",
+      "org.typelevel"    %% "munit-cats-effect" % "2.1.0",
+      "org.tpolecat"     %% "skunk-core"        % "0.6.4",
+      "org.postgresql"    % "postgresql"        % "42.7.7",
+      "com.github.cb372" %% "cats-retry"        % "3.1.3",
     )
   )
 
@@ -186,6 +187,17 @@ lazy val ce3 = (project in file("ce3"))
   .settings(
     Compile / PB.targets := Seq(
       scalapb.gen() -> (Compile / sourceManaged).value / "scalapb"
+    )
+  )
+
+lazy val openai = (project in file("openai"))
+  .enablePlugins(LaikaPlugin)
+  .settings(
+    Settings.common2,
+    description := "openai",
+    libraryDependencies ++= Seq(
+      "com.softwaremill.sttp.openai" %% "core" % "0.3.2",
+      "com.softwaremill.sttp.openai" %% "fs2"  % "0.3.2"
     )
   )
 
@@ -404,8 +416,9 @@ lazy val spring = (project in file("spring"))
     description := "SpringBoot Experiments",
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.projectlombok"        % "lombok"                  % "1.18.34",
-      "org.springframework.boot" % "spring-boot-starter-web" % "3.3.2",
+      "org.projectlombok"        % "lombok"                  % "1.18.38",
+      "org.springframework.boot" % "spring-boot-starter-web" % "3.5.3",
+      "org.springframework.boot" % "spring-boot-starter-data-jpa" % "3.5.3",
     ),
   )
 
@@ -414,12 +427,12 @@ lazy val http4sws = (project in file("http4sws"))
     description := "WebSocket with http4s, cats-parse, cats effects, fs2 Streams",
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.http4s"    %% "http4s-dsl"          % "0.23.27",
-      "org.http4s"    %% "http4s-circe"        % "0.23.27",
-      "org.http4s"    %% "http4s-ember-server" % "0.23.27",
-      "io.circe"      %% "circe-generic"       % "0.14.9",
-      "org.typelevel" %% "cats-parse"          % "1.0.0",
-      "ch.qos.logback" % "logback-classic"     % "1.5.7",
+      "org.http4s"    %% "http4s-dsl"          % "0.23.30",
+      "org.http4s"    %% "http4s-circe"        % "0.23.30",
+      "org.http4s"    %% "http4s-ember-server" % "0.23.30",
+      "io.circe"      %% "circe-generic"       % "0.14.14",
+      "org.typelevel" %% "cats-parse"          % "1.1.0",
+      "ch.qos.logback" % "logback-classic"     % "1.5.18",
     )
   )
 

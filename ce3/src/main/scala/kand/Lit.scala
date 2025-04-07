@@ -39,7 +39,7 @@ class Lit extends AnyFunSuite {
     (1 to 115)
       .map(n => n -> cnt.get(n))
       .map {
-        case (n, Some(c)) => s"$n - $c"
+        case (n, Some(c)) => s"$n\t$c"
         case (n, _) => n.toString
       }
       .foreach(println)
@@ -51,7 +51,7 @@ class Lit extends AnyFunSuite {
       .sortBy { case (k, _) => k }
 
 //    pprint.log(xs1)
-    xs1.foreach{ case (n, c) => println(s"$n -> $c")}
+    xs1.foreach{ case (n, c) => println(s"$n\t$c")}
 
   }
 
