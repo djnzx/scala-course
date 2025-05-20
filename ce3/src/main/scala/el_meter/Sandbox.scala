@@ -23,7 +23,7 @@ object Http {
   def mkHttpClient =
     BlazeClientBuilder[IO].resource
 
-  private val url = uri"http://192.168.7.38?page=getdata&devid=1828726629&devpass=6543"
+  private val url = uri"http://192.168.7.5?page=getdata&devid=1828726629&devpass=6543"
   val rq = Request[IO](Method.GET, url)
 
   import model._
