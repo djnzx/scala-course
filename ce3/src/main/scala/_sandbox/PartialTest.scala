@@ -38,7 +38,7 @@ class PartialTest extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
 
     def fold[A, B, C](a: A, f: (A, B) => A, g: A => C, xs: List[B]) = ???
 
-    def map[A, B](f: A => B)(a: A): B = ???
+//    def map[A, B](f: A => B)(a: A): B = ???
 
 
 
