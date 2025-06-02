@@ -132,9 +132,26 @@ class PartialTest extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
     case NonZero(x) => 1 / x
   }
 
+  def inverse8(x: Double): Either[String, Double] =
+    inverse4.lift(x) match {
+      case Some(y) => Right(y)
+      case None => Left(s"function inverse is not defined at $x")
+    }
+
   test("3") {
     val x = inverse4(5)
     val y = inverse4(0)
+  }
+
+  {
+    val pf1: PartialFunction[Any, String] = { case x: Int => s"Int: $x" }
+    val pf2: PartialFunction[Any, String] = { case x: String => s"String: $x" }
+    val pf3: Any => String = { x: Any => s"Something else: $x" }
+
+    val partialHandler = pf1 orElse pf2
+    def fullHandler(x: Any): String =
+      partialHandler.applyOrElse(x, pf3)
+
   }
 
   test("4") {
