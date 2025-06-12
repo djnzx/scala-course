@@ -495,8 +495,9 @@ lazy val spring = (project in file("spring"))
     description := "SpringBoot Experiments",
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.projectlombok"        % "lombok"                  % "1.18.34",
-      "org.springframework.boot" % "spring-boot-starter-web" % "3.3.2",
+      "org.projectlombok"        % "lombok"                  % "1.18.38",
+      "org.springframework.boot" % "spring-boot-starter-web" % "3.5.0",
+//      "org.springframework.boot" % "spring-boot-starter-data-jpa" % "3.5.0",
     ),
   )
 
