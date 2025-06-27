@@ -1,4 +1,4 @@
-package retryideas
+package retryexplore
 
 import cats.effect.IO
 import cats.effect.IOApp

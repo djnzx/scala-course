@@ -3,12 +3,14 @@ package skunkx
 import cats._
 import cats.effect._
 import cats.implicits._
+
 import java.time.LocalDate
 import munit.CatsEffectSuite
 import skunk._
 import skunk.codec.all._
 import skunk.data.Completion
 import skunk.implicits._
+import tools.LogSyntax
 
 /** https://github.com/typelevel/skunk
   *
@@ -19,7 +21,7 @@ import skunk.implicits._
   * https://typelevel.org/skunk/tutorial/Command.html
   */
 class LearnSkunkAndMunit extends CatsEffectSuite
-    with SkunkConnection with Tools {
+    with SkunkConnection with LogSyntax {
 
   test("1.s imple query. unique result") {
 
