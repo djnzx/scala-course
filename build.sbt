@@ -39,11 +39,11 @@ lazy val munitx = (project in file("munitx"))
   .settings(
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.scalameta" %% "munit"             % "1.0.0",
-      "org.scalameta" %% "munit-scalacheck"  % "1.0.0",
-      "org.typelevel" %% "munit-cats-effect" % "2.0.0",
+      "org.scalameta" %% "munit"             % "1.1.1",
+      "org.scalameta" %% "munit-scalacheck"  % "1.1.0",
+      "org.typelevel" %% "munit-cats-effect" % "2.1.0",
       "org.tpolecat"  %% "skunk-core"        % "0.6.4",
-      "org.postgresql" % "postgresql"        % "42.7.3",
+      "org.postgresql" % "postgresql"        % "42.7.7",
     )
   )
 
