@@ -190,7 +190,6 @@ lazy val ce3 = (project in file("ce3"))
     )
   )
 
-
 lazy val openai = (project in file("openai"))
   .enablePlugins(LaikaPlugin)
   .settings(
@@ -201,85 +200,6 @@ lazy val openai = (project in file("openai"))
       "com.softwaremill.sttp.openai" %% "fs2"  % "0.3.2"
     )
   )
-//      // core
-//      "org.typelevel"               %% "cats-core"                    % "2.12.0",
-//      "org.typelevel"               %% "cats-effect"                  % "3.5.7",
-//      // stm
-//      "io.github.timwspence"        %% "cats-stm"                     % "0.13.5",
-//      // streams
-//      "co.fs2"                      %% "fs2-core"                     % "3.11.0",
-//      "co.fs2"                      %% "fs2-io"                       % "3.11.0",
-//      // enum
-//      "com.beachape"                %% "enumeratum"                   % "1.7.3",
-//      "com.beachape"                %% "enumeratum-circe"             % "1.7.3",
-//      "com.beachape"                %% "enumeratum-cats"              % "1.7.3",
-//      "com.beachape"                %% "enumeratum-doobie"            % "1.7.3",  // 1.7.4 brings doobie 1.0.0-RC4
-//      "com.beachape"                %% "enumeratum-scalacheck"        % "1.7.3",
-//      // json
-//      "io.circe"                    %% "circe-parser"                 % "0.14.9",
-//      "io.circe"                    %% "circe-optics"                 % "0.14.1", // 0.15.0
-//      "io.circe"                    %% "circe-generic-extras"         % "0.14.4",
-//      "io.circe"                    %% "circe-yaml"                   % "0.14.2", // 0.15.1
-//      "io.circe"                    %% "circe-fs2"                    % "0.14.1",
-//      "io.circe"                    %% "circe-shapes"                 % "0.14.7",
-//      "io.circe"                    %% "circe-testing"                % "0.14.7",
-//      // munit
-//      "org.scalameta"               %% "munit"                        % "1.0.0",
-//      "org.scalameta"               %% "munit-scalacheck"             % "1.0.0",
-//      "org.typelevel"               %% "munit-cats-effect"            % "2.0.0",
-//      // cats logging
-//      "org.typelevel"               %% "log4cats-core"                % "2.7.0",
-//      "org.typelevel"               %% "log4cats-slf4j"               % "2.7.0",
-//      //
-//      "com.github.fd4s"             %% "fs2-kafka"                    % "3.6.0",
-//      "org.typelevel"               %% "cats-parse"                   % "1.0.0",
-//      "com.github.cb372"            %% "cats-retry"                   % "3.1.3",
-//      // http
-//      "org.http4s"                  %% "http4s-core"                  % "0.23.27",
-//      "org.http4s"                  %% "http4s-dsl"                   % "0.23.27",
-//      "org.http4s"                  %% "http4s-circe"                 % "0.23.27",
-//      "org.http4s"                  %% "http4s-ember-server"          % "0.23.27",
-//      "org.http4s"                  %% "http4s-ember-client"          % "0.23.27",
-//      "org.http4s"                  %% "http4s-blaze-server"          % "0.23.16",
-//      "org.http4s"                  %% "http4s-blaze-client"          % "0.23.16",
-//      // tapir
-//      "com.softwaremill.sttp.tapir" %% "tapir-core"                   % "1.11.1",
-//      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"             % "1.11.1",
-//      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"          % "1.11.1",
-//      "org.scalameta"               %% "scalameta"                    % "4.9.9",
-//      // other
-//      "io.kubernetes"                % "client-java-api"              % "20.0.1",
-//      "io.kubernetes"                % "client-java"                  % "20.0.1",
-//      "jakarta.mail"                 % "jakarta.mail-api"             % "2.1.3",
-//      "io.scalaland"                %% "chimney"                      % "1.4.0",
-//      "org.tpolecat"                %% "skunk-core"                   % "0.6.4",
-//      "io.7mind.izumi"              %% "logstage-core"                % "1.2.10",
-//      "org.tpolecat"                %% "doobie-core"                  % "1.0.0-RC2",
-//      "org.tpolecat"                %% "doobie-postgres"              % "1.0.0-RC2",
-//      "org.tpolecat"                %% "doobie-hikari"                % "1.0.0-RC2",
-//      Libraries.sqlPostgres,
-//      Libraries.newtype,
-//      Libraries.refinedCore,
-//      Libraries.shapeless,
-//      "com.kubukoz"                 %% "debug-utils"                  % "1.1.3",
-//      Libraries.catsMtl,
-//      Libraries.jsoup,
-//      // google API
-//      "com.google.apis"              % "google-api-services-calendar" % "v3-rev20240705-2.0.0",
-//      "com.google.oauth-client"      % "google-oauth-client-jetty"    % "1.36.0",
-//      "com.google.api-client"        % "google-api-client"            % "2.7.0",
-//      "com.github.fd4s"             %% "vulcan"                       % "1.11.1", // apache avro + cats-free monad
-//      "com.github.fd4s"             %% "vulcan-generic"               % "1.11.1", // vulcan + shapeless + magnolia
-//      "com.github.fd4s"             %% "vulcan-enumeratum"            % "1.11.1", // vulcan + vulcan-generic + enumeratum
-//      "com.github.fd4s"             %% "fs2-kafka-vulcan"             % "3.6.0",
-//    ),
-//    // laika experiments
-//    laikaSite / target := target.value / "docs1",
-//    laikaIncludePDF := true,
-//    laikaPDF / artifactPath := target.value / "my-docs.pdf"
-//  )
-
-
 
 lazy val `ce3-docs` = (project in file("ce3-docs"))
   .settings(
