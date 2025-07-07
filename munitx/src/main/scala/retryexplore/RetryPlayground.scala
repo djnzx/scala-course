@@ -4,12 +4,12 @@ import RetryPlayground._
 import cats.effect._
 import cats.implicits._
 import munit.CatsEffectSuite
-import org.scalatest.time.SpanSugar.convertIntToGrainOfTime
 import retry.RetryDetails
 import retry.RetryDetails.GivingUp
 import retry.RetryPolicies._
 import retry.implicits._
 import tools.LogSyntax
+import scala.concurrent.duration.DurationInt
 
 object RetryPlayground {
   case class ServiceError(code: Int) extends Throwable
