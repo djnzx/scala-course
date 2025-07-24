@@ -1,0 +1,21 @@
+<configuration>
+
+    <appender name="underline" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%21thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+<!--    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">-->
+<!--        <appender-ref ref="underline"/>-->
+<!--    </appender>-->
+
+<!--    <root level="INFO">-->
+<!--        <appender-ref ref="ASYNC"/>-->
+<!--    </root>-->
+
+    <root level="INFO">
+        <appender-ref ref="underline"/>
+    </root>
+
+</configuration>

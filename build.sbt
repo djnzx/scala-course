@@ -129,12 +129,13 @@ lazy val ce3 = (project in file("ce3"))
       "io.circe"                    %% "circe-shapes"                 % "0.14.7",
       "io.circe"                    %% "circe-testing"                % "0.14.7",
       // munit
-      "org.scalameta"               %% "munit"                        % "1.0.0",
-      "org.scalameta"               %% "munit-scalacheck"             % "1.0.0",
-      "org.typelevel"               %% "munit-cats-effect"            % "2.0.0",
+      "org.scalameta"               %% "munit"                        % "1.1.1",
+      "org.scalameta"               %% "munit-scalacheck"             % "1.1.0",
+      "org.typelevel"               %% "munit-cats-effect"            % "2.1.0",
       // cats logging
-      "org.typelevel"               %% "log4cats-core"                % "2.7.0",
-      "org.typelevel"               %% "log4cats-slf4j"               % "2.7.0",
+      "org.typelevel"               %% "log4cats-slf4j"               % "2.7.1",
+      "org.typelevel"               %% "log4cats-testing"             % "2.7.1",
+      "ch.qos.logback"               % "logback-classic"              % "1.5.18",
       //
       "com.github.fd4s"             %% "fs2-kafka"                    % "3.6.0",
       "org.typelevel"               %% "cats-parse"                   % "1.0.0",
@@ -416,8 +417,8 @@ lazy val spring = (project in file("spring"))
     description := "SpringBoot Experiments",
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.projectlombok"        % "lombok"                  % "1.18.38",
-      "org.springframework.boot" % "spring-boot-starter-web" % "3.5.3",
+      "org.projectlombok"        % "lombok"                       % "1.18.38",
+      "org.springframework.boot" % "spring-boot-starter-web"      % "3.5.3",
       "org.springframework.boot" % "spring-boot-starter-data-jpa" % "3.5.3",
     ),
   )
