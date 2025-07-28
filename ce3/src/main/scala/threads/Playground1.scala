@@ -24,11 +24,13 @@ object Playground1 extends IOApp.Simple {
     def t: IO[A] = fa.flatTap(_ => IO(println(s">>> on ${Thread.currentThread().getName}".blue)))
   }
 
-  override def run: IO[Unit] =
+  override def run: IO[Unit] = {
+    log.info(s"${Runtime.getRuntime.availableProcessors()}") >> // M4 Max = 12
     IO(println("1. should be compute")).t >>
       log0.info("2. via logger (compute)").t >>
       log.info("3. blocking logger (blocking)").t >>
       IO.blocking(println("4. explicitly on blocking")).t >>
       info"5. via implicit syntax - should pick proper blocking logging".t
+  }
 
 }
