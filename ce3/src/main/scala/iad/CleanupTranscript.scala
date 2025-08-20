@@ -6,13 +6,19 @@ import fs2.io.file._
 
 object CleanupTranscript extends IOApp.Simple {
 
-  val in = Path("/Users/alexr/Downloads/in.txt")
-  val out = Path("/Users/alexr/Downloads/out.txt")
+  val path = "/Users/alexr/Library/CloudStorage/GoogleDrive-alexey.rykhalskiy@gmail.com/My Drive/_EU/2526s1/iad/lectures/transcript"
 
-  def mkSep(n: Int) = s"${"-" * 5} #$n ${"-" * 50}"
+  val name = "iad02"
+
+  val in = Path(s"$path/$name.txt")
+  val out = Path(s"$path/$name.md")
+
+  def mkSep(n: Int) = s"${"\n### -----"} #$n ${"-" * 50}"
   def mkNumber(rn: Ref[IO, Int]) = rn.getAndUpdate(_ + 1)
 
   val writePipe = Files[IO].writeUtf8Lines(out, Flags.Write)
+
+  val sep = Set('#', '-')
 
   def run: IO[Unit] =
     Ref[IO].of(1).flatMap { rn =>
@@ -20,10 +26,9 @@ object CleanupTranscript extends IOApp.Simple {
         .readUtf8Lines(in)
         .filter(_.nonEmpty)
         .filterNot(_.head.isDigit)
-        .filterNot(_.head == '#')
         .flatMap {
-          case s if s.head == '-' => Stream.eval(mkNumber(rn).map(mkSep))
-          case s                  => Stream.emit(s)
+          case s if sep.contains(s.head) => Stream.eval(mkNumber(rn).map(mkSep))
+          case s                         => Stream.emit(s)
         }
         .through(writePipe)
         .compile
