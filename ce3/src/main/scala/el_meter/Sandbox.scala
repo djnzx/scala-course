@@ -45,6 +45,7 @@ class SandboxSpec extends AnyFunSuite with Matchers with ScalaCheckPropertyCheck
   import model._
 //  import io.scalaland.chimney.dsl._
 
+  // JDK 15 API
   def leftPad(x: Int, width: Int): String = s"%${width}d".formatted(x)
   def leftPad(x: Double, width: Int): String = leftPad(x.toInt, width)
 
