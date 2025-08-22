@@ -107,61 +107,62 @@ lazy val ce3 = (project in file("ce3"))
     description := "CE3-based-related",
     libraryDependencies ++= Seq(
       // core
-      "org.typelevel"               %% "cats-core"                    % "2.12.0",
-      "org.typelevel"               %% "cats-effect"                  % "3.5.7",
+      "org.typelevel"               %% "cats-core"                    % "2.13.0",
+      "org.typelevel"               %% "cats-effect"                  % "3.6.3",
       // stm
       "io.github.timwspence"        %% "cats-stm"                     % "0.13.5",
       // streams
-      "co.fs2"                      %% "fs2-core"                     % "3.11.0",
-      "co.fs2"                      %% "fs2-io"                       % "3.11.0",
+      "co.fs2"                      %% "fs2-core"                     % "3.12.0",
+      "co.fs2"                      %% "fs2-io"                       % "3.12.0",
       // enum
-      "com.beachape"                %% "enumeratum"                   % "1.7.3",
-      "com.beachape"                %% "enumeratum-circe"             % "1.7.3",
-      "com.beachape"                %% "enumeratum-cats"              % "1.7.3",
-      "com.beachape"                %% "enumeratum-doobie"            % "1.7.3",  // 1.7.4 brings doobie 1.0.0-RC4
-      "com.beachape"                %% "enumeratum-scalacheck"        % "1.7.3",
+      "com.beachape"                %% "enumeratum"                   % "1.9.0",
+      "com.beachape"                %% "enumeratum-circe"             % "1.9.0",
+      "com.beachape"                %% "enumeratum-cats"              % "1.9.0",
+      "com.beachape"                %% "enumeratum-doobie"            % "1.7.3",   // 1.7.4 brings doobie 1.0.0-RC4
+      "com.beachape"                %% "enumeratum-scalacheck"        % "1.9.0",
       // json
       "io.circe"                    %% "circe-parser"                 % "0.14.9",
-      "io.circe"                    %% "circe-optics"                 % "0.14.1", // 0.15.0
+      "io.circe"                    %% "circe-optics"                 % "0.14.1",  // 0.15.0
       "io.circe"                    %% "circe-generic-extras"         % "0.14.4",
-      "io.circe"                    %% "circe-yaml"                   % "0.14.2", // 0.15.1
+      "io.circe"                    %% "circe-yaml"                   % "0.14.2",  // 0.15.1
       "io.circe"                    %% "circe-fs2"                    % "0.14.1",
       "io.circe"                    %% "circe-shapes"                 % "0.14.7",
       "io.circe"                    %% "circe-testing"                % "0.14.7",
       // munit
-      "org.scalameta"               %% "munit"                        % "1.0.0",
-      "org.scalameta"               %% "munit-scalacheck"             % "1.0.0",
-      "org.typelevel"               %% "munit-cats-effect"            % "2.0.0",
+      "org.scalameta"               %% "munit"                        % "1.1.1",
+      "org.scalameta"               %% "munit-scalacheck"             % "1.1.0",
+      "org.typelevel"               %% "munit-cats-effect"            % "2.1.0",
       // cats logging
-      "org.typelevel"               %% "log4cats-core"                % "2.7.0",
-      "org.typelevel"               %% "log4cats-slf4j"               % "2.7.0",
+      "org.typelevel"               %% "log4cats-core"                % "2.7.1",
+      "org.typelevel"               %% "log4cats-slf4j"               % "2.7.1",
       //
-      "com.github.fd4s"             %% "fs2-kafka"                    % "3.6.0",
-      "org.typelevel"               %% "cats-parse"                   % "1.0.0",
-      "com.github.cb372"            %% "cats-retry"                   % "3.1.3",
+      "com.github.fd4s"             %% "fs2-kafka"                    % "3.9.0",
+      "org.typelevel"               %% "cats-parse"                   % "1.1.0",
+      "com.github.cb372"            %% "cats-retry"                   % "3.1.3",   // 4.0.0 dropped 2.13
       // http
-      "org.http4s"                  %% "http4s-core"                  % "0.23.27",
-      "org.http4s"                  %% "http4s-dsl"                   % "0.23.27",
-      "org.http4s"                  %% "http4s-circe"                 % "0.23.27",
-      "org.http4s"                  %% "http4s-ember-server"          % "0.23.27",
-      "org.http4s"                  %% "http4s-ember-client"          % "0.23.27",
-      "org.http4s"                  %% "http4s-blaze-server"          % "0.23.16",
-      "org.http4s"                  %% "http4s-blaze-client"          % "0.23.16",
+      "org.http4s"                  %% "http4s-core"                  % "0.23.30", // Dec 04, 2024
+      "org.http4s"                  %% "http4s-dsl"                   % "0.23.30",
+      "org.http4s"                  %% "http4s-circe"                 % "0.23.30",
+      "org.http4s"                  %% "http4s-ember-server"          % "0.23.30",
+      "org.http4s"                  %% "http4s-ember-client"          % "0.23.30",
+      "org.http4s"                  %% "http4s-blaze-server"          % "0.23.17",
+      "org.http4s"                  %% "http4s-blaze-client"          % "0.23.17",
       // tapir
-      "com.softwaremill.sttp.tapir" %% "tapir-core"                   % "1.11.1",
-      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"             % "1.11.1",
-      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"          % "1.11.1",
-      "org.scalameta"               %% "scalameta"                    % "4.9.9",
+      "com.softwaremill.sttp.tapir" %% "tapir-core"                   % "1.11.42",
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"             % "1.11.42",
+      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"          % "1.11.42",
+      "org.scalameta"               %% "scalameta"                    % "4.13.9",
       // other
-      "io.kubernetes"                % "client-java-api"              % "20.0.1",
-      "io.kubernetes"                % "client-java"                  % "20.0.1",
+      "io.kubernetes"                % "client-java-api"              % "24.0.0",
+      "io.kubernetes"                % "client-java"                  % "24.0.0",
       "jakarta.mail"                 % "jakarta.mail-api"             % "2.1.3",
-      "io.scalaland"                %% "chimney"                      % "1.4.0",
+      "io.scalaland"                %% "chimney"                      % "1.8.2",
       "org.tpolecat"                %% "skunk-core"                   % "0.6.4",
-      "io.7mind.izumi"              %% "logstage-core"                % "1.2.10",
+      "io.7mind.izumi"              %% "logstage-core"                % "1.2.20",
       "org.tpolecat"                %% "doobie-core"                  % "1.0.0-RC2",
       "org.tpolecat"                %% "doobie-postgres"              % "1.0.0-RC2",
       "org.tpolecat"                %% "doobie-hikari"                % "1.0.0-RC2",
+      "com.googlecode.lanterna"      % "lanterna"                     % "3.1.3",
       Libraries.sqlPostgres,
       Libraries.newtype,
       Libraries.refinedCore,
@@ -173,9 +174,9 @@ lazy val ce3 = (project in file("ce3"))
       "com.google.apis"              % "google-api-services-calendar" % "v3-rev20240705-2.0.0",
       "com.google.oauth-client"      % "google-oauth-client-jetty"    % "1.36.0",
       "com.google.api-client"        % "google-api-client"            % "2.7.0",
-      "com.github.fd4s"             %% "vulcan"                       % "1.11.1", // apache avro + cats-free monad
-      "com.github.fd4s"             %% "vulcan-generic"               % "1.11.1", // vulcan + shapeless + magnolia
-      "com.github.fd4s"             %% "vulcan-enumeratum"            % "1.11.1", // vulcan + vulcan-generic + enumeratum
+      "com.github.fd4s"             %% "vulcan"                       % "1.11.1",  // apache avro + cats-free monad
+      "com.github.fd4s"             %% "vulcan-generic"               % "1.11.1",  // vulcan + shapeless + magnolia
+      "com.github.fd4s"             %% "vulcan-enumeratum"            % "1.11.1",  // vulcan + vulcan-generic + enumeratum
       "com.github.fd4s"             %% "fs2-kafka-vulcan"             % "3.6.0",
     ),
     // laika experiments
@@ -416,8 +417,8 @@ lazy val spring = (project in file("spring"))
     description := "SpringBoot Experiments",
     Settings.common2,
     libraryDependencies ++= Seq(
-      "org.projectlombok"        % "lombok"                  % "1.18.38",
-      "org.springframework.boot" % "spring-boot-starter-web" % "3.5.3",
+      "org.projectlombok"        % "lombok"                       % "1.18.38",
+      "org.springframework.boot" % "spring-boot-starter-web"      % "3.5.3",
       "org.springframework.boot" % "spring-boot-starter-data-jpa" % "3.5.3",
     ),
   )
