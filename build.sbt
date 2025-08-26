@@ -178,6 +178,7 @@ lazy val ce3 = (project in file("ce3"))
       "com.github.fd4s"             %% "vulcan-generic"               % "1.11.1",  // vulcan + shapeless + magnolia
       "com.github.fd4s"             %% "vulcan-enumeratum"            % "1.11.1",  // vulcan + vulcan-generic + enumeratum
       "com.github.fd4s"             %% "fs2-kafka-vulcan"             % "3.6.0",
+      "org.flywaydb"                 % "flyway-database-postgresql"   % "11.11.2",
     ),
     // laika experiments
     laikaSite / target := target.value / "docs1",

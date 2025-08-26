@@ -11,7 +11,7 @@ object Libraries {
   val catsLaws              = "org.typelevel"              %% "cats-laws"                 % "2.10.0"
   val catsMtl               = "org.typelevel"              %% "cats-mtl"                  % "1.3.1"
   val catsRetry             = "com.github.cb372"           %% "cats-retry"                % "3.1.0"
-  val sqlPostgres           = "org.postgresql"              % "postgresql"                % "42.6.0"
+  val sqlPostgres           = "org.postgresql"              % "postgresql"                % "42.7.7"
   //
   val http4sJwtAuth         = "dev.profunktor"             %% "http4s-jwt-auth"           % "1.2.1"
   val redis4catsEffects     = "dev.profunktor"             %% "redis4cats-effects"        % "1.5.0"
