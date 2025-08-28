@@ -441,7 +441,10 @@ lazy val http4sws = (project in file("http4sws"))
 lazy val `macros2-core` = (project in file("macros2-core"))
   .settings(
     libraryDependencies ++= Seq(
-      "co.fs2" %% "fs2-io" % "3.10.2",
+      "co.fs2"   %% "fs2-io"               % "3.12.0",
+      "io.circe" %% "circe-parser"         % "0.14.14",
+      "io.circe" %% "circe-generic"        % "0.14.14",
+      "io.circe" %% "circe-generic-extras" % "0.14.4"
     ),
     Settings.common2,
   )
@@ -455,7 +458,7 @@ lazy val `macros2-playground` = (project in file("macros2-playground"))
 lazy val `macros3-core` = (project in file("macros3-core"))
   .settings(
     libraryDependencies ++= Seq(
-      "co.fs2" %% "fs2-io" % "3.10.2",
+      "co.fs2" %% "fs2-io" % "3.12.0",
     ),
     Settings.common3,
   )
