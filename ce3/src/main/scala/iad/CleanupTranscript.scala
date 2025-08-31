@@ -6,9 +6,9 @@ import fs2.io.file._
 
 object CleanupTranscript extends IOApp.Simple {
 
-  val path = "/Users/alexr/Library/CloudStorage/GoogleDrive-alexey.rykhalskiy@gmail.com/My Drive/_EU/2526s1/iad/lectures/transcript"
+  val path = "/Users/alexr/Library/CloudStorage/GoogleDrive-alexey.rykhalskiy@gmail.com/My Drive/_EU/2526s1/iad/lectures-src/transcript"
 
-  val name = "iad02"
+  val name = "iad03"
 
   val in = Path(s"$path/$name.txt")
   val out = Path(s"$path/$name.md")
@@ -20,12 +20,14 @@ object CleanupTranscript extends IOApp.Simple {
 
   val sep = Set('#', '-')
 
+  def isTime(s: String) = s.head.isDigit && s.indexOf(":") > 0
+
   def run: IO[Unit] =
     Ref[IO].of(1).flatMap { rn =>
       Files[IO]
         .readUtf8Lines(in)
         .filter(_.nonEmpty)
-        .filterNot(_.head.isDigit)
+        .filterNot(isTime)
         .flatMap {
           case s if sep.contains(s.head) => Stream.eval(mkNumber(rn).map(mkSep))
           case s                         => Stream.emit(s)
