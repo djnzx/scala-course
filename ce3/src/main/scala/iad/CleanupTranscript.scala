@@ -8,7 +8,8 @@ object CleanupTranscript extends IOApp.Simple {
 
   val path = "/Users/alexr/Library/CloudStorage/GoogleDrive-alexey.rykhalskiy@gmail.com/My Drive/_EU/2526s1/iad/lectures-src/transcript"
 
-  val name = "iad03"
+  val name = "iad05"
+  val startN = 1
 
   val in = Path(s"$path/$name.txt")
   val out = Path(s"$path/$name.md")
@@ -23,7 +24,7 @@ object CleanupTranscript extends IOApp.Simple {
   def isTime(s: String) = s.head.isDigit && s.indexOf(":") > 0
 
   def run: IO[Unit] =
-    Ref[IO].of(1).flatMap { rn =>
+    Ref[IO].of(startN).flatMap { rn =>
       Files[IO]
         .readUtf8Lines(in)
         .filter(_.nonEmpty)
