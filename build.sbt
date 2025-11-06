@@ -112,8 +112,8 @@ lazy val ce3 = (project in file("ce3"))
       // stm
       "io.github.timwspence"        %% "cats-stm"                     % "0.13.5",
       // streams
-      "co.fs2"                      %% "fs2-core"                     % "3.12.0",
-      "co.fs2"                      %% "fs2-io"                       % "3.12.0",
+      "co.fs2"                      %% "fs2-core"                     % "3.12.2",
+      "co.fs2"                      %% "fs2-io"                       % "3.12.2",
       // enum
       "com.beachape"                %% "enumeratum"                   % "1.9.0",
       "com.beachape"                %% "enumeratum-circe"             % "1.9.0",
@@ -136,7 +136,6 @@ lazy val ce3 = (project in file("ce3"))
       "org.typelevel"               %% "log4cats-core"                % "2.7.1",
       "org.typelevel"               %% "log4cats-slf4j"               % "2.7.1",
       //
-      "com.github.fd4s"             %% "fs2-kafka"                    % "3.9.0",
       "org.typelevel"               %% "cats-parse"                   % "1.1.0",
       "com.github.cb372"            %% "cats-retry"                   % "3.1.3",   // 4.0.0 dropped 2.13
       // http
@@ -174,10 +173,11 @@ lazy val ce3 = (project in file("ce3"))
       "com.google.apis"              % "google-api-services-calendar" % "v3-rev20240705-2.0.0",
       "com.google.oauth-client"      % "google-oauth-client-jetty"    % "1.36.0",
       "com.google.api-client"        % "google-api-client"            % "2.7.0",
-      "com.github.fd4s"             %% "vulcan"                       % "1.11.1",  // apache avro + cats-free monad
-      "com.github.fd4s"             %% "vulcan-generic"               % "1.11.1",  // vulcan + shapeless + magnolia
-      "com.github.fd4s"             %% "vulcan-enumeratum"            % "1.11.1",  // vulcan + vulcan-generic + enumeratum
-      "com.github.fd4s"             %% "fs2-kafka-vulcan"             % "3.6.0",
+      "com.github.fd4s"             %% "vulcan"                       % "1.12.0",  // apache avro + cats-free monad
+      "com.github.fd4s"             %% "vulcan-generic"               % "1.12.0",  // vulcan + shapeless + magnolia
+      "com.github.fd4s"             %% "vulcan-enumeratum"            % "1.12.0",  // vulcan + vulcan-generic + enumeratum
+      "com.github.fd4s"             %% "fs2-kafka"                    % "3.9.1",
+      "com.github.fd4s"             %% "fs2-kafka-vulcan"             % "3.9.1",
       "org.flywaydb"                 % "flyway-database-postgresql"   % "11.11.2",
     ),
     // laika experiments
