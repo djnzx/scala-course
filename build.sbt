@@ -88,7 +88,7 @@ lazy val ce2 = project
       "org.http4s"        %% "http4s-ember-client"  % "0.21.34",
       "org.http4s"        %% "http4s-circe"         % "0.21.34",
       "org.http4s"        %% "http4s-dsl"           % "0.21.34",
-      "org.scala-lang"     % "scala-reflect"        % v.vScala213,
+      "org.scala-lang"     % "scala-reflect"        % v.`2.13`,
       "org.typelevel"     %% "cats-tagless-macros"  % "0.11",
       "org.scalameta"     %% "munit-scalacheck"     % "0.7.8",
       "org.typelevel"     %% "munit-cats-effect-2"  % "1.0.6",
@@ -183,7 +183,7 @@ lazy val ce3 = (project in file("ce3"))
     // laika experiments
     laikaSite / target := target.value / "docs1",
     laikaIncludePDF := true,
-    laikaPDF / artifactPath := target.value / "my-docs.pdf"
+//    laikaPDF / artifactPath := target.value / "my-docs.pdf"
   )
   .enablePlugins(ScalaxbPlugin)
   .settings(
@@ -456,16 +456,14 @@ lazy val `macros2-playground` = (project in file("macros2-playground"))
   )
 
 lazy val `macros3-core` = (project in file("macros3-core"))
+  .settings(Settings.common3)
   .settings(
     libraryDependencies ++= Seq(
-      "co.fs2" %% "fs2-io" % "3.12.0",
+      "co.fs2" %% "fs2-io" % "3.12.2",
     ),
-    Settings.common3,
   )
 
 /** and not only macros... */
 lazy val `macros3-playground` = (project in file("macros3-playground"))
+  .settings(Settings.common3)
   .dependsOn(`macros3-core`)
-  .settings(
-    Settings.common3,
-  )

@@ -27,9 +27,11 @@ class HandlingPartial extends AnyFunSuite with Matchers {
     /** partial !!! */
     parse1("cat") match
       case Cat => println("cat!")
+      case _   => println("other. without that compiler will fail")
 
     parse1("blah") match
       case Mice => pprint.log("Mice parsed")
+      case _    => println("other. without that compiler will fail")
 
   }
 

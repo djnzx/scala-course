@@ -18,7 +18,7 @@ object CompilerOptions {
     postfix,
     higherKindedTypes,
     macroAnnotations, // 2.13+, used by newtype
-    warningsAsFatals, // ??? doesn't work as expected
+//    warningsAsFatals, // ??? doesn't work as expected
     matchShouldBeExhaustive,
     lintDeprecation,
     "-Xcheckinit",
