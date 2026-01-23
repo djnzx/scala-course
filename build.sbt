@@ -51,10 +51,8 @@ lazy val munitx = (project in file("munitx"))
 lazy val algorithms = (project in file("algorithms"))
   .settings(
     Settings.common2,
-    // compiled with JDK17
-    libraryDependencies += "org.projectlombok"            % "lombok"                 % "1.18.34" % Provided,
-    libraryDependencies += "org.springframework.security" % "spring-security-crypto" % "6.3.0",
-    libraryDependencies += "co.fs2"                      %% "fs2-core"               % "3.10.2",
+    libraryDependencies += "org.projectlombok" % "lombok"   % "1.18.42" % Provided,
+    libraryDependencies += "co.fs2"           %% "fs2-core" % "3.12.2",
   )
 
 lazy val amt = (project in file("amt"))

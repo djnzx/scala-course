@@ -6,7 +6,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class PlaygroundMessageDigest extends AnyFunSuite {
 
-  def hex(bytes: Array[Byte]) = bytes.map(b => "%02X".format(b)).mkString
+  def hex(bytes: Array[Byte]) = bytes.map(b => "%02x".format(b)).mkString
 
   val data = "Hello".getBytes(Charset.forName("UTF-8"))
 
