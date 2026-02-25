@@ -177,6 +177,8 @@ lazy val ce3 = (project in file("ce3"))
       "com.github.fd4s"             %% "fs2-kafka"                    % "3.9.1",
       "com.github.fd4s"             %% "fs2-kafka-vulcan"             % "3.9.1",
       "org.flywaydb"                 % "flyway-database-postgresql"   % "11.11.2",
+      "org.bouncycastle"             % "bcprov-jdk18on"               % "1.83",
+      "org.bouncycastle"             % "bcpkix-jdk18on"               % "1.83",
     ),
     // laika experiments
     laikaSite / target := target.value / "docs1",
@@ -465,3 +467,4 @@ lazy val `macros3-core` = (project in file("macros3-core"))
 lazy val `macros3-playground` = (project in file("macros3-playground"))
   .settings(Settings.common3)
   .dependsOn(`macros3-core`)
+
