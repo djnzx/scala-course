@@ -159,7 +159,7 @@ lazy val ce3 = (project in file("ce3"))
       "org.tpolecat"                %% "doobie-core"                  % "1.0.0-RC2",
       "org.tpolecat"                %% "doobie-postgres"              % "1.0.0-RC2",
       "org.tpolecat"                %% "doobie-hikari"                % "1.0.0-RC2",
-      "com.googlecode.lanterna"      % "lanterna"                     % "3.1.3",
+      "com.googlecode.lanterna"      % "lanterna"                     % "3.1.5",
       Libraries.sqlPostgres,
       Libraries.newtype,
       Libraries.refinedCore,
@@ -177,8 +177,10 @@ lazy val ce3 = (project in file("ce3"))
       "com.github.fd4s"             %% "fs2-kafka"                    % "3.9.1",
       "com.github.fd4s"             %% "fs2-kafka-vulcan"             % "3.9.1",
       "org.flywaydb"                 % "flyway-database-postgresql"   % "11.11.2",
-      "org.bouncycastle"             % "bcprov-jdk18on"               % "1.83",
-      "org.bouncycastle"             % "bcpkix-jdk18on"               % "1.83",
+      "org.bouncycastle"             % "bcprov-jdk18on"               % "1.84",
+      "org.bouncycastle"             % "bcpkix-jdk18on"               % "1.84",
+      "org.scanamo"                 %% "scanamo-cats-effect"          % "7.0.0",
+      "software.amazon.awssdk"       % "dynamodb"                     % "2.44.10"
     ),
     // laika experiments
     laikaSite / target := target.value / "docs1",
