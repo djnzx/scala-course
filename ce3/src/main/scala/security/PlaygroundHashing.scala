@@ -4,7 +4,7 @@ import java.nio.charset.Charset
 import java.security.MessageDigest
 import org.scalatest.funsuite.AnyFunSuite
 
-class PlaygroundMessageDigest extends AnyFunSuite {
+class PlaygroundHashing extends AnyFunSuite {
 
   def hex(bytes: Array[Byte]) = bytes.map(b => "%02x".format(b)).mkString
 
