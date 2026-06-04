@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package pbx;
+
+message Car3no {
+  int32 id = 1;
+  string details = 2;
+}

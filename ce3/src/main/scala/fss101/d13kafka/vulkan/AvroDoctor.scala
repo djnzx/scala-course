@@ -259,11 +259,15 @@ class AvroDoctorSpec extends AnyFunSuite with Inside with Matchers {
     AvroDoctor.readString(bs.init, 0) shouldBe None
   }
 
+  implicit class ByteArrayOps(xs: Array[Byte]) {
+    def hex: String = xs.map(b => "%02X".format(b)).mkString(" ")
+  }
+
   test("guess - finds schema-matching solution for ABC(Int, String, Long, String)") {
     import AvroValue._
     import org.apache.avro.generic.GenericDatumWriter
 
-    val abc = ABC(42, "Аhello", 100L, "world")
+    val abc = ABC(42, "hello", 123456789123L, "world")
 
     val bs: Array[Byte] = {
       val Right(schema) = ABC.codec.schema
@@ -274,6 +278,8 @@ class AvroDoctorSpec extends AnyFunSuite with Inside with Matchers {
       enc.flush()
       bos.toByteArray
     }
+
+    println(bs.hex)
 
     val solutions = AvroDoctor.guess(bs)
 
