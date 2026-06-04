@@ -12,13 +12,18 @@ class Result {
     public static int getTotalX(List<Integer> a, List<Integer> b) {
         int lcmA = lcmList(a); // [2, 4] -> 4
         int gcdB = gcdList(b); // [16, 32, 96] -> 16
+        System.out.println(lcmA);
+        System.out.println(gcdB);
 
         int count = 0;
 
         // 4,8,12,16
         // 16 % 12 != 0
         for (int x = lcmA; x <= gcdB; x += lcmA) {
-            if (gcdB % x == 0) count++;
+            if (gcdB % x == 0) {
+                count++;
+                System.out.println(x);
+            }
         }
 
         return count; // 3

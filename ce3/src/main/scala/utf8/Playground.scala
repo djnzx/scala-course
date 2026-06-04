@@ -12,29 +12,23 @@ object Playground extends App {
     new String(chars)
   }
 
-  def mkColored(s: String, n: Int): String =
+  def mkColored(s: String): String = {
+    val prefix = s.take(s.indexWhere(_ != '1') + 1)
+    val payload = s.substring(prefix.length)
+
     new StringBuilder(Console.RED)
-      .append(s.substring(0, n))
+      .append(prefix)
       .append(Console.RESET)
-      .append(s.substring(n))
+      .append(payload)
       .toString()
+  }
 
   def describeUtfContent(utf: String): Unit = {
     val bytes: Array[Byte] = utf.getBytes
     val per_char = bytes.length / utf.codePoints().count().toInt
     val dec: Array[Int] = bytes.map(b => b & 0xff)
     val hex: Array[String] = bytes.map(b => "%02X".format(b))
-    val bin: Array[String] = bytes.zipWithIndex.map { case (b, i) =>
-      mkColored(
-        toBin(b),
-        (per_char, i % per_char) match {
-          case (1, _)          => 1
-          case (x, 0)          => x + 1
-          case (x, _) if x < 8 => 2
-          case _               => 0
-        }
-      )
-    }
+    val bin: Array[String] = bytes.map(toBin).map(mkColored)
 
     def groupGt1[A](xs: Iterable[A]) =
       per_char match {
@@ -57,7 +51,8 @@ object Playground extends App {
     "Привет",
     "नमस्ते",
     "😀🤪😐🙄",
-    "Ы"
+    "Ы",
+    "aбन😐",
   ).foreach(describeUtfContent)
 
 }

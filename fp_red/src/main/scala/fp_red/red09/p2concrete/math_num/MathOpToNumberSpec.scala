@@ -15,6 +15,8 @@ class MathOpToNumberSpec extends AnyFunSpec with Matchers {
     
     it("123") {
       Seq(
+        "3+-5",
+        "-1+2",
         "4/-2/2",
         "3/-1+5",
         "-1+2",
