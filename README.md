@@ -135,3 +135,18 @@ I thought I knew Scala...
 
 - scala-99 code migrated [there](https://github.com/djnzx/scala-99)
 - algorithm-related started migrating [there](https://github.com/djnzx/algorithms)
+
+### sbt JVM options
+
+Where sbt takes its JVM options from:
+
+| Source | Scope | Terminal `sbt` | IntelliJ | What goes there |
+|---|---|---|---|---|
+| `~/.config/sbt/sbtopts` | all projects, this machine only | yes | no | memory, GC, code cache (`-J-Xmx6G`, ...) |
+| `.sbtopts` (this repo) | this project, in git | yes | yes | what the project needs (`-J-Duser.timezone=GMT`) |
+| Settings → Build Tools → sbt → VM parameters | IntelliJ | no | yes | memory for IntelliJ's sbt |
+
+- `.sbtopts` is read after `~/.config/sbt/sbtopts`, so project flags win
+- every line needs the `-J` prefix (it's stripped and passed to `java`)
+- don't put JVM flags into `SBT_OPTS`: IntelliJ reports bare `-X...`/`-XX:...` as `Unrecognized sbt option`
+- with the global flags above, sbt fails to start on Java 8 (`UseG1GC` is rejected), use Java 11+

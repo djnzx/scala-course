@@ -55,22 +55,6 @@ lazy val algorithms = (project in file("algorithms"))
     libraryDependencies += "co.fs2"           %% "fs2-core" % "3.12.2",
   )
 
-lazy val amt = (project in file("amt"))
-  .settings(
-    Settings.common2,
-    description := "AMT WSDL experiments",
-    libraryDependencies ++= Seq(
-      "org.apache.axis"   % "axis"              % "1.4",   // no transitive
-      "org.apache.axis"   % "axis-saaj"         % "1.4",   // no transitive
-      "org.apache.axis"   % "axis-jaxrpc"       % "1.4",   // no transitive
-      "axis"              % "axis-wsdl4j"       % "1.5.1", // no transitive
-      // "wsdl4j" % "wsdl4j" % "1.6.3", // no transitive
-      // just to avoid warnings in runtime
-      "commons-discovery" % "commons-discovery" % "0.5",   // transitive: commons-logging" % "commons-logging" % "1.1.1"
-      "javax.mail"        % "mail"              % "1.4.7"  // transitive: "javax.activation" % "activation" % "1.1",
-    )
-  )
-
 lazy val ce2 = project
   .in(file("ce2"))
   .settings(
@@ -103,6 +87,7 @@ lazy val ce3 = (project in file("ce3"))
   .settings(
     Settings.common2,
     description := "CE3-based-related",
+    // Test / unmanagedSourceDirectories += baseDirectory.value / "src/main/scala",
     libraryDependencies ++= Seq(
       // core
       "org.typelevel"               %% "cats-core"                    % "2.13.0",
@@ -180,7 +165,8 @@ lazy val ce3 = (project in file("ce3"))
       "org.bouncycastle"             % "bcprov-jdk18on"               % "1.84",
       "org.bouncycastle"             % "bcpkix-jdk18on"               % "1.84",
       "org.scanamo"                 %% "scanamo-cats-effect"          % "7.0.0",
-      "software.amazon.awssdk"       % "dynamodb"                     % "2.44.10"
+      "software.amazon.awssdk"       % "dynamodb"                     % "2.44.10",
+      "com.lihaoyi"                 %% "fansi"                        % "0.5.0"
     ),
     // laika experiments
     laikaSite / target := target.value / "docs1",
@@ -469,4 +455,3 @@ lazy val `macros3-core` = (project in file("macros3-core"))
 lazy val `macros3-playground` = (project in file("macros3-playground"))
   .settings(Settings.common3)
   .dependsOn(`macros3-core`)
-

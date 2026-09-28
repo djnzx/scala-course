@@ -1,2 +1,0 @@
-sudo lsof -nP -i4TCP:9050 | grep LISTEN
-lsof -i4TCP:8080
